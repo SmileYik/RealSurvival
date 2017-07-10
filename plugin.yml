@@ -1,0 +1,25 @@
+name: RealSurvival
+main: com.outlook.z815007320.RealSurvival
+version: 0.1.6
+description: 让MC的生存变得更真实...
+author: School_Uniform
+softdepend: [PlaceholderAPI,TitleManager,Chairs]
+commands:
+  rs:
+    description: 查看RealSurvival帮助
+    usage: /<command> help
+permissions: 
+  RealSurvival.*:
+    description: 管理员命令套餐
+    children:
+      RealSurvival.Items.*: true
+      RealSurvival.Admin: true
+  RealSurvival.unlimited: 
+    description: 允许属性数值不随时间改变
+    default: op
+  RealSurvival.Admin:
+    description: 允许你可以使用管理员命令,并且属性数值不随时间的流逝而改变
+    default: op
+  RealSurvival.Items.*:
+    description: 允许你可以制造所有物品
+    default: op
