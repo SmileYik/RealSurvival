@@ -1,2 +1,3 @@
 # RealSurvival
-Minecraft 插件 RealSurvival 正式版源码(spigot1.11.2)
+## Minecraft 插件 RealSurvival 正式版源码(spigot1.11.2)
+新人写的源码总是有些不符合规范的地方...请见谅...
