@@ -18,6 +18,11 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.z815007320.api.RealSurvivalAPI;
+import com.outlook.z815007320.commands.HelpText;
+import com.outlook.z815007320.commands.ItemCMD;
+import com.outlook.z815007320.commands.StateCMD;
+import com.outlook.z815007320.commands.TestCMD;
+import com.outlook.z815007320.commands.WorkbenchCMD;
 import com.outlook.z815007320.data.*;
 import com.outlook.z815007320.event.*;
 import com.outlook.z815007320.event.basic.*;
@@ -33,7 +38,7 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 	@Override
 	public void onEnable() {
 		firstRun();
-		readConfigs();
+		try {readConfigs();} catch (Exception e) {}
 		addPlayers();
 		registerListeners();
 		getLogger().info("成功加载"+SF.size()+"个工作台配方, "+FCTR.size()+"个熔炉配方, "+
@@ -50,8 +55,175 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 	}
 	
 	@Override
-	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		return Commands.onCommand(this, sender, command, label, args);
+	public boolean onCommand(CommandSender cmd, Command cmds, String label, String[] args) {
+		if (!(cmd instanceof Player))
+	    { 
+			if(args.length==0){
+	    	cmd.sendMessage("只有玩家才能执行此命令!");
+	    	return true;
+			}
+			if(args[0].equalsIgnoreCase("Reload")){
+				this.reloadConfigs();
+				cmd.sendMessage("§9[RealSurvival] §b配置文件重载成功!...");
+				return true;
+			}
+	    }
+		Player player = (Player)cmd;
+		if(label.equalsIgnoreCase("rs")){
+			if (args.length == 1)
+		    {
+				if(args[0].equalsIgnoreCase("state")){
+					player.sendMessage(this.getPlayerData(player).getData());
+					return true;
+				}else if(args[0].equalsIgnoreCase("help")){
+					if(player.hasPermission("RealSurvival.Admin")){
+						player.sendMessage(HelpText.getMainHelpText());
+						return true;
+					}else{
+						player.sendMessage("§9===================§bRealSurvival§9===================\n"
+															+ "§b/rs help - 查看帮助\n"
+															+ "§b/rs state - 查看自身状态\n"
+															+ "§9==================================================");
+						return true;
+					}
+				}else if(args[0].equalsIgnoreCase("Reload")&&player.hasPermission("RealSurvival.Admin")){
+					this.reloadConfigs();
+					player.sendMessage("§9[RealSurvival] §b配置文件重载成功!...");
+					return true;
+				}
+		    }else if(args.length == 2){
+		    	if(args[0].equalsIgnoreCase("test")&&player.hasPermission("RealSurvival.Admin")){
+		    		if(args[1].equalsIgnoreCase("help")){
+		    			player.sendMessage(HelpText.getTestHelp());
+		    			return true;
+		    		}
+		    		if(args[1].equalsIgnoreCase("open"))
+		    			return TestCMD.openTestEvent(player);
+		    		if(args[1].equalsIgnoreCase("close"))
+		    			return TestCMD.closeTestEvent(player);
+		    		if(args[1].equalsIgnoreCase("on"))
+		    			return TestCMD.onValue(player);
+		    		if(args[1].equalsIgnoreCase("off"))
+		    			return TestCMD.offValue(player);
+		    	}
+		    }
+			
+			if(args.length >= 2){
+				//item 指令集
+		    	if(args[0].equalsIgnoreCase("item")&&player.hasPermission("RealSurvival.Admin")){
+		    		if(args[1].equalsIgnoreCase("lore")){
+		    			ItemCMD.addLore(player, args);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("setlore")){
+		    			ItemCMD.setLore(player, args);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("removelore")){
+		    			ItemCMD.removeLore(player, args);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("setName")){
+		    			ItemCMD.setName(player, args);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("save")){
+		    			ItemCMD.saveItem(player, args[2]);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("list")){
+		    			player.sendMessage(ItemCMD.getItemList());
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("get")){
+		    			ItemStack is=ItemCMD.getItem(player, args[2]);
+		    			if(is==null)return false;
+		    			int amount=1;
+		    			if(args.length==4)
+		    				try {
+								amount=Integer.parseInt(args[3]);
+							} catch (Exception e) {
+								player.sendMessage("§9[RealSurvival] §b数量错误!...");
+							}
+		    			for(int i=0;i<amount;i++)
+		    				player.getInventory().addItem(is);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("give")){
+		    			Player p=this.getServer().getPlayer(args[2]);
+		    			if(p==null||(!p.isOnline())){
+		    				player.sendMessage("§9[RealSurvival] §b指定玩家不在线,,,");
+		    				return false;
+		    			}
+		    			ItemStack is=ItemCMD.getItem(player, args[3]);
+		    			if(is==null)return false;
+		    			int amount=1;
+		    			if(args.length==5)
+		    				try {
+								amount=Integer.parseInt(args[4]);
+							} catch (Exception e) {
+								player.sendMessage("§9[RealSurvival] §b数量错误!...");
+							}
+		    			for(int i=0;i<amount;i++)
+	    					p.getInventory().addItem(is);
+		    			return true;
+		    		}else if(args[1].equalsIgnoreCase("help")){
+		    			player.sendMessage(HelpText.getItemHelp());
+		    			return true;
+		    		}
+		    	}else if(args[0].equalsIgnoreCase("wb")&&player.hasPermission("RealSurvival.Admin")){
+		    		//workbench指令集
+		    		if(args[1].equalsIgnoreCase("csf")){
+		    			if(args.length!=4)return false;
+						 return WorkbenchCMD.createSF(player, args[2], args[3]);
+						//重新设定配方
+					}else if(args[1].equalsIgnoreCase("resetsf")){
+						if(args.length!=4)return false;
+						return WorkbenchCMD.resetSF(player, args[2], args[3]);
+					}else if(args[1].equalsIgnoreCase("openwb")){
+						if(args.length!=3)return false;
+						WorkbenchCMD.openTestWorkbench(player, args[2]);
+						return true;
+					}else if(args[1].equalsIgnoreCase("openSFList")){
+						WorkbenchCMD.openSFList(player);
+						return true;
+					}else if(args[1].equalsIgnoreCase("setBlock")){
+						if(args.length!=4)return false;
+						return WorkbenchCMD.setWorkbench(args[2], args[3]);
+					}else if(args[1].equalsIgnoreCase("help")){
+		    			player.sendMessage(HelpText.getWorkbenchHelp());
+		    			return true;
+					}else if(args[1].equalsIgnoreCase("csff")){
+						if(args.length!=6)return false;
+						 return WorkbenchCMD.createFCTR(player, args[2], args[3],args[4],args[5]);
+					}
+		    	}else if(args[0].equalsIgnoreCase("setSwitch")&&player.hasPermission("RealSurvival.Admin")){
+		    		//插件功能开关指令集
+		    		if(args[1].equalsIgnoreCase("help")){
+		    			player.sendMessage(HelpText.getSetSwitchHelp());
+		    			return true;
+		    		}
+		    		if(args.length<3)return false;
+		    		if(!(args[1].equals("Sleep")||args[1].equals("Thirst")||
+		    				args[1].equals("PhysicalStrength")||args[1].equals("Temperature")||
+		    				args[1].equals("Weight")||args[1].equals("Sick")||
+		    				args[2].equalsIgnoreCase("true")||args[2].equalsIgnoreCase("false"))){
+		    			player.sendMessage(HelpText.getSetSwitchHelp());
+		    			return false;
+		    		}
+		    		if(args[2].equalsIgnoreCase("true"))
+		    			this.getConfig().set("Switch."+args[1], true);
+		    		else
+		    			this.getConfig().set("Switch."+args[1], false);
+		    		try {
+		    			this.getConfig().save(this.getDataFolder()+File.separator+"config.yml");
+		    		} catch (IOException e) {
+		    			return false;
+		    		}
+		    		return true;
+		    	}else if(args[0].equalsIgnoreCase("state")&&player.hasPermission("RealSurvival.Admin")){
+		    		if(args[1].equalsIgnoreCase("help")){
+		    			player.sendMessage(HelpText.getStateHelp());
+		    			return true;
+		    		}else 
+		    			return StateCMD.state(args, player, this);
+		    	}
+		    }
+		}
+		return false;
 	}
 	
 	/**
@@ -66,6 +238,8 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 			new File(getDataFolder()+File.separator+"Items").mkdir();
 		if(!new File(getDataFolder()+File.separator+"SyntheticFormula").exists())
 			new File(getDataFolder()+File.separator+"SyntheticFormula").mkdir();
+		if(!new File(getDataFolder()+File.separator+"SyntheticFormula"+File.separator+"FireCraftTable").exists())
+			new File(getDataFolder()+File.separator+"SyntheticFormula"+File.separator+"FireCraftTable").mkdir();
 		if(!new File(getDataFolder()+File.separator+"config.yml").exists())
 			saveDefaultConfig();
 		if(!new File(getDataFolder()+File.separator+"Messages.yml").exists())
@@ -93,13 +267,13 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 		worlds.clear();
 		FCTR.clear();
 		firstRun();
-		readConfigs();
+		try {readConfigs();} catch (Exception e) {}
 		
 		registerListeners();
 		getLogger().info("§9[RealSurvival] 成功加载"+SF.size()+"个配方,"+
 				effects.size()+"个效果"+heatSource.size()+"个热(冷)源! By: School_Uniform");
 	}
-	private void readConfigs(){
+	private void readConfigs() throws Exception{
 		sleepDatas[0]=getConfig().getDouble("Sleep.Max");
 		sleepDatas[1]=getConfig().getDouble("Sleep.Mid")*sleepDatas[0];
 		sleepDatas[2]=getConfig().getDouble("Sleep.Min")*sleepDatas[0];
@@ -148,9 +322,11 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 		fracture[6]=getConfig().getDouble("Fracture.Damage");
 		defSick=getConfig().getString("Sick.SickName");
 		worlds=getConfig().getStringList("Worlds");
+		
 		//添加热源
 		for(String temp:getConfig().getStringList("HeatSource"))
 			heatSource.put(temp.split(":")[0], Double.parseDouble(temp.split(":")[1]));
+		
 		//添加配方
 		File path=new File(this.getDataFolder()+File.separator+"SyntheticFormula");
 		for(File sf:path.listFiles()){
@@ -204,7 +380,7 @@ public class RealSurvival extends MainDatas implements RealSurvivalAPI{
 		Iterator<? extends Player> ps= Bukkit.getOnlinePlayers().iterator();
 	    while (ps.hasNext()){
 	    	Player p = (Player)ps.next();
-	    	if(worldExists(p.getWorld().getName()))
+	    	if(worldExists(p.getWorld().getName())&&!p.hasMetadata("NPC"))
 	    		playersDatas.put(p.getUniqueId(), Utils.getPlayerData(p));
 	    }
 	}

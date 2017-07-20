@@ -8,6 +8,7 @@ Switch:
   Weight: true
   Sick: true
   Fracture: true
+
 #把你想要启用的世界填入下面
 #格式:
 #  - WorldName
@@ -15,6 +16,7 @@ Worlds:
   - world
   - world_nether
   - world_the_end
+
 #玩家死亡重生时在现有的数值上恢复对应最大值的百分比(用小数表示)
 #Sleep为在死亡时,剩余Sleep数值基础上增加睡眠值最大值的多少倍
 #Thirst,PhysicalStrength同上
@@ -25,6 +27,7 @@ OnDeath:
   PhysicalStrength: 0.2
   Temperature: 37
   IsSick: 0
+  
 #Sleep一栏
 #Max为睡眠饱和值 Mid为当前睡眠度为睡眠饱和值的0.x倍后感觉困意 Min为当前睡眠度为睡眠饱和值的0.x倍后感觉非常疲劳
 #Sub为每1秒减多少睡眠值 Add为睡觉时每1秒增加多少睡眠值
@@ -40,6 +43,7 @@ Thirst:
   Mid: 0.5
   Min: 0.2
   Sub: 0.03
+  
 #骨折,
 #Slight下面为轻微骨折,Severe为严重骨折,High代表从多高跳下来时触发,Chance代表触发几率
 #Damage为被下落的方块砸到损失了多少血后触发骨折效果
@@ -55,6 +59,7 @@ Fracture:
   Damage: 2
   SlChance: 10
   SeChance: 30
+  
 #体力,
 #Max为体力最大值,min为体力达到最大值的几倍后感到体力不支,Add为停止动作时每10秒增加多少体力,Sneaking潜行状态下每10秒减多少体力,Sprinting短跑状态下每10秒减多少体力
 PhysicalStrength:
@@ -63,6 +68,7 @@ PhysicalStrength:
   Add: 2
   Sneaking: 1
   Sprinting: 2
+  
 #生病
 #SickName代表默认情况下得到的病的种类, 生病种类必须在Effect下出现过,否则插件会报错
 #EatFood为吃了哪种食物后有几率得指定的病
@@ -72,11 +78,13 @@ Sick:
   SickName: 生病
   EatFood:
     - RAW_CHICKEN:生病,10%;感冒,10%
+    
 #食物名:睡眠度,口渴度,体温
 #口渴度与睡眠度的值都为最大值的百分之几,可以是负数
 EatFood:
   - APPLE:+1%,+5%,0
   - RAW_CHICKEN:+5%,-5%,0
+  
 #自定义高级工作台的摆放方式 Main为被右击的方块 left为左边 Right为右边 UP为上方 Down为下方 Front为前面 Behind为后面  写方块名的时候注意大写,并且当不需要那一边的话写上 Null 
 #默认主方块是工作台 左边方块是书架 右边方块是工作台 上方是熔炉
 Workbench:
@@ -88,6 +96,7 @@ Workbench:
   Down: Null
   Front: Null
   Behind: Null
+  
 #除了HeatSourceFix不一样,其他都和上面一样
 #HeatSourceFix为温度修正,效果为热源对于工作台的温度是热源本身温度的xx倍,可以为小数
 FireCraftTable:
@@ -100,6 +109,7 @@ FireCraftTable:
   Front: Null
   Behind: Null
   HeatSourceFix: 100.0
+  
 #最大负重值
 #Item下为默认物品重量,物品名大写,添加格式为:
 #  - 物品名:重量
@@ -107,6 +117,7 @@ Weight:
   Max: 100
   Item:
   - TORCH:0.1
+  
 #热(冷)源 添加格式:
 #  - 方块名:温度值
 #方块名(物品名)大写
@@ -127,6 +138,7 @@ HeatSource:
 - FROSTED_ICE:-0.3
 - SNOW_LAYER:-0.2
 - SNOW:-0.5
+
 #感冒为自定义生病效果
 #一条效果为 效果名,持续时间,效果等级
 #";"可以增加多种效果
@@ -151,26 +163,29 @@ Effect:
 - 骨折:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
 - 严重骨折:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
 - 感冒:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+
 #设定属性标签
 #如果不满意可以改为其他值,使用效果需要在物品上贴上指定的标签后右击物品使用
 #Sleep,Thirst,Medicine,Sickness添加的lore格式如下: 自定义的标签: 10%
 #用默认的值举个例子: "睡眠度: +10%" 然后右击这个物品自身的睡眠度就会增加最大值的10%
 #MedicineDuration的格式为: 自定义的标签: 10s
 #用默认的值举个例子: "药物持续时间: 10s" 右击后获得10s疾病治疗效果
-#weight,tem与上面MedicineDuration相似,只不过weigh数值部分不含"s" tem数值部分不是"s"而是"℃"
+#weight,tem与上面MedicineDuration相似,只不过weigh数值部分不含"s" tem数值部分不是"s"而是"℃"(带不带无所谓啦~~~)
 #SickKind,Sick的格式为: 自定义的标签: 疾病名称
 #用默认的值举个例子: "专治: 感冒,发烧" 右击后只能治疗"感冒"或者"发烧"这2种病,如果需要治疗更多病可以使用","分格开(只对Sick有效).然而SickKind的值是不支使用","分隔的
 #更多信息请看我的帖子
 Lore:
+- Tem:体温
+- Sick:专治
+- Weight:负重
 - Sleep:睡眠度
 - Thirst:口渴度
 - Medicine:药物效果
-- MedicineDuration:药物持续时间
 - SickKind:生病种类
 - Sickness:生病几率
-- weight:负重
-- tem:体温
-- Sick:专治
+- PhysicalStrength:体力
+- MedicineDuration:药物持续时间
+
 #设定怪物打你时有多少几率生病
 #添加格式:
 # - 怪物名:病名,几率

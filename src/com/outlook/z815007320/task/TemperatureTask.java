@@ -16,14 +16,12 @@ public class TemperatureTask extends PluginRS implements Runnable{
 
 	@Override
 	public void run() {
-		if(!rs.isOver())return;
-		rs.setOver(false);
 		double _temper=-0.1;
 		long time;
 		Set<UUID> players=rs.getPlayerDatas().keySet();
 		for(UUID ps:players){
 			  Player p = rs.getServer().getPlayer(ps);
-			  if(p.isDead())continue;
+			  if(p==null||p.isDead())continue;
 		      if ((p.hasPermission("RealSurvival.unlimited")||p.hasPermission("RealSurvival.Admin"))&&!TestCMD.contains(p)) 
 		    	  continue;
 		      PlayerData pd=rs.getPlayerData(p);
@@ -58,7 +56,6 @@ public class TemperatureTask extends PluginRS implements Runnable{
 		    	  pd.changeTemperature(_temper*0.02);
 		      continue;
 	    }
-		rs.setOver(true);
 	}
 
 	

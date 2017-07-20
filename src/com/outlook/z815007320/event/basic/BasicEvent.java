@@ -20,6 +20,7 @@ public class BasicEvent extends PluginRS implements Listener{
 	@EventHandler
 	public void join(PlayerJoinEvent e){
 		Player p=e.getPlayer();
+		if(p.hasMetadata("NPC"))return;
 		if(!rs.worldExists(p.getWorld().getName()))return;
 		File data=new File(rs.getDataFolder()+File.separator+"PlayerDatas"+File.separator+p.getUniqueId().toString()+".yml");
 		if(!data.exists()){//检查玩家文件是否存在,如果不存在则初始化一个文件
@@ -33,6 +34,7 @@ public class BasicEvent extends PluginRS implements Listener{
 	
 	@EventHandler
 	public void quit(PlayerQuitEvent e){
+		if(e.getPlayer().hasMetadata("NPC"))return;
 		if(rs.getPlayerData(e.getPlayer())==null)return;
 		rs.deletePlayer(e.getPlayer());
 		return;
@@ -40,6 +42,7 @@ public class BasicEvent extends PluginRS implements Listener{
 	
 	@EventHandler
 	public void teleport(PlayerTeleportEvent e){
+		if(e.getPlayer().hasMetadata("NPC"))return;
 		if(!rs.worldExists(e.getTo().getWorld().getName())){
 			if(rs.getPlayerData(e.getPlayer())==null)return;
 			rs.deletePlayer(e.getPlayer());

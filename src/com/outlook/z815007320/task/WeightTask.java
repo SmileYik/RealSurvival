@@ -15,12 +15,10 @@ public class WeightTask extends PluginRS implements Runnable{
 
 	@Override
 	public void run() {
-		if(!rs.isOver())return;
-		rs.setOver(false);
 		Set<UUID> players=rs.getPlayerDatas().keySet();
 		for(UUID ps:players){
 			Player p = rs.getServer().getPlayer(ps);
-			if(p.isDead())continue;
+			if(p==null||p.isDead())continue;
 		      if ((p.hasPermission("RealSurvival.unlimited")||p.hasPermission("RealSurvival.Admin"))&&!TestCMD.contains(p)) 
 		    	  continue;
 		      Inventory inv=p.getInventory();
@@ -34,7 +32,7 @@ public class WeightTask extends PluginRS implements Runnable{
 		    		  weight+=rs.getWeight(is.getType().name())*is.getAmount();
 		    		  continue;
 		    	  }
-		    	  double temp=Utils.getLore(rs.getLoreTabel("weight"), is.getItemMeta().getLore())*is.getAmount();
+		    	  double temp=Utils.getLore(rs.getLoreTabel("Weight"), is.getItemMeta().getLore())*is.getAmount();
 		    	  if(temp>0) weight+=temp;
 		      }
 
@@ -46,13 +44,12 @@ public class WeightTask extends PluginRS implements Runnable{
 		    		  weight+=rs.getWeight(is.getType().name())*is.getAmount();
 		    		  continue;
 		    	  }
-		    	  double temp=Utils.getLore(rs.getLoreTabel("weight"), is.getItemMeta().getLore())*is.getAmount();
+		    	  double temp=Utils.getLore(rs.getLoreTabel("Weight"), is.getItemMeta().getLore())*is.getAmount();
 		    	  if(temp>0) weight+=temp;
 		      }
 		      
 		      rs.getPlayerData(p).setWeight(weight);
 		}
-		rs.setOver(true);
 	}
 	
 }

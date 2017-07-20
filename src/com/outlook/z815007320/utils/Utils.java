@@ -94,14 +94,14 @@ public class Utils extends PluginRS{
 				line=line.replaceAll("¡æ", "");
 				line=line.replaceAll("s", "");
 				line=line.replaceAll("S", "");
-				if(line.contains("-"))
+				if(line.contains("--"))
 					return Double.parseDouble(line.split("-")[0])+Math.random()*(
 							Double.parseDouble(line.split("-")[1])-Double.parseDouble(line.split("-")[0]));
 				else
 					return Double.parseDouble(line);
 			}
 		}
-		return -1;
+		return -1.1111111;
 	}
 	
 	public static String getLoreString(String tabel,List<String> lore){

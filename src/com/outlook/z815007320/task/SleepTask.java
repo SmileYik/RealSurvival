@@ -13,12 +13,10 @@ public class SleepTask extends PluginRS implements Runnable{
 
 	@Override
 	public void run() {
-		if(!rs.isOver())return;
-		rs.setOver(false);
 		Set<UUID> players=rs.getPlayerDatas().keySet();
 		for(UUID ps:players){
 			Player p = rs.getServer().getPlayer(ps);
-			if(p.isDead())continue;
+			if(p==null||p.isDead())continue;
 	      if ((p.hasPermission("RealSurvival.unlimited")||p.hasPermission("RealSurvival.Admin"))&&!TestCMD.contains(p)) 
 	    	  continue;
 	      PlayerData pd=rs.getPlayerData(p);
@@ -40,7 +38,6 @@ public class SleepTask extends PluginRS implements Runnable{
     		  continue;
 	      }
 	    }
-		rs.setOver(true);
 	}
 	
 }

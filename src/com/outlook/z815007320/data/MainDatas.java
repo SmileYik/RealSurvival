@@ -24,7 +24,6 @@ public class MainDatas extends JavaPlugin{
 	
 	protected double weight;
 	protected double heatSourceFix;
-	protected boolean isOver=true;
 	protected String defSick;
 	protected TitleManagerAPI tmapi;
 	protected List<String> worlds=new LinkedList<>();
@@ -109,14 +108,6 @@ public class MainDatas extends JavaPlugin{
 
 	public double getPhysical_strength_min() {
 		return psDatas[1];
-	}
-
-	public boolean isOver() {
-		return isOver;
-	}
-
-	public void setOver(boolean isOver) {
-		this.isOver = isOver;
 	}
 
 	public String[] getWorkbenchItems() {

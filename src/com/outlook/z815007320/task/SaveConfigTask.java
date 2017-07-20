@@ -9,12 +9,9 @@ public class SaveConfigTask extends PluginRS implements Runnable{
 
 	@Override
 	public void run() {
-		if(!rs.isOver())return;
-		rs.setOver(false);
 		Set<UUID> players=rs.getPlayerDatas().keySet();
 		for(UUID ps:players)
 	      rs.getPlayerData( rs.getServer().getPlayer(ps)).savaData();
-		rs.setOver(true);
 		Utils.saveWorkbench();
 	}
 	

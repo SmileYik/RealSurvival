@@ -21,89 +21,15 @@ import com.outlook.z815007320.data.PluginRS;
 import com.outlook.z815007320.utils.Utils;
 
 public class UseItemEvent extends PluginRS implements Listener {
-	private double sleep;
-	private double thirst;
-	private double medicine;
-	private int medicineDuration;
-	private String sickKind;
-	private String sick;
-	private double sickness;
-	private double tem;
 	
 	@EventHandler
 	public void playerEatFood(PlayerItemConsumeEvent e){
 		if(rs.getPlayerData(e.getPlayer())==null)return;
 		ItemStack item=e.getItem();
 		ItemMeta itemM=item.getItemMeta();
-		if(itemM!=null&&itemM.getLore()!=null){
-			//饮水条目
-			/*
-			if(rs.getConfig().getBoolean("Switch.Thirst")){
-				if(itemM.getLore().equals(Items.getFreshWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.25*rs.getThirstMax());
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWater");
-					return;
-				}else if(itemM.getLore().equals(Items.getHotWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.25*rs.getThirstMax());
-					rs.getPlayerData(e.getPlayer()).changeTemperature(Math.random()*0.1);
-					if(rs.getPlayerData(e.getPlayer()).isSick())
-						rs.getPlayerData(e.getPlayer()).changeAllRecovery(Math.random()*5);
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWater");
-					return;
-				}else if(itemM.getLore().equals(Items.getIceWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.25*rs.getThirstMax());
-					rs.getPlayerData(e.getPlayer()).changeTemperature(Math.random()*(-0.1));
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWater");
-					return;
-				}else if(itemM.getLore().equals(Items.getLakeWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.25*rs.getThirstMax());
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWater");
-					if(Math.random()*100<20){
-						rs.getPlayerData(e.getPlayer()).addSickKind(rs.getDefSick());
-						if(!rs.getPlayerData(e.getPlayer()).isSick())
-							Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSick");
-						rs.getPlayerData(e.getPlayer()).setSick(true);
-					}
-					return;
-				}else if(itemM.getLore().equals(Items.getSeaWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(-Math.random()*0.1*rs.getThirstMax());
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSub");
-					if(Math.random()*100<40){
-						rs.getPlayerData(e.getPlayer()).addSickKind(rs.getDefSick());
-						if(!rs.getPlayerData(e.getPlayer()).isSick())
-							Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSick");
-						rs.getPlayerData(e.getPlayer()).setSick(true);
-					}
-					return;
-				}else if(itemM.getLore().equals(Items.getSwamplandWater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.1*rs.getThirstMax());
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSub");
-					if(Math.random()*100<60){
-						rs.getPlayerData(e.getPlayer()).addSickKind(rs.getDefSick());
-						if(!rs.getPlayerData(e.getPlayer()).isSick())
-							Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSick");
-						rs.getPlayerData(e.getPlayer()).setSick(true);
-					}
-					if(rs.getPlayerData(e.getPlayer()).isSick())
-						rs.getMessage("DrinkWaterSick",rs.getPlayerData(e.getPlayer()));
-					else 
-						rs.getMessage("DrinkWater",rs.getPlayerData(e.getPlayer()));
-					return;
-				}else if(itemM.getLore().equals(Items.getRainwater().getItemMeta().getLore())){
-					rs.getPlayerData(e.getPlayer()).changeThirst(Math.random()*0.25*rs.getThirstMax());
-					Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWater");
-					if(Math.random()*100<10){
-						rs.getPlayerData(e.getPlayer()).addSickKind(rs.getDefSick());
-						if(!rs.getPlayerData(e.getPlayer()).isSick())
-							Utils.sendMsgToPlayer(rs.getPlayerData(e.getPlayer()),"DrinkWaterSick");
-						rs.getPlayerData(e.getPlayer()).setSick(true);
-					}
-					return;
-				}
-			}*/
+		if(itemM!=null&&itemM.getLore()!=null)
 			getLoresData(e.getPlayer(), itemM.getLore());
-			useItem(rs.getPlayerData(e.getPlayer()),e.getPlayer());
-		}
+		
 		if(rs.sickFoodContains(item.getType().name())){
 			for(Object[] obj:rs.getFoodSick(item.getType().name())){
 				PlayerData pd=rs.getPlayerData(e.getPlayer());
@@ -154,6 +80,8 @@ public class UseItemEvent extends PluginRS implements Listener {
 			subItemInHand(e);
 			return;
 		}
+		if(im.getDisplayName().contains(""))
+		
 		//内置感冒药判断
 		if(im.getLore().equals(Items.getMedicine01().getItemMeta().getLore())){
 			PlayerData pd=rs.getPlayerData(e.getPlayer());
@@ -193,8 +121,7 @@ public class UseItemEvent extends PluginRS implements Listener {
 			subItemInHand(e);
 			return;
 		}
-		getLoresData(e.getPlayer(), im.getLore());
-		if(useItem(rs.getPlayerData(e.getPlayer()),e.getPlayer())){
+		if(getLoresData(e.getPlayer(), im.getLore())){
 			subItemInHand(e);
 			e.setCancelled(true);
 			return;
@@ -208,21 +135,21 @@ public class UseItemEvent extends PluginRS implements Listener {
 		e.getPlayer().getInventory().setItemInMainHand(is);
 	}
 	
-	private void getLoresData(Player p,List<String> lore){
-		sleep=Utils.getLore(rs.getLoreTabel("Sleep"), lore);
-		thirst=Utils.getLore(rs.getLoreTabel("Thirst"), lore);
-		medicine=Utils.getLore(rs.getLoreTabel("Medicine"),  lore);
-		medicineDuration=(int)Utils.getLore(rs.getLoreTabel("MedicineDuration"),  lore);
-		sickKind=Utils.getLoreString(rs.getLoreTabel("SickKind"),  lore);
-		sick=Utils.getLoreString(rs.getLoreTabel("Sick"),  lore);
-		sickness=Utils.getLore(rs.getLoreTabel("Sickness"),  lore);
-		tem=Utils.getLore(rs.getLoreTabel("tem"),  lore);
-	}
-	
-	private boolean useItem(PlayerData pd,Player p){
+	private boolean getLoresData(Player p,List<String> lore){
+		double sleep=Utils.getLore(rs.getLoreTabel("Sleep"), lore);
+		double thirst=Utils.getLore(rs.getLoreTabel("Thirst"), lore);
+		double medicine=Utils.getLore(rs.getLoreTabel("Medicine"),  lore);
+		int medicineDuration=(int)Utils.getLore(rs.getLoreTabel("MedicineDuration"),  lore);
+		String sickKind=Utils.getLoreString(rs.getLoreTabel("SickKind"),  lore);
+		String sick=Utils.getLoreString(rs.getLoreTabel("Sick"),  lore);
+		double sickness=Utils.getLore(rs.getLoreTabel("Sickness"),  lore);
+		double tem=Utils.getLore(rs.getLoreTabel("Tem"),  lore);
+		double ps=Utils.getLore("PhysicalStrength", lore);
+		
+		PlayerData pd=rs.getPlayerData(p);
 		boolean isUse=false;
 		//设定病种
-		if(rs.getConfig().getBoolean("Switch.Sick")&&sickness!=-1){
+		if(rs.getConfig().getBoolean("Switch.Sick")&&sickness!=-1.1111111){
 			if(Math.random()*100<sickness){
 				pd.setSick(true);
 				if(sickKind!=null)
@@ -233,50 +160,53 @@ public class UseItemEvent extends PluginRS implements Listener {
 			isUse=true;
 		}
 		//睡觉
-		if(rs.getConfig().getBoolean("Switch.Sleep")&&sleep!=-1){
+		if(rs.getConfig().getBoolean("Switch.Sleep")&&sleep!=-1.1111111){
 			isUse=true;
 			pd.changeSleep(sleep/100*rs.getSleepMax());
 		}
 		//口渴
-		if(rs.getConfig().getBoolean("Switch.Thirst")&&thirst!=-1){
+		if(rs.getConfig().getBoolean("Switch.Thirst")&&thirst!=-1.1111111){
 			isUse=true;
 			pd.changeThirst(thirst/100*rs.getThirstMax());
 		}
 		//生病
-		if(rs.getConfig().getBoolean("Switch.Sick")&&medicine!=-1){
+		if(rs.getConfig().getBoolean("Switch.Sick")&&medicine!=-1.1111111){
 			isUse=true;
 			if(pd.isSick()&&sick==null){
 				pd.setAllTEffect(medicine);
 				pd.setAllMedication(true);
-				if(medicineDuration!=-1)
+				if(medicineDuration!=-1.1111111)
 					pd.setAllDuration(medicineDuration);
 				else
 					pd.setAllDuration(1);
-			}else if(!pd.isSick() || !recoveryDifferentSick(pd))
-				ateWrongMedicine(p,pd);
+			}else{
+				boolean isSet=false;
+				List<String> list=Arrays.asList(sick.replaceAll(" ", "").split(","));
+				for(String temp:pd.getSickKind())
+					if(list.contains(temp)){
+						isSet=true;
+						pd.settEffect(medicine,temp);
+						pd.setMedication(true,temp);
+						if(medicineDuration!=-1.1111111)
+							pd.setDuration(medicineDuration,temp);
+						else
+							pd.setDuration(1,temp);
+					}
+				if(!pd.isSick() || !isSet)
+					ateWrongMedicine(p,pd);
+			}
 		}
 		//温度
-		if(rs.getConfig().getBoolean("Switch.Temperature")&&tem!=-1){
+		if(rs.getConfig().getBoolean("Switch.Temperature")&&tem!=-1.1111111){
 			isUse=true;
 			pd.changeTemperature(tem);
 		}
+		//体力
+		if(rs.getConfig().getBoolean("Switch.PhysicalStrength")&&tem!=-1.1111111){
+			isUse=true;
+			pd.changePS(ps);
+		}
 		return isUse;
-	}
-	
-	private boolean recoveryDifferentSick(PlayerData pd){
-		boolean isSet=false;
-		List<String> list=Arrays.asList(sick.replaceAll(" ", "").split(","));
-		for(String temp:pd.getSickKind())
-			if(list.contains(temp)){
-				isSet=true;
-				pd.settEffect(medicine,temp);
-				pd.setMedication(true,temp);
-				if(medicineDuration!=-1)
-					pd.setDuration(medicineDuration,temp);
-				else
-					pd.setDuration(1,temp);
-			}
-		return isSet;
 	}
 	
 	private void ateWrongMedicine(Player p,PlayerData pd){

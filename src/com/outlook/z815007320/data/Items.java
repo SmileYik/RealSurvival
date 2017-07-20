@@ -29,7 +29,7 @@ public class Items extends PluginRS{
 		l.add("§2§l"+rs.getLoreTabel("SickKind")+": §c§l"+rs.defSick.split(";")[(int)Utils.random(0, rs.defSick.split(";").length)]);
 		l.add("§2§l"+rs.getLoreTabel("Sickness")+": §c§l"+Utils.random(20, 30)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2海水,很咸...");
 		l.add("§4不仅不能解渴,§l还有几率生病!");
@@ -54,7 +54,7 @@ public class Items extends PluginRS{
 		l.add("§2§l"+rs.getLoreTabel("SickKind")+": §c§l"+rs.defSick.split(";")[(int)Utils.random(0, rs.defSick.split(";").length)]);
 		l.add("§2§l"+rs.getLoreTabel("Sickness")+": §c§l"+Utils.random(5, 15)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§4§l直接喝有几率生病!");
 		l.add("§b需要用§e§l净水装置§b来净化后才能饮用!");
@@ -75,9 +75,9 @@ public class Items extends PluginRS{
 		im.setDisplayName("§d§l开水");
 		List<String> l=new LinkedList<String>();
 		l.add("§a§l"+rs.getLoreTabel("Thirst")+": §b§l"+Utils.random(10, 25)+"%");
-		l.add("§c§l"+rs.getLoreTabel("tem")+": §b§l"+Utils.random(0.1, 1.5));
+		l.add("§c§l"+rs.getLoreTabel("Tem")+": §b§l"+Utils.random(0.1, 1.5));
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2可以直接饮用");
 		l.add("§a§l可以缓慢治疗疾病!");
@@ -98,9 +98,9 @@ public class Items extends PluginRS{
 		im.setDisplayName("§3§l冰水");
 		List<String> l=new LinkedList<String>();
 		l.add("§a§l"+rs.getLoreTabel("Thirst")+": §b§l"+Utils.random(10, 25)+"%");
-		l.add("§3§l"+rs.getLoreTabel("tem")+": §c§l-"+Utils.random(0.1, 1.5)+"%");
+		l.add("§3§l"+rs.getLoreTabel("Tem")+": §c§l-"+Utils.random(0.1, 1.5)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2可以直接饮用");
 		l.add("§b§l可以给身体降温!");
@@ -120,7 +120,7 @@ public class Items extends PluginRS{
 		List<String> l=new LinkedList<String>();
 		l.add("§a§l"+rs.getLoreTabel("Thirst")+": §b§l"+Utils.random(10, 25)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2可以直接饮用");
 		im.setLore(l);
@@ -143,7 +143,7 @@ public class Items extends PluginRS{
 		l.add("§2§l"+rs.getLoreTabel("SickKind")+": §c§l"+rs.defSick.split(";")[(int)Utils.random(0, rs.defSick.split(";").length)]);
 		l.add("§2§l"+rs.getLoreTabel("Sickness")+": §c§l"+Utils.random(30, 50)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2虽然可以解渴,不过...");
 		l.add("§e有极大几率生病....");
@@ -167,7 +167,7 @@ public class Items extends PluginRS{
 		l.add("§2§l"+rs.getLoreTabel("SickKind")+": §c§l"+rs.defSick.split(";")[(int)Utils.random(0, rs.defSick.split(";").length)]);
 		l.add("§2§l"+rs.getLoreTabel("Sickness")+": §c§l"+Utils.random(2, 10)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§2雨水相对来说还是比较干净的");
 		l.add("§b但是还是有较小几率得病");
@@ -222,7 +222,7 @@ public class Items extends PluginRS{
 		l.add("§7§l"+rs.getLoreTabel("SickKind")+": "+rs.defSick.split(";")[(int)Utils.random(0, rs.defSick.split(";").length)]);
 		l.add("§7§l"+rs.getLoreTabel("Sickness")+": "+Utils.random(99,101)+"%");
 		l.add("");
-		l.add("§7§l"+rs.getLoreTabel("weight")+": 1");
+		l.add("§7§l"+rs.getLoreTabel("Weight")+": 1");
 		l.add("");
 		l.add("§c§l烧东西失败后的作品");
 		l.add("§c§l先不说口感怎么样,但是你敢吃嘛?");
