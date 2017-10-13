@@ -1,0 +1,178 @@
+language: zh_CN
+#Enable worlds
+worlds:
+  - world
+  - world_nether
+  - world_the_end
+#Create a random data when a new player join server
+create-random-data:
+  enable: false
+  min: 0
+  max: 10
+#Set a player's state when the player was death.
+#"sleep" is set the death player's sleep number of the max sleep's 20%
+#"thirst" and "energy" as same as "sleep"
+#"temperature" is set the death player's temperature of a number that you want
+#If "illness"  was true ,It will remove the player's illness.
+death:
+  enable: true
+  sleep: 20
+  thirst: 20
+  energy: 20
+  temperature: 37
+  illness: true
+#"max" is the state's max number
+state:
+  sleep:
+    enable: true
+    max: 100
+    mid: 0.3
+    min: 0.15
+    sub: 0.05
+    add: 5
+  thirst:
+    enable: true
+    max: 100
+    mid: 0.5
+    min: 0.2
+    sub: 0.03
+  energy:
+    enable: true
+    max: 100
+    min: 0.2
+    add: 2
+    sneaking: 1
+    sprinting: 2
+  fracture:
+    enable: true
+    slight:
+      high: 3
+      chance: 20
+    severe:
+      high: 6
+      chance: 80
+    damage: 2
+    slight-chance: 10
+    severe-chance: 30
+  illness:
+    enable: true
+    default-illness: 
+      - cold
+      - fever
+  weight:
+    enable: true
+    max: 100
+    item:
+      - TORCH:0.1
+  temperature:
+    enable: true
+    long: 5
+    width: 5
+    high: 5
+    heat-source-fix: 100.0
+    distance-effect: 0.25
+    heat-source:
+      - FIRE:0.3
+      - TORCH:0.1
+      - FLOWING_LAVA:0.5
+      - STATIONARY_LAVA:0.5
+      - LAVA_BUCKET:0.5
+      - WATER:-0.3
+      - FLOWING_WATER:-0.3
+      - PACKED_ICE:-0.3
+      - ICE:-0.3
+      - FROSTED_ICE:-0.3
+      - SNOW_LAYER:-0.2
+      - SNOW:-0.5
+
+label:
+  split: "=>"
+  remove:
+    - "秒"
+    - "℃"
+  labels:
+    - "Thirst:Thirst"
+    - "Sleep:Sleep"
+    - "Energy:Energy"
+    - "Weight:Weight"
+    - "Illness:IllnessName"
+    - "Treatable:Treatable"
+    - "DrugEffect:Drug Effect"
+    - "Temperature:Temperature"
+    - "IllnessProbability:Illness Probability"
+    - "MedicineDuration:Medicine Duration"
+      
+workbenchs:
+  workbenchs-type:
+    - "workbench:WORKBENCH"
+    - "furnace:FURNACE"
+    - "steamer:FURNACE"
+  workbenchs:
+    workbench:
+      title: Workbench
+      main-block: WORKBENCH
+      left-block: BOOKSHELF
+      right--block: WORKBENCH
+      up-block: FURNACE
+      down-block: null
+      front-block: null
+      behind-block: null
+    furnace:
+      title: Furnace
+      main-block: FURNACE
+      left-block: BOOKSHELF
+      right--block: WORKBENCH
+      up-block: WORKBENCH
+      down-block: null
+      front-block: null
+      behind-block: null
+    steamer:
+      title: Furnace
+      main-block: FURNACE
+      left-block: BOOKSHELF
+      right--block: WORKBENCH
+      up-block: WORKBENCH
+      down-block: null
+      front-block: null
+      behind-block: null
+
+effect:
+  food-effects:
+    foods:
+      - "RAW_CHICKEN"
+    effects:
+      RAW_CHICKEN:
+        sleep: 5%
+        thirst: 5%
+        energy: 10
+        temperature: 0
+        has-illness: true
+        illnesses:
+          - "Cold:10%"
+          - "Fever:10%"
+  mob-effects:
+    - ZOMBIE:感冒,10%;生病,20%;骨折,5%
+    - WITHER_SKELETON:感冒,20%
+    - CREEPER:感冒,10%
+    - SKELETON:感冒,20%
+    - SPIDER:感冒,10%
+    - SLIME:感冒,20%
+    - ZOMBIE_PIGMAN:感冒,10%
+    - CAVE_SPIDER:感冒,20%
+    - WITCH:感冒,10%
+    - ZOMBIE_VILLAGER:感冒,20%
+    - ENDERMAN:感冒,10%
+  illness-effects:
+    - ThirstMin:WEAKNESS,130,3;WITHER,30,3
+    - ThirstMax:SATURATION,130,1
+    - EnergyMin:SLOW,130,1;WEAKNESS,130,3
+    - SleepMin:SLOW,130,1;WEAKNESS,130,3
+    - SleepMax:SPEED,140,1;DAMAGE_RESISTANCE,130,1
+    - Weight:SLOW,300,3
+    - Fever:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - AfterAteWrongMedicine:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - 生病:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - 骨折:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
+    - 严重骨折:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - 感冒:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

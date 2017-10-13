@@ -1,0 +1,99 @@
+language: zh_CN
+prefix: "§9[RealSurvival]§f"
+
+player-data: 
+  - "§9===============%Player%==============="
+  - "    §b身体状况: %body%"
+  - "    §b睡 眠 度: %sleep%"
+  - "    §b滋 润 度: %thirst%"
+  - "    §b体    温: %temperature%"
+  - "    §b体    力: %energy%"
+  - "    §b负    重: %weight%"
+  - "§9====================================="
+  - "§9===============生病列表==============="
+  - "§b&illnesses&"
+  - "§9====================================="
+
+list:
+  weight-over:
+    - "我想,这超出了我的负重范围"
+    - "背包,好重..."
+    - "我要被压得喘不过气了."
+  efficacy-over:
+    - "治疗%sick%的药的药效过了..."
+    - "快去吃药好吧?"
+  recovery-sick:
+    - "%sick%成功被治愈了"
+    - "你不会再受到%sick%的困扰了"
+  
+line:
+
+    body1: "§e生病"
+    body2: "§2正常"
+
+    yes: "是"
+    no: "否"
+
+    is-take-medicine: "是否服药: %bool%"
+    duratio: "药效时间: %time% 秒"
+    medicine-efficacy: "药物效果: 每次恢复 %me% %"
+    recovery: "恢复程度: %recovery%%"
+
+    Severe: "严重骨折"
+    Slight: "骨折"
+
+    RainwaterCollectorTitle: "§2§l雨水收集器"
+    PurificationDeviceTitle: "§3§l净化器"
+    PurificationDeviceOK: "§3§l净化"
+
+    WorkbenchIsUsing: "§c这个工作台正在被%player%使用中!"
+
+    RainwaterCollectorError1: "§c这个雨水收集器不属于你!"
+
+    Exception: "§4制作的时候出了一个错误!"
+    CreateRecipeFailed: "§4创建配方失败!"
+    CreateRecipeSucceed: "§b创建配方成功!"
+
+    Seawater: "海水"
+    IceSeawater: "冰海水"
+    SwampWater: "沼泽水"
+    LakeWater: "湖水"
+    IceLakeWater: "冰湖水"
+    HotLakeWater: "热湖水"
+    Freshwater: "淡水"
+    HotWater: "热水"
+    IceWater: "冰水"
+    Rainwater: "雨水"
+    
+    NoRainwater: "这个收集器里没有足够的雨水..."
+#Sleep Messages
+    very-tired: "§2你感觉非常累...;§c你需要立马睡觉!"
+    tired: "§2你感觉有点累了."
+    spirit: "§b§l你感觉非常有精神!"
+#Thirst Messages
+    thirst: "§3§l你开始感觉有点口渴了..."
+    dehydration: "§c§l你快要渴死了;§e要晒干了!!!"
+    full-of-moisture: "§b你感觉非常滋润!"
+#Temperature Messages
+    fever: "§4哦!发烧了!;§3§l你需要降温!"
+    cold: "§3§l你感觉太冷了...;§e不行!你需要烤火."
+#Energy Messages
+    no-energy: "§c你跑不动了!"
+    energt-fullly: "§c你又可以开始奔跑了"
+    #Furnace GUI
+    FurnaceStart: "§b§l==>§c§l开始锻造§b§l<=="
+    FurnaceFailed: "§4制作过程中,失败了.."
+    FurnaceWatcher1: "§e需要大于: %minTemperature%℃"
+    FurnaceWatcher2: "§e需要小于: %minTemperature%℃"
+    FurnaceWatcher3: "§b需要时间: %time% 秒"
+    FurnaceFailedMsg: "§4制作过程中,失败了..你什么都没有得到,,,"
+    FurnaceWorkProgress+: "§e温度: §e§l%temperature% §e℃ | 需要大于: §e§l%minTemperature%℃ §e才可以进行锻造!"
+    FurnaceWorkProgress-: "§e温度: §e§l%temperature% §e℃ | 需要小于: §e§l%minTemperature%℃ §e才可以进行锻造!"
+    FurnaceTimeProgress: "§b制造进度: %timeProgress%% | 剩余%time%秒制造完成"
+    FuranceSaveProgress: "§7离烧坏时间还剩%time%秒"
+
+    #Workbench GUI
+    WorkbenchStart: "§b§l==>§c§l开始制造§b§l<=="
+    WorkbenchUndone: "§4当前物品未制作完成!"
+    WorkbenchProgress1: "§b已完成: %pass%%"
+    WorkbenchProgress2: "§b物品已经制作完成!"
