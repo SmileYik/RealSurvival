@@ -4,7 +4,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.WorkbenchShape;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 
 public class Timer {
 	protected String worldName;
@@ -97,5 +99,9 @@ public class Timer {
 
 	public String getWorkbenchName() {
 		return workbenchName;
+	}
+	
+	public WorkbenchShape getWorkbenchShape(){
+		return Data.workbenchs.get(workbenchName);
 	}
 }

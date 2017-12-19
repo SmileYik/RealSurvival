@@ -3,8 +3,8 @@ package com.outlook.schooluniformsama.data.timer;
 import org.bukkit.Bukkit;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
-import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.task.TemperatureTask;
 
 public class FurnaceTimer extends Timer{

@@ -3,9 +3,9 @@ package com.outlook.schooluniformsama.data.timer;
 import org.bukkit.Bukkit;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.recipe.Recipe;
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
-import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipes.Recipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 
 public class WorkbenchTimer extends Timer{
 	

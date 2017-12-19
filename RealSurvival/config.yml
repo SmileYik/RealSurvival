@@ -101,6 +101,7 @@ label:
     - "Temperature:Temperature"
     - "IllnessProbability:Illness Probability"
     - "MedicineDuration:Medicine Duration"
+    - "Hungery:Hungry"
       
 workbenchs:
   workbenchs-type:
@@ -112,7 +113,7 @@ workbenchs:
       title: Workbench
       main-block: WORKBENCH
       left-block: BOOKSHELF
-      right--block: WORKBENCH
+      right-block: WORKBENCH
       up-block: FURNACE
       down-block: null
       front-block: null
@@ -121,16 +122,16 @@ workbenchs:
       title: Furnace
       main-block: FURNACE
       left-block: BOOKSHELF
-      right--block: WORKBENCH
+      right-block: WORKBENCH
       up-block: WORKBENCH
       down-block: null
       front-block: null
       behind-block: null
     steamer:
-      title: Furnace
+      title: Steamer
       main-block: FURNACE
       left-block: BOOKSHELF
-      right--block: WORKBENCH
+      right-block: WORKBENCH
       up-block: WORKBENCH
       down-block: null
       front-block: null

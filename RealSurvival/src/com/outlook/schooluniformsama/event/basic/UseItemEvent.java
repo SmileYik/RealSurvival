@@ -16,11 +16,11 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.outlook.schooluniformsama.data.ItemData;
-import com.outlook.schooluniformsama.data.ItemLoreData;
-import com.outlook.schooluniformsama.data.Items;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
+import com.outlook.schooluniformsama.data.item.ItemData;
+import com.outlook.schooluniformsama.data.item.ItemLoreData;
+import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
 public class UseItemEvent implements Listener {
@@ -85,6 +85,10 @@ public class UseItemEvent implements Listener {
 		}
 		if(id.getEnergy()!=-1.1111111){
 			pd.getEnergy().change(id.getEnergy());
+			isUsed=true;
+		}
+		if(id.getHungery()!=-1.1111111){
+			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+id.getHungery());
 			isUsed=true;
 		}
 		return isUsed;

@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.recipe;
+package com.outlook.schooluniformsama.data.recipes;
 
 public enum WorkbenchType {
 	WORKBENCH("WORKBENCH"),FURNACE("FURNACE"),RAINWATER_COLLECTOR("RAINWATER_COLLECTOR");

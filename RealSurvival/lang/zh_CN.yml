@@ -97,3 +97,13 @@ line:
     WorkbenchUndone: "§4当前物品未制作完成!"
     WorkbenchProgress1: "§b已完成: %pass%%"
     WorkbenchProgress2: "§b物品已经制作完成!"
+    
+    #Commands
+    Help1: "以下是本插件的信息: "
+    Help2: "以下是关于%type%的指令: "
+    NoPermissions: "抱歉,你权利这样做."
+    CommandNotFind: "抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"
+    IsNotPlayer: "抱歉,这个指令只能是玩家使用!"
+    NotDouble: "第%index%个参数应该为小数哦~"
+    NotInteger: "第%index%个参数应该为整数哦~"
+    RecipeExists: "%name%这个配方已经存在了哦,不需要重新创建了!"
