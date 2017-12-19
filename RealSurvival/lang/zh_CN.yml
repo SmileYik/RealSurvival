@@ -107,3 +107,4 @@ line:
     NotDouble: "第%index%个参数应该为小数哦~"
     NotInteger: "第%index%个参数应该为整数哦~"
     RecipeExists: "%name%这个配方已经存在了哦,不需要重新创建了!"
+    CreateFuranceRecipe: "创建一个新的熔炉配方."
