@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data;
+package com.outlook.schooluniformsama.data.item;
 
 public class ItemData {
 	private double weight=0;

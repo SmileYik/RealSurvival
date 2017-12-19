@@ -12,8 +12,8 @@ import org.bukkit.event.player.*;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
-import com.outlook.schooluniformsama.data.Items;
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.item.Items;
 
 public class ThirstEvent implements Listener{
 

@@ -6,7 +6,7 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 
-import com.outlook.schooluniformsama.data.Items;
+import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
 import com.outlook.schooluniformsama.util.Msg;
 

@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data;
+package com.outlook.schooluniformsama.data.item;
 
 import java.io.File;
 
@@ -6,6 +6,8 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.outlook.schooluniformsama.data.Data;
 
 public class Items{
 	public static ItemStack createPItem(short damage,String name){

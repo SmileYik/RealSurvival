@@ -4,8 +4,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.RealSurvival;
-import com.outlook.schooluniformsama.data.ItemLoreData;
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.Msg;
 

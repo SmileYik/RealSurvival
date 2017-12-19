@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.recipe;
+package com.outlook.schooluniformsama.data.recipes;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +11,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import com.outlook.schooluniformsama.data.Items;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.recipe.Recipe;
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
-import com.outlook.schooluniformsama.gui.WorkbenchGUI;
+import com.outlook.schooluniformsama.data.item.Items;
+import com.outlook.schooluniformsama.data.recipes.Recipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.gui.Workbench;
 
 public class WorkbenchRecipe extends Recipe{
 	private HashMap<Character,ItemStack> materials;
@@ -94,7 +94,7 @@ public class WorkbenchRecipe extends Recipe{
 		char charArray[]="ABCDEFGHIJKLMNOP".toCharArray();
 		String s="";
 		HashMap<ItemStack,Character> m=new HashMap<>();
-		ItemStack is=inv.getItem(WorkbenchGUI.materials.get(0));
+		ItemStack is=inv.getItem(Workbench.materials.get(0));
 		if(new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+r.name+".yml").exists())
 			return false;
 		
@@ -103,7 +103,7 @@ public class WorkbenchRecipe extends Recipe{
 			m.put(is,charArray[index]);
 		}
 		
-		for(int i:WorkbenchGUI.materials){
+		for(int i:Workbench.materials){
 			ItemStack temp=inv.getItem(i);
 			if(temp==null){
 				s+=" ";
@@ -130,9 +130,9 @@ public class WorkbenchRecipe extends Recipe{
 		
 		WorkbenchRecipe wr=new WorkbenchRecipe(r.name,r.needTime, 
 				Arrays.asList(s.substring(0,4),s.substring(4, 8),s.substring(8,12),s.substring(12,16)),m2, 
-				new ItemStack[]{inv.getItem(WorkbenchGUI.products.get(0)),inv.getItem(
-						WorkbenchGUI.products.get(1)),inv.getItem(WorkbenchGUI.products.get(2)),
-						inv.getItem(WorkbenchGUI.products.get(3))});
+				new ItemStack[]{inv.getItem(Workbench.products.get(0)),inv.getItem(
+						Workbench.products.get(1)),inv.getItem(Workbench.products.get(2)),
+						inv.getItem(Workbench.products.get(3))});
 		
 		return wr.save();
 		
@@ -143,12 +143,12 @@ public class WorkbenchRecipe extends Recipe{
 		for(String s:shape)
 			for(char c:s.toCharArray()){
 				if(c==' ')
-					if(inv.getItem(WorkbenchGUI.materials.get(index++))==null)
+					if(inv.getItem(Workbench.materials.get(index++))==null)
 						continue;
 					else 
 						return false;
 				else{
-					ItemStack is=inv.getItem(WorkbenchGUI.materials.get(index++));
+					ItemStack is=inv.getItem(Workbench.materials.get(index++));
 					if(is==null)return false;
 					if(is.equals(materials.get(c)))
 						continue;
@@ -167,12 +167,12 @@ public class WorkbenchRecipe extends Recipe{
 					index++;
 					continue;
 				}
-				inv.setItem(WorkbenchGUI.materials.get(index++), materials.get(c));
+				inv.setItem(Workbench.materials.get(index++), materials.get(c));
 			}
 		inv.setItem(16, Items.createPItem((short)0, " "));
 		index=0;
 		while(index!=4)
-			inv.setItem(WorkbenchGUI.products.get(index), product[index++]);
+			inv.setItem(Workbench.products.get(index), product[index++]);
 		return inv;
 	}
 	

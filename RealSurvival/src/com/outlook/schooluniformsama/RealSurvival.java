@@ -2,25 +2,28 @@ package com.outlook.schooluniformsama;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.UUID;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.outlook.schooluniformsama.command.Commands;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.ItemData;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.effect.Effect;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
+import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.event.DamageEvent;
 import com.outlook.schooluniformsama.event.EnergyEvent;
 import com.outlook.schooluniformsama.event.FractureEvent;
@@ -44,6 +47,9 @@ import com.outlook.schooluniformsama.util.Msg;
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 
 public class RealSurvival extends JavaPlugin{
+	
+	private Commands cmds=new Commands();
+	
 	@Override
 	public void onEnable() {
 		firstLoad();
@@ -62,8 +68,75 @@ public class RealSurvival extends JavaPlugin{
 	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		// TODO Auto-generated method stub
-		return super.onCommand(sender, command, label, args);
+		
+		if(label.equalsIgnoreCase("rs") || label.equalsIgnoreCase("RealSurvival")){
+			
+			if(!(sender instanceof Player)){
+				sender.sendMessage(Msg.getMsg("IsNotPlayer", true));
+				return true;
+			}
+			
+			Player p = (Player)sender;
+			if(args.length==2){
+				if(args[0].equalsIgnoreCase("help")){
+					p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
+					for(Method method:Commands.class.getDeclaredMethods()){
+						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
+							continue;
+						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
+						if(!cmd.type().equalsIgnoreCase(args[1]))
+							continue;
+						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+							continue;
+						String arg="";
+						if(cmd.args()!=null||cmd.args().length!=0)
+							for(String temp:cmd.args())
+								arg+=temp+" ";
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',StringUtils.leftPad("", Msg.getPrefix().length(), ' ') +"&c&l/rs &2&l"+cmd.cmd()+
+								 " &2"+arg+"&f-&b&l"+Msg.getMsg(cmd.des(),false)));
+						 
+					}
+					return true;
+				}
+			}else if(args.length==1){
+				if(args[0].equalsIgnoreCase("help")){
+					p.sendMessage(Msg.getMsg("Help1", true));
+					for(Method method:Commands.class.getDeclaredMethods()){
+						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
+							continue;
+						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
+						if(!cmd.type().equalsIgnoreCase("HELP"))
+							continue;
+						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+							continue;
+						String arg="";
+						if(cmd.args()!=null||cmd.args().length!=0)
+							for(String temp:cmd.args())
+								arg+=temp+" ";
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',StringUtils.leftPad("", Msg.getPrefix().length(), ' ') +"&c&l/rs &2&l"+cmd.cmd()+
+								 " &2"+arg+"&f-&b&l"+Msg.getMsg(cmd.des(),false)));
+						 
+					}
+					return true;
+				}
+			}
+			for(Method method:Commands.class.getDeclaredMethods()){
+				if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
+					continue;
+				com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
+				if(!cmd.cmd().equalsIgnoreCase(args[0]))
+                    continue;
+				if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions()))){
+					p.sendMessage(Msg.getMsg("NoPermissions", true));
+					return true;
+				}
+				 try {method.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
+				return true;
+			}
+			p.sendMessage(Msg.getMsg("CommandNotFind", true));
+			return true;
+		}
+		return false;
 	}
 	
 	private void firstLoad(){
@@ -206,7 +279,7 @@ public class RealSurvival extends JavaPlugin{
 		}
 		
 		for(String food:getConfig().getStringList("effect.food-effects.foods")){
-			Data.foodEffect.put(food,new Food(Material.getMaterial(food),
+			Data.foodEffect.put(food,new Food(
 					getConfig().getString("effect.food-effects.effects."+food+".sleep"),
 					getConfig().getString("effect.food-effects.effects."+food+".thirst"),
 					getConfig().getString("effect.food-effects.effects."+food+".energy"),
@@ -221,6 +294,22 @@ public class RealSurvival extends JavaPlugin{
 			for(String effects:effect.split(":")[1].split(";"))
 				l.add(new Effect(effects.split(",")[0], Integer.parseInt(effects.split(",")[1]), Integer.parseInt(effects.split(",")[2])));
 			Data.illnessEffects.put(effect.split(":")[0],l );
+		}
+		
+		
+		File path=new File(this.getDataFolder()+File.separator+"recipe/workbench/");
+		for(File sf:path.listFiles()){
+			if(!sf.isFile())continue;
+			String fileName=sf.getName();
+			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
+				Data.workbenchRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
+		}
+		path=new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"furnace/");
+		for(File sf:path.listFiles()){
+			if(!sf.isFile())continue;
+			String fileName=sf.getName();
+			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
+				Data.furnaceRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
 		}
 	}
 	
@@ -237,9 +326,9 @@ public class RealSurvival extends JavaPlugin{
 	//Register Listeners
 	private void registerListeners(){
 		getServer().getPluginManager().registerEvents(new BasicEvent(), this);
-		//getServer().getPluginManager().registerEvents(new CraftItemEvent(), this);
+		getServer().getPluginManager().registerEvents(new CraftItemEvent(), this);
 		getServer().getPluginManager().registerEvents(new UseItemEvent(), this);
-		//getServer().getPluginManager().registerEvents(new CreateWorkbenchEvent(), this);
+		getServer().getPluginManager().registerEvents(new CreateWorkbenchEvent(), this);
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EffectTask(this), 20L, 20L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorkbenchTask(), 20L, 20L);

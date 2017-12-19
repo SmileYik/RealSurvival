@@ -1,6 +1,6 @@
 package com.outlook.schooluniformsama.data.timer;
 
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 
 public class RainwaterCollectorTimer extends Timer{
 	public RainwaterCollectorTimer(String playerName, String worldName, int x, int y, int z) {

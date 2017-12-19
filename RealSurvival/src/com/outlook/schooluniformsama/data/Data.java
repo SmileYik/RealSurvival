@@ -6,6 +6,7 @@ import java.util.UUID;
 import com.outlook.schooluniformsama.data.effect.Effect;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
+import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.timer.Timer;
 import com.outlook.schooluniformsama.util.ArrayList;
@@ -77,5 +78,7 @@ public class Data {
 	
 	public static HashMap<UUID, PlayerData> playerData= new HashMap<>();
 	public static HashMap<String, Timer> timer = new HashMap<>();
+	public static ArrayList<String>workbenchRecipe=new ArrayList<>();
+	public static ArrayList<String>furnaceRecipe=new ArrayList<>();
 	public static  TitleManagerAPI tmapi;
 }

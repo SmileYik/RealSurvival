@@ -1,9 +1,10 @@
-package com.outlook.schooluniformsama.data;
+package com.outlook.schooluniformsama.data.item;
 
 import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.util.Util;
 
 public class ItemLoreData {
@@ -17,9 +18,11 @@ public class ItemLoreData {
 	private double drugEffect;
 	private double medicineDuration;
 	private double temperature;
+	private int hungery;
+	
 	private ItemLoreData(double thirst, double sleep, double energy, double weight, String[] illnessNames,
 			double illnessProbability, String[] treatable, double drugEffect, double medicineDuration,
-			double temperature) {
+			double temperature,int hungery) {
 		super();
 		this.thirst = thirst;
 		this.sleep = sleep;
@@ -31,6 +34,7 @@ public class ItemLoreData {
 		this.drugEffect = drugEffect;
 		this.medicineDuration = medicineDuration;
 		this.temperature = temperature;
+		this.hungery=hungery;
 	}
 	
 	public static ItemLoreData getItemLoreData(ItemStack is){
@@ -38,7 +42,7 @@ public class ItemLoreData {
 		List<String> lore=is.clone().getItemMeta().getLore();
 		return new ItemLoreData(getLore("Thirst", lore, false), getLore("Sleep", lore, false), getLore("Energy", lore, false), getLore("Weight", lore, true),
 					getLoreString("Illness", lore)==null?null:getLoreString("Illness", lore).split("|"), getLore("IllnessProbability", lore, true), getLoreString("Treatable", lore)==null?null:
-					getLoreString("Treatable", lore).split("|"), getLore("DrugEffect", lore, true),getLore("MedicineDuration", lore, true), getLore("Temperature", lore, true));
+					getLoreString("Treatable", lore).split("|"), getLore("DrugEffect", lore, true),getLore("MedicineDuration", lore, true), getLore("Temperature", lore, true),(int)getLore("Hungery", lore, false));
 	}
 	
 	private static String getLoreString(String tabel,List<String> lore){
@@ -127,4 +131,10 @@ public class ItemLoreData {
 	public double getTemperature() {
 		return temperature;
 	}
+
+	public int getHungery() {
+		return hungery;
+	}
+	
+	
 }

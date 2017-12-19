@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.recipe;
+package com.outlook.schooluniformsama.data.recipes;
 
 import java.util.ArrayList;
 import java.util.List;

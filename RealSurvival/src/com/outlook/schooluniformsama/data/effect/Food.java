@@ -3,18 +3,15 @@ package com.outlook.schooluniformsama.data.effect;
 import java.util.HashMap;
 import java.util.List;
 
-import org.bukkit.Material;
-
 import com.outlook.schooluniformsama.data.Data;
 
 public class Food {
 	@Override
 	public String toString() {
-		return "Food [type=" + type + ", sleep=" + sleep + ", thirst=" + thirst + ", energy=" + energy
+		return "Food [sleep=" + sleep + ", thirst=" + thirst + ", energy=" + energy
 				+ ", temperature=" + temperature + ", illness=" + illness + ", hasIllness=" + hasIllness + "]";
 	}
 
-	private Material type;
 	private double sleep;
 	private double thirst;
 	private double energy;
@@ -22,10 +19,9 @@ public class Food {
 	private HashMap<String, Double> illness = new HashMap<>();
 	private boolean hasIllness=false;
 	
-	public Food(Material type, String sleep, String thirst, String energy, double temperature,
+	public Food( String sleep, String thirst, String energy, double temperature,
 			List<String> illness, boolean hasIllness) {
 		super();
-		this.type = type;
 		
 		if(sleep.contains("%"))
 			this.sleep=Double.parseDouble(sleep.replaceAll("%", ""))/100.0*Data.sleep[0];
@@ -47,14 +43,6 @@ public class Food {
 			for(String name:illness)
 				this.illness.put(name.split(":")[0], Double.parseDouble(name.split(":")[1].replaceAll("%", "")));
 		this.hasIllness = hasIllness;
-	}
-
-	public Material getType() {
-		return type;
-	}
-
-	public void setType(Material type) {
-		this.type = type;
 	}
 
 	public double getSleep() {

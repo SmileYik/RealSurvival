@@ -1,8 +1,15 @@
 package com.outlook.schooluniformsama.data;
 
-import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 
 public class WorkbenchShape {
+	@Override
+	public String toString() {
+		return "WorkbenchShape [type=" + type + ", name=" + name + ", title=" + title + ", main=" + main + ", left="
+				+ left + ", right=" + right + ", up=" + up + ", down=" + down + ", front=" + front + ", behind="
+				+ behind + "]";
+	}
+
 	private WorkbenchType type;
 	private String name;
 	private String title;
