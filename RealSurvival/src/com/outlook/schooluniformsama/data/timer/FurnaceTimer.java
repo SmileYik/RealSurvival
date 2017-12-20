@@ -6,6 +6,7 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.task.TemperatureTask;
+import com.outlook.schooluniformsama.util.Util;
 
 public class FurnaceTimer extends Timer{
 	private double minTemperature;
@@ -47,8 +48,10 @@ public class FurnaceTimer extends Timer{
 	@Override
 	public void subTime() {
 		
-		if(Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name()!=Data.workbenchs.get(workbenchName).getMain())
+		if(!Bukkit.getWorld(worldName).getBlockAt(x, y, z).getType().name().equalsIgnoreCase(Data.workbenchs.get(workbenchName).getMain())){
+			Data.timer.remove(Util.getWorkbenchID((Timer)this));
 			return;
+		}
 		
 		double nowTemperature =TemperatureTask.getBlocks(getLocation());
 		extraTemperature+=lastTemperature-nowTemperature;

@@ -1,6 +1,11 @@
 package com.outlook.schooluniformsama.util;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -20,6 +25,42 @@ public class Msg {
 	
 	public static String getPrefix(){
 		return msg.getString("prefix");
+	}
+	
+	public static void writerYml(String name){
+		InputStream is=null;
+		OutputStream os=null;
+		try {
+			is=Msg.class.getResourceAsStream("/lang/"+name+".yml");
+			os=new FileOutputStream(new File(Data.DATAFOLDER+"/messages.yml"));
+			int i;
+			byte[] buffer = new byte[1024];
+			while((i=is.read(buffer))!=-1)
+				os.write(buffer,0,i);
+			os.flush();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(is!=null)
+				try {
+					is.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			if(os!=null)
+				try {
+					os.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+		}
+		
 	}
 	
 	/**
@@ -174,7 +215,7 @@ public class Msg {
 	
 	public static void sendMsgToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
 		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getRandomMsg(id, variable, value, addPrefix));
+		p.sendMessage(getMsg(id, variable, value, addPrefix));
 	}
 	
 	public static void sendMsgToPlayer(Player p, String id,boolean addPrefix){

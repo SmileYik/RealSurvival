@@ -42,6 +42,14 @@ public class WorkbenchRecipe extends Recipe{
 		super(name, WorkbenchType.WORKBENCH,needTime);
 	}
 	
+	public static String getRecipePath(String recipeName){
+		return Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+recipeName+".yml";
+	}
+	
+	public static  String getRecipePath(){
+		return Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator;
+	}
+	
 	public boolean save(){
 		YamlConfiguration recipe;
 		File f=new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+name+".yml");

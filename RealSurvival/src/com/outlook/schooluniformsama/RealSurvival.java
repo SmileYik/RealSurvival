@@ -6,7 +6,6 @@ import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -23,7 +22,12 @@ import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
+import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.timer.Timer;
+import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.event.DamageEvent;
 import com.outlook.schooluniformsama.event.EnergyEvent;
 import com.outlook.schooluniformsama.event.FractureEvent;
@@ -84,7 +88,7 @@ public class RealSurvival extends JavaPlugin{
 						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 							continue;
 						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
-						if(!cmd.type().equalsIgnoreCase(args[1]))
+						if(!cmd.type().equalsIgnoreCase(args[1].toLowerCase()))
 							continue;
 						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 							continue;
@@ -92,9 +96,7 @@ public class RealSurvival extends JavaPlugin{
 						if(cmd.args()!=null||cmd.args().length!=0)
 							for(String temp:cmd.args())
 								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',StringUtils.leftPad("", Msg.getPrefix().length(), ' ') +"&c&l/rs &2&l"+cmd.cmd()+
-								 " &2"+arg+"&f-&b&l"+Msg.getMsg(cmd.des(),false)));
-						 
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
 					}
 					return true;
 				}
@@ -113,13 +115,31 @@ public class RealSurvival extends JavaPlugin{
 						if(cmd.args()!=null||cmd.args().length!=0)
 							for(String temp:cmd.args())
 								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',StringUtils.leftPad("", Msg.getPrefix().length(), ' ') +"&c&l/rs &2&l"+cmd.cmd()+
-								 " &2"+arg+"&f-&b&l"+Msg.getMsg(cmd.des(),false)));
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
 						 
 					}
 					return true;
 				}
+			}else if(args.length==0){
+				p.sendMessage(Msg.getMsg("Help1", true));
+				for(Method method:Commands.class.getDeclaredMethods()){
+					if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
+						continue;
+					com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
+					if(!cmd.type().equalsIgnoreCase("HELP"))
+						continue;
+					if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+						continue;
+					String arg="";
+					if(cmd.args()!=null||cmd.args().length!=0)
+						for(String temp:cmd.args())
+							arg+=temp+" ";
+					 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
+					 
+				}
+				return true;
 			}
+			Method first = null;
 			for(Method method:Commands.class.getDeclaredMethods()){
 				if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 					continue;
@@ -130,10 +150,17 @@ public class RealSurvival extends JavaPlugin{
 					p.sendMessage(Msg.getMsg("NoPermissions", true));
 					return true;
 				}
+				if(cmd.args().length+1!=args.length){
+					if(first!=null)
+						first=method;
+					continue;
+				}
 				 try {method.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
 				return true;
 			}
-			p.sendMessage(Msg.getMsg("CommandNotFind", true));
+			if(first==null)
+				p.sendMessage(Msg.getMsg("CommandNotFind", true));
+			else try {first.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
 			return true;
 		}
 		return false;
@@ -157,17 +184,9 @@ public class RealSurvival extends JavaPlugin{
 		
 		
 		if(!new File(getDataFolder()+File.separator+"messages.yml").exists()){
-			this.saveResource("lang/"+getConfig().getString("language")+".yml", true);
-			new File(getDataFolder()+File.separator+"lang/"+getConfig().getString("language")+".yml").renameTo(
-					new File(getDataFolder()+File.separator+"messages.yml"));
-		}else if(YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"messages.yml")).
-					getString("language")!=getConfig().getString("language")){
-			new File(getDataFolder()+File.separator+"messages.yml").renameTo(
-					new File(getDataFolder()+File.separator+YamlConfiguration.loadConfiguration(new File(
-							getDataFolder()+File.separator+"messages.yml")).getString("language")+".yml"));
-			this.saveResource("lang/"+getConfig().getString("language")+".yml", true);
-			new File(getDataFolder()+File.separator+getConfig().getString("language")+".yml").renameTo(
-					new File(getDataFolder()+File.separator+"messages.yml"));
+			Msg.writerYml(getConfig().getString("language"));
+		}else if(YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"messages.yml")).getString("language",null)==null || !YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"messages.yml")).getString("language",null).equalsIgnoreCase(getConfig().getString("language"))){
+			Msg.writerYml(getConfig().getString("language"));
 		}
 		Msg.init();
 		
@@ -311,6 +330,35 @@ public class RealSurvival extends JavaPlugin{
 			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
 				Data.furnaceRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
 		}
+		
+		
+		
+		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
+		for(String key:timer.getStringList("list")){
+			Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
+					timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
+			switch(tt.getType()){
+				case FURNACE:
+					FurnaceTimer ft = tt.toFurnaceTimer();
+					FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
+					ft.start(fr, TemperatureTask.getBlocks(ft.getLocation()));
+					ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean("isBad"),timer.getInt(key+".time"));
+					Data.timer.put(key, ft);
+					break;
+				case WORKBENCH:
+					WorkbenchTimer wt = tt.toWorkbenchTimer();
+					wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
+					Data.timer.put(key, wt);
+					break;
+			case RAINWATER_COLLECTOR:
+				break;
+			default:
+				break;
+			}
+		}
+		
+		
+		
 	}
 	
 	//Load Online Player's Data

@@ -35,7 +35,66 @@ public class CraftItemEvent implements Listener{
 			return;
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
 		
-		if(e.getInventory().getTitle().contains(" §f- W")){
+		
+		if(e.getInventory().getTitle().contains(" §f- W*")){
+			if(e.getRawSlot()<54&&!Workbench.materials.contains(e.getRawSlot())&&!Workbench.products.contains(e.getRawSlot())&&e.getRawSlot()!=49){
+				e.setCancelled(true);
+				return;
+			}
+			
+			if(e.getRawSlot()==49){
+				e.setCancelled(true);
+				boolean hasMaterials=true;
+				for(int i:Workbench.materials)
+					if(e.getInventory().getItem(i)!=null)
+						hasMaterials=false;
+				if(hasMaterials)
+					 return; 
+				for(int i:Workbench.products)
+					if(e.getInventory().getItem(i)!=null)
+						hasMaterials=true;
+				if(!hasMaterials)
+					 return;
+				
+				try {
+					if(WorkbenchRecipe.createRecipe(e.getInventory(),(WorkbenchRecipe) TempData.createRecipeTemp.get(p.getName()))){
+						Msg.sendMsgToPlayer(p, "CreateRecipeSucceed", true);
+						Data.workbenchRecipe.add(TempData.createRecipeTemp.get(p.getName()).getName());
+						TempData.createRecipeTemp.remove(p.getName());
+						p.closeInventory();
+					}else{
+						Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+						return;
+					}
+				} catch (Exception e2) {
+					Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+					return;
+				}
+				return;
+			}
+			return;
+		}else if(e.getInventory().getTitle().contains(" §f- W§3§l*")){
+			e.setCancelled(true);
+			WorkbenchTimer wt=(WorkbenchTimer) Data.timer.get(TempData.openingWorkbench.get(p.getName()));
+			if(e.getRawSlot()==49){
+				if(wt.isOver()){
+					Data.timer.remove(Util.getWorkbenchID(wt));
+					for(int i:Workbench.products)
+						if(e.getInventory().getItem(i)!=null)
+							givePlayerItem(p, e.getInventory().getItem(i));
+					p.closeInventory();
+					return;
+				}else{
+					Msg.sendMsgToPlayer(p, "WorkbenchUndone", true);
+					return;
+				}
+			}else{
+				e.setCancelled(true);
+				p.closeInventory();
+				p.openInventory(Workbench.checkPass(e.getInventory(), wt));
+				return;
+			}
+		}else if(e.getInventory().getTitle().contains(" §f- W")){
 			if((!Workbench.materials.contains(e.getRawSlot())&&e.getRawSlot()<54)&&e.getRawSlot()!=49){
 				e.setCancelled(true);
 				p.closeInventory();
@@ -74,62 +133,6 @@ public class CraftItemEvent implements Listener{
 				return;
 			}
 			return;
-		}else if(e.getInventory().getTitle().contains(" §f- W*")){
-			if(e.getRawSlot()<54&&!Workbench.materials.contains(e.getRawSlot())&&!Workbench.products.contains(e.getRawSlot())&&e.getRawSlot()!=49){
-				e.setCancelled(true);
-				return;
-			}
-			
-			if(e.getRawSlot()==49){
-				e.setCancelled(true);
-				boolean hasMaterials=true;
-				for(int i:Workbench.materials)
-					if(e.getInventory().getItem(i)!=null)
-						hasMaterials=false;
-				if(hasMaterials)
-					 return; 
-				for(int i:Workbench.products)
-					if(e.getInventory().getItem(i)!=null)
-						hasMaterials=true;
-				if(!hasMaterials)
-					 return;
-				
-				try {
-					if(WorkbenchRecipe.createRecipe(e.getInventory(),(WorkbenchRecipe) TempData.createRecipeTemp.get(p.getName()))){
-						Msg.sendMsgToPlayer(p, "CreateRecipeSucceed", true);
-						p.closeInventory();
-					}else{
-						Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
-						return;
-					}
-				} catch (Exception e2) {
-					Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
-					return;
-				}
-				return;
-			}
-			return;
-		}else if(e.getInventory().getTitle().contains(" §f- W§3§l*")){
-			e.setCancelled(true);
-			WorkbenchTimer wt=(WorkbenchTimer) Data.timer.get(TempData.openingWorkbench.get(p.getName()));
-			if(e.getRawSlot()==49){
-				if(wt.isOver()){
-					Data.timer.remove(Util.getWorkbenchID(wt));
-					for(int i:Workbench.products)
-						if(e.getInventory().getItem(i)!=null)
-							givePlayerItem(p, e.getInventory().getItem(i));
-					p.closeInventory();
-					return;
-				}else{
-					Msg.sendMsgToPlayer(p, "WorkbenchUndone", true);
-					return;
-				}
-			}else{
-				e.setCancelled(true);
-				p.closeInventory();
-				p.openInventory(Workbench.checkPass(e.getInventory(), wt));
-				return;
-			}
 		}else if(e.getInventory().getTitle().contains(" §f- F§3§l*")){
 			e.setCancelled(true);
 			FurnaceTimer ft=(FurnaceTimer) Data.timer.get(TempData.openingWorkbench.get(p.getName()));
@@ -178,6 +181,8 @@ public class CraftItemEvent implements Listener{
 				try {
 					if(FurnaceRecipe.createFurnaceRecipe(e.getInventory(),(FurnaceRecipe) TempData.createRecipeTemp.get(p.getName()))){
 						Msg.sendMsgToPlayer(p, "CreateRecipeSucceed", true);
+						Data.furnaceRecipe.add(TempData.createRecipeTemp.get(p.getName()).getName());
+						TempData.createRecipeTemp.remove(p.getName());
 						p.closeInventory();
 					}else{
 						Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);

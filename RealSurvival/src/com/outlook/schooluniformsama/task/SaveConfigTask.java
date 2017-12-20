@@ -25,13 +25,14 @@ public class SaveConfigTask implements Runnable{
 	}
 	
 	public static void saveWorkbench(){
-		File data=new File(Data.DATAFOLDER+File.separator+"workbench.yml");
+		File data=new File(Data.DATAFOLDER+File.separator+"timer.yml");
 		YamlConfiguration dataC=YamlConfiguration.loadConfiguration(data);
 		LinkedList<String> l=new LinkedList<String>();
 		for(Map.Entry<String, Timer> entry : Data.timer.entrySet()){
 			l.add(entry.getKey());
 			dataC.set(entry.getKey()+".playerName", entry.getValue().getPlayerName());
 			dataC.set(entry.getKey()+".worldName", entry.getValue().getWorldName());
+			dataC.set(entry.getKey()+".workbenchName", entry.getValue().getWorkbenchName());
 			dataC.set(entry.getKey()+".x", entry.getValue().getX());
 			dataC.set(entry.getKey()+".y", entry.getValue().getY());
 			dataC.set(entry.getKey()+".z", entry.getValue().getZ());

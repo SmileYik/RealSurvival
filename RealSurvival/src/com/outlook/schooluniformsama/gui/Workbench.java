@@ -10,6 +10,7 @@ import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
 import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.util.Msg;
+import com.outlook.schooluniformsama.util.Util;
 
 public class Workbench {
 	public static final  List<Integer> materials = Arrays.asList(10,11,12,13,19,20,21,22,28,29,30,31,37,38,39,40);
@@ -29,8 +30,8 @@ public class Workbench {
 	}
 	
 	public static Inventory createWorkbenchRecipeGUI(String title){
-		Inventory inv=createDefaultGUI(title+" §f- W"+"*");
-		inv.setItem(16, Items.createPItem((short) 14, Msg.getMsg("SaveRecipe", false)));
+		Inventory inv=createDefaultGUI(title+" §f- W*");
+		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("SaveRecipe", false)));
 		return inv;
 	}
 
@@ -42,10 +43,10 @@ public class Workbench {
 	
 	public static  Inventory checkPass(Inventory inv,WorkbenchTimer wt){
 		if(wt.isOver())
-			inv.setItem(49, Items.createPItem((short)14, Msg.getMsg("WorkbenchProgress2", false)));
+			inv.setItem(49, Items.createPItem((short)5, Msg.getMsg("WorkbenchProgress2", false)));
 		else
-			inv.setItem(49, Items.createPItem((short)5, Msg.getMsg("WorkbenchProgress1", new String[]{"%pass%"}, 
-					new String[]{((wt.getTime()/(double)wt.getNeedTime())*100)+""}, false)));
+			inv.setItem(49, Items.createPItem((short)14, Msg.getMsg("WorkbenchProgress1", new String[]{"%pass%"}, 
+					new String[]{Util.ReservedDecimalPlaces(((wt.getTime()/(double)wt.getNeedTime())*100),2)}, false)));
 		
 		return inv;
 	}
