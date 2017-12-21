@@ -10,5 +10,6 @@
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

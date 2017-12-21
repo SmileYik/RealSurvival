@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import com.outlook.schooluniformsama.data.recipes.*;
 import com.outlook.schooluniformsama.event.basic.TempData;
 import com.outlook.schooluniformsama.gui.*;
+import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
 import org.bukkit.*;
 
@@ -47,14 +48,66 @@ public class Commands {
 		return false;
 	}
 	
+	//TODO Other cmd
+	@Command(cmd = "update",des="UpdateDes",type="Update",permissions = "RealSurvival.Admin")
+	public void update(Player p,String args[]){
+		Update u = Update.getUpdate("update");
+		if(u==null){
+			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			return;
+		}
+		if(u.hasUpdate()){
+			u.download();
+			Msg.sendMsgToPlayer(p, "DownloadOver", new String[]{"%version%"},new String[]{u.getVersion_show()},true);
+			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
+			return;
+		}else{
+			Msg.sendMsgToPlayer(p, "IsNewVersion", true);
+			return;
+		}
+	}
+	
+	@Command(cmd = "cupdate",des="CUpdateDes",type="Update",permissions = "RealSurvival.Admin")
+	public void cUpdate(Player p,String args[]){
+		Update u = Update.getUpdate("update");
+		if(u==null){
+			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			return;
+		}
+		if(u.hasUpdate()){
+			p.sendMessage(Msg.getMsg("HasNewVersion", new String[]{"%now-version%","%version%"},new String[]{Update.now_version_show,u.getVersion_show()},true)+" "
+					+(u.isReplace_config()?Msg.getMsg("WillDeleteConfig", false):"")+" "
+					+(u.isReplace_message()?Msg.getMsg("WillDeleteMessages", false):""));
+			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
+			return;
+		}else{
+			Msg.sendMsgToPlayer(p, "IsNewVersion", true);
+			return;
+		}
+	}
+	
+	@Command(cmd = "getUpdateInfo",des="UpdateInfoDes",type="Update",permissions = "RealSurvival.Admin")
+	public void getUpdateInfo(Player p,String args[]){
+		Update u= Update.getUpdate("update");
+		if(u==null){
+			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			return;
+		}
+		if(u.hasUpdate())
+			u = Update.getUpdate("old/"+Update.now_version);
+		if(u==null){
+			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			return;
+		}
+		p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
+		return;
+	}
+	
 	//TODO help
 	@Command(cmd = "help",des="HelpDes",type="Help")
 	public void help(Player p,String args[]){}
 	
-	@Command(cmd = "help",args={"[Text]"},des="HelpDes2",type="Help")
-	public void help2(Player p,String args[]){}
-	
-	@Command(cmd="help",args={"search","[Text]"},des="HelpDes3",type="HELP")
+	@Command(cmd="help",args={"search","[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin")
 	public void helpSearch(Player p,String args[]){
 		if(badCmd(p,args,new String[]{"search"},3))return;
 		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[2]}, true));//以下是关于type的信息
@@ -78,37 +131,36 @@ public class Commands {
 	public void workbenchHelp(){}
 	
 	//TODO create recipe
-	@Command(cmd = "cr",args={"furnace","[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "CreateFuranceRecipe", type = "workbench" ,permissions = "RealSurvival.Admin")
+	@Command(cmd = "crf",args={"[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "CreateFuranceRecipeDes", type = "workbench" ,permissions = "RealSurvival.Admin")
 	public void createFuranceRecipe(Player p,String args[]){
-		if(badCmd(p,args,new String[]{"furnace"},7))return;
-		if(new File(FurnaceRecipe.getRecipePath(args[2])).exists()){
-			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[2]}, true);
+		if(badCmd(p,args,new String[]{},6))return;
+		if(new File(FurnaceRecipe.getRecipePath(args[1])).exists()){
+			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[1]}, true);
 			return;
 		}
-		//if(isInt(p, args[3], 3)==null || isInt(p, args[4], 4)==null || isDouble(p,args[5],5)==null || isDouble(p,args[6],6)==null)return;
 		try {
-			TempData.createRecipeTemp.put(p.getName(), new FurnaceRecipe(args[2], isInt(p, args[3], 3),isInt(p, args[4], 4),isDouble(p,args[5],5),isDouble(p,args[6],6)));
+			TempData.createRecipeTemp.put(p.getName(), new FurnaceRecipe(args[1], isInt(p, args[2], 2),isInt(p, args[3], 3),isDouble(p,args[4],4),isDouble(p,args[5],5)));
 		} catch (Exception e) {
 			return;
 		}
-	     p.openInventory(Furnace.furnaceMakerGUI(args[2]));
+	     p.openInventory(Furnace.furnaceMakerGUI(args[1]));
 		return;
 	}
 	
-	@Command(cmd="cr",args={"furnace","setData","[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "ReplaceFuranceRecipeData", type = "workbench" ,permissions = "RealSurvival.Admin")
+	@Command(cmd="crfsd",args={"[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "ReplaceFuranceRecipeDataDes", type = "workbench" ,permissions = "RealSurvival.Admin")
 	public void replaceFuranceRecipeData(Player p,String args[]){
-		if(badCmd(p,args,new String[]{"furnace","setData"},8))return;
-		if(new File(FurnaceRecipe.getRecipePath(args[3])).exists()){
-			Msg.sendMsgToPlayer(p, "RecipeNotExists",new String[]{"%name%"} ,new String[]{args[3]}, true);
+		if(badCmd(p,args,new String[]{},6))return;
+		if(new File(FurnaceRecipe.getRecipePath(args[1])).exists()==false){
+			Msg.sendMsgToPlayer(p, "RecipeNotExists",new String[]{"%name%"} ,new String[]{args[1]}, true);
 			return;
 		}
-		FurnaceRecipe fr = FurnaceRecipe.load(args[3]);
+		FurnaceRecipe fr = FurnaceRecipe.load(args[1]);
 		
 		try {
-			fr.setNeedTime(isInt(p, args[4], 4));
-			fr.setSaveTime(isInt(p, args[5], 5));
-			fr.setMinTemperature(isDouble(p, args[6], 6));
-			fr.setMinTemperature(isDouble(p, args[7], 7));
+			fr.setNeedTime(isInt(p, args[2], 2));
+			fr.setSaveTime(isInt(p, args[3], 3));
+			fr.setMinTemperature(isDouble(p, args[4], 4));
+			fr.setMaxTemperature(isDouble(p, args[5], 5));
 		} catch (Exception e) {
 			return;
 		}
@@ -120,20 +172,19 @@ public class Commands {
 		return;
 	}
 	
-	@Command(cmd = "cr",args={"workbench","[name]","[NeedTime]"}, des = "CreateWorkbenchRecipe", type = "workbench",permissions = "RealSurvival.Admin")
+	@Command(cmd = "crw",args={"[name]","[NeedTime]"}, des = "CreateWorkbenchRecipeDes", type = "workbench",permissions = "RealSurvival.Admin")
 	public void createWorkbenceRecipe(Player p,String args[]){
-		if(badCmd(p,args,new String[]{"workbench"},4))return;
-		if(new File(WorkbenchRecipe.getRecipePath(args[2])).exists()){
-			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[2]}, true);
+		if(badCmd(p,args,new String[]{},3))return;
+		if(new File(WorkbenchRecipe.getRecipePath(args[1])).exists()){
+			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[1]}, true);
 			return;
 		}
-		//if(isInt(p, args[3], 3)==null || isInt(p, args[4], 4)==null || isDouble(p,args[5],5)==null || isDouble(p,args[6],6)==null)return;
 		try {
-			TempData.createRecipeTemp.put(p.getName(), new WorkbenchRecipe(args[2], isInt(p, args[3], 3)));
+			TempData.createRecipeTemp.put(p.getName(), new WorkbenchRecipe(args[1], isInt(p, args[2], 2)));
 		} catch (Exception e) {
 			return;
 		}
-	     p.openInventory(Workbench.createWorkbenchRecipeGUI(args[2]));
+	     p.openInventory(Workbench.createWorkbenchRecipeGUI(args[1]));
 		return;
 	}
 	

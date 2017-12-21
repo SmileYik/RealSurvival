@@ -45,6 +45,7 @@ import com.outlook.schooluniformsama.task.TemperatureTask;
 import com.outlook.schooluniformsama.task.ThirstTask;
 import com.outlook.schooluniformsama.task.WeightTask;
 import com.outlook.schooluniformsama.task.WorkbenchTask;
+import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.ArrayList;
 import com.outlook.schooluniformsama.util.Msg;
 
@@ -61,6 +62,7 @@ public class RealSurvival extends JavaPlugin{
 		registerListeners();
 		addPlayers();
 		getLogger().info("加载完成");
+		checkUp();
 	}
 	
 	@Override
@@ -68,6 +70,25 @@ public class RealSurvival extends JavaPlugin{
 		for(PlayerData pd : Data.playerData.values())
 			pd.save();
 		SaveConfigTask.saveWorkbench();
+	}
+	
+	private void checkUp(){
+		Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
+			@Override
+			public void run() {
+				try {
+					Update u= Update.getUpdate("update");
+					if(u.hasUpdate()){
+						getLogger().info(ChatColor.translateAlternateColorCodes('§',Msg.getMsg("HasNewVersion", new String[]{"%now-version%","%version%"},new String[]{Update.now_version_show,u.getVersion_show()},false))+" "
+								+(u.isReplace_config()?Msg.getMsg("WillDeleteConfig", false):"")+" "
+								+(u.isReplace_message()?Msg.getMsg("WillDeleteMessages", false):""));
+						getLogger().info(ChatColor.translateAlternateColorCodes('§',u.getUpdate_info()));
+					}
+				} catch (Exception e) {
+					getLogger().info(Msg.getMsg("CheckUpdateFailed", false));
+				}
+			}
+		}, 20L);
 	}
 	
 	@Override
@@ -150,8 +171,8 @@ public class RealSurvival extends JavaPlugin{
 					p.sendMessage(Msg.getMsg("NoPermissions", true));
 					return true;
 				}
-				if(cmd.args().length+1!=args.length){
-					if(first!=null)
+				if(cmd.args().length>0&&cmd.args().length+1!=args.length){
+					if(first==null)
 						first=method;
 					continue;
 				}

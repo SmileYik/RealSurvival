@@ -1,26 +1,15 @@
 package com.outlook.schooluniformsama.event.basic;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
-import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
-import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
 public class UseItemEvent implements Listener {
