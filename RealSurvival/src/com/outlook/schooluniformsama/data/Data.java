@@ -9,6 +9,8 @@ import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.timer.Timer;
+import com.outlook.schooluniformsama.nms.bed.BedNMS;
+import com.outlook.schooluniformsama.nms.item.NBTItem;
 import com.outlook.schooluniformsama.util.ArrayList;
 import com.outlook.schooluniformsama.util.HashMap;
 
@@ -51,7 +53,7 @@ public class Data {
 	 */
 	public static double[] thirst;
 	/**
-	 * max,min,add,sneaking,sprinting
+	 * max,min,add,sneaking,sprinting,jumping,swimming
 	 */
 	public static double[] energy;
 	/**
@@ -81,4 +83,7 @@ public class Data {
 	public static ArrayList<String>workbenchRecipe=new ArrayList<>();
 	public static ArrayList<String>furnaceRecipe=new ArrayList<>();
 	public static  TitleManagerAPI tmapi;
+	
+	public static NBTItem nbtitem;
+	public static BedNMS bnms;
 }

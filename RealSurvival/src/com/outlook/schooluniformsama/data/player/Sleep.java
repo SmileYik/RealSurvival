@@ -47,8 +47,10 @@ public class Sleep {
 		num*=sleepBuff;
 		num+=num*effect;
 		sleep+=num;
-		if(sleep<0)
+		if(sleep<0){
 			sleep=0;
+			return "sleep_null";
+		}
 		else if(sleep>getMaxSleep())
 			sleep=getMaxSleep();
 		
@@ -58,7 +60,7 @@ public class Sleep {
 			return  "tired";
 		else if(sleep>=Data.sleep[0]*0.9&&(sleep-num)<Data.sleep[0]*0.9)
 			return "spirit";
-		return null;
+		return "null_ok";
 	}
 	
 	private void reCheckLevel(){

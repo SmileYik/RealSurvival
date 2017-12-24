@@ -49,7 +49,7 @@ public class Papi extends EZPlaceholderHook {
 		if(arg.equalsIgnoreCase("illness")){
 			while(index>=0&&index>=pd.getIllness().getIllness().size())
 				index--;
-			if(index==-1)
+			if(index<0)
 				return Msg.getMsg("Body2", false);
 			else
 				return pd.getIllness().getIllness().keySet().toArray(new String[pd.getIllness().getIllness().size()])[index];

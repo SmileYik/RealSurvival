@@ -37,6 +37,8 @@ public class ItemLoreData {
 		this.hungery=hungery;
 	}
 	
+	
+	
 	public static ItemLoreData getItemLoreData(ItemStack is){
 		if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())return null;
 		List<String> lore=is.clone().getItemMeta().getLore();
@@ -83,6 +85,10 @@ public class ItemLoreData {
 				}
 			}
 		}
+		return badCode();
+	}
+	
+	public static double badCode(){
 		return -1.1111111;
 	}
 	

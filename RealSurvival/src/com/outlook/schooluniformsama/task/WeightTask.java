@@ -6,6 +6,7 @@ import org.bukkit.inventory.ItemStack;
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
+import com.outlook.schooluniformsama.data.item.NBTItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.Msg;
 
@@ -18,9 +19,15 @@ public class WeightTask implements Runnable{
 			double weight=0;
 			for(ItemStack is:p.getInventory().getContents()){
 				if(is==null)continue;
-				if(is.hasItemMeta()&&is.getItemMeta().hasLore()){
+				if(NBTItemData.isNBTItem(is)){
+					NBTItemData nbtid = NBTItemData.load(is);
+					if(nbtid.getWeight()!=ItemLoreData.badCode())
+						weight+=nbtid.getWeight()*is.getAmount();
+					else if(Data.itemData.containsKey(is.getType().name()))
+						weight+=Data.itemData.get(is.getType().name()).getWeight()*is.getAmount();
+				}else if(is.hasItemMeta()&&is.getItemMeta().hasLore()){
 					double temp=ItemLoreData.getLore("Weight", is.getItemMeta().getLore(), false);
-					if(temp!=-1.1111111)
+					if(temp!=ItemLoreData.badCode())
 						weight+=temp*is.getAmount();
 					else if(Data.itemData.containsKey(is.getType().name()))
 						weight+=Data.itemData.get(is.getType().name()).getWeight()*is.getAmount();

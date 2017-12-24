@@ -44,8 +44,10 @@ public class Energy {
 		num*=energyBuff;
 		num+=num*effect;
 		energy+=num;
-		if(energy<0)
+		if(energy<0){
 			energy=0;
+			return "energynull";
+		}
 		else if(energy>getMaxEnergy())
 			energy=getMaxEnergy();
 		
@@ -53,7 +55,7 @@ public class Energy {
 			return "no-energy";
 		else if(energy>=getMaxEnergy()*0.9&&(energy-num)<getMaxEnergy()*0.9)
 			return "energt-fullly";
-		return null;
+		return "null_ok";
 	}
 	
 	private void reCheckLevel(){

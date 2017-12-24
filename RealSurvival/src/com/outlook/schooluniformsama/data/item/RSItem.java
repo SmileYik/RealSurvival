@@ -11,10 +11,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.util.Util;
 
 public class RSItem {
 	private ItemStack item;
-	private RSItem(ItemStack item){
+	public RSItem(ItemStack item){
 		this.item=item;
 	}
 	
@@ -100,7 +101,7 @@ public class RSItem {
 		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+getName()+".yml"));
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
-		List<String> temp = im.getLore();
+		List<String> temp = im.hasLore()?im.getLore():new LinkedList<>();
 		List<String>lore = new LinkedList<>();
 		for(String line:temp){
 			for(Entry<String, String> str:Data.label.entrySet())
@@ -120,11 +121,15 @@ public class RSItem {
 		return 1;
 	}
 	
-	public int save(String path){
-		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(path));
+	public static String getItemPath(String name){
+		return Data.DATAFOLDER+"/items/"+name+".yml";
+	}
+	
+	public int save(String name){
+		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml"));
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
-		List<String> temp = im.getLore();
+		List<String> temp = im.hasLore()?im.getLore():new LinkedList<>();
 		List<String>lore = new LinkedList<>();
 		for(String line:temp){
 			for(Entry<String, String> str:Data.label.entrySet())
@@ -135,9 +140,9 @@ public class RSItem {
 		im.setLore(lore);
 		item.setItemMeta(im);
 
-		itemData.set(getName(), item);
+		itemData.set(name, item);
 		try {
-			itemData.save(new File(path));
+			itemData.save(new File(Data.DATAFOLDER+"/items/"+name+".yml"));
 		} catch (IOException e) {
 			return -1;
 		}
@@ -149,7 +154,7 @@ public class RSItem {
 		if(!item.hasItemMeta() || !item.getItemMeta().hasDisplayName())
 			name=item.getType().name();
 		else name=item.getItemMeta().getDisplayName();
-		return name;
+		return Util.removeColor(name);
 	}
 
 	public ItemStack getItem() {
@@ -159,7 +164,7 @@ public class RSItem {
 	public ItemStack getSaveItem() {
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
-		List<String> temp = im.getLore();
+		List<String> temp = im.hasLore()?im.getLore():new LinkedList<>();
 		List<String>lore = new LinkedList<>();
 		for(String line:temp){
 			for(Entry<String, String> str:Data.label.entrySet())

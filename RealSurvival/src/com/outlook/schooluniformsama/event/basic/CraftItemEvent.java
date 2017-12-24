@@ -31,6 +31,14 @@ public class CraftItemEvent implements Listener{
 		if(e.getWhoClicked() instanceof Player == false)
 			return;
 		Player p=(Player) e.getWhoClicked();
+		
+		
+/*		String str1=" ";
+		for(ItemStack is : e.getInventory())
+			if(is!=null)
+				str1+=is.getType().name()+" ";
+		System.out.println(str1);*/
+		
 		if(!Data.playerData.containsKey(p.getUniqueId()))
 			return;
 		if(e.getSlotType()==SlotType.OUTSIDE)return;

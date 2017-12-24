@@ -1,7 +1,5 @@
 package com.outlook.schooluniformsama.task;
 
-
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.RealSurvival;
@@ -16,11 +14,12 @@ public class EnergyTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			if(p==null || pd==null || p.isDead())return;
 			if(p.isSneaking()){
-				Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[3]),true);
+				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[3]),true)){
+					p.setSneaking(false);
+				}
 			}else if(p.isSprinting()){
-				Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[4]),true);
-			}else if(p.getWorld().getBlockAt(p.getLocation()).getType()==Material.WATER || p.getWorld().getBlockAt(p.getLocation()).getType()==Material.WATER_LILY){
-				//TODO swimming
+				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[4]),true))
+					p.setSprinting(false);
 			}else{
 				Msg.sendTitleToPlayer(p, pd.getEnergy().change(Data.energy[2]),true);
 			}

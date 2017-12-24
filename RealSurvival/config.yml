@@ -42,7 +42,9 @@ state:
     min: 0.2
     add: 2
     sneaking: 1
-    sprinting: 2
+    sprinting: 5
+    jumping: 5
+    swimming: 3
   fracture:
     enable: true
     slight:

@@ -28,8 +28,8 @@ list:
   
 line:
 
-    body1: "§e生病"
-    body2: "§2正常"
+    Body1: "§e生病"
+    Body2: "§2正常"
 
     yes: "是"
     no: "否"
@@ -66,12 +66,15 @@ line:
     HotWater: "热水"
     IceWater: "冰水"
     Rainwater: "雨水"
+    WriterWaterFailed: "初始化水种失败!饮水部分无法继续使用!"
     
     NoRainwater: "这个收集器里没有足够的雨水..."
 #Sleep Messages
     very-tired: "§2你感觉非常累...;§c你需要立马睡觉!"
     tired: "§2你感觉有点累了."
     spirit: "§b§l你感觉非常有精神!"
+    Sleeping: "如果要起床,请在聊天窗口输入 \"leave\" 即可起床!"
+    BedSoFar: "床离你太远了!"
 #Thirst Messages
     thirst: "§3§l你开始感觉有点口渴了..."
     dehydration: "§c§l你快要渴死了;§e要晒干了!!!"
@@ -126,3 +129,19 @@ line:
     WillDeleteConfig: "§c§l将会删除config.yml文件"
     WillDeleteMessages: "§c§l将会删除messages.yml文件"
     UpdateInfoDes: "查看当前版本的更新内容"
+    ItemSaveDes: "将手上的物品保存到本地"
+    HandIsNull: "你什么都没拿唉"
+    ItemSaveS: "你手上的物品成功保存为%name%"
+    ItemSaveF: "保存失败了..."
+    ItemSaveE: "这个物品保存的名字与现有物品冲突了!"
+    NotFindItem: "没有找到这个物品."
+    DeleteFailed: "物品删除失败"
+    ItemDeleteDes: "删除一个物品"
+    ItemLoadDes: "从本地读取一个物品"
+    ItemSetNameDes: "设定手中物品的名字"
+    ItemSetLoreDes: "设定手中物品指定行的描述"
+    ItemAddLoreDes: "给手中物品增加一行描述"
+    ItemRemoveLoreDes: "移除手中物品的所有描述"
+    ItemDeleteLoreDes: "移除手中物品的某一行描述"
+    ItemSetNBTDes: "设定手中物品的属性值"
+    ItemSetNBT2Des: "给手中物品增加行NBT"

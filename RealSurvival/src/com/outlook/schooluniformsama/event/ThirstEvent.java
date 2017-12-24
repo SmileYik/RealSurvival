@@ -109,7 +109,7 @@ public class ThirstEvent implements Listener{
 		item.setAmount(amount);
 		int index=0;
 		for(ItemStack is:p.getInventory().getContents())
-			if(is==null && index++<p.getInventory().getContents().length-5){
+			if(is==null && index++<p.getInventory().getContents().length-6){
 				p.getInventory().addItem(item);
 				return;
 			}
@@ -119,7 +119,7 @@ public class ThirstEvent implements Listener{
 	public static void givePlayerItem(Player p,ItemStack item){
 		int index=0;
 		for(ItemStack is:p.getInventory().getContents())//.getStorageContents())
-			if(is==null && index++<p.getInventory().getContents().length-5){
+			if(is==null && index++<p.getInventory().getContents().length-6){
 				p.getInventory().addItem(item);
 				return;
 			}

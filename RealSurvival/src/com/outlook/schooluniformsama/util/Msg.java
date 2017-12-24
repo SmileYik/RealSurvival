@@ -174,8 +174,16 @@ public class Msg {
 		}
 	}
 	
-	public static void sendTitleToPlayer(Player p, String id,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
+	public static boolean sendTitleToPlayer(Player p, String id,boolean addPrefix){
+		if(!p.isOnline() || id==null)return false;
+		if(id.equals("energynull")){
+			sendTitleToPlayer(p,"no-energy",addPrefix);
+			return false;
+		}else if(id.equals("sleep_null")){
+			sendTitleToPlayer(p,"very-tired",addPrefix);
+			return false;
+		}
+		if(id.equals("null_ok"))return true;
 		String msg = getMsg(id, false);
 		if(Data.tmapi!=null){
 			if(addPrefix)
@@ -188,6 +196,7 @@ public class Msg {
 			else
 				p.sendMessage(msg);
 		}
+		return true;
 	}
 	
 	public static void sendRandomMsgToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){

@@ -3,20 +3,45 @@ package com.outlook.schooluniformsama.event.basic;
 import java.util.Arrays;
 import java.util.Map;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
+import com.outlook.schooluniformsama.data.item.NBTItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
+/*
+ * SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN
+ */
+
 public class UseItemEvent implements Listener {
+	
+	private String foods="SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN";
+	
 	@EventHandler
 	public void playerEatFood(PlayerItemConsumeEvent e){
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		if(pd==null)return;
+		
+		if(NBTItemData.isNBTItem(e.getItem())){
+			if(useItem(NBTItemData.load(e.getItem()),pd)){
+				
+			}else{
+				if(Data.foodEffect.containsKey(e.getItem().getType().name())){
+					eatFood(pd,Data.foodEffect.get(e.getItem().getType().name()));
+					return;
+				}
+			}
+		}
+		
+		
 		ItemLoreData id=ItemLoreData.getItemLoreData(e.getItem());
 		if(id==null){
 			if(!Data.foodEffect.containsKey(e.getItem().getType().name()))
@@ -31,10 +56,30 @@ public class UseItemEvent implements Listener {
 			if(!useItem(id, pd))
 				if(Data.foodEffect.containsKey(e.getItem().getType().name())){
 					eatFood(pd,Data.foodEffect.get(e.getItem().getType().name()));
-					e.getItem().setAmount(e.getItem().getAmount()-1);
+					//e.getItem().setAmount(e.getItem().getAmount()-1);
 					return;
 				}
 			return;
+		}
+	}
+	
+	@EventHandler
+	public void useItem(PlayerInteractEvent e){
+		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
+		if(pd==null)return;
+		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR))return;
+		if(e.getItem()==null||e.getItem().getType()==Material.AIR||foods.contains(e.getItem().getType().name()))return;
+		if(NBTItemData.isNBTItem(e.getItem()) && useItem(NBTItemData.load(e.getItem()),pd)){
+			e.setCancelled(true);
+			e.getPlayer().getInventory().setItemInMainHand(sub(e.getItem()));
+			return;
+		}else{
+			ItemLoreData id=ItemLoreData.getItemLoreData(e.getItem());
+			if(id!=null && useItem(id, pd)){
+				e.setCancelled(true);
+				e.getPlayer().getInventory().setItemInMainHand(sub(e.getItem()));
+				return;
+			}
 		}
 	}
 	
@@ -51,36 +96,78 @@ public class UseItemEvent implements Listener {
 	
 	private boolean useItem(ItemLoreData id,PlayerData pd){
 		boolean isUsed = false;
-		if(id.getSleep()!=-1.1111111){
+		if(id.getSleep()!=ItemLoreData.badCode()){
 			pd.getSleep().change(id.getSleep());
 			isUsed=true;
 		}
-		if(id.getThirst()!=-1.1111111){
+		if(id.getThirst()!=ItemLoreData.badCode()){
 			pd.getThirst().change(id.getThirst());
 			isUsed=true;
 		}
-		if(id.getTemperature()!=-1.1111111){
+		if(id.getTemperature()!=ItemLoreData.badCode()){
 			pd.getTemperature().change(id.getTemperature());
 			isUsed=true;
 		}
-		if(id.getDrugEffect()!=-1.1111111 && id.getMedicineDuration()!=-1.1111111){
+		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
 			pd.getIllness().eatMedicine(Arrays.asList(id.getTreatable()), id.getDrugEffect(), (long)id.getMedicineDuration());
 			isUsed=true;
 		}
-		if(id.getIllnessNames()!=null && id.getIllnessProbability()!=-1.1111111){
+		if(id.getIllnessNames()!=null && id.getIllnessProbability()!=ItemLoreData.badCode()){
 			for(String str:id.getIllnessNames())
 					pd.getIllness().addIllness(str,id.getIllnessProbability(),null);
 			isUsed=true;
 		}
-		if(id.getEnergy()!=-1.1111111){
+		if(id.getEnergy()!=ItemLoreData.badCode()){
 			pd.getEnergy().change(id.getEnergy());
 			isUsed=true;
 		}
-		if(id.getHungery()!=-1.1111111){
+		if(id.getHungery()!=ItemLoreData.badCode()){
 			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+id.getHungery());
 			isUsed=true;
 		}
 		return isUsed;
+	}
+	
+	private boolean useItem(NBTItemData id,PlayerData pd){
+		boolean isUsed = false;
+		if(id.getSleep()!=ItemLoreData.badCode()){
+			pd.getSleep().change(id.getSleep());
+			isUsed=true;
+		}
+		if(id.getThirst()!=ItemLoreData.badCode()){
+			pd.getThirst().change(id.getThirst());
+			isUsed=true;
+		}
+		if(id.getTemperature()!=ItemLoreData.badCode()){
+			pd.getTemperature().change(id.getTemperature());
+			isUsed=true;
+		}
+		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
+			pd.getIllness().eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
+			isUsed=true;
+		}
+		if(id.getIllness()!=null){
+			for(Map.Entry<String, Double> entity:id.getIllness().entrySet())
+				pd.getIllness().addIllness(entity.getKey(),entity.getValue(),null);
+			isUsed=true;
+		}
+		if(id.getEnergy()!=ItemLoreData.badCode()){
+			pd.getEnergy().change(id.getEnergy());
+			isUsed=true;
+		}
+		if(id.getHungery()!=ItemLoreData.badCode()){
+			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+(int)id.getHungery());
+			isUsed=true;
+		}
+		return isUsed;
+	}
+	
+	private ItemStack sub(ItemStack is){
+		if(is.getAmount()>1)
+			is.setAmount(is.getAmount()-1);
+		else
+			is.setType(Material.AIR);
+		return is;
 	}
 	
 	
@@ -212,7 +299,7 @@ public class UseItemEvent implements Listener {
 		OldPlayerData pd=rs.getPlayerData(p);
 		boolean isUse=false;
 		//设定病种
-		if(rs.getConfig().getBoolean("Switch.Sick")&&sickness!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.Sick")&&sickness!=ItemLoreData.badCode()){
 			if(Math.random()*100<sickness){
 				pd.setSick(true);
 				if(sickKind!=null)
@@ -223,22 +310,22 @@ public class UseItemEvent implements Listener {
 			isUse=true;
 		}
 		//睡觉
-		if(rs.getConfig().getBoolean("Switch.Sleep")&&sleep!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.Sleep")&&sleep!=ItemLoreData.badCode()){
 			isUse=true;
 			pd.changeSleep(sleep/100*rs.getSleepMax());
 		}
 		//口渴
-		if(rs.getConfig().getBoolean("Switch.Thirst")&&thirst!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.Thirst")&&thirst!=ItemLoreData.badCode()){
 			isUse=true;
 			pd.changeThirst(thirst/100*rs.getThirstMax());
 		}
 		//生病
-		if(rs.getConfig().getBoolean("Switch.Sick")&&medicine!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.Sick")&&medicine!=ItemLoreData.badCode()){
 			isUse=true;
 			if(pd.isSick()&&sick==null){
 				pd.setAllTEffect(medicine);
 				pd.setAllMedication(true);
-				if(medicineDuration!=-1.1111111)
+				if(medicineDuration!=ItemLoreData.badCode())
 					pd.setAllDuration(medicineDuration);
 				else
 					pd.setAllDuration(1);
@@ -250,7 +337,7 @@ public class UseItemEvent implements Listener {
 						isSet=true;
 						pd.settEffect(medicine,temp);
 						pd.setMedication(true,temp);
-						if(medicineDuration!=-1.1111111)
+						if(medicineDuration!=ItemLoreData.badCode())
 							pd.setDuration(medicineDuration,temp);
 						else
 							pd.setDuration(1,temp);
@@ -260,12 +347,12 @@ public class UseItemEvent implements Listener {
 			}
 		}
 		//温度
-		if(rs.getConfig().getBoolean("Switch.Temperature")&&tem!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.Temperature")&&tem!=ItemLoreData.badCode()){
 			isUse=true;
 			pd.changeTemperature(tem);
 		}
 		//体力
-		if(rs.getConfig().getBoolean("Switch.PhysicalStrength")&&tem!=-1.1111111){
+		if(rs.getConfig().getBoolean("Switch.PhysicalStrength")&&tem!=ItemLoreData.badCode()){
 			isUse=true;
 			pd.changePS(ps);
 		}

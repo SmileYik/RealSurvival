@@ -21,6 +21,7 @@ import com.outlook.schooluniformsama.data.effect.Effect;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
+import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
@@ -35,6 +36,8 @@ import com.outlook.schooluniformsama.event.SitEvent;
 import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.event.ThirstEvent;
 import com.outlook.schooluniformsama.event.basic.*;
+import com.outlook.schooluniformsama.nms.bed.BED_1_11_2_R1;
+import com.outlook.schooluniformsama.nms.item.Item_1_11_2_R1;
 import com.outlook.schooluniformsama.papi.Papi;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.task.EnergyTask;
@@ -59,6 +62,7 @@ public class RealSurvival extends JavaPlugin{
 	public void onEnable() {
 		firstLoad();
 		loadConfig();
+		getNMS();
 		registerListeners();
 		addPlayers();
 		getLogger().info("加载完成");
@@ -91,6 +95,18 @@ public class RealSurvival extends JavaPlugin{
 		}, 20L);
 	}
 	
+	private void getNMS(){
+		switch (getVersion()) {
+		case "v1_11_R1":
+			Data.bnms=new BED_1_11_2_R1();
+			Data.nbtitem=new Item_1_11_2_R1();
+			break;
+
+		default:
+			break;
+		}
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
@@ -114,10 +130,13 @@ public class RealSurvival extends JavaPlugin{
 						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 							continue;
 						String arg="";
-						if(cmd.args()!=null||cmd.args().length!=0)
+						if(cmd.childCmds()[0]!="")
+							for(String temp:cmd.childCmds())
+								arg+=temp+" ";
+						if(cmd.args()[0]!="")
 							for(String temp:cmd.args())
 								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
 					}
 					return true;
 				}
@@ -133,10 +152,13 @@ public class RealSurvival extends JavaPlugin{
 						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 							continue;
 						String arg="";
-						if(cmd.args()!=null||cmd.args().length!=0)
+						if(cmd.childCmds()[0]!="")
+							for(String temp:cmd.childCmds())
+								arg+=temp+" ";
+						if(cmd.args()[0]!="")
 							for(String temp:cmd.args())
 								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
+						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
 						 
 					}
 					return true;
@@ -152,36 +174,41 @@ public class RealSurvival extends JavaPlugin{
 					if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 						continue;
 					String arg="";
-					if(cmd.args()!=null||cmd.args().length!=0)
+					if(cmd.childCmds()[0]!="")
+						for(String temp:cmd.childCmds())
+							arg+=temp+" ";
+					if(cmd.args()[0]!="")
 						for(String temp:cmd.args())
 							arg+=temp+" ";
-					 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
+					 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
 					 
 				}
 				return true;
 			}
-			Method first = null;
 			for(Method method:Commands.class.getDeclaredMethods()){
 				if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 					continue;
 				com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
 				if(!cmd.cmd().equalsIgnoreCase(args[0]))
                     continue;
+				if(!cmd.childCmds()[0].equals("")){
+					int i=1;
+					boolean isc=false;
+					for(String str:cmd.childCmds())
+						if(!str.equalsIgnoreCase(args[i++])){
+							isc=true;
+							break;
+						}
+					if(isc)continue;
+				}
 				if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions()))){
 					p.sendMessage(Msg.getMsg("NoPermissions", true));
 					return true;
 				}
-				if(cmd.args().length>0&&cmd.args().length+1!=args.length){
-					if(first==null)
-						first=method;
-					continue;
-				}
 				 try {method.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
 				return true;
 			}
-			if(first==null)
-				p.sendMessage(Msg.getMsg("CommandNotFind", true));
-			else try {first.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
+			p.sendMessage(Msg.getMsg("CommandNotFind", true));
 			return true;
 		}
 		return false;
@@ -195,6 +222,8 @@ public class RealSurvival extends JavaPlugin{
 			new File(getDataFolder()+File.separator+"playerdata").mkdir();
 		if(!new File(getDataFolder()+File.separator+"items").exists())
 			new File(getDataFolder()+File.separator+"items").mkdir();
+		if(!new File(getDataFolder()+File.separator+"nbtitem").exists())
+			new File(getDataFolder()+File.separator+"nbtitem").mkdir();
 		if(!new File(getDataFolder()+File.separator+"recipe/furnace").exists())
 			new File(getDataFolder()+File.separator+"recipe/furnace").mkdirs();
 		if(!new File(getDataFolder()+File.separator+"recipe/workbench").exists())
@@ -264,7 +293,9 @@ public class RealSurvival extends JavaPlugin{
 					getConfig().getDouble("state.energy.min"),
 					getConfig().getDouble("state.energy.add"),
 					getConfig().getDouble("state.energy.sneaking"),
-					getConfig().getDouble("state.energy.sprinting")};
+					getConfig().getDouble("state.energy.sprinting"),
+					getConfig().getDouble("state.energy.jumping"),
+					getConfig().getDouble("state.energy.swimming")};
 		
 		if(Data.switchs[5])
 			Data.fracture=new double[]{
@@ -378,8 +409,18 @@ public class RealSurvival extends JavaPlugin{
 			}
 		}
 		
-		
-		
+		if(!new Items().createWater())
+			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
+	}
+	
+	public static String getVersion(){
+		String version;
+        try {
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            return null;
+        }
+        return version;
 	}
 	
 	//Load Online Player's Data
