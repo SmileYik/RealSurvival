@@ -180,7 +180,7 @@ public class Msg {
 			sendTitleToPlayer(p,"no-energy",addPrefix);
 			return false;
 		}else if(id.equals("sleep_null")){
-			sendTitleToPlayer(p,"very-tired",addPrefix);
+			//sendTitleToPlayer(p,"very-tired",addPrefix);
 			return false;
 		}
 		if(id.equals("null_ok"))return true;

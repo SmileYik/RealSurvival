@@ -54,7 +54,7 @@ public class Sleep {
 		else if(sleep>getMaxSleep())
 			sleep=getMaxSleep();
 		
-		if(sleep<=Data.sleep[2]&&(sleep-num)>Data.sleep[2])
+		if(sleep<=Data.sleep[2]&&(sleep-num)>Data.sleep[2]&&sleep>0)
 			return "very-tired";
 		else if(sleep<=Data.sleep[1]&&(sleep-num)>Data.sleep[1])
 			return  "tired";

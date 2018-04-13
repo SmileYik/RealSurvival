@@ -2,7 +2,6 @@ package com.outlook.schooluniformsama.data.player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -195,7 +194,7 @@ public class PlayerData {
 			one.illness.addIllness("This is One Illness",100,null);
 			one.illness.addIllness("My name is Two",100,null);
 			one.illness.addIllness("Three",100,null);
-			one.illness.eatMedicine(Arrays.asList("Three"), 71, 50);
+			//one.illness.eatMedicine(Arrays.asList("Three"), 71, 50);
 			one.save();
 			PlayerData d=load(new UUID(0, 0));
 			System.out.println(d.getIllness().getIllness());
@@ -215,12 +214,12 @@ public class PlayerData {
 				illness.changeEffect(num);
 			case SLEEP:
 				sleep.changeEffect(num);
-			case TEMPERATURE:
-				temperature.changeEffect(num);
 			case THIRST:
 				thirst.changeEffect(num);
 			case WEIGHT:
 				weight.changeEffect(num);
+		default:
+			break;
 		}
 	}
 	

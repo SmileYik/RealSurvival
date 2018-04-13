@@ -25,6 +25,10 @@ list:
   recovery-sick:
     - "%sick%成功被治愈了"
     - "你不会再受到%sick%的困扰了"
+  Fracture:
+    - "你摔成了%sick%!"
+  HitByMob:
+    - "完了!你染上了%sick%!"
   
 line:
 

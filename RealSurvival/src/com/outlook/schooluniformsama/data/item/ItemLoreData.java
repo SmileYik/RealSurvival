@@ -18,11 +18,11 @@ public class ItemLoreData {
 	private double drugEffect;
 	private double medicineDuration;
 	private double temperature;
-	private int hungery;
+	private double hungery;
 	
 	private ItemLoreData(double thirst, double sleep, double energy, double weight, String[] illnessNames,
 			double illnessProbability, String[] treatable, double drugEffect, double medicineDuration,
-			double temperature,int hungery) {
+			double temperature,double hungery) {
 		super();
 		this.thirst = thirst;
 		this.sleep = sleep;
@@ -44,7 +44,7 @@ public class ItemLoreData {
 		List<String> lore=is.clone().getItemMeta().getLore();
 		return new ItemLoreData(getLore("Thirst", lore, false), getLore("Sleep", lore, false), getLore("Energy", lore, false), getLore("Weight", lore, true),
 					getLoreString("Illness", lore)==null?null:getLoreString("Illness", lore).split("|"), getLore("IllnessProbability", lore, true), getLoreString("Treatable", lore)==null?null:
-					getLoreString("Treatable", lore).split("|"), getLore("DrugEffect", lore, true),getLore("MedicineDuration", lore, true), getLore("Temperature", lore, true),(int)getLore("Hungery", lore, false));
+					getLoreString("Treatable", lore).split(";"), getLore("DrugEffect", lore, true),getLore("MedicineDuration", lore, true), getLore("Temperature", lore, true),getLore("Hungery", lore, false));
 	}
 	
 	private static String getLoreString(String tabel,List<String> lore){
@@ -52,7 +52,7 @@ public class ItemLoreData {
 		for(String line:lore){
 			line=Util.removeColor(line);
 			if(line.contains(tabel))
-				return line.split(Data.split)[1].replace(" ", "");
+				return Util.removeColor(line.split(Data.split)[1].replace(" ", ""));
 		}
 		return null;
 	}
@@ -135,10 +135,10 @@ public class ItemLoreData {
 	}
 
 	public double getTemperature() {
-		return temperature;
+		return temperature/100D;
 	}
 
-	public int getHungery() {
+	public double getHungery() {
 		return hungery;
 	}
 	

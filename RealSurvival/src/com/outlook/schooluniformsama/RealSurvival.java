@@ -36,9 +36,10 @@ import com.outlook.schooluniformsama.event.SitEvent;
 import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.event.ThirstEvent;
 import com.outlook.schooluniformsama.event.basic.*;
-import com.outlook.schooluniformsama.nms.bed.BED_1_11_2_R1;
-import com.outlook.schooluniformsama.nms.item.Item_1_11_2_R1;
+import com.outlook.schooluniformsama.nms.bed.*;
+import com.outlook.schooluniformsama.nms.item.*;
 import com.outlook.schooluniformsama.papi.Papi;
+import com.outlook.schooluniformsama.randomday.RandomDayTask;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.task.EnergyTask;
 import com.outlook.schooluniformsama.task.SaveConfigTask;
@@ -50,6 +51,7 @@ import com.outlook.schooluniformsama.task.WeightTask;
 import com.outlook.schooluniformsama.task.WorkbenchTask;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.ArrayList;
+import com.outlook.schooluniformsama.util.Metrics;
 import com.outlook.schooluniformsama.util.Msg;
 
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
@@ -61,10 +63,12 @@ public class RealSurvival extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		firstLoad();
-		loadConfig();
 		getNMS();
+		loadConfig();
 		registerListeners();
 		addPlayers();
+		@SuppressWarnings("unused")
+		Metrics metrics = new Metrics(this);
 		getLogger().info("加载完成");
 		checkUp();
 	}
@@ -101,7 +105,10 @@ public class RealSurvival extends JavaPlugin{
 			Data.bnms=new BED_1_11_2_R1();
 			Data.nbtitem=new Item_1_11_2_R1();
 			break;
-
+		case "v1_12_R1":
+			Data.bnms=new BED_1_12_2_R1();
+			Data.nbtitem=new Item_1_12_2_R1();
+			break;
 		default:
 			break;
 		}
@@ -323,7 +330,9 @@ public class RealSurvival extends JavaPlugin{
 					getConfig().getDouble("state.temperature.width"),
 					getConfig().getDouble("state.temperature.high"),
 					getConfig().getDouble("state.temperature.heat-source-fix"),
-					getConfig().getDouble("state.temperature.distance-effect")};
+					getConfig().getDouble("state.temperature.distance-effect"),
+					getConfig().getDouble("state.temperature.cold"),
+					getConfig().getDouble("state.temperature.fever")};
 			for(String items:getConfig().getStringList("state.temperature.heat-source"))
 				if(Data.itemData.containsKey(items.split(":")[0]))
 					Data.itemData.get(items.split(":")[0]).setHeat(Double.parseDouble(items.split(":")[1]));
@@ -393,7 +402,7 @@ public class RealSurvival extends JavaPlugin{
 				case FURNACE:
 					FurnaceTimer ft = tt.toFurnaceTimer();
 					FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
-					ft.start(fr, TemperatureTask.getBlocks(ft.getLocation()));
+					ft.start(fr, TemperatureTask.getBaseTemperature(ft.getLocation(),true));
 					ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean("isBad"),timer.getInt(key+".time"));
 					Data.timer.put(key, ft);
 					break;
@@ -457,6 +466,7 @@ public class RealSurvival extends JavaPlugin{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EnergyTask(), 20L, 20L);
 		}
 		if(Data.switchs[8]){
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new RandomDayTask(), 24000-this.getServer().getWorld(Data.worlds.get(0)).getTime(), 24000);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TemperatureTask(), 20L, 10*20L);
 		}
 		if(Data.switchs[7]){

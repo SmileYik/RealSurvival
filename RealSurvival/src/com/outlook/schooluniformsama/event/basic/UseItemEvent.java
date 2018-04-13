@@ -86,7 +86,6 @@ public class UseItemEvent implements Listener {
 	
 	private void eatFood(PlayerData pd,Food f){
 		pd.getSleep().change(f.getSleep());
-		pd.getTemperature().change(f.getTemperature());
 		pd.getThirst().change(f.getThirst());
 		pd.getEnergy().change(f.getEnergy());
 		if(f.isHasIllness())
@@ -99,31 +98,33 @@ public class UseItemEvent implements Listener {
 		if(id.getSleep()!=ItemLoreData.badCode()){
 			pd.getSleep().change(id.getSleep());
 			isUsed=true;
+			System.out.println("1");
 		}
 		if(id.getThirst()!=ItemLoreData.badCode()){
 			pd.getThirst().change(id.getThirst());
 			isUsed=true;
-		}
-		if(id.getTemperature()!=ItemLoreData.badCode()){
-			pd.getTemperature().change(id.getTemperature());
-			isUsed=true;
+			System.out.println("11");
 		}
 		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
-			pd.getIllness().eatMedicine(Arrays.asList(id.getTreatable()), id.getDrugEffect(), (long)id.getMedicineDuration());
+			pd.getIllness().eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
 			isUsed=true;
+			System.out.println("111");
 		}
 		if(id.getIllnessNames()!=null && id.getIllnessProbability()!=ItemLoreData.badCode()){
 			for(String str:id.getIllnessNames())
 					pd.getIllness().addIllness(str,id.getIllnessProbability(),null);
 			isUsed=true;
+			System.out.println("1111");
 		}
 		if(id.getEnergy()!=ItemLoreData.badCode()){
 			pd.getEnergy().change(id.getEnergy());
 			isUsed=true;
+			System.out.println("11111");
 		}
 		if(id.getHungery()!=ItemLoreData.badCode()){
-			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+id.getHungery());
+			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+(int)id.getHungery());
 			isUsed=true;
+			System.out.println("111111");
 		}
 		return isUsed;
 	}
@@ -138,12 +139,9 @@ public class UseItemEvent implements Listener {
 			pd.getThirst().change(id.getThirst());
 			isUsed=true;
 		}
-		if(id.getTemperature()!=ItemLoreData.badCode()){
-			pd.getTemperature().change(id.getTemperature());
-			isUsed=true;
-		}
 		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
 			pd.getIllness().eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
+			
 			isUsed=true;
 		}
 		if(id.getIllness()!=null){

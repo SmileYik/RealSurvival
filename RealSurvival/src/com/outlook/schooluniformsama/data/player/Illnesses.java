@@ -1,6 +1,5 @@
 package com.outlook.schooluniformsama.data.player;
 
-import java.util.List;
 import java.util.Map;
 
 import org.bukkit.entity.Player;
@@ -35,15 +34,18 @@ public class Illnesses {
 		addIllness=Math.sqrt(sum)*0.2;
 	}
 	
-	public void eatMedicine(List<String> list,double medicineEfficacy, long duratio){
+	public void eatMedicine(String[] list,double medicineEfficacy, long duratio){
 		if(list==null){
 			for(String str:illness.keySet())
 				illness.get(str).eatMedicine(medicineEfficacy, duratio);
 			return;
 		}
-		for(String str:illness.keySet())
-			if(list.contains(str))
+		for(String str:list){
+			if(illness.keySet().contains(str))
 				illness.get(str).eatMedicine(medicineEfficacy, duratio);
+			System.out.println(str);
+			
+		}
 	}
 	
 	public boolean addIllness(String name,double chance,String remove){

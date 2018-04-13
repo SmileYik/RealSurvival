@@ -67,7 +67,7 @@ public class Data {
 	 */
 	public static HashMap<String, ItemData> itemData=new HashMap<>();
 	/**
-	 * long,width,high,heat-source-fix,distance-effect
+	 * long,width,high,heat-source-fix,distance-effect cold fever
 	 */
 	public static double[] temperature;
 	public static String split;

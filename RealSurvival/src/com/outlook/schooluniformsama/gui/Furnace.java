@@ -59,7 +59,7 @@ public class Furnace{
 			return inv;
 		}
 		
-		double nowTemperature =TemperatureTask.getBlocks(ft.getLocation());
+		double nowTemperature =TemperatureTask.getBaseTemperature(ft.getLocation(),true);
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
 			temp= Items.createPItem((short)1, Msg.getMsg("FurnaceWorkProgress+", new String[]{"%temperature%","%minTemperature%"},

@@ -1,0 +1,103 @@
+setting:
+#每个季节的长短(单位: 天)
+  season:
+    spring:
+      duration: 10
+      humidity: 10-20
+      wind-speed: 10-20
+      frequency: 10-20
+      base-temperature: 10-20
+    summer:
+      duration: 10
+      humidity: 10-20
+      wind-speed: 10-20
+      frequency: 10-20
+      base-temperature: 10-20
+    autumn: 
+      duration: 10
+      humidity: 10-20
+      wind-speed: 10-20
+      frequency: 10-20
+      base-temperature: 10-20
+    winter: 
+      duration: 10
+      humidity: 10-20
+      wind-speed: 10-20
+      frequency: 10-20
+      base-temperature: 10-20
+  temperature-fix:
+    night: -0.00001
+    day: 0.00001
+    rain: -1.2
+    high: -0.00166667
+  biome-temperature:
+    ocean: 1.0
+    plains: 1.0
+    desert: 1.0
+    extreme_hills: 1.0
+    forest: 1.0
+    taiga: 1.0
+    swampland: 1.0
+    river: 1.0
+    hell: 1.0
+    sky: 1.0
+    frozen_ocean: 1.0
+    frozen_river: 1.0
+    ice_flats: 1.0
+    ice_mountains: 1.0
+    mushroom_island: 1.0
+    mushroom_island_shore: 1.0
+    beaches: 1.0
+    desert_hills: 1.0
+    forest_hills: 1.0
+    taiga_hills: 1.0
+    smaller_extreme_hills: 1.0
+    jungle: 1.0
+    jungle_hills: 1.0
+    jungle_edge: 1.0
+    deep_ocean: 1.0
+    stone_beach: 1.0
+    cold_beach: 1.0
+    birch_forest: 1.0
+    birch_forest_hills: 1.0
+    roofed_forest: 1.0
+    taiga_cold: 1.0
+    taiga_cold_hills: 1.0
+    redwood_taiga: 1.0
+    redwood_taiga_hills: 1.0
+    extreme_hills_with_trees: 1.0
+    savanna: 1.0
+    savanna_rock: 1.0
+    mesa: 1.0
+    mesa_rock: 1.0
+    mesa_clear_rock: 1.0
+    void: 1.0
+    mutated_plains: 1.0
+    mutated_desert: 1.0
+    mutated_extreme_hills: 1.0
+    mutated_forest: 1.0
+    mutated_taiga: 1.0
+    mutated_swampland: 1.0
+    mutated_ice_flats: 1.0
+    mutated_jungle: 1.0
+    mutated_jungle_edge: 1.0
+    mutated_birch_forest: 1.0
+    mutated_birch_forest_hills: 1.0
+    mutated_roofed_forest: 1.0
+    mutated_taiga_cold: 1.0
+    mutated_redwood_taiga: 1.0
+    mutated_redwood_taiga_hills: 1.0
+    mutated_extreme_hills_with_trees: 1.0
+    mutated_savanna: 1.0
+    mutated_savanna_rock: 1.0
+    mutated_mesa: 1.0
+    mutated_mesa_rock: 1.0
+    mutated_mesa_clear_rock: 1.0
+
+    
+data:
+  day: 1
+  humidity: 10
+  wind-speed: 10
+  frequency: 10
+  base-temperature: 10

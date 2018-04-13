@@ -73,6 +73,8 @@ state:
     high: 5
     heat-source-fix: 100.0
     distance-effect: 0.25
+    cold: 27
+    fever: 33
     heat-source:
       - FIRE:0.3
       - TORCH:0.1

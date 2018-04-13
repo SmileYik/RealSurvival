@@ -1,10 +1,6 @@
 package com.outlook.schooluniformsama.task;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerBedEnterEvent;
 
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
@@ -29,6 +25,8 @@ public class SleepTask implements Runnable{
 				else
 					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]),true);
 			}else if(!Msg.sendTitleToPlayer(p, pd.getSleep().change(-Data.sleep[3]),true)){
+				//TODO When Player was very tired
+				
 				/*Location loc = p.getLocation();
 				loc.setY(loc.getY()+1);
 				Material temp=loc.getBlock().getType();

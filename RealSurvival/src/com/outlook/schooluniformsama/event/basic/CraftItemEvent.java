@@ -110,6 +110,7 @@ public class CraftItemEvent implements Listener{
 				return;
 			}
 			if(e.getRawSlot()==49){
+				e.setCancelled(true);
 				boolean hasMaterials=true;
 				for(int i:Workbench.materials)
 					if(e.getInventory().getItem(i)!=null)
@@ -218,7 +219,7 @@ public class CraftItemEvent implements Listener{
 					if(fr.containsShape(e.getInventory())){
 						try{
 							FurnaceTimer ft = TempData.createTimerTemp.get(p.getName()).toFurnaceTimer();
-							ft.start(fr,TemperatureTask.getBlocks(ft.getLocation()));
+							ft.start(fr,TemperatureTask.getBaseTemperature(ft.getLocation(),true));
 							Data.timer.put(Util.getWorkbenchID(ft), ft);
 							TempData.openingWorkbench.remove(p.getName());
 							for(int i:Furnace.mSlot)

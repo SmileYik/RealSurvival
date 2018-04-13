@@ -15,7 +15,8 @@ public class EnergyEvent implements Listener {
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		if(!e.getFrom().getBlock().getType().name().contains("WATER")){
-			if(e.getTo().getBlockY()-e.getFrom().getBlockY()>=1 && 
+			
+			if(e.getTo().getY()-e.getFrom().getY()>0.5 && 
 					(!Msg.sendTitleToPlayer(e.getPlayer(), pd.getEnergy().change(-Data.energy[5]), true) ||
 					pd.getWeight().isOverWeight()!=null))//weight
 					e.setCancelled(true);

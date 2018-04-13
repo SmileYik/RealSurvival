@@ -119,8 +119,8 @@ public class NBTItemData {
 	public void setIllness(HashMap<String, Double> illness) {
 		this.illness = illness;
 	}
-	public List<String> getTreatable() {
-		return treatable;
+	public String[] getTreatable() {
+		return treatable.toArray(new String[treatable.size()]);
 	}
 	public void setTreatable(LinkedList<String> treatable) {
 		this.treatable = treatable;

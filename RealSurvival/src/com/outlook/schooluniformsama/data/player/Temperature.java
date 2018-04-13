@@ -1,12 +1,13 @@
 package com.outlook.schooluniformsama.data.player;
 
+import com.outlook.schooluniformsama.data.Data;
+
 public class Temperature {
 	private double temperature;
 	private double temperatureBuff=1;
 	private int temperatureLevel=0;
 	private double addTemperature;
 	private double oldTemperature;
-	private float effect=0;
 	
 	public Temperature(double temperature, double temperatureBuff, int temperatureLevel, double addTemperature) {
 		super();
@@ -14,10 +15,6 @@ public class Temperature {
 		this.temperatureBuff = temperatureBuff;
 		this.temperatureLevel = temperatureLevel;
 		this.addTemperature = addTemperature;
-	}
-	
-	public void changeEffect(float f){
-		effect+=f;
 	}
 	
 	public double getTemperature(){
@@ -35,13 +32,13 @@ public class Temperature {
 	
 	public String change(double num){
 		oldTemperature = temperature;
-		temperature+=num*temperatureBuff+num*effect;
+		temperature = num;
 		if(temperature<0)
 			temperature=0;
 		
-		if(oldTemperature>=(36-addTemperature)&&temperature<(36-addTemperature))
+		if(oldTemperature>=(Data.temperature[5]-addTemperature)&&temperature<(Data.temperature[5]-addTemperature))
 			return "cold";
-		else if(oldTemperature<=(38+addTemperature)&&temperature>(38+addTemperature))
+		else if(oldTemperature<=(Data.temperature[6]+addTemperature)&&temperature>(Data.temperature[6]+addTemperature))
 			return  "fever";
 		return null;
 	}

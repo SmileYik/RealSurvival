@@ -53,7 +53,7 @@ public class FurnaceTimer extends Timer{
 			return;
 		}
 		
-		double nowTemperature =TemperatureTask.getBlocks(getLocation());
+		double nowTemperature =TemperatureTask.getBaseTemperature(getLocation(), true);
 		extraTemperature+=lastTemperature-nowTemperature;
 		if(minTemperature>=0){
 			
