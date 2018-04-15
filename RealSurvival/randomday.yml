@@ -3,28 +3,28 @@ setting:
   season:
     spring:
       duration: 10
-      humidity: 10-20
-      wind-speed: 10-20
-      frequency: 10-20
-      base-temperature: 10-20
+      humidity: 10--20
+      wind-speed: 10--20
+      frequency: 10--20
+      base-temperature: 10--20
     summer:
       duration: 10
-      humidity: 10-20
-      wind-speed: 10-20
-      frequency: 10-20
-      base-temperature: 10-20
+      humidity: 10--20
+      wind-speed: 10--20
+      frequency: 10--20
+      base-temperature: 10--20
     autumn: 
       duration: 10
-      humidity: 10-20
-      wind-speed: 10-20
-      frequency: 10-20
-      base-temperature: 10-20
+      humidity: 10--20
+      wind-speed: 10--20
+      frequency: 10--20
+      base-temperature: 10--20
     winter: 
       duration: 10
-      humidity: 10-20
-      wind-speed: 10-20
-      frequency: 10-20
-      base-temperature: 10-20
+      humidity: 10--20
+      wind-speed: 10--20
+      frequency: 10--20
+      base-temperature: 10--20
   temperature-fix:
     night: -0.00001
     day: 0.00001

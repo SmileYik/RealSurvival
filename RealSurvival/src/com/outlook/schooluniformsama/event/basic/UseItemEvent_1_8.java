@@ -8,7 +8,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
@@ -21,7 +20,7 @@ import com.outlook.schooluniformsama.data.player.PlayerData;
  * SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN
  */
 
-public class UseItemEvent implements Listener {
+public class UseItemEvent_1_8 implements Listener {
 	
 	private String foods="SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN";
 	
@@ -71,23 +70,13 @@ public class UseItemEvent implements Listener {
 		if(e.getItem()==null||e.getItem().getType()==Material.AIR||foods.contains(e.getItem().getType().name()))return;
 		if(NBTItemData.isNBTItem(e.getItem()) && useItem(NBTItemData.load(e.getItem()),pd)){
 			e.setCancelled(true);
-			if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-				if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-				else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
-			}else{
-				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-			}
+			e.getPlayer().setItemInHand(UseItemEvent_1_8.sub(e.getPlayer().getInventory().getItemInHand()));
 			return;
 		}else{
 			ItemLoreData id=ItemLoreData.getItemLoreData(e.getItem());
 			if(id!=null && useItem(id, pd)){
 				e.setCancelled(true);
-				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
-				}else{
-					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-				}
+				e.getPlayer().setItemInHand(UseItemEvent_1_8.sub(e.getPlayer().getInventory().getItemInHand()));
 				return;
 			}
 		}

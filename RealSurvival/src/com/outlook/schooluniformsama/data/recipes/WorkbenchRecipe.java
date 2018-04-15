@@ -177,7 +177,7 @@ public class WorkbenchRecipe extends Recipe{
 				}
 				inv.setItem(Workbench.materials.get(index++), materials.get(c));
 			}
-		inv.setItem(16, Items.createPItem((short)0, " "));
+		inv.setItem(16, Items.createPItem((short)15, " "));
 		index=0;
 		while(index!=4)
 			inv.setItem(Workbench.products.get(index), product[index++]);

@@ -1,4 +1,8 @@
 language: zh_CN
+#Enable prefix in title
+enable-prefix-in-title: false
+#state command cooldown, unit trick(20 trick = 1 s)
+state-cd: 600
 #Enable worlds
 worlds:
   - world
@@ -106,6 +110,7 @@ label:
     - "IllnessProbability:Illness Probability"
     - "MedicineDuration:Medicine Duration"
     - "Hungery:Hungry"
+    - "Strainer:Strainer"
       
 workbenchs:
   workbenchs-type:
@@ -141,6 +146,17 @@ workbenchs:
       front-block: null
       behind-block: null
 
+strainer:
+  - "Seawater:10"
+  - "HotLakeWater:10"
+  - "HotWater:10"
+  - "IceLakeWater:10"
+  - "IceSeawater:10"
+  - "IceWater:10"
+  - "LakeWater:10"
+  - "Rainwater:10"
+  - "SwampWater:10"
+  
 effect:
   food-effects:
     foods:

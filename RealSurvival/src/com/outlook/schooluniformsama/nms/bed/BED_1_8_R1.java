@@ -1,14 +1,14 @@
 package com.outlook.schooluniformsama.nms.bed;
 
 import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_8_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import net.minecraft.server.v1_11_R1.BlockPosition;
-import net.minecraft.server.v1_11_R1.PacketPlayOutAnimation;
-import net.minecraft.server.v1_11_R1.PacketPlayOutBed;
+import net.minecraft.server.v1_8_R1.BlockPosition;
+import net.minecraft.server.v1_8_R1.PacketPlayOutAnimation;
+import net.minecraft.server.v1_8_R1.PacketPlayOutBed;
 
-public class BED_1_11_2_R1 implements BedNMS{
+public class BED_1_8_R1 implements BedNMS{
 	
 	private PacketPlayOutAnimation ppoa;
 	private PacketPlayOutBed ppob;

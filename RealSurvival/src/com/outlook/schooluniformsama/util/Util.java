@@ -8,10 +8,16 @@ import com.outlook.schooluniformsama.data.timer.Timer;
 
 public class Util{
 	
+	/**
+	 * Get the workbench timer ID
+	 * */
 	public static String getWorkbenchID(Timer tt){
 		return tt.getWorldName()+tt.getX()+tt.getY()+tt.getZ();
 	}
 	
+	/**
+	 * Get the workbench timer ID
+	 * */
 	public static String getWorkbenchID(Block b){
 		return b.getWorld().getName()+b.getX()+b.getY()+b.getZ();
 	}

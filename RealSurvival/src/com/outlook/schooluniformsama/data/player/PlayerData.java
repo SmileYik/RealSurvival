@@ -147,7 +147,7 @@ public class PlayerData {
 				new Illnesses(illness, data.getDouble("illnesses.illnessesBuff"), data.getInt("illnesses.illnessesLevel"), data.getDouble("illnesses.addIllnesses")));
 	}
 	
-	public void sendData(){
+	public void sendData(Player p){
 		String body;
 		String illnessData="";
 		if(illness.isIllness()){
@@ -156,21 +156,21 @@ public class PlayerData {
 				illnessData+=i.getName()+":\n";
 				illnessData+="  "+Msg.getMsg("recovery", new String[]{"%recovery%"},new String[]{Util.ReservedDecimalPlaces(i.getRecovery(),2)},false)+"\n";
 				if(i.isTakeMedicine()){
-					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%bool%"},new String[]{Msg.getMsg("yes", false)},false)+"\n";
-					illnessData+="    "+Msg.getMsg("medicine-efficacy", new String[]{"%me%"},new String[]{Util.ReservedDecimalPlaces(i.getMedicineEfficacy(),2)},false)+"\n";
-					illnessData+="    "+Msg.getMsg("duratio", new String[]{"%time%"},new String[]{i.getDuratio()+""},false)+"\n";
+					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("yes1", false)},false)+"\n";
+					illnessData+="  "+Msg.getMsg("medicine-efficacy", new String[]{"%me%"},new String[]{Util.ReservedDecimalPlaces(i.getMedicineEfficacy(),2)},false)+"\n";
+					illnessData+="  "+Msg.getMsg("duratio", new String[]{"%time%"},new String[]{i.getDuratio()+""},false)+"\n";
 				}else{
-					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%bool%"},new String[]{Msg.getMsg("no", false)},false)+"\n";
+					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("not1", false)},false)+"\n";
 				}
 			}
-			illnessData=illnessData.substring(0, illnessData.length()-2);
+			illnessData=illnessData.substring(0, illnessData.length()-1);
 		}
 		else{
 			body=Msg.getMsg("body2", false);
 		}
 		
-		Msg.sendRandomArrayToPlayer(Bukkit.getPlayer(uuid), "player-data", new String[]{"%Player%","%thirst%","%sleep%","%energy%","%temperature%","%body%","%weight%","illnesses"}, 
-				new String[]{Bukkit.getPlayer(uuid).getName(),Util.ReservedDecimalPlaces(thirst.getThirst(), 2),Util.ReservedDecimalPlaces(sleep.getSleep(), 2),Util.ReservedDecimalPlaces(energy.getEnergy(), 2),
+		Msg.sendRandomArrayToPlayer(p, "player-data", new String[]{"%body%","%Player%","%thirst%","%sleep%","%energy%","%temperature%","%body%","%weight%","%illnesses%"}, 
+				new String[]{body,Bukkit.getPlayer(uuid).getName(),Util.ReservedDecimalPlaces(thirst.getThirst(), 2),Util.ReservedDecimalPlaces(sleep.getSleep(), 2),Util.ReservedDecimalPlaces(energy.getEnergy(), 2),
 						Util.ReservedDecimalPlaces(temperature.getTemperature(), 2),body,Util.ReservedDecimalPlaces(weight.getWeight(), 2),illnessData}, false);
 	}
 	

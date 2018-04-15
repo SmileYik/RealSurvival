@@ -14,14 +14,14 @@ public class EnergyTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			if(p==null || pd==null || p.isDead())return;
 			if(p.isSneaking()){
-				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[3]),true)){
+				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[3]),Data.enablePrefixInTitle)){
 					p.setSneaking(false);
 				}
 			}else if(p.isSprinting()){
-				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[4]),true))
+				if(!Msg.sendTitleToPlayer(p, pd.getEnergy().change(-Data.energy[4]),Data.enablePrefixInTitle))
 					p.setSprinting(false);
 			}else{
-				Msg.sendTitleToPlayer(p, pd.getEnergy().change(Data.energy[2]),true);
+				Msg.sendTitleToPlayer(p, pd.getEnergy().change(Data.energy[2]),Data.enablePrefixInTitle);
 			}
 		}
 	}

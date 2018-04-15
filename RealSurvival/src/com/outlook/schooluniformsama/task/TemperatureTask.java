@@ -20,7 +20,7 @@ public class TemperatureTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			
 			if(p==null || pd==null || p.isDead())return;
-			Msg.sendTitleToPlayer(p, pd.getTemperature().change(getApparentTemperature(p.getLocation(),getTemFix(p.getInventory()))),true);
+			Msg.sendTitleToPlayer(p, pd.getTemperature().change(getApparentTemperature(p.getLocation(),(Data.versionData[0] >= 9)?getTemFix(p.getInventory()):getTemFixLow(p.getInventory()))),Data.enablePrefixInTitle);
 		}
 	}
 	
@@ -41,30 +41,38 @@ public class TemperatureTask implements Runnable{
 	private double getTemFix(PlayerInventory inv){
 		int amount = 0;
 		double fix = 0;
-		for(ItemStack is : inv.getContents()){
+		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
 			if(temp!=ItemLoreData.badCode())fix+=temp;
 			amount++;
 		}
-		ItemStack is = inv.getItemInOffHand();
-		if(!(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())){
+		
+			ItemStack is = inv.getItemInOffHand();
+			if(!(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())){
+				double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
+				if(temp!=ItemLoreData.badCode())fix+=temp;
+				amount++;
+			}
+			
+
+		return amount==0?1:fix/amount/100;
+	}
+	
+	private double getTemFixLow(PlayerInventory inv){
+		int amount = 0;
+		double fix = 0;
+		for(ItemStack is : inv.getArmorContents()){
+			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
 			if(temp!=ItemLoreData.badCode())fix+=temp;
 			amount++;
 		}
-		is = inv.getItemInMainHand();
-		if(!(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())){
-			double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
-			if(temp!=ItemLoreData.badCode())fix+=temp;
-			amount++;
-		}
-		return fix/amount/100;
+		return amount==0?1:fix/amount/100;
 	}
 	
 	
 	/*
-	 * 
 	 * The computation of the heat index is a refinement of a result obtained by multiple regression analysis carried out by Lans P. Rothfusz and described in a 1990 National Weather Service (NWS) Technical Attachment (SR 90-23).  The regression equation of Rothfusz is
 		HI = -42.379 + 2.04901523*T + 10.14333127*RH - .22475541*T*RH - .00683783*T*T - .05481717*RH*RH + .00122874*T*T*RH + .00085282*T*RH*RH - .00000199*T*T*RH*RH
 		where T is temperature in degrees F and RH is relative humidity in percent.  HI is the heat index expressed as an apparent temperature in degrees F.  If the RH is less than 13% and the temperature is between 80 and 112 degrees F, then the following adjustment is subtracted from HI:
@@ -88,7 +96,6 @@ public class TemperatureTask implements Runnable{
 			if(RH<13&&T>=80&&T<112) HI-=((13-RH)/4)*Math.sqrt((17-Math.abs(T-95.))/17);
 			else if(RH>=85&&T>=80&&T<87) HI+= ((RH-85)/10) * ((87-T)/5);
 		}
-		System.out.println(T+ "  "+RH+"  "+HI + " "+ (HI-32)*5/9);
 		return (HI-32)*5/9;
 	}
 	

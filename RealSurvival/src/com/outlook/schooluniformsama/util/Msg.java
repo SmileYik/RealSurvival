@@ -79,7 +79,7 @@ public class Msg {
 		List<String> list = msg.getStringList("list."+id);
 		String msg = list.get((int)Util.randomNum(0, list.size()-1));
 		for(int i=0;i<variable.length;i++)
-			msg=msg.replaceAll(variable[i], value[i]);
+			msg=msg.replace(variable[i], value[i]);
 		if(addPrefix)
 			return getPrefix()+msg;
 		return msg;
@@ -96,7 +96,7 @@ public class Msg {
 	public static String getMsg(String id,String[] variable ,String[] value,boolean addPrefix){
 		String m=msg.getString("line."+id);
 		for(int i=0;i<variable.length;i++)
-			m=m.replaceAll(variable[i], value[i]);
+			m=m.replace(variable[i], value[i]);
 		if(addPrefix)
 			return getPrefix()+m;
 		return m;
@@ -113,7 +113,7 @@ public class Msg {
 		String lines="";
 		for(String temp:msg.getStringList(id)){
 			for(int i=0;i<variable.length;i++)
-				temp=temp.replaceAll(variable[i], value[i]);
+				temp=temp.replace(variable[i], value[i]);
 			lines+=temp+"\n";
 		}
 		if(addPrefix)

@@ -86,4 +86,10 @@ public class Data {
 	
 	public static NBTItem nbtitem;
 	public static BedNMS bnms;
+	
+	public static boolean enablePrefixInTitle;
+	public static HashMap<String, Integer> strainer=new HashMap<>();
+	public static long stateCD;
+	/**v1_[0]_R[1]*/
+	public static int versionData[];
 }

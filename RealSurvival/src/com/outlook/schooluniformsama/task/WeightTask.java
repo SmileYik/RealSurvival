@@ -34,7 +34,7 @@ public class WeightTask implements Runnable{
 				}else if(Data.itemData.containsKey(is.getType().name()))
 					weight+=Data.itemData.get(is.getType().name()).getWeight()*is.getAmount();
 			}
-			Msg.sendRandomTitleToPlayer(p, pd.getWeight().setWeight(weight),true);
+			Msg.sendRandomTitleToPlayer(p, pd.getWeight().setWeight(weight),Data.enablePrefixInTitle);
 		}
 	}
 }

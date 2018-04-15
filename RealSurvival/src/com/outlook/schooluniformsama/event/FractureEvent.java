@@ -24,7 +24,7 @@ public class FractureEvent implements Listener{
 			//Severe
 			if(fall>=Data.fracture[2]){
 				if(pd.getIllness().addIllness(Msg.getMsg("Severe", false),Data.fracture[3],Msg.getMsg("Slight", false))){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, true);
+					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
 					return;
 				}
 			}
@@ -32,11 +32,11 @@ public class FractureEvent implements Listener{
 			if(fall>=Data.fracture[0]){
 				if(pd.getIllness().getIllness().containsKey(Msg.getMsg("Severe", false))){
 					if(pd.getIllness().addIllness(Msg.getMsg("Severe", false),Data.fracture[1],Msg.getMsg("Slight", false))){
-						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, true);
+						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
 						return;
 					}
 				}else if(pd.getIllness().addIllness(Msg.getMsg("Slight", false),Data.fracture[1],null)){
-						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, true);
+						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, Data.enablePrefixInTitle);
 						return;
 				}
 			}
@@ -44,15 +44,15 @@ public class FractureEvent implements Listener{
 			
 			if(pd.getIllness().getIllness().containsKey(Msg.getMsg("Severe", false))){
 				if(pd.getIllness().addIllness(Msg.getMsg("Severe", false),Data.fracture[4],Msg.getMsg("Slight", false))){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, true);
+					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
 					return;
 				}
 			}else if(pd.getIllness().addIllness(Msg.getMsg("Slight", false),Data.fracture[4],null)){
 				if(pd.getIllness().addIllness(Msg.getMsg("Severe", false),Data.fracture[5],Msg.getMsg("Slight", false))){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, true);
+					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
 					return;
 				}
-				Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, true);
+				Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, Data.enablePrefixInTitle);
 				return;
 			}
 		}

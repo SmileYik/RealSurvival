@@ -39,8 +39,18 @@ public class RandomDayTask implements Runnable{
 	
 	@Test
 	public void test(){
+		//print all of biomes
 		for(Biome b: Biome.values())
 			System.out.println("    "+b.name().toLowerCase()+": 1.0");
+	}
+	
+	private void save(){
+		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/randomday.yml"));
+		config.set("data.day", todayData[0]);
+		config.set("data.humidity", todayData[1]);
+		config.set("data.wind-speed", todayData[2]);
+		config.set("data.frequency", todayData[3]);
+		config.set("data.base-temperature", todayData[4]);
 	}
 	
 	private void writerYml(){
@@ -87,47 +97,47 @@ public class RandomDayTask implements Runnable{
 		
 		spring = new double[]{
 				config.getDouble("setting.season.spring.duration"),
-				Double.parseDouble(config.getString("setting.season.spring.humidity").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.humidity").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.frequency").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.frequency").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("-")[1]),
+				Double.parseDouble(config.getString("setting.season.spring.humidity").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.spring.humidity").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.spring.frequency").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.spring.frequency").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("--")[1]),
 		};
 		summer = new double[]{
 				config.getDouble("setting.season.summer.duration"),
-				Double.parseDouble(config.getString("setting.season.summer.humidity").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.humidity").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.frequency").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.frequency").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("-")[1]),
+				Double.parseDouble(config.getString("setting.season.summer.humidity").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.summer.humidity").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.summer.frequency").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.summer.frequency").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("--")[1]),
 		};
 		autumn = new double[]{
 				config.getDouble("setting.season.autumn.duration"),
-				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("-")[1]),
+				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("--")[1]),
 		};
 		winter = new double[]{
 				config.getDouble("setting.season.winter.duration"),
-				Double.parseDouble(config.getString("setting.season.winter.humidity").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.humidity").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.frequency").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.frequency").split("-")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("-")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("-")[1]),
+				Double.parseDouble(config.getString("setting.season.winter.humidity").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.winter.humidity").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.winter.frequency").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.winter.frequency").split("--")[1]),
+				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("--")[0]),
+				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("--")[1]),
 		};
 		
 		temperaturefix = new double[]{
@@ -144,7 +154,6 @@ public class RandomDayTask implements Runnable{
 				config.getDouble("data.frequency"),
 				config.getDouble("data.base-temperature"),
 		};
-		System.out.println(todayData);
 		
 		for(Biome biome: Biome.values()){
 			double temperature = config.getDouble("setting.biome-temperature."+biome.name().toLowerCase(), ItemLoreData.badCode());
@@ -160,6 +169,7 @@ public class RandomDayTask implements Runnable{
 	public void run() {
 		todayData = tomorrowData;
 		randomTomorrow();
+		save();
 	}
 	
 	public void randomTomorrow(){

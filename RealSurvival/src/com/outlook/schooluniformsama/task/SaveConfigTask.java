@@ -46,10 +46,8 @@ public class SaveConfigTask implements Runnable{
 					dataC.set(entry.getKey()+".extra", ft.getExtraTemperature());
 					dataC.set(entry.getKey()+".isBad", ft.isBad());
 					break;
-				case WORKBENCH:
-					break;
-				case RAINWATER_COLLECTOR:
-					break;
+			default:
+				break;
 			}
 			
 		}

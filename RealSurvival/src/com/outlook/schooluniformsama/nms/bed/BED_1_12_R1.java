@@ -8,7 +8,7 @@ import net.minecraft.server.v1_12_R1.BlockPosition;
 import net.minecraft.server.v1_12_R1.PacketPlayOutAnimation;
 import net.minecraft.server.v1_12_R1.PacketPlayOutBed;
 
-public class BED_1_12_2_R1 implements BedNMS{
+public class BED_1_12_R1 implements BedNMS{
 	
 	private PacketPlayOutAnimation ppoa;
 	private PacketPlayOutBed ppob;

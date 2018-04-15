@@ -5,13 +5,15 @@ import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.UUID;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.item.NBTItemData;
 import com.outlook.schooluniformsama.data.item.RSItem;
+import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.recipes.*;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
 import com.outlook.schooluniformsama.event.basic.TempData;
@@ -22,7 +24,14 @@ import com.outlook.schooluniformsama.util.Util;
 
 import org.bukkit.*;
 
-public class Commands {
+public class Commands_1_9_UP {
+	
+	private LinkedList<UUID> stateCD = new LinkedList<>();
+	private Plugin plugin;
+	public Commands_1_9_UP(Plugin plugin) {
+		this.plugin=plugin;
+	}
+	
 	private Integer isInt(Player p,String num,int index){
 		int n;
 		try {
@@ -104,20 +113,23 @@ public class Commands {
 	@Command(cmd = "help",des="HelpDes",type="Help")
 	public void help(Player p,String args[]){}
 	
-	@Command(cmd="help",childCmds={"search"},args={"[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin")
+	@Command(cmd = "help",args={"item"},des="ItemHelpDes",type="Help")
+	public void helpItem(Player p,String args[]){}
+	
+	@Command(cmd="shelp",args={"[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin")
 	public void helpSearch(Player p,String args[]){
 		
-		if(args.length!=3){
+		if(args.length!=2){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
 			return;
 		}
 		
-		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[2]}, true));//以下是关于type的信息
-		for(Method method:Commands.class.getDeclaredMethods()){
+		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
+		for(Method method:Commands_1_9_UP.class.getDeclaredMethods()){
 			if(!method.isAnnotationPresent(Command.class))
 				continue;
 			Command cmd=method.getAnnotation(Command.class);
-			if(!(cmd.type().toLowerCase().contains(args[2].toLowerCase()) || cmd.cmd().equalsIgnoreCase(args[2]) || Msg.getMsg(cmd.des(), false).toLowerCase().contains(args[2].toLowerCase())))
+			if(!(cmd.type().toLowerCase().contains(args[1].toLowerCase()) || cmd.cmd().equalsIgnoreCase(args[1]) || Msg.getMsg(cmd.des(), false).toLowerCase().contains(args[1].toLowerCase())))
 				continue;
 			if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 				continue;
@@ -132,7 +144,7 @@ public class Commands {
 		}
 	}
 	
-	@Command(cmd = "help",args={"workbench"},des="WorkbenchHelpDes",type="Help")
+	@Command(cmd = "help",args={"workbench"},des="WorkbenchHelpDes",type="Help",permissions = "RealSurvival.Admin")
 	public void workbenchHelp(){}
 	
 	//TODO create recipe
@@ -425,5 +437,42 @@ public class Commands {
 		
 		im.setLore(Lore);
 		p.getInventory().getItemInMainHand().setItemMeta(im);
+	}
+	
+	//state command
+	@Command(cmd = "states",args={"[PlayerName]"},des = "StatePlayerDes",type = "Item",permissions = "RealSurvival.Admin")
+	public void statePlayer(Player p, String args[]){
+		if(args.length!=2){
+			Msg.sendMsgToPlayer(p, "BadCmd", true);
+			return;
+		}
+		Player temp = plugin.getServer().getPlayer(args[1]);
+		if(temp.isOnline()){
+			Data.playerData.get(temp.getUniqueId()).sendData(p);
+		}else{
+		    Msg.sendMsgToPlayer(p, "player-is-offline", new String[]{"%player%"},new String[]{temp.getName()},true);
+		}
+		
+		
+	}
+	
+	
+	//player command
+	@Command(cmd = "state",des = "StateDes",type = "HELP",permissions="")
+	public void getState(Player p, String args[]){
+		if(stateCD.contains(p.getUniqueId())){
+			Msg.sendMsgToPlayer(p, "state-command-cooldown", true);
+			return;
+		}
+		PlayerData pd = Data.playerData.get(p.getUniqueId());
+		pd.sendData(p);
+		if(!p.isOp()){
+			stateCD.addLast(p.getUniqueId());
+			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+				public void run() {
+					stateCD.removeFirst();
+				}
+			}, Data.stateCD);
+		}
 	}
 }

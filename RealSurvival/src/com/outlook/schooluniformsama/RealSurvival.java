@@ -14,7 +14,9 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.outlook.schooluniformsama.command.Commands;
+import com.outlook.schooluniformsama.command.Commands_1_9_UP;
+import com.outlook.schooluniformsama.command.CommandsType;
+import com.outlook.schooluniformsama.command.Commands_1_8;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.effect.Effect;
@@ -27,6 +29,7 @@ import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
 import com.outlook.schooluniformsama.data.timer.Timer;
 import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.event.DamageEvent;
@@ -35,6 +38,7 @@ import com.outlook.schooluniformsama.event.FractureEvent;
 import com.outlook.schooluniformsama.event.SitEvent;
 import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.event.ThirstEvent;
+import com.outlook.schooluniformsama.event.ThirstEvent_1_8;
 import com.outlook.schooluniformsama.event.basic.*;
 import com.outlook.schooluniformsama.nms.bed.*;
 import com.outlook.schooluniformsama.nms.item.*;
@@ -58,7 +62,8 @@ import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 
 public class RealSurvival extends JavaPlugin{
 	
-	private Commands cmds=new Commands();
+	private Object cmds;
+	private CommandsType cmdsType;
 	
 	@Override
 	public void onEnable() {
@@ -102,12 +107,36 @@ public class RealSurvival extends JavaPlugin{
 	private void getNMS(){
 		switch (getVersion()) {
 		case "v1_11_R1":
-			Data.bnms=new BED_1_11_2_R1();
-			Data.nbtitem=new Item_1_11_2_R1();
+			Data.bnms=new BED_1_11_R1();
+			Data.nbtitem=new Item_1_11_R1();
 			break;
 		case "v1_12_R1":
-			Data.bnms=new BED_1_12_2_R1();
-			Data.nbtitem=new Item_1_12_2_R1();
+			Data.bnms=new BED_1_12_R1();
+			Data.nbtitem=new Item_1_12_R1();
+			break;
+		case "v1_10_R1":
+			Data.bnms=new BED_1_10_R1();
+			Data.nbtitem=new Item_1_10_R1();
+			break;
+		case "v1_9_R1":
+			Data.bnms=new BED_1_9_R1();
+			Data.nbtitem=new Item_1_9_R1();
+			break;
+		case "v1_9_R2":
+			Data.bnms=new BED_1_9_R2();
+			Data.nbtitem=new Item_1_9_R2();
+			break;
+		case "v1_8_R1":
+			Data.bnms=new BED_1_8_R1();
+			Data.nbtitem=new Item_1_8_R1();
+			break;
+		case "v1_8_R2":
+			Data.bnms=new BED_1_8_R2();
+			Data.nbtitem=new Item_1_8_R2();
+			break;
+		case "v1_8_R3":
+			Data.bnms=new BED_1_8_R3();
+			Data.nbtitem=new Item_1_8_R3();
 			break;
 		default:
 			break;
@@ -128,13 +157,13 @@ public class RealSurvival extends JavaPlugin{
 			if(args.length==2){
 				if(args[0].equalsIgnoreCase("help")){
 					p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
-					for(Method method:Commands.class.getDeclaredMethods()){
+					for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 							continue;
 						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
 						if(!cmd.type().equalsIgnoreCase(args[1].toLowerCase()))
 							continue;
-						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+						if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
 							continue;
 						String arg="";
 						if(cmd.childCmds()[0]!="")
@@ -150,13 +179,13 @@ public class RealSurvival extends JavaPlugin{
 			}else if(args.length==1){
 				if(args[0].equalsIgnoreCase("help")){
 					p.sendMessage(Msg.getMsg("Help1", true));
-					for(Method method:Commands.class.getDeclaredMethods()){
+					for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 							continue;
 						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
 						if(!cmd.type().equalsIgnoreCase("HELP"))
 							continue;
-						if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+						if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
 							continue;
 						String arg="";
 						if(cmd.childCmds()[0]!="")
@@ -172,13 +201,13 @@ public class RealSurvival extends JavaPlugin{
 				}
 			}else if(args.length==0){
 				p.sendMessage(Msg.getMsg("Help1", true));
-				for(Method method:Commands.class.getDeclaredMethods()){
+				for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 					if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 						continue;
 					com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
 					if(!cmd.type().equalsIgnoreCase("HELP"))
 						continue;
-					if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
+					if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
 						continue;
 					String arg="";
 					if(cmd.childCmds()[0]!="")
@@ -192,7 +221,7 @@ public class RealSurvival extends JavaPlugin{
 				}
 				return true;
 			}
-			for(Method method:Commands.class.getDeclaredMethods()){
+			for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 				if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 					continue;
 				com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
@@ -208,7 +237,7 @@ public class RealSurvival extends JavaPlugin{
 						}
 					if(isc)continue;
 				}
-				if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions()))){
+				if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions()))){
 					p.sendMessage(Msg.getMsg("NoPermissions", true));
 					return true;
 				}
@@ -251,10 +280,20 @@ public class RealSurvival extends JavaPlugin{
 		if(!new File(getDataFolder()+File.separator+"timer.yml").exists())
 			try {new File(getDataFolder()+File.separator+"timer.yml").createNewFile();}catch (IOException e1) {}
 		
+		Data.versionData = new int[]{Integer.parseInt(RealSurvival.getVersion().split("_")[1]),Integer.parseInt(RealSurvival.getVersion().split("_")[1].replace("R", ""))};
+		if(Data.versionData[0]>8){
+			cmds = new Commands_1_9_UP(this);
+			cmdsType = CommandsType.Commands_1_9_UP;
+		}else if(Data.versionData[0]==8){
+			cmds = new Commands_1_8(this);
+			cmdsType = CommandsType.Commands_1_8;
+		}
 	}
 	
 	private void loadConfig(){
 		Data.worlds=getConfig().getStringList("worlds");
+		Data.enablePrefixInTitle = getConfig().getBoolean("enable-prefix-in-title");
+		Data.stateCD = getConfig().getLong("state-cd");
 		
 		Data.switchs[0]=getConfig().getBoolean("create-random-data.enable");
 		Data.switchs[1]=getConfig().getBoolean("death.enable");
@@ -375,6 +414,8 @@ public class RealSurvival extends JavaPlugin{
 				l.add(new Effect(effects.split(",")[0], Integer.parseInt(effects.split(",")[1]), Integer.parseInt(effects.split(",")[2])));
 			Data.illnessEffects.put(effect.split(":")[0],l );
 		}
+		for(String strainer:getConfig().getStringList("strainer"))
+			Data.strainer.put(strainer.split(":")[0], Integer.parseInt(strainer.split(":")[1]));
 		
 		
 		File path=new File(this.getDataFolder()+File.separator+"recipe/workbench/");
@@ -412,8 +453,9 @@ public class RealSurvival extends JavaPlugin{
 					Data.timer.put(key, wt);
 					break;
 			case RAINWATER_COLLECTOR:
-				break;
-			default:
+				RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
+				rct.start(timer.getInt(key+".time"));
+				Data.timer.put(key, rct);
 				break;
 			}
 		}
@@ -422,6 +464,7 @@ public class RealSurvival extends JavaPlugin{
 			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
 	}
 	
+	/**v1_11_R1*/
 	public static String getVersion(){
 		String version;
         try {
@@ -445,20 +488,22 @@ public class RealSurvival extends JavaPlugin{
 	//Register Listeners
 	private void registerListeners(){
 		getServer().getPluginManager().registerEvents(new BasicEvent(), this);
-		getServer().getPluginManager().registerEvents(new CraftItemEvent(), this);
-		getServer().getPluginManager().registerEvents(new UseItemEvent(), this);
-		getServer().getPluginManager().registerEvents(new CreateWorkbenchEvent(), this);
+		if(Data.versionData[0]>8)getServer().getPluginManager().registerEvents(new CraftItemEvent(), this);
+		else getServer().getPluginManager().registerEvents(new CraftItemEvent_1_8(), this);
+		if(Data.versionData[0]>8)getServer().getPluginManager().registerEvents(new UseItemEvent(), this);
+		else getServer().getPluginManager().registerEvents(new UseItemEvent_1_8(), this);
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EffectTask(this), 20L, 20L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorkbenchTask(), 20L, 20L);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SaveConfigTask(), 20L, 60*20L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SaveConfigTask(), 20L, 600*20L);
 		
 		if(Data.switchs[2]){
 			getServer().getPluginManager().registerEvents(new SleepEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);
 		}
 		if(Data.switchs[3]){
-			getServer().getPluginManager().registerEvents(new ThirstEvent(), this);
+			if(Data.versionData[0]<=8) getServer().getPluginManager().registerEvents(new ThirstEvent_1_8(), this);
+			else getServer().getPluginManager().registerEvents(new ThirstEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ThirstTask(), 20L, 1*20L);
 		}
 		if(Data.switchs[4]){

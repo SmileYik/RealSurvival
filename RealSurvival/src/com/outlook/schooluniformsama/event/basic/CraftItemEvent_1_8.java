@@ -17,7 +17,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,7 +39,7 @@ import com.outlook.schooluniformsama.task.TemperatureTask;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
-public class CraftItemEvent implements Listener{
+public class CraftItemEvent_1_8 implements Listener{
 	@EventHandler
 	public void openCarftTable(InventoryClickEvent e){
 		
@@ -261,12 +260,7 @@ public class CraftItemEvent implements Listener{
 			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(Util.getWorkbenchID(e.getClickedBlock()));
 			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){Msg.sendTitleToPlayer(e.getPlayer(),"rainwater-not-yours", Data.enablePrefixInTitle); return ;}
 			if(!Msg.sendTitleToPlayer(e.getPlayer(), rct.hasWater(), Data.enablePrefixInTitle)){
-				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
-				}else{
-					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-				}
+				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				rct.removeWater(1);
 				givePlayerItem(e.getPlayer(), Items.getWater("Rainwater"));
 			}
@@ -320,12 +314,7 @@ public class CraftItemEvent implements Listener{
 					strainer.setItemMeta(im);
 					down.setItem(2,strainer);
 				}
-				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
-				}else{
-					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-				}
+				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				if(((String)allData[3]).contains("Ice")) givePlayerItem(e.getPlayer(), Items.getWater("IceWater"));
 				else if(((String)allData[3]).contains("Hot")) givePlayerItem(e.getPlayer(), Items.getWater("HotWater"));
 				else givePlayerItem(e.getPlayer(), Items.getWater("Freshwater"));

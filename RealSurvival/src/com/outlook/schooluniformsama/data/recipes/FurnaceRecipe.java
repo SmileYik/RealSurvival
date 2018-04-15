@@ -225,7 +225,7 @@ public class FurnaceRecipe extends Recipe{
 		index=0;
 		while(index!=3)
 			inv.setItem(Furnace.pSlot.get(index), product[index++]);
-		inv.setItem(4, Items.createPItem((short)0, " "));
+		inv.setItem(4, Items.createPItem((short)15, " "));
 		return inv;
 	}
 	

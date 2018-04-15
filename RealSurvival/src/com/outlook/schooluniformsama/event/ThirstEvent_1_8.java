@@ -9,22 +9,19 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
 
-public class ThirstEvent implements Listener{
+public class ThirstEvent_1_8 implements Listener{
 
 	@EventHandler
 	public void getWater(PlayerInteractEvent e){
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR)
 				||e.getMaterial()!=Material.GLASS_BOTTLE)return;
-		if((Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)))
-			if(!e.getHand().equals(EquipmentSlot.HAND))return;
 		Block block=e.getPlayer().getWorld().getBlockAt(e.getPlayer().getTargetBlock((Set<Material>)null, 6).getLocation()); 
 		if(!(block.getType()==Material.WATER||block.getType()==Material.STATIONARY_WATER))return;
 		e.setCancelled(true);
@@ -96,7 +93,7 @@ public class ThirstEvent implements Listener{
 	
 	private void givePlayerWater(String name,Player p,ItemStack glass){
 		glass.setAmount(glass.getAmount()-1);
-		p.getInventory().setItemInMainHand(glass);
+		p.getInventory().setItemInHand(glass);
 		CraftItemEvent.givePlayerItem(p, Items.getWater(name));
 	}
 }

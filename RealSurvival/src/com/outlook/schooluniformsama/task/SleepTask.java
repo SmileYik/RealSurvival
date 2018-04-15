@@ -19,12 +19,12 @@ public class SleepTask implements Runnable{
 			if(pd.getSleep().isHasSleep()){
 				byte lightLevel = p.getWorld().getBlockAt(p.getLocation()).getLightLevel();
 				if(lightLevel>10)
-					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]*0.2),true);
+					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]*0.2),Data.enablePrefixInTitle);
 				else if(lightLevel>5)
-					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]*0.5),true);
+					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]*0.5),Data.enablePrefixInTitle);
 				else
-					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]),true);
-			}else if(!Msg.sendTitleToPlayer(p, pd.getSleep().change(-Data.sleep[3]),true)){
+					Msg.sendTitleToPlayer(p, pd.getSleep().change(Data.sleep[4]),Data.enablePrefixInTitle);
+			}else if(!Msg.sendTitleToPlayer(p, pd.getSleep().change(-Data.sleep[3]),Data.enablePrefixInTitle)){
 				//TODO When Player was very tired
 				
 				/*Location loc = p.getLocation();

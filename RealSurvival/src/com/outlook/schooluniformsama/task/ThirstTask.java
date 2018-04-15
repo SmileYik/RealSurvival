@@ -16,7 +16,7 @@ public class ThirstTask implements Runnable{
 			
 			if(p==null || pd==null || p.isDead())return;
 			
-			Msg.sendTitleToPlayer(p, pd.getThirst().change(-Data.thirst[3]),true);
+			Msg.sendTitleToPlayer(p, pd.getThirst().change(-Data.thirst[3]),Data.enablePrefixInTitle);
 		}
 	}
 	
