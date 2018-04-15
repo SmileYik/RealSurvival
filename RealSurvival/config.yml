@@ -172,17 +172,17 @@ effect:
           - "Cold:10%"
           - "Fever:10%"
   mob-effects:
-    - ZOMBIE:感冒,10%;生病,20%;骨折,5%
-    - WITHER_SKELETON:感冒,20%
-    - CREEPER:感冒,10%
-    - SKELETON:感冒,20%
-    - SPIDER:感冒,10%
-    - SLIME:感冒,20%
-    - ZOMBIE_PIGMAN:感冒,10%
-    - CAVE_SPIDER:感冒,20%
-    - WITCH:感冒,10%
-    - ZOMBIE_VILLAGER:感冒,20%
-    - ENDERMAN:感冒,10%
+    - ZOMBIE:Cold,10%;Ill,20%;Slight,5%
+    - WITHER_SKELETON:Cold,20%
+    - CREEPER:Cold,10%
+    - SKELETON:Cold,20%
+    - SPIDER:Cold,10%
+    - SLIME:Cold,20%
+    - ZOMBIE_PIGMAN:Cold,10%
+    - CAVE_SPIDER:Cold,20%
+    - WITCH:Cold,10%
+    - ZOMBIE_VILLAGER:Cold,20%
+    - ENDERMAN:Cold,10%
   illness-effects:
     - ThirstMin:WEAKNESS,130,3;WITHER,30,3
     - ThirstMax:SATURATION,130,1
@@ -193,7 +193,7 @@ effect:
     - Fever:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - AfterAteWrongMedicine:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-    - 生病:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-    - 骨折:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
-    - 严重骨折:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-    - 感冒:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
+    - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

@@ -74,7 +74,7 @@ public class RealSurvival extends JavaPlugin{
 		addPlayers();
 		@SuppressWarnings("unused")
 		Metrics metrics = new Metrics(this);
-		getLogger().info("加载完成");
+		getLogger().info("Successful loading");
 		checkUp();
 	}
 	
@@ -528,17 +528,17 @@ public class RealSurvival extends JavaPlugin{
 		//PlaceholderAPI
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
 			new Papi(this).hook();
-			getLogger().info("§9[RealSurvival] 成功加载PlaceholderAPI功能! ");
+			getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI! ");
 		}
 		//TitleManager
 		if(Bukkit.getPluginManager().isPluginEnabled("TitleManager")){
 			Data.tmapi = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
-			getLogger().info("§9[RealSurvival] 成功加载TitleManager功能! ");
+			getLogger().info("§9[RealSurvival] Successful loading TitleManager! ");
 		}
 		//Chairs
 		if(Bukkit.getPluginManager().isPluginEnabled("Chairs")){
 			getServer().getPluginManager().registerEvents(new SitEvent(), this);
-			getLogger().info("§9[RealSurvival] 成功加载Chairs功能! ");
+			getLogger().info("§9[RealSurvival] Successful loading Chairs! ");
 		}
 	}
 	
