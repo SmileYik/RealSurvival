@@ -1,0 +1,158 @@
+language: zh_CN
+prefix: "§9[RealSurvival]§f >"
+
+#/rs state
+player-data: 
+  - "§9===============%Player%==============="
+  - "    §b身体状况: %body%"
+  - "    §b睡 眠 度: %sleep% %"
+  - "    §b水    分: %thirst% %"
+  - "    §b体    温: %temperature% ℃"
+  - "    §b体    力: %energy% %"
+  - "    §b负    重: %weight% Kg"
+  - "§9====================================="
+  - "§9===============生病列表==============="
+  - "§b%illnesses%"
+  - "§9====================================="
+
+list:
+  weight-over:
+    - "§b我想,这超出了我的负重范围"
+    - "§b背包,好重..."
+    - "§b我要被压得喘不过气了."
+  efficacy-over:
+    - "§4治疗§b§l%sick%§4的药的药效过了..."
+    - "§b快去吃药好吧?"
+  recovery-sick:
+    - "§4§l%sick%§b成功被治愈了"
+    - "你不会再受到%sick%的困扰了"
+  Fracture:
+    - "§b你摔成了§4§l%sick%!"
+  HitByMob:
+    - "§b完了!你染上了§4§l%sick%!"
+  
+line:
+  body1: "§e生病"
+  body2: "§2正常"
+  yes1: "是"
+  not1: "否"
+  #Player State
+  is-take-medicine: "是否服药: %b1%"
+  duratio: "药效时间: %time% 秒"
+  medicine-efficacy: "药物效果: 每次恢复 %me% %"
+  recovery: "恢复程度: %recovery%%"
+#Slight
+  Severe: "严重骨折"
+  Slight: "骨折"
+# RainwaterCollector GUI & Message
+  RainwaterCollectorTitle: "§2§l雨水收集器"
+  RainwaterCollectorError1: "§c这个雨水收集器不属于你!"
+  rainwater-not-yours: "这里面的雨水不是你的!"
+  NoRainwater: "这个收集器里没有足够的雨水..."
+#PurificationDevice Message
+  strainer-not-enoug: "§4 没有找到净化器..."
+  strainer-cannot-continue: "§4 没有可以净化的东西了..."
+#Water Name
+  Seawater: "§b§l海水"
+  IceSeawater: "§2§l冰海水"
+  SwampWater: "§7§l沼泽水"
+  LakeWater: "§2§l湖水"
+  IceLakeWater: "§2§l冰湖水"
+  HotLakeWater: "§c§l热湖水"
+  Freshwater: "§2§l淡水"
+  HotWater: "§c§l热水"
+  IceWater: "§2§l冰水"
+  Rainwater: "§c§l雨水"
+  WriterWaterFailed: "§c§l 初始化水种失败!饮水部分无法继续使用!"
+#Sleep Messages
+  very-tired: "§2你感觉非常累...;§c你需要立马睡觉!"
+  tired: "§2你感觉有点累了."
+  spirit: "§b§l你感觉非常有精神!"
+  Sleeping: "如果要起床,请在聊天窗口输入 \"leave\" 即可起床!"
+  BedSoFar: "床离你太远了!"
+#Thirst Messages
+  thirst: "§3§l你开始感觉有点口渴了..."
+  dehydration: "§c§l你快要渴死了;§e要晒干了!!!"
+  full-of-moisture: "§b你感觉非常滋润!"
+#Temperature Messages
+  fever: "§4哦!发烧了!;§3§l你需要降温!"
+  cold: "§3§l你感觉太冷了...;§e不行!你需要烤火."
+#Energy Messages
+  no-energy: "§c你跑不动了!"
+  energt-fullly: "§c你又可以开始奔跑了"
+#Warkbench Messages
+  WorkbenchIsUsing: "§c这个工作台正在被%player%使用中!"
+  Exception: "§4制作的时候出了一个错误!"
+  CreateRecipeFailed: "§4创建配方失败!"
+  CreateRecipeSucceed: "§b创建配方成功!"
+  ReplaceRecipeFailed: "§4修改配方失败!"
+  ReplaceRecipeSucceed: "§b修改配方成功!"
+#Furnace GUI
+  FurnaceStart: "§b§l==>§c§l开始锻造§b§l<=="
+  FurnaceFailed: "§4制作过程中,失败了.."
+  FurnaceWatcher1: "§e需要大于: %minTemperature%℃"
+  FurnaceWatcher2: "§e需要小于: %minTemperature%℃"
+  FurnaceWatcher3: "§b需要时间: %time% 秒"
+  FurnaceFailedMsg: "§4制作过程中,失败了..你什么都没有得到,,,"
+  FurnaceWorkProgress+: "§e温度: §e§l%temperature% §e℃ | 需要大于: §e§l%minTemperature%℃ §e才可以进行锻造!"
+  FurnaceWorkProgress-: "§e温度: §e§l%temperature% §e℃ | 需要小于: §e§l%minTemperature%℃ §e才可以进行锻造!"
+  FurnaceTimeProgress: "§b制造进度: %timeProgress%% | 剩余%time%秒制造完成"
+  FuranceSaveProgress: "§7离烧坏时间还剩%time%秒"
+#Workbench GUI
+  WorkbenchStart: "§b§l==>§c§l开始制造§b§l<=="
+  WorkbenchUndone: "§4当前物品未制作完成!"
+  WorkbenchProgress1: "§b已完成: %pass%%"
+  WorkbenchProgress2: "§b物品已经制作完成!"
+  #Commands Des
+  HelpDes: "查看本插件的帮助"
+  StateDes: "查看自身状态"
+  HelpDes2: "搜索与 [Text] 有关的指令"
+  ItemHelpDes: "查看关于Item的指令"
+  StatePlayerDes: "查看某个玩家现在的状态"
+  WorkbenchHelpDes: "查看关于工作台的指令帮助"
+  CreateFuranceRecipeDes: "创建一个新的熔炉配方."
+  CreateWorkbenchRecipeDes: "创建一个新的工作台配方"
+  ReplaceFuranceRecipeDataDes: "重新设置一个熔炉配方的数值"
+  UpdateDes: "更新RealSurvival至最新版本 (请备份好配置文件)"
+  CUpdateDes: "检查更新,并且查看更新信息"
+  UpdateInfoDes: "查看当前版本的更新内容"
+  ItemSaveDes: "将手上的物品保存到本地"
+  ItemLoadDes: "从本地读取一个物品"
+  ItemDeleteDes: "删除一个物品"
+  ItemSetNBTDes: "设定手中物品的属性值"
+  ItemSetLoreDes: "设定手中物品指定行的描述"
+  ItemAddLoreDes: "给手中物品增加一行描述"
+  ItemSetNBT2Des: "给手中物品增加行NBT"
+  ItemSetNameDes: "设定手中物品的名字"
+  ItemDeleteLoreDes: "移除手中物品的某一行描述"
+  ItemRemoveLoreDes: "移除手中物品的所有描述"
+  #Normer Command Message
+  NoPermissions: "§c§l抱歉,你没有权利这样做."
+  CommandNotFind: "§c§l抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"
+  IsNotPlayer: "§c§l抱歉,这个指令只能是玩家使用!"
+  NotDouble: "§c§l第§b%index%§c§l个参数应该为小数哦~"
+  NotInteger: "§c§l第§b%index%§c§l个参数应该为整数哦~"
+  BadCmd: "§c§l指令错误!"
+  #Help Commnad
+  Help1: "§b以下是本插件的信息: "
+  Help2: "§b以下是关于§c§l%type%§b的指令: "
+  #Update Command
+  CheckUpdateFailed: "检查更新失败!"
+  IsNewVersion: "这个版本已经是最新版本了,不需要更新!"
+  DownloadOver: "最新版本: %version% 已经下载完成,重新载入RealSurvival以启用它!"
+  HasNewVersion: "当前版本: %now-version%, 有最新版本: %version% ,如果需要进行更新请输入/rs update进行更新,更新前请先备份好RealSurvival数据!" 
+  WillDeleteConfig: "§c§l将会删除config.yml文件"
+  WillDeleteMessages: "§c§l将会删除messages.yml文件"
+  #Workbench Command
+  DeleteFailed: "物品删除失败"
+  ItemSaveF: "保存失败了..."
+  RecipeExists: "§c%name%§b§l这个配方已经存在了哦,不需要重新创建了!"
+  RecipeNotExists: "§c%name%§c§l这个配方不存在!"
+  #Item Command
+  ItemSaveE: "这个物品保存的名字与现有物品冲突了!"
+  NotFindItem: "没有找到这个物品."
+  HandIsNull: "你什么都没拿唉"
+  ItemSaveS: "你手上的物品成功保存为%name%"
+  #State Command
+  state-command-cooldown: "这个指令还在冷却中呢..."
+  player-is-offline: "%player% 现在不在线"

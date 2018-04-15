@@ -1,0 +1,199 @@
+language: zh_CN
+#Enable prefix in title
+enable-prefix-in-title: false
+#state command cooldown, unit trick(20 trick = 1 s)
+state-cd: 600
+#Enable worlds
+worlds:
+  - world
+  - world_nether
+  - world_the_end
+#Create a random data when a new player join server
+create-random-data:
+  enable: false
+  min: 0
+  max: 10
+#Set a player's state when the player was death.
+#"sleep" is set the death player's sleep number of the max sleep's 20%
+#"thirst" and "energy" as same as "sleep"
+#"temperature" is set the death player's temperature of a number that you want
+#If "illness"  was true ,It will remove the player's illness.
+death:
+  enable: true
+  sleep: 20
+  thirst: 20
+  energy: 20
+  temperature: 37
+  illness: true
+#"max" is the state's max number
+state:
+  sleep:
+    enable: true
+    max: 100
+    mid: 0.3
+    min: 0.15
+    sub: 0.05
+    add: 5
+  thirst:
+    enable: true
+    max: 100
+    mid: 0.5
+    min: 0.2
+    sub: 0.03
+  energy:
+    enable: true
+    max: 100
+    min: 0.2
+    add: 2
+    sneaking: 1
+    sprinting: 5
+    jumping: 5
+    swimming: 3
+  fracture:
+    enable: true
+    slight:
+      high: 3
+      chance: 20
+    severe:
+      high: 6
+      chance: 80
+    damage: 2
+    slight-chance: 10
+    severe-chance: 30
+  illness:
+    enable: true
+    default-illness: 
+      - cold
+      - fever
+  weight:
+    enable: true
+    max: 100
+    item:
+      - TORCH:0.1
+  temperature:
+    enable: true
+    long: 5
+    width: 5
+    high: 5
+    heat-source-fix: 100.0
+    distance-effect: 0.25
+    cold: 27
+    fever: 33
+    heat-source:
+      - FIRE:0.3
+      - TORCH:0.1
+      - FLOWING_LAVA:0.5
+      - STATIONARY_LAVA:0.5
+      - LAVA_BUCKET:0.5
+      - WATER:-0.3
+      - FLOWING_WATER:-0.3
+      - PACKED_ICE:-0.3
+      - ICE:-0.3
+      - FROSTED_ICE:-0.3
+      - SNOW_LAYER:-0.2
+      - SNOW:-0.5
+
+label:
+  split: "=>"
+  remove:
+    - "秒"
+    - "℃"
+  labels:
+    - "Thirst:Thirst"
+    - "Sleep:Sleep"
+    - "Energy:Energy"
+    - "Weight:Weight"
+    - "Illness:IllnessName"
+    - "Treatable:Treatable"
+    - "DrugEffect:Drug Effect"
+    - "Temperature:Temperature"
+    - "IllnessProbability:Illness Probability"
+    - "MedicineDuration:Medicine Duration"
+    - "Hungery:Hungry"
+    - "Strainer:Strainer"
+      
+workbenchs:
+  workbenchs-type:
+    - "workbench:WORKBENCH"
+    - "furnace:FURNACE"
+    - "steamer:FURNACE"
+  workbenchs:
+    workbench:
+      title: Workbench
+      main-block: WORKBENCH
+      left-block: BOOKSHELF
+      right-block: WORKBENCH
+      up-block: FURNACE
+      down-block: null
+      front-block: null
+      behind-block: null
+    furnace:
+      title: Furnace
+      main-block: FURNACE
+      left-block: BOOKSHELF
+      right-block: WORKBENCH
+      up-block: WORKBENCH
+      down-block: null
+      front-block: null
+      behind-block: null
+    steamer:
+      title: Steamer
+      main-block: FURNACE
+      left-block: BOOKSHELF
+      right-block: WORKBENCH
+      up-block: WORKBENCH
+      down-block: null
+      front-block: null
+      behind-block: null
+
+strainer:
+  - "Seawater:10"
+  - "HotLakeWater:10"
+  - "HotWater:10"
+  - "IceLakeWater:10"
+  - "IceSeawater:10"
+  - "IceWater:10"
+  - "LakeWater:10"
+  - "Rainwater:10"
+  - "SwampWater:10"
+  
+effect:
+  food-effects:
+    foods:
+      - "RAW_CHICKEN"
+    effects:
+      RAW_CHICKEN:
+        sleep: 5%
+        thirst: 5%
+        energy: 10
+        temperature: 0
+        has-illness: true
+        illnesses:
+          - "Cold:10%"
+          - "Fever:10%"
+  mob-effects:
+    - ZOMBIE:Cold,10%;Ill,20%;Slight,5%
+    - WITHER_SKELETON:Cold,20%
+    - CREEPER:Cold,10%
+    - SKELETON:Cold,20%
+    - SPIDER:Cold,10%
+    - SLIME:Cold,20%
+    - ZOMBIE_PIGMAN:Cold,10%
+    - CAVE_SPIDER:Cold,20%
+    - WITCH:Cold,10%
+    - ZOMBIE_VILLAGER:Cold,20%
+    - ENDERMAN:Cold,10%
+  illness-effects:
+    - ThirstMin:WEAKNESS,130,3;WITHER,30,3
+    - ThirstMax:SATURATION,130,1
+    - EnergyMin:SLOW,130,1;WEAKNESS,130,3
+    - SleepMin:SLOW,130,1;WEAKNESS,130,3
+    - SleepMax:SPEED,140,1;DAMAGE_RESISTANCE,130,1
+    - Weight:SLOW,300,3
+    - Fever:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - AfterAteWrongMedicine:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
+    - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

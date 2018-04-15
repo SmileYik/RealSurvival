@@ -1,0 +1,14 @@
+name: RealSurvival
+main: com.outlook.schooluniformsama.RealSurvival
+version: 0.1.9
+description: Let Minecraft be more real
+author: School_Uniform
+softdepend: [PlaceholderAPI,TitleManager,Chairs]
+commands:
+  rs:
+    description: 查看RealSurvival帮助
+    usage: /<command> help
+permissions: 
+  RealSurvival.Admin:
+    description: Use Admin Commands
+    default: op

@@ -1,0 +1,160 @@
+#Translation by DiLanNation
+
+language: en_US
+prefix: "§9[RealSurvival]§f >"
+
+#/rs state
+player-data: 
+  - "§9===============%Player%==============="
+  - "    §bBody_Situation: %body%"
+  - "    §bSpirit: %sleep% %"
+  - "    §bThirst: %thirst% %"
+  - "    §bBody_Temperature: %temperature% ℃"
+  - "    §bStrength: %energy% %"
+  - "    §bWeight: %weight% Kg"
+  - "§9====================================="
+  - "§9===============Illness==============="
+  - "§b%illnesses%"
+  - "§9====================================="
+
+list:
+  weight-over:
+    - "§bI think i can't bring it anymore"
+    - "§bThis stuip backpack is so heavy!"
+    - "§bI suck on this!It was so haavy!"
+  efficacy-over:
+    - "§4§b§l%sick%§4's efficacy is end,you may eat one more of it"
+    - "§bYou should eat the medicine"
+  recovery-sick:
+    - "§4§l%sick%§bhave been cure"
+    - "The%sick% are no longer to affect your body"
+  Fracture:
+    - "§bYou got §4§l%sick%!"
+  HitByMob:
+    - "§bOh God!You got §4§l%sick%!"
+  
+line:
+  body1: "§eSick"
+  body2: "§2Normal"
+  yes1: "Yes"
+  not1: "No"
+  #Player State
+  is-take-medicine: "Curing: %b1%"
+  duratio: "Effective: %time% second"
+  medicine-efficacy: "Medicine: per %me% %"
+  recovery: "Cure_percentage: %recovery%%"
+#Slight
+  Severe: "Severe fracture"
+  Slight: "Fracture"
+# RainwaterCollector GUI & Message
+  RainwaterCollectorTitle: "§2§lWater Collector"
+  RainwaterCollectorError1: "§cThis filter is not belong to you!"
+  rainwater-not-yours: "This water is not belong to you!"
+  NoRainwater: "There is not enough rain in this collector..."
+#PurificationDevice Message
+  strainer-not-enoug: "§4 There is no any filter..."
+  strainer-cannot-continue: "§4 There is no any filter paper..."
+#Water Name
+  Seawater: "§b§lSea Water"
+  IceSeawater: "§2§lCold's Sea Water"
+  SwampWater: "§7§lSwamp Water"
+  LakeWater: "§2§lLake water"
+  IceLakeWater: "§2§lCold's Lake water"
+  HotLakeWater: "§c§lHot's Lake water"
+  Freshwater: "§2§lFresh Water"
+  HotWater: "§c§lHot Water"
+  IceWater: "§2§lIce Water"
+  Rainwater: "§c§lWater"
+  WriterWaterFailed: "§c§l Failure to initialize the features of the drink! The part of drink cannot be used!"
+#Sleep Messages
+  very-tired: "§2You feel freaking tire...;You really need a rest!"
+  tired: "§2You need a rest."
+  spirit: "§b§lYou feel powerful now!"
+  Sleeping: "If you want to wake up please type \"leave\" 's command!"
+  BedSoFar: "The bed is so far away"
+#Thirst Messages
+  thirst: "§3§lMaybe i need a drink..."
+  dehydration: "§c§lYou feel so fucking thirsty;§eYou are dying!!!!!!!"
+  full-of-moisture: "§bDrink enough now"
+#Temperature Messages
+  fever: "§4OMG!You are too hot!;§3§lYou need cooldown yourself!"
+  cold: "§3§lIs was so cold...;§eYou need to get warm."
+#Energy Messages
+  no-energy: "§cYou can not run anymore!"
+  energt-fullly: "§cYour Can run now!"
+#Warkbench Messages
+  WorkbenchIsUsing: "§cThis table is used by %player%"
+  Exception: "§4Occur an error when craft"
+  CreateRecipeFailed: "§4Failure to create"
+  CreateRecipeSucceed: "§bCreate success"
+  ReplaceRecipeFailed: "§4Failure to Modify"
+  ReplaceRecipeSucceed: "§bModify success"
+#Furnace GUI
+  FurnaceStart: "§b§l==>§c§lStart forging§b§l<=="
+  FurnaceFailed: "§4Fail to create when working.."
+  FurnaceWatcher1: "§eMore then: %minTemperature%℃"
+  FurnaceWatcher2: "§eLess then: %minTemperature%℃"
+  FurnaceWatcher3: "§bNeed time: %time% second"
+  FurnaceFailedMsg: "§4Fail to create when working,You are nothing left,,,"
+  FurnaceWorkProgress+: "§eTemperature: §e§l%temperature% §e℃ | more than: §e§l%minTemperature%℃ §eto forging"
+  FurnaceWorkProgress-: "§eTemperature: §e§l%temperature% §e℃ | Less than: §e§l%minTemperature%℃ §eto forging"
+  FurnaceTimeProgress: "§b:Percentage %timeProgress%% | You need%time%Second to finish"
+  FuranceSaveProgress: "§7You still have%time%second to broke"
+#Workbench GUI
+  WorkbenchStart: "§b§l==>§c§lStart create§b§l<=="
+  WorkbenchUndone: "§4The current item is not completed!"
+  WorkbenchProgress1: "§bFinishing: %pass%%"
+  WorkbenchProgress2: "§bItem has been created!"
+  #Commands Des
+  HelpDes: "Help"
+  StateDes: "Check your status"
+  HelpDes2: "Search about the [Text] 's command"
+  ItemHelpDes: "Check the instruction of the item"
+  StatePlayerDes: "Check the current status of a player"
+  WorkbenchHelpDes: "Check the instruction help about workbench"
+  CreateFuranceRecipeDes: "Create a new furnace formula."
+  CreateWorkbenchRecipeDes: "Create a new workbench formula"
+  ReplaceFuranceRecipeDataDes: "Reset the value of a furnace formula"
+  UpdateDes: "update RealSurvival to latest (Please backup the configuration file)"
+  CUpdateDes: "Check for updates and check for updates's info"
+  UpdateInfoDes: "Check the current version of the update"
+  ItemSaveDes: "Save your items locally"
+  ItemLoadDes: "Reading an item from the local"
+  ItemDeleteDes: "Delete a item"
+  ItemSetNBTDes: "Set the attribute value of the item in your hand"
+  ItemSetLoreDes: "Set the description of the item's specified line in the hand"
+  ItemAddLoreDes: "Add a lore"
+  ItemSetNBT2Des: "Add NBT to your itme which holding in your hand"
+  ItemSetNameDes: "Set the name of the item in your hand"
+  ItemDeleteLoreDes: "Remove a row from the item description"
+  ItemRemoveLoreDes: "Remove all descriptions of items in your hand"
+  #Normer Command Message
+  NoPermissions: "§c§lPermission denied"
+  CommandNotFind: "§c§lWrong command,you can use /rs help to get help"
+  IsNotPlayer: "§c§lSorry, this command can only be used by players!"
+  NotDouble: "§c§l§b%index%§c§lThe parameter should be a decimal"
+  NotInteger: "§c§l§b%index%§c§lThe parameter should be an integer"
+  BadCmd: "§c§lInstruction error!"
+  #Help Commnad
+  Help1: "§bRealSurvival: "
+  Help2: "§bHere is about§c§l%type%§b's command: "
+  #Update Command
+  CheckUpdateFailed: "Failed to check"
+  IsNewVersion: "Early latest version"
+  DownloadOver: "latest version: %version% downlaod finished,Reload thie RealSurvival to active!"
+  HasNewVersion: "current version: %now-version%, You can update: %version% ,If you need,you can type/rs update,Please backup the configuration file" 
+  WillDeleteConfig: "§c§lWill be deletedconfig.yml"
+  WillDeleteMessages: "§c§lWill be deletedmessages.yml"
+  #Workbench Command
+  DeleteFailed: "Item deletion failed"
+  ItemSaveF: "Failed to save"
+  RecipeExists: "§c%name%§b§lThis formula early here!Do not need to create a new one"
+  RecipeNotExists: "§c%name%§c§lThis formula does not exist!"
+  #Item Command
+  ItemSaveE: "The name of this item is in conflict with existing items!"
+  NotFindItem: "You have not got anything."
+  HandIsNull: "You have not got anything"
+  ItemSaveS: "Your item is successfully saved as name of %name%"
+  #State Command
+  state-command-cooldown: "This command is cooldown..."
+  player-is-offline: "%player% is offline"
