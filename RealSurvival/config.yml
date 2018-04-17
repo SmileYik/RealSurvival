@@ -95,9 +95,6 @@ state:
 
 label:
   split: "=>"
-  remove:
-    - "秒"
-    - "℃"
   labels:
     - "Thirst:Thirst"
     - "Sleep:Sleep"
@@ -109,7 +106,7 @@ label:
     - "Temperature:Temperature"
     - "IllnessProbability:Illness Probability"
     - "MedicineDuration:Medicine Duration"
-    - "Hungery:Hungry"
+    - "Hungr:Hungry"
     - "Strainer:Strainer"
       
 workbenchs:

@@ -42,9 +42,9 @@ public class ItemLoreData {
 	public static ItemLoreData getItemLoreData(ItemStack is){
 		if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())return null;
 		List<String> lore=is.clone().getItemMeta().getLore();
-		return new ItemLoreData(getLore("Thirst", lore, false), getLore("Sleep", lore, false), getLore("Energy", lore, false), getLore("Weight", lore, true),
-					getLoreString("Illness", lore)==null?null:getLoreString("Illness", lore).split("|"), getLore("IllnessProbability", lore, true), getLoreString("Treatable", lore)==null?null:
-					getLoreString("Treatable", lore).split(";"), getLore("DrugEffect", lore, true),getLore("MedicineDuration", lore, true), getLore("Temperature", lore, true),getLore("Hungery", lore, false));
+		return new ItemLoreData(getLore("thirst", lore, false), getLore("sleep", lore, false), getLore("energy", lore, false), getLore("weight", lore, true),
+					getLoreString("illness", lore)==null?null:getLoreString("illness", lore).split(";"), getLore("illnessprobability", lore, true), getLoreString("treatable", lore)==null?null:
+					getLoreString("treatable", lore).split(";"), getLore("drugeffect", lore, true),getLore("medicineduration", lore, true), getLore("temperature", lore, true),getLore("hungr", lore, false));
 	}
 	
 	private static String getLoreString(String tabel,List<String> lore){
@@ -58,23 +58,22 @@ public class ItemLoreData {
 	}
 	
 	public static double getLore(String tabel,List<String> lore,boolean isChance){
-		tabel=Data.label.get(tabel);
+		tabel=Data.label.get(tabel.toLowerCase());
 		for(String line:lore){
 			line=Util.removeColor(line);
 			if(line.contains(tabel)){
-				String temp=remove(line.split(Data.split)[1].replaceAll(" ", ""));
+				String temp=line.replaceAll("[^0-9.+-]", "");
 				if(isChance){
-					temp=temp.replaceAll("%", "");
 					if(temp.contains("--"))
 						return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
 					return Double.parseDouble(temp);
 				}else{
-					if(temp.contains("%")){
-						temp=temp.replaceAll("%", "");
+					if(line.contains("%")){
+						temp=temp.replaceAll("[^0-9.+-]", "");
 						if(temp.contains("--"))
-							if(tabel=="Sleep")
+							if(tabel.equalsIgnoreCase("sleep"))
 								return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))*Data.sleep[0];
-							else if(tabel=="Thirst")
+							else if(tabel.equalsIgnoreCase("thirst"))
 								return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))*Data.thirst[0];
 							else 
 								return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))*Data.energy[0];
@@ -90,12 +89,6 @@ public class ItemLoreData {
 	
 	public static double badCode(){
 		return -1.1111111;
-	}
-	
-	private static String remove(String input){
-		for(String word:Data.removeChars)
-			input=input.replaceAll(word, "");
-		return input;
 	}
 	
 	public double getThirst() {

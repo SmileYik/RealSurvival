@@ -72,8 +72,8 @@ public class UseItemEvent implements Listener {
 		if(NBTItemData.isNBTItem(e.getItem()) && useItem(NBTItemData.load(e.getItem()),pd)){
 			e.setCancelled(true);
 			if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-				if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-				else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
+				if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+				else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
 			}else{
 				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 			}
@@ -83,8 +83,8 @@ public class UseItemEvent implements Listener {
 			if(id!=null && useItem(id, pd)){
 				e.setCancelled(true);
 				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
+					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
 				}else{
 					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				}

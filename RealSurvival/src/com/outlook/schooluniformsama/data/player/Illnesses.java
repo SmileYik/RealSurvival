@@ -43,13 +43,14 @@ public class Illnesses {
 		for(String str:list){
 			if(illness.keySet().contains(str))
 				illness.get(str).eatMedicine(medicineEfficacy, duratio);
-			System.out.println(str);
 			
 		}
 	}
 	
 	public boolean addIllness(String name,double chance,String remove){
 		if(Math.random()*100<(chance-addIllness-effect*chance)){
+			if(name.equalsIgnoreCase("Slight") && illness.containsKey("Severe"))
+				name = "Severe";
 			if(illness.containsKey(name))
 				illness.remove(name);
 			if(remove!=null)

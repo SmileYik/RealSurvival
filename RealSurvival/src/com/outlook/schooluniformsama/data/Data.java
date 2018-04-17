@@ -71,7 +71,6 @@ public class Data {
 	 */
 	public static double[] temperature;
 	public static String split;
-	public static List<String> removeChars;
 	public static HashMap<String, String> label=new HashMap<>();
 	public static HashMap<String,WorkbenchShape> workbenchs=new HashMap<>();
 	public static HashMap<String,Food> foodEffect=new HashMap<>();

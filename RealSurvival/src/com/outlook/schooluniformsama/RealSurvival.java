@@ -380,9 +380,8 @@ public class RealSurvival extends JavaPlugin{
 		}
 		
 		Data.split=getConfig().getString("label.split");
-		Data.removeChars=getConfig().getStringList("label.remove");
 		for(String label:getConfig().getStringList("label.labels"))
-			Data.label.put(label.split(":")[0], label.split(":")[1]);
+			Data.label.put(label.split(":")[0].toLowerCase(), label.split(":")[1]);
 
 		for(String workbench:getConfig().getStringList("workbenchs.workbenchs-type")){
 			String name=workbench.split(":")[0],type=workbench.split(":")[1];
