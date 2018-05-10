@@ -12,6 +12,7 @@ import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.randomday.RandomDayTask;
 import com.outlook.schooluniformsama.util.Msg;
+import com.outlook.schooluniformsama.util.Util;
 
 public class TemperatureTask implements Runnable{
 	@Override
@@ -20,7 +21,7 @@ public class TemperatureTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			
 			if(p==null || pd==null || p.isDead())return;
-			Msg.sendTitleToPlayer(p, pd.getTemperature().change(getApparentTemperature(p.getLocation(),(Data.versionData[0] >= 9)?getTemFix(p.getInventory()):getTemFixLow(p.getInventory()))),Data.enablePrefixInTitle);
+			Msg.sendTitleToPlayer(p, pd.getTemperature().change((Data.versionData[0] >= 9)?getTemFix(p.getLocation(), p.getInventory()):getTemFixLow(p.getLocation(), p.getInventory())),Data.enablePrefixInTitle);
 		}
 	}
 	
@@ -38,37 +39,88 @@ public class TemperatureTask implements Runnable{
 		return baseTemperature;
 	}
 	
-	private double getTemFix(PlayerInventory inv){
+	private double getTemFix(Location loc,PlayerInventory inv){
 		int amount = 0;
-		double fix = 0;
+		double fixMax = 0,fixMin = 0;
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
-			double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
-			if(temp!=ItemLoreData.badCode())fix+=temp;
+			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
+			if(temp == null) {amount++; continue;}
+			if(temp.contains("--")){
+				double tem1 = Double.parseDouble(temp.split("--")[0].replaceAll("[^0-9.+-]", "")),
+				              tem2 = Double.parseDouble(temp.split("--")[1].replaceAll("[^0-9.+-]", ""));
+				fixMax+=tem1>tem2?tem1:tem2;
+				fixMin+=tem1<tem2?tem1:tem2;
+			}else{
+				double tem = Double.parseDouble(temp.replaceAll("[^0-9.+-]", ""));
+				fixMax+=tem;
+				fixMin+=tem;
+			}
 			amount++;
 		}
 		
 			ItemStack is = inv.getItemInOffHand();
 			if(!(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())){
-				double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
-				if(temp!=ItemLoreData.badCode())fix+=temp;
+				String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
+				if(temp != null){
+					if(temp.contains("--")){
+						double tem1 = Double.parseDouble(temp.split("--")[0].replaceAll("[^0-9.+-]", "")),
+						              tem2 = Double.parseDouble(temp.split("--")[1].replaceAll("[^0-9.+-]", ""));
+						fixMax+=tem1>tem2?tem1:tem2;
+						fixMin+=tem1<tem2?tem1:tem2;
+					}else{
+						double tem = Double.parseDouble(temp.replaceAll("[^0-9.+-]", ""));
+						fixMax+=tem;
+						fixMin+=tem;
+					}
+				}
 				amount++;
 			}
 			
-
-		return amount==0?1:fix/amount/100;
+			fixMax/=amount*100;
+			fixMin/=amount*100;
+			
+			double tem1,tem2;
+			
+			tem1 = getApparentTemperature(loc, fixMax);
+			if(tem1>=Data.temperature[5] && tem1<=Data.temperature[6])return tem1;
+			tem2 = getApparentTemperature(loc, fixMin);
+			if(tem2>=Data.temperature[5] && tem2<=Data.temperature[6])return tem2;
+			else if(tem2>Data.temperature[6]||tem1<Data.temperature[5])return Util.randomNum(tem2, tem1);
+			else return Util.randomNum(tem2, tem1);
 	}
 	
-	private double getTemFixLow(PlayerInventory inv){
+	private double getTemFixLow(Location loc, PlayerInventory inv){
 		int amount = 0;
-		double fix = 0;
+		double fixMax = 0,fixMin = 0;
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
-			double temp = ItemLoreData.getLore("Temperature", is.clone().getItemMeta().getLore(), true);
-			if(temp!=ItemLoreData.badCode())fix+=temp;
+			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
+			if(temp == null) {amount++; continue;}
+			if(temp.contains("--")){
+				double tem1 = Double.parseDouble(temp.split("--")[0].replaceAll("[^0-9.+-]", "")),
+				              tem2 = Double.parseDouble(temp.split("--")[1].replaceAll("[^0-9.+-]", ""));
+				fixMax+=tem1>tem2?tem1:tem2;
+				fixMin+=tem1<tem2?tem1:tem2;
+			}else{
+				double tem = Double.parseDouble(temp.replaceAll("[^0-9.+-]", ""));
+				fixMax+=tem;
+				fixMin+=tem;
+			}
 			amount++;
 		}
-		return amount==0?1:fix/amount/100;
+		
+		fixMax/=amount*100;
+		fixMin/=amount*100;
+		
+		double tem1,tem2;
+		
+		tem1 = getApparentTemperature(loc, fixMax);
+		if(tem1>=Data.temperature[5] && tem1<=Data.temperature[6])return tem1;
+		tem2 = getApparentTemperature(loc, fixMin);
+		if(tem2>=Data.temperature[5] && tem2<=Data.temperature[6])return tem2;
+		else if(tem2>Data.temperature[6]||tem1<Data.temperature[5])return Util.randomNum(tem2, tem1);
+		else return Util.randomNum(tem2, tem1);
 	}
 	
 	

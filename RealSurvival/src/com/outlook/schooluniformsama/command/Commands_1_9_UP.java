@@ -113,7 +113,7 @@ public class Commands_1_9_UP {
 	@Command(cmd = "help",des="HelpDes",type="Help")
 	public void help(Player p,String args[]){}
 	
-	@Command(cmd = "help",args={"item"},des="ItemHelpDes",type="Help")
+	@Command(cmd = "help",args={"item"},des="ItemHelpDes",type="Help",permissions = "RealSurvival.Admin")
 	public void helpItem(Player p,String args[]){}
 	
 	@Command(cmd="shelp",args={"[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin")
@@ -472,6 +472,7 @@ public class Commands_1_9_UP {
 		}
 		pd.setUnlimited(bool);
 		pd.save();
+		Data.addPlayer(temp);
 	}
 	
 	

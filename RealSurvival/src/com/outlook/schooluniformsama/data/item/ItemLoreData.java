@@ -47,8 +47,8 @@ public class ItemLoreData {
 					getLoreString("treatable", lore).split(";"), getLore("drugeffect", lore, true),getLore("medicineduration", lore, true), getLore("temperature", lore, true),getLore("hungr", lore, false));
 	}
 	
-	private static String getLoreString(String tabel,List<String> lore){
-		tabel=Data.label.get(tabel);
+	public static String getLoreString(String tabel,List<String> lore){
+		tabel=Data.label.get(tabel.toLowerCase());
 		for(String line:lore){
 			line=Util.removeColor(line);
 			if(line.contains(tabel))
