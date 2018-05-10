@@ -262,8 +262,8 @@ public class CraftItemEvent implements Listener{
 			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){Msg.sendTitleToPlayer(e.getPlayer(),"rainwater-not-yours", Data.enablePrefixInTitle); return ;}
 			if(!Msg.sendTitleToPlayer(e.getPlayer(), rct.hasWater(), Data.enablePrefixInTitle)){
 				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
+					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
 				}else{
 					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				}
@@ -309,7 +309,7 @@ public class CraftItemEvent implements Listener{
 					short index = 0;
 					while(line.hasNext()){
 						String loreLine = line.next();
-						if(Util.removeColor(loreLine).contains(Data.label.get("Strainer"))){
+						if(Util.removeColor(loreLine).contains(Data.label.get("strainer"))){
 							loreLine = loreLine.replace(((int)data)+"", (int)(data-(int)allData[1])+"");
 							lore.set(index, loreLine);
 							break;
@@ -321,8 +321,8 @@ public class CraftItemEvent implements Listener{
 					down.setItem(2,strainer);
 				}
 				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand());
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand());
+					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
 				}else{
 					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				}

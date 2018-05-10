@@ -3,6 +3,8 @@ package com.outlook.schooluniformsama.data;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 import com.outlook.schooluniformsama.data.effect.Effect;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
@@ -91,4 +93,15 @@ public class Data {
 	public static long stateCD;
 	/**v1_[0]_R[1]*/
 	public static int versionData[];
+	
+	
+	public static void addPlayer(Player p){
+		if(Data.worlds.contains(p.getWorld().getName())&&!p.hasMetadata("NPC"))
+			addPlayer(p.getUniqueId(), PlayerData.load(p.getUniqueId()));
+	}
+	
+	public static void addPlayer(UUID uuid,PlayerData pd){
+		if(pd.isUnlimited())return;
+		Data.playerData.put(uuid, pd);
+	}
 }

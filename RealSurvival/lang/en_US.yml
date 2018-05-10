@@ -128,6 +128,7 @@ line:
   ItemSetNameDes: "Set the name of the item in your hand"
   ItemDeleteLoreDes: "Remove a row from the item description"
   ItemRemoveLoreDes: "Remove all descriptions of items in your hand"
+  StateUnlimitedDes: "将某人的属性设置为无限"
   #Normer Command Message
   NoPermissions: "§c§lPermission denied"
   CommandNotFind: "§c§lWrong command,you can use /rs help to get help"

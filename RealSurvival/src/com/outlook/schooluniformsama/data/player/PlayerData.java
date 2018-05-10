@@ -25,6 +25,7 @@ public class PlayerData {
 	private Temperature temperature;
 	private Weight weight;
 	private Illnesses illness;
+	private boolean unlimited = false;
 
 	/**
 	 * Create a new player data
@@ -64,7 +65,7 @@ public class PlayerData {
 	 * @param illness
 	 */
 	public PlayerData(UUID uuid, String world, Thirst thirst, Sleep sleep, Energy energy, Temperature temperature,
-			Weight weight, Illnesses illness) {
+			Weight weight, Illnesses illness, boolean unlimited) {
 		super();
 		this.uuid = uuid;
 		this.world = world;
@@ -74,6 +75,7 @@ public class PlayerData {
 		this.temperature = temperature;
 		this.weight = weight;
 		this.illness = illness;
+		this.unlimited = unlimited;
 	}
 	
 	public void save(){
@@ -116,6 +118,7 @@ public class PlayerData {
 			data.set("illnesses.illness."+i.getName()+".recovery",i.getRecovery());
 			data.set("illnesses.illness."+i.getName()+".isTakeMedicine",i.isTakeMedicine());
 		}
+		data.set("unlimited",unlimited);
 		//TODO Save File
 		try {
 			//data.save(new File("su.yml"));
@@ -144,7 +147,7 @@ public class PlayerData {
 				new Energy(data.getDouble("energy.energy"), data.getDouble("energy.energyBuff"), data.getInt("energy.energyLevel"), data.getDouble("energy.addEnergy")), 
 				new Temperature(data.getDouble("temperature.temperature"), data.getDouble("temperature.temperatureBuff"), data.getInt("temperature.temperatureLevel"), data.getDouble("temperature.addTemperature")), 
 				new Weight(data.getDouble("weight.weight"), data.getInt("weight.weightLevel"), data.getDouble("weight.addWeight")), 
-				new Illnesses(illness, data.getDouble("illnesses.illnessesBuff"), data.getInt("illnesses.illnessesLevel"), data.getDouble("illnesses.addIllnesses")));
+				new Illnesses(illness, data.getDouble("illnesses.illnessesBuff"), data.getInt("illnesses.illnessesLevel"), data.getDouble("illnesses.addIllnesses")),data.getBoolean("unlimited",false));
 	}
 	
 	public void sendData(Player p){
@@ -259,4 +262,11 @@ public class PlayerData {
 		return illness;
 	}
 	
+	public boolean isUnlimited(){
+		return unlimited;
+	}
+	
+	public void setUnlimited(boolean bool){
+		unlimited = bool;
+	}
 }

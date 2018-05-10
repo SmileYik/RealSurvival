@@ -16,10 +16,7 @@ public class BasicEvent implements Listener{
 	
 	@EventHandler
 	public void join(PlayerJoinEvent e){
-		Player p=e.getPlayer();
-		if(p.hasMetadata("NPC"))return;
-		if(!Data.worlds.contains(p.getWorld().getName()))return;
-		Data.playerData.put(p.getUniqueId(), PlayerData.load(p.getUniqueId()));
+		Data.addPlayer(e.getPlayer());
 		return;
 	}
 	
@@ -43,7 +40,7 @@ public class BasicEvent implements Listener{
 			Data.playerData.remove(pd.getUuid());
 			return;
 		}
-		Data.playerData.put(e.getPlayer().getUniqueId(), PlayerData.load(e.getPlayer().getUniqueId()));
+		Data.addPlayer(e.getPlayer());
 	}
 	//Player Join End
 	

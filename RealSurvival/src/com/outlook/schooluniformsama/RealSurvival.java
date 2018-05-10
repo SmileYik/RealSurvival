@@ -479,8 +479,7 @@ public class RealSurvival extends JavaPlugin{
 		Iterator<? extends Player> ps= Bukkit.getOnlinePlayers().iterator();
 	    while (ps.hasNext()){
 	    	Player p = (Player)ps.next();
-	    	if(Data.worlds.contains(p.getWorld().getName())&&!p.hasMetadata("NPC"))
-	    		Data.playerData.put(p.getUniqueId(), PlayerData.load(p.getUniqueId()));
+	    	Data.addPlayer(p);
 	    }
 	}
 	

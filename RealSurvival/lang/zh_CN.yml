@@ -126,6 +126,7 @@ line:
   ItemSetNameDes: "设定手中物品的名字"
   ItemDeleteLoreDes: "移除手中物品的某一行描述"
   ItemRemoveLoreDes: "移除手中物品的所有描述"
+  StateUnlimitedDes: "将某人的属性设置为无限"
   #Normer Command Message
   NoPermissions: "§c§l抱歉,你没有权利这样做."
   CommandNotFind: "§c§l抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"

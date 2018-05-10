@@ -440,7 +440,7 @@ public class Commands_1_9_UP {
 	}
 	
 	//state command
-	@Command(cmd = "states",args={"[PlayerName]"},des = "StatePlayerDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "states",args={"[PlayerName]"},des = "StatePlayerDes",type = "state",permissions = "RealSurvival.Admin")
 	public void statePlayer(Player p, String args[]){
 		if(args.length!=2){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -452,8 +452,26 @@ public class Commands_1_9_UP {
 		}else{
 		    Msg.sendMsgToPlayer(p, "player-is-offline", new String[]{"%player%"},new String[]{temp.getName()},true);
 		}
+	}
+	
+	@Command(cmd = "states",childCmds = "unlimited",args={"[PlayerName]","[true | false]"},des = "StateUnlimitedDes",type = "state",permissions = "RealSurvival.Admin")
+	public void stateUnlimited(Player p, String args[]){
+		if(args.length!=4){
+			Msg.sendMsgToPlayer(p, "BadCmd", true);
+			return;
+		}
+		boolean bool = Boolean.parseBoolean(args[3]);
 		
-		
+		Player temp = plugin.getServer().getPlayer(args[2]);
+		PlayerData pd;
+		if(Data.playerData.containsKey(temp.getUniqueId())){
+			pd = Data.playerData.get(temp.getUniqueId());
+			Data.playerData.remove(temp.getUniqueId());
+		}else{
+			pd = PlayerData.load(temp.getUniqueId());
+		}
+		pd.setUnlimited(bool);
+		pd.save();
 	}
 	
 	
