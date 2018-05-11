@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.event.basic;
+package com.outlook.schooluniformsama.lowversion;
 
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +32,8 @@ import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
 import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
 import com.outlook.schooluniformsama.data.timer.Timer;
 import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
+import com.outlook.schooluniformsama.event.basic.TempData;
+import com.outlook.schooluniformsama.event.basic.UseItemEvent;
 import com.outlook.schooluniformsama.gui.FeatureGUI;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
@@ -252,6 +254,7 @@ public class CraftItemEvent_1_8 implements Listener{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void getRainwaterAndStrainer(PlayerInteractEvent e){
 		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK  || e.getItem()==null || e.getItem().getType()!=Material.GLASS_BOTTLE)return;

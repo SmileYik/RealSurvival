@@ -253,6 +253,7 @@ public class CraftItemEvent implements Listener{
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void getRainwaterAndStrainer(PlayerInteractEvent e){
 		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK  || e.getItem()==null || e.getItem().getType()!=Material.GLASS_BOTTLE)return;

@@ -1,6 +1,4 @@
-package com.outlook.schooluniformsama.event;
-
-import java.util.Set;
+package com.outlook.schooluniformsama.lowversion;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,14 +13,15 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
 
-public class ThirstEvent_1_8 implements Listener{
+public class ThirstEvent_1_7 implements Listener{
 
+	@SuppressWarnings("null")
 	@EventHandler
 	public void getWater(PlayerInteractEvent e){
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR)
 				||e.getMaterial()!=Material.GLASS_BOTTLE)return;
-		Block block=e.getPlayer().getWorld().getBlockAt(e.getPlayer().getTargetBlock((Set<Material>)null, 6).getLocation()); 
+		Block block=null;//e.getPlayer().getWorld().getBlockAt(e.getPlayer().getTargetBlock((HashSet<Byte>)null, 6).getLocation()); 
 		if(!(block.getType()==Material.WATER||block.getType()==Material.STATIONARY_WATER))return;
 		e.setCancelled(true);
 		
@@ -91,6 +90,7 @@ public class ThirstEvent_1_8 implements Listener{
 		return;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void givePlayerWater(String name,Player p,ItemStack glass){
 		glass.setAmount(glass.getAmount()-1);
 		p.getInventory().setItemInHand(glass);

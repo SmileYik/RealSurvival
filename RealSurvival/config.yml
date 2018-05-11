@@ -29,6 +29,7 @@ death:
 state:
   sleep:
     enable: true
+    sleep-during-the-day: true
     max: 100
     mid: 0.3
     min: 0.15

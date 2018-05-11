@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.event.basic;
+package com.outlook.schooluniformsama.lowversion;
 
 import java.util.Map;
 
@@ -62,6 +62,7 @@ public class UseItemEvent_1_8 implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void useItem(PlayerInteractEvent e){
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());

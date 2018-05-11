@@ -63,6 +63,11 @@ public class Commands_1_9_UP {
 			return;
 		}
 		if(u.hasUpdate()){
+			if(u.getDownload()==null)return;
+			if(u.getDownload().contains("{null-by-school_uniform}")){
+				Msg.sendMsgToPlayer(p, u.getDownload().replace("{null-by-school_uniform}", ""),true);
+				return;
+			}
 			u.download();
 			Msg.sendMsgToPlayer(p, "DownloadOver", new String[]{"%version%"},new String[]{u.getVersion_show()},true);
 			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
@@ -454,7 +459,7 @@ public class Commands_1_9_UP {
 		}
 	}
 	
-	@Command(cmd = "states",childCmds = "unlimited",args={"[PlayerName]","[true | false]"},des = "StateUnlimitedDes",type = "state",permissions = "RealSurvival.Admin")
+	@Command(cmd = "states",childCmds = {"unlimited"},args={"[PlayerName]","[true | false]"},des = "StateUnlimitedDes",type = "state",permissions = "RealSurvival.Admin")
 	public void stateUnlimited(Player p, String args[]){
 		if(args.length!=4){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -484,6 +489,10 @@ public class Commands_1_9_UP {
 			return;
 		}
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
+		if(pd==null){
+			Msg.sendMsgToPlayer(p, "state-unlimited", true);
+			return;
+		}
 		pd.sendData(p);
 		if(!p.isOp()){
 			stateCD.addLast(p.getUniqueId());

@@ -128,7 +128,7 @@ line:
   ItemSetNameDes: "Set the name of the item in your hand"
   ItemDeleteLoreDes: "Remove a row from the item description"
   ItemRemoveLoreDes: "Remove all descriptions of items in your hand"
-  StateUnlimitedDes: "将某人的属性设置为无限"
+  StateUnlimitedDes: "Set someone's state is Unlimited"
   #Normer Command Message
   NoPermissions: "§c§lPermission denied"
   CommandNotFind: "§c§lWrong command,you can use /rs help to get help"
@@ -158,4 +158,5 @@ line:
   ItemSaveS: "Your item is successfully saved as name of %name%"
   #State Command
   state-command-cooldown: "This command is cooldown..."
+  state-unlimited: "Your state is unlimited"
   player-is-offline: "%player% is offline"

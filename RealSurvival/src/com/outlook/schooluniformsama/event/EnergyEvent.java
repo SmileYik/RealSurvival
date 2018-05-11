@@ -20,6 +20,9 @@ public class EnergyEvent implements Listener {
 					(!Msg.sendTitleToPlayer(e.getPlayer(), pd.getEnergy().change(-Data.energy[5]), true) ||
 					pd.getWeight().isOverWeight()!=null))//weight
 					e.setCancelled(true);
+			else{
+
+			}
 			
 		}else if(e.getFrom().getBlockX()!=e.getTo().getBlockX() || 
 				e.getFrom().getBlockZ()!=e.getTo().getBlockZ() ||

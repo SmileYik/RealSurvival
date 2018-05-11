@@ -45,7 +45,7 @@ public class TemperatureTask implements Runnable{
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
-			if(temp == null) {amount++; continue;}
+			if(temp == null) continue;
 			if(temp.contains("--")){
 				double tem1 = Double.parseDouble(temp.split("--")[0].replaceAll("[^0-9.+-]", "")),
 				              tem2 = Double.parseDouble(temp.split("--")[1].replaceAll("[^0-9.+-]", ""));
@@ -73,12 +73,14 @@ public class TemperatureTask implements Runnable{
 						fixMax+=tem;
 						fixMin+=tem;
 					}
+					amount++;
 				}
-				amount++;
 			}
 			
 			fixMax/=amount*100;
 			fixMin/=amount*100;
+			
+			if(fixMax==fixMin) return getApparentTemperature(loc, fixMax==0?1:fixMax);
 			
 			double tem1,tem2;
 			
@@ -96,7 +98,7 @@ public class TemperatureTask implements Runnable{
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
-			if(temp == null) {amount++; continue;}
+			if(temp == null) continue;
 			if(temp.contains("--")){
 				double tem1 = Double.parseDouble(temp.split("--")[0].replaceAll("[^0-9.+-]", "")),
 				              tem2 = Double.parseDouble(temp.split("--")[1].replaceAll("[^0-9.+-]", ""));
@@ -112,6 +114,8 @@ public class TemperatureTask implements Runnable{
 		
 		fixMax/=amount*100;
 		fixMin/=amount*100;
+		
+		if(fixMax==fixMin) return getApparentTemperature(loc, fixMax==0?1:fixMax);
 		
 		double tem1,tem2;
 		

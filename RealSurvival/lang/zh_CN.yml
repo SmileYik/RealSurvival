@@ -156,4 +156,5 @@ line:
   ItemSaveS: "你手上的物品成功保存为%name%"
   #State Command
   state-command-cooldown: "这个指令还在冷却中呢..."
+  state-unlimited: "你的属性是无限的!"
   player-is-offline: "%player% 现在不在线"

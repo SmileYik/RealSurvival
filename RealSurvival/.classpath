@@ -43,5 +43,10 @@
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.7.10-SNAPSHOT-b1657.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -63,6 +63,7 @@ public class UseItemEvent implements Listener {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void useItem(PlayerInteractEvent e){
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());

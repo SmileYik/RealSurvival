@@ -16,7 +16,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.outlook.schooluniformsama.command.Commands_1_9_UP;
 import com.outlook.schooluniformsama.command.CommandsType;
-import com.outlook.schooluniformsama.command.Commands_1_8;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.effect.Effect;
@@ -36,10 +35,15 @@ import com.outlook.schooluniformsama.event.DamageEvent;
 import com.outlook.schooluniformsama.event.EnergyEvent;
 import com.outlook.schooluniformsama.event.FractureEvent;
 import com.outlook.schooluniformsama.event.SitEvent;
+import com.outlook.schooluniformsama.event.SleepDuringTheDay;
 import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.event.ThirstEvent;
-import com.outlook.schooluniformsama.event.ThirstEvent_1_8;
 import com.outlook.schooluniformsama.event.basic.*;
+import com.outlook.schooluniformsama.lowversion.Commands_1_8;
+import com.outlook.schooluniformsama.lowversion.CraftItemEvent_1_8;
+import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_7;
+import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_8;
+import com.outlook.schooluniformsama.lowversion.UseItemEvent_1_8;
 import com.outlook.schooluniformsama.nms.bed.*;
 import com.outlook.schooluniformsama.nms.item.*;
 import com.outlook.schooluniformsama.papi.Papi;
@@ -55,8 +59,10 @@ import com.outlook.schooluniformsama.task.WeightTask;
 import com.outlook.schooluniformsama.task.WorkbenchTask;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.ArrayList;
-import com.outlook.schooluniformsama.util.Metrics;
 import com.outlook.schooluniformsama.util.Msg;
+import com.outlook.schooluniformsama.util.bstats.Metrics_1_8_UP;
+import com.outlook.schooluniformsama.util.bstats.Metrics;
+import com.outlook.schooluniformsama.util.bstats.Metrics_1_7;
 
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 
@@ -71,9 +77,8 @@ public class RealSurvival extends JavaPlugin{
 		getNMS();
 		loadConfig();
 		registerListeners();
-		addPlayers();
-		@SuppressWarnings("unused")
-		Metrics metrics = new Metrics(this);
+		if(Data.versionData[0]<=7)addPlayers_LOW_VERSION(); else addPlayers();
+		setupMetrics();
 		getLogger().info("Successful loading");
 		checkUp();
 	}
@@ -83,6 +88,16 @@ public class RealSurvival extends JavaPlugin{
 		for(PlayerData pd : Data.playerData.values())
 			pd.save();
 		SaveConfigTask.saveWorkbench();
+	}
+	
+	public static String getVersion(){
+		String version;
+        try {
+            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+            return null;
+        }
+        return version;
 	}
 	
 	private void checkUp(){
@@ -138,6 +153,9 @@ public class RealSurvival extends JavaPlugin{
 			Data.bnms=new BED_1_8_R3();
 			Data.nbtitem=new Item_1_8_R3();
 			break;
+		case "v1_7_R4":
+			Data.bnms=new BED_1_7_R4();
+			Data.nbtitem=new Item_1_7_R4();
 		default:
 			break;
 		}
@@ -176,30 +194,7 @@ public class RealSurvival extends JavaPlugin{
 					}
 					return true;
 				}
-			}else if(args.length==1){
-				if(args[0].equalsIgnoreCase("help")){
-					p.sendMessage(Msg.getMsg("Help1", true));
-					for(Method method:cmdsType.getClazz().getDeclaredMethods()){
-						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
-							continue;
-						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
-						if(!cmd.type().equalsIgnoreCase("HELP"))
-							continue;
-						if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
-							continue;
-						String arg="";
-						if(cmd.childCmds()[0]!="")
-							for(String temp:cmd.childCmds())
-								arg+=temp+" ";
-						if(cmd.args()[0]!="")
-							for(String temp:cmd.args())
-								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
-						 
-					}
-					return true;
-				}
-			}else if(args.length==0){
+			}else if(args.length==0 || (args.length==1 && args[0].equalsIgnoreCase("help"))){
 				p.sendMessage(Msg.getMsg("Help1", true));
 				for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 					if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
@@ -227,7 +222,7 @@ public class RealSurvival extends JavaPlugin{
 				com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
 				if(!cmd.cmd().equalsIgnoreCase(args[0]))
                     continue;
-				if(!cmd.childCmds()[0].equals("")){
+				if(args.length>1&&cmd.childCmds()[0]!=""){
 					int i=1;
 					boolean isc=false;
 					for(String str:cmd.childCmds())
@@ -284,7 +279,7 @@ public class RealSurvival extends JavaPlugin{
 		if(Data.versionData[0]>8){
 			cmds = new Commands_1_9_UP(this);
 			cmdsType = CommandsType.Commands_1_9_UP;
-		}else if(Data.versionData[0]==8){
+		}else if(Data.versionData[0]<=8){
 			cmds = new Commands_1_8(this);
 			cmdsType = CommandsType.Commands_1_8;
 		}
@@ -463,17 +458,6 @@ public class RealSurvival extends JavaPlugin{
 			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
 	}
 	
-	/**v1_11_R1*/
-	public static String getVersion(){
-		String version;
-        try {
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
-            return null;
-        }
-        return version;
-	}
-	
 	//Load Online Player's Data
 	private void addPlayers(){
 		Iterator<? extends Player> ps= Bukkit.getOnlinePlayers().iterator();
@@ -481,6 +465,12 @@ public class RealSurvival extends JavaPlugin{
 	    	Player p = (Player)ps.next();
 	    	Data.addPlayer(p);
 	    }
+	}
+	
+	//Load Online Player's Data
+	private void addPlayers_LOW_VERSION(){
+	    for(Player p : Bukkit.getOnlinePlayers())
+	    	Data.addPlayer(p);
 	}
 	
 	//Register Listeners
@@ -498,9 +488,12 @@ public class RealSurvival extends JavaPlugin{
 		if(Data.switchs[2]){
 			getServer().getPluginManager().registerEvents(new SleepEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);
+			if(getConfig().getBoolean("state.sleep.sleep-during-the-day"))
+				getServer().getPluginManager().registerEvents(new SleepDuringTheDay(), this);
 		}
 		if(Data.switchs[3]){
-			if(Data.versionData[0]<=8) getServer().getPluginManager().registerEvents(new ThirstEvent_1_8(), this);
+			if(Data.versionData[0]<=7) getServer().getPluginManager().registerEvents(new ThirstEvent_1_7(), this);
+			else if(Data.versionData[0]<=8) getServer().getPluginManager().registerEvents(new ThirstEvent_1_8(), this);
 			else getServer().getPluginManager().registerEvents(new ThirstEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ThirstTask(), 20L, 1*20L);
 		}
@@ -526,7 +519,7 @@ public class RealSurvival extends JavaPlugin{
 		//PlaceholderAPI
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
 			new Papi(this).hook();
-			getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI! ");
+			getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI !");
 		}
 		//TitleManager
 		if(Bukkit.getPluginManager().isPluginEnabled("TitleManager")){
@@ -542,6 +535,16 @@ public class RealSurvival extends JavaPlugin{
 	
 	public static Player getPlayer(UUID uuid){
 		return Data.playerData.get(uuid).getPlayer();
+	}
+	
+	private void setupMetrics(){
+		@SuppressWarnings("unused")
+		Metrics metrics;
+		if(Data.versionData[0]<=7){
+			 metrics = new Metrics_1_7(this);
+		}else{
+			 metrics = new Metrics_1_8_UP(this);
+		}
 	}
 	
 }

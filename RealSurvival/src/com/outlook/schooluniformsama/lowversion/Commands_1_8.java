@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.command;
+package com.outlook.schooluniformsama.lowversion;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.outlook.schooluniformsama.command.Command;
+import com.outlook.schooluniformsama.command.Commands_1_9_UP;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
@@ -63,6 +65,11 @@ public class Commands_1_8 {
 			return;
 		}
 		if(u.hasUpdate()){
+			if(u.getDownload()==null)return;
+			if(u.getDownload().contains("{null-by-school_uniform}")){
+				Msg.sendMsgToPlayer(p, u.getDownload().replace("{null-by-school_uniform}", ""),true);
+				return;
+			}
 			u.download();
 			Msg.sendMsgToPlayer(p, "DownloadOver", new String[]{"%version%"},new String[]{u.getVersion_show()},true);
 			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
@@ -229,6 +236,7 @@ public class Commands_1_8 {
 			return text.substring(0, text.length()-1);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "save",args={"[FileName]"},des = "ItemSaveDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void saveItem(Player p, String args[]){
 		if(args.length>3){
@@ -298,6 +306,7 @@ public class Commands_1_8 {
 		if(!item.delete())Msg.sendMsgToPlayer(p, "DeleteFailed", true);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "setName",args={"[name]"},des = "ItemSetNameDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void setItemName(Player p, String args[]){
 		if(args.length<3){
@@ -314,6 +323,7 @@ public class Commands_1_8 {
 		p.getInventory().getItemInHand().setItemMeta(im);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "lore",args={"[lore]"},des = "ItemAddLoreDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void addItemLore(Player p, String args[]){
 		if(args.length<3){
@@ -338,6 +348,7 @@ public class Commands_1_8 {
 		p.getInventory().getItemInHand().setItemMeta(im);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "setNBT",args={"[NBTFileName]"},des = "ItemSetNBTDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void setItemNBT(Player p, String args[]){
 		if(args.length<3){
@@ -352,6 +363,7 @@ public class Commands_1_8 {
 		p.getInventory().setItemInHand(Data.nbtitem.addNBT(p.getInventory().getItemInHand(), "RealSurvival", lore));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "setNBT",args={"[Key]","[Value]"},des = "ItemSetNBT2Des",type = "Item",permissions = "RealSurvival.Admin")
 	public void setItemNBT2(Player p, String args[]){
 		if(args.length<3){
@@ -366,6 +378,7 @@ public class Commands_1_8 {
 		p.getInventory().setItemInHand(Data.nbtitem.addNBT(p.getInventory().getItemInHand(), "RealSurvival", lore));
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "setlore",args={"[line]","[lore]"},des = "ItemSetLoreDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void setItemLore(Player p, String args[]){
 		if(args.length<4){
@@ -397,6 +410,7 @@ public class Commands_1_8 {
 		p.getInventory().getItemInHand().setItemMeta(im);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "rLore",des = "ItemRemoveLoreDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void removeItemLore(Player p, String args[]){
 		if(args.length!=2){
@@ -412,6 +426,7 @@ public class Commands_1_8 {
 		p.getInventory().getItemInHand().setItemMeta(im);
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Command(cmd = "item",childCmds = "dLore",args={"[line]"},des = "ItemDeleteLoreDes",type = "Item",permissions = "RealSurvival.Admin")
 	public void deleteItemLore(Player p, String args[]){
 		if(args.length!=3){
