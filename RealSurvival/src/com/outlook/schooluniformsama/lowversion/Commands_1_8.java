@@ -12,7 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.outlook.schooluniformsama.command.Command;
-import com.outlook.schooluniformsama.command.Commands_1_9_UP;
+import com.outlook.schooluniformsama.command.Commands;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
@@ -67,7 +67,7 @@ public class Commands_1_8 {
 		if(u.hasUpdate()){
 			if(u.getDownload()==null)return;
 			if(u.getDownload().contains("{null-by-school_uniform}")){
-				Msg.sendMsgToPlayer(p, u.getDownload().replace("{null-by-school_uniform}", ""),true);
+				p.sendMessage(Msg.getPrefix()+u.getDownload().replace("{null-by-school_uniform}", ""));
 				return;
 			}
 			u.download();
@@ -132,7 +132,7 @@ public class Commands_1_8 {
 		}
 		
 		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
-		for(Method method:Commands_1_9_UP.class.getDeclaredMethods()){
+		for(Method method:Commands.class.getDeclaredMethods()){
 			if(!method.isAnnotationPresent(Command.class))
 				continue;
 			Command cmd=method.getAnnotation(Command.class);

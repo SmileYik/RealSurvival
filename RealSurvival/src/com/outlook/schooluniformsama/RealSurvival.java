@@ -14,7 +14,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.outlook.schooluniformsama.command.Commands_1_9_UP;
+import com.outlook.schooluniformsama.command.Commands;
+import com.outlook.schooluniformsama.api.ReaLSurvivalAPI;
 import com.outlook.schooluniformsama.command.CommandsType;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
@@ -44,6 +45,7 @@ import com.outlook.schooluniformsama.lowversion.CraftItemEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_7;
 import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.UseItemEvent_1_8;
+import com.outlook.schooluniformsama.lowversion.converter.Converter;
 import com.outlook.schooluniformsama.nms.bed.*;
 import com.outlook.schooluniformsama.nms.item.*;
 import com.outlook.schooluniformsama.papi.Papi;
@@ -66,7 +68,7 @@ import com.outlook.schooluniformsama.util.bstats.Metrics_1_7;
 
 import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 
-public class RealSurvival extends JavaPlugin{
+public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
 	private Object cmds;
 	private CommandsType cmdsType;
@@ -75,11 +77,12 @@ public class RealSurvival extends JavaPlugin{
 	public void onEnable() {
 		firstLoad();
 		getNMS();
+
 		loadConfig();
 		registerListeners();
 		if(Data.versionData[0]<=7)addPlayers_LOW_VERSION(); else addPlayers();
 		setupMetrics();
-		getLogger().info("Successful loading");
+		getLogger().info("[RealSurvival] Successful loading");
 		checkUp();
 	}
 	
@@ -277,15 +280,20 @@ public class RealSurvival extends JavaPlugin{
 		
 		Data.versionData = new int[]{Integer.parseInt(RealSurvival.getVersion().split("_")[1]),Integer.parseInt(RealSurvival.getVersion().split("_")[1].replace("R", ""))};
 		if(Data.versionData[0]>8){
-			cmds = new Commands_1_9_UP(this);
+			cmds = new Commands(this);
 			cmdsType = CommandsType.Commands_1_9_UP;
 		}else if(Data.versionData[0]<=8){
 			cmds = new Commands_1_8(this);
 			cmdsType = CommandsType.Commands_1_8;
 		}
+		
+		
 	}
 	
 	private void loadConfig(){
+		
+		new Converter().check();
+		
 		Data.worlds=getConfig().getStringList("worlds");
 		Data.enablePrefixInTitle = getConfig().getBoolean("enable-prefix-in-title");
 		Data.stateCD = getConfig().getLong("state-cd");

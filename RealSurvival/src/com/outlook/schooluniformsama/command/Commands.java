@@ -24,11 +24,11 @@ import com.outlook.schooluniformsama.util.Util;
 
 import org.bukkit.*;
 
-public class Commands_1_9_UP {
+public class Commands {
 	
 	private LinkedList<UUID> stateCD = new LinkedList<>();
 	private Plugin plugin;
-	public Commands_1_9_UP(Plugin plugin) {
+	public Commands(Plugin plugin) {
 		this.plugin=plugin;
 	}
 	
@@ -65,7 +65,7 @@ public class Commands_1_9_UP {
 		if(u.hasUpdate()){
 			if(u.getDownload()==null)return;
 			if(u.getDownload().contains("{null-by-school_uniform}")){
-				Msg.sendMsgToPlayer(p, u.getDownload().replace("{null-by-school_uniform}", ""),true);
+				p.sendMessage(Msg.getPrefix()+u.getDownload().replace("{null-by-school_uniform}", ""));
 				return;
 			}
 			u.download();
@@ -130,7 +130,7 @@ public class Commands_1_9_UP {
 		}
 		
 		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
-		for(Method method:Commands_1_9_UP.class.getDeclaredMethods()){
+		for(Method method:Commands.class.getDeclaredMethods()){
 			if(!method.isAnnotationPresent(Command.class))
 				continue;
 			Command cmd=method.getAnnotation(Command.class);
