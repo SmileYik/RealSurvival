@@ -2,6 +2,7 @@ package com.outlook.schooluniformsama.data.player;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -9,7 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.effect.EffectType;
+import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.util.HashMap;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
@@ -24,8 +25,9 @@ public class PlayerData {
 	private Energy energy;
 	private Temperature temperature;
 	private Weight weight;
-	private Illnesses illness;
+	private HashMap<String,Illness> illness;
 	private boolean unlimited = false;
+	private String stateData;
 
 	/**
 	 * Create a new player data
@@ -37,19 +39,18 @@ public class PlayerData {
 		super();
 		this.uuid = uuid;
 		this.world = world;
-		sleep = new Sleep(Data.sleep[0], 1, 0, 0, false);
-		thirst = new Thirst(Data.thirst[0], 1,0,0);
-		energy = new Energy(Data.energy[0], 1,0,0);
-		temperature = new Temperature(37, 1,0,0);
-		weight = new Weight(0, 1,0);
-		illness = new Illnesses(new HashMap<>(), 1,0,0);
+		sleep = new Sleep(Data.sleep[0], Data.sleep[0], false);
+		thirst = new Thirst(Data.thirst[0], Data.thirst[0]);
+		energy = new Energy(Data.energy[0], Data.energy[0]);
+		temperature = new Temperature(37);
+		weight = new Weight(0, Data.weight);
+		illness = new HashMap<>();
 		if(isRandom){
-			thirst.levelUp((int)Util.randomNum(0, 10));
-			weight.levelUp((int)Util.randomNum(0, 10));
-			energy.levelUp((int)Util.randomNum(0, 10));
-			temperature.levelUp((int)Util.randomNum(0, 10));
-			sleep.levelUp((int)Util.randomNum(0, 10));
-			illness.levelUp((int)Util.randomNum(0, 10));
+			sleep = new Sleep(Data.sleep[0], Util.randomNum(Data.randomData[0],Data.randomData[1]), false);
+			thirst = new Thirst(Data.thirst[0], Util.randomNum(Data.randomData[0],Data.randomData[1]));
+			energy = new Energy(Data.energy[0], Util.randomNum(Data.randomData[0],Data.randomData[1]));
+			weight = new Weight(0, Util.randomNum(Data.randomData[0],Data.randomData[1]));
+			temperature = new Temperature(Util.randomNum(Data.randomData[0],Data.randomData[1]));
 		}
 	}
 	
@@ -65,7 +66,7 @@ public class PlayerData {
 	 * @param illness
 	 */
 	public PlayerData(UUID uuid, String world, Thirst thirst, Sleep sleep, Energy energy, Temperature temperature,
-			Weight weight, Illnesses illness, boolean unlimited) {
+			Weight weight, HashMap<String,Illness> illness, boolean unlimited) {
 		super();
 		this.uuid = uuid;
 		this.world = world;
@@ -83,35 +84,22 @@ public class PlayerData {
 		data.set("world", world);
 		//Sleep
 		data.set("sleep.sleep", sleep.getSleep());
-		data.set("sleep.sleepBuff", sleep.getSleepBuff());
-		data.set("sleep.sleepLevel", sleep.getSleepLevel());
-		data.set("sleep.addSleep", sleep.getAddSleep());
+		data.set("sleep.sleepMax", sleep.getSleepMax());
 		data.set("sleep.hasSleep", sleep.isHasSleep());
 		
 		data.set("thirst.thirst", thirst.getThirst());
-		data.set("thirst.thirstBuff", thirst.getThirstBuff());
-		data.set("thirst.thirstLevel", thirst.getThirstLevel());
-		data.set("thirst.addThirst", thirst.getAddThirst());
+		data.set("thirst.thirstMax", thirst.getThirstMax());
 		
 		data.set("energy.energy", energy.getEnergy());
-		data.set("energy.energyBuff", energy.getEnergyBuff());
-		data.set("energy.energyLevel", energy.getEnergyLevel());
-		data.set("energy.addEnergy", energy.getAddEnergy());
+		data.set("energy.energyMax", energy.getEnergyMax());
 		
 		data.set("weight.weight", weight.getWeight());
-		data.set("weight.weightLevel", weight.getWeightLevel());
-		data.set("weight.addWeight", weight.getAddWeight());
+		data.set("weight.weightMax", weight.getWeightMax());
 		
 		data.set("temperature.temperature", temperature.getTemperature());
-		data.set("temperature.temperatureBuff", temperature.getTemperatureBuff());
-		data.set("temperature.temperatureLevel", temperature.getTemperatureLevel());
-		data.set("temperature.addTemperature", temperature.getAddTemperature());
 		
-		data.set("illnesses.illnessesBuff", illness.getIllnessBuff());
-		data.set("illnesses.illnessesLevel", illness.getIllnessLevel());
-		data.set("illnesses.addIllnesses", illness.getAddIllness());
-		data.set("illnesses.list", illness.getIllness().keySet().toArray(new String[illness.getIllness().size()]));
-		for(Illness i:illness.getIllness().values()){
+		data.set("illnesses.list", illness.keySet().toArray(new String[illness.size()]));
+		for(Illness i:illness.values()){
 			data.set("illnesses.illness."+i.getName()+".name",i.getName());
 			data.set("illnesses.illness."+i.getName()+".duration",i.getDuratio());
 			data.set("illnesses.illness."+i.getName()+".medicineEfficacy",i.getMedicineEfficacy());
@@ -142,25 +130,33 @@ public class PlayerData {
 					data.getBoolean("illnesses.illness."+illnessName+".isTakeMedicine")));
 		}
 		
-		return new PlayerData(uuid, data.getString("world"), new Thirst(data.getDouble("thirst.thirst"), data.getDouble("thirst.thirstBuff"), data.getInt("thirst.thirstLevel"), data.getDouble("thirst.addThirst")), 
-				new Sleep(data.getDouble("sleep.sleep"), data.getDouble("sleep.sleepBuff"), data.getInt("sleep.sleepLevel"), data.getDouble("sleep.addSleep"),data.getBoolean("sleep.hasSleep")),
-				new Energy(data.getDouble("energy.energy"), data.getDouble("energy.energyBuff"), data.getInt("energy.energyLevel"), data.getDouble("energy.addEnergy")), 
-				new Temperature(data.getDouble("temperature.temperature"), data.getDouble("temperature.temperatureBuff"), data.getInt("temperature.temperatureLevel"), data.getDouble("temperature.addTemperature")), 
-				new Weight(data.getDouble("weight.weight"), data.getInt("weight.weightLevel"), data.getDouble("weight.addWeight")), 
-				new Illnesses(illness, data.getDouble("illnesses.illnessesBuff"), data.getInt("illnesses.illnessesLevel"), data.getDouble("illnesses.addIllnesses")),data.getBoolean("unlimited",false));
+		return new PlayerData(uuid, data.getString("world"), new Thirst(data.getDouble("thirst.thirst"), data.getDouble("thirst.thirstMax",Data.thirst[0])), 
+				new Sleep(data.getDouble("sleep.sleep"), data.getDouble("sleep.sleepMax",Data.sleep[0]), data.getBoolean("sleep.hasSleep")),
+				new Energy(data.getDouble("energy.energy"), data.getDouble("energy.energyMax",Data.energy[0])), 
+				new Temperature(data.getDouble("temperature.temperature")), 
+				new Weight(data.getDouble("weight.weight"), data.getDouble("weight.weightMax",Data.weight)), 
+				illness,
+				data.getBoolean("unlimited",false));
 	}
 	
-	public void sendData(Player p){
+	public void sendData(boolean isCoolDown){
+		if(stateData==null)createStateData();
+		else if(!isCoolDown)createStateData();
+		getPlayer().sendMessage(stateData);
+		if(isCoolDown)Msg.sendMsgToPlayer(getPlayer(), "state-command-cooldown", true);
+	}
+	
+	private void createStateData(){
 		String body;
 		String illnessData="";
-		if(illness.isIllness()){
+		if(isIllness()){
 			body=Msg.getMsg("body1", false);
-			for(Illness i:illness.getIllness().values()){
+			for(Illness i:illness.values()){
 				illnessData+=i.getName()+":\n";
-				illnessData+="  "+Msg.getMsg("recovery", new String[]{"%recovery%"},new String[]{Util.ReservedDecimalPlaces(i.getRecovery(),2)},false)+"\n";
+				illnessData+="  "+Msg.getMsg("recovery", new String[]{"%recovery%"},new String[]{Util.RDP(i.getRecovery(),2)},false)+"\n";
 				if(i.isTakeMedicine()){
 					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("yes1", false)},false)+"\n";
-					illnessData+="  "+Msg.getMsg("medicine-efficacy", new String[]{"%me%"},new String[]{Util.ReservedDecimalPlaces(i.getMedicineEfficacy(),2)},false)+"\n";
+					illnessData+="  "+Msg.getMsg("medicine-efficacy", new String[]{"%me%"},new String[]{Util.RDP(i.getMedicineEfficacy(),2)},false)+"\n";
 					illnessData+="  "+Msg.getMsg("duratio", new String[]{"%time%"},new String[]{i.getDuratio()+""},false)+"\n";
 				}else{
 					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("not1", false)},false)+"\n";
@@ -172,59 +168,164 @@ public class PlayerData {
 			body=Msg.getMsg("body2", false);
 		}
 		
-		Msg.sendRandomArrayToPlayer(p, "player-data", new String[]{"%body%","%Player%","%thirst%","%sleep%","%energy%","%temperature%","%body%","%weight%","%illnesses%"}, 
-				new String[]{body,Bukkit.getPlayer(uuid).getName(),Util.ReservedDecimalPlaces(thirst.getThirst(), 2),Util.ReservedDecimalPlaces(sleep.getSleep(), 2),Util.ReservedDecimalPlaces(energy.getEnergy(), 2),
-						Util.ReservedDecimalPlaces(temperature.getTemperature(), 2),body,Util.ReservedDecimalPlaces(weight.getWeight(), 2),illnessData}, false);
+		stateData = Msg.getRandomMsgArray("player-data",
+				new String[]{
+						"%body%",
+						"%Player%",
+						"%thirst%","%thirst-max%","%thirst-now%",
+						"%sleep%","%sleep-max%","%sleep-now%",
+						"%energy%","%energy-max%","%energy-now%",
+						"%temperature%",
+						"%weight%","%weight-max%","%weight-now%",
+						"%illnesses%"}, 
+				new String[]{
+						body,Bukkit.getPlayer(uuid).getName(),
+						Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
+						Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
+						Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
+						Util.RDP(temperature.getTemperature(), 2),
+						Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2),
+						illnessData}, false);
+		
 	}
 	
-	public static void main(String[] args) {
-		
-/*		long l=System.currentTimeMillis();
-		int level = 500;
-		for(int i=1;i<=level;i++){
-			double sum = 0;
-			for(int j=1;j<=i;j++){
-				sum+=Math.log(j);
-			}
-			System.out.println("Level "+i+": "+Math.sqrt(sum));
+	public Double getEffectMax(com.outlook.schooluniformsama.data.effect.EffectType effect){
+		switch(effect){
+		case ENERGY_L:
+			return energy.getEnergyMax();
+		case ENERGY_P:
+			return energy.getEnergyMax();
+		case SLEEP_L:
+			return sleep.getSleepMax();
+		case SLEEP_P:
+			return sleep.getSleepMax();
+		case THIRST_L:
+			return thirst.getThirstMax();
+		case THIRST_P:
+			return thirst.getThirstMax();
+		case WEIGHT:
+			return weight.getWeightMax();
+		default:
+			return null;
 		}
-		System.out.println(System.currentTimeMillis()-l);*/
-		try {
-			PlayerData one = new PlayerData(new UUID(0, 0), "That is new World", true);
-			one.thirst.levelUp(10);
-			one.energy.change(50);
-			one.sleep.setHasSleep(true);
-			one.illness.addIllness("This is One Illness",100,null);
-			one.illness.addIllness("My name is Two",100,null);
-			one.illness.addIllness("Three",100,null);
-			//one.illness.eatMedicine(Arrays.asList("Three"), 71, 50);
-			one.save();
-			PlayerData d=load(new UUID(0, 0));
-			System.out.println(d.getIllness().getIllness());
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		//d.save();
 	}
 	
-	public void changeEffect(EffectType type,float num){
+	public void change(EffectType type, double num){
+		double afterFix = num;
 		switch(type){
 			case ENERGY:
-				energy.changeEffect(num);
-			case IMMUNE:
-				illness.changeEffect(num);
+				if(num<0){
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_L);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix>0) afterFix = 0;
+				}else{
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_P);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix<0) afterFix = 0;
+				}
+				energy.change(afterFix);
+				if(energy.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), energy.getInfo() , Data.enablePrefixInTitle);
+				//EffectTask.addEffectStatic(energy.getState(), getPlayer(), this);
+				break;
 			case SLEEP:
-				sleep.changeEffect(num);
+				if(num<0){
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_L);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix>0) afterFix = 0;
+				}else{
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_P);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix<0) afterFix = 0;
+				}
+				sleep.change(afterFix);
+				if(sleep.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), sleep.getInfo() , Data.enablePrefixInTitle);
+				//EffectTask.addEffectStatic(sleep.getState(), getPlayer(), this);
+				break;
 			case THIRST:
-				thirst.changeEffect(num);
+				if(num<0){
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_L);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix>0) afterFix = 0;
+				}else{
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_P);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					if(afterFix<0) afterFix = 0;
+				}
+				thirst.change(afterFix);
+				if(thirst.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), thirst.getInfo() , Data.enablePrefixInTitle);
+				//EffectTask.addEffectStatic(thirst.getState(), getPlayer(), this);
+				break;
 			case WEIGHT:
-				weight.changeEffect(num);
-		default:
-			break;
+				{
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.WEIGHT);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					String info = weight.setWeight(afterFix);
+					if(info!=null)Msg.sendRandomTitleToPlayer(getPlayer(), info , Data.enablePrefixInTitle);
+					//EffectTask.addEffectStatic(weight.isOverWeight(), getPlayer(), this);
+					break;
+				}
+			case TEMPERATURE:
+				{
+					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.TEMPERATURE);
+					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
+					String info = temperature.change(afterFix);
+					if(info!=null)Msg.sendTitleToPlayer(getPlayer(), info , Data.enablePrefixInTitle);
+					break;				
+				}
+			
 		}
 	}
+	
+	public void eatMedicine(String[] list,double medicineEfficacy, long duratio){
+		if(list==null){
+			for(String str:illness.keySet())
+				illness.get(str).eatMedicine(medicineEfficacy, duratio);
+			return;
+		}
+		for(String str:list){
+			if(illness.keySet().contains(str))
+				illness.get(str).eatMedicine(medicineEfficacy, duratio);
+			
+		}
+	}
+	
+	public boolean addIllness(String name,double chance,String remove){
+		double afterFix = chance;
+		EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.IMMUNE);
+		if(ed!=null) afterFix += ed.isPercentage()?chance*ed.getAmplifier():ed.getAmplifier();	
+		if(Math.random()*100<afterFix){
+			if(name.equalsIgnoreCase("Slight") && illness.containsKey("Severe"))
+				name = "Severe";
+			if(illness.containsKey(name))
+				illness.remove(name);
+			if(remove!=null)
+				illness.remove(remove);
+			illness.put(name, new Illness(name));
+			return true;
+		}else return false;
+	}
+	
+	public void recoverIllnesses(Player p){
+		for(Map.Entry<String, Illness> entity:illness.entrySet()){
+			if(entity.getValue().isTakeMedicine()){
+				if(entity.getValue().subTime(p))
+					illness.remove(entity.getKey());				
+			}else{
+				entity.getValue().change();
+			}
+		}
+	}
+	
+	public boolean isIllness(){
+		if(illness==null||illness.size()<1)
+			return false;
+		return true;
+	}
+
+	public HashMap<String, Illness> getIllness() {
+		return illness;
+	}
+	
 	
 	public Player getPlayer(){
 		return Bukkit.getPlayer(uuid);
@@ -256,10 +357,6 @@ public class PlayerData {
 
 	public Weight getWeight() {
 		return weight;
-	}
-
-	public Illnesses getIllness() {
-		return illness;
 	}
 	
 	public boolean isUnlimited(){

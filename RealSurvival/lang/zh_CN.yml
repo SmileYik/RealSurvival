@@ -5,11 +5,11 @@ prefix: "§9[RealSurvival]§f >"
 player-data: 
   - "§9===============%Player%==============="
   - "    §b身体状况: %body%"
-  - "    §b睡 眠 度: %sleep% %"
-  - "    §b水    分: %thirst% %"
+  - "    §b睡 眠 度: %sleep-now%/%sleep-max% -- %sleep% %"
+  - "    §b水    分: %thirst-now%/%thirst-max% -- %thirst% %"
   - "    §b体    温: %temperature% ℃"
-  - "    §b体    力: %energy% %"
-  - "    §b负    重: %weight% Kg"
+  - "    §b体    力: %energy-now%/%energy-max% -- %energy% %"
+  - "    §b负    重: %weight-now%/%weight-max% -- %weight%"
   - "§9====================================="
   - "§9===============生病列表==============="
   - "§b%illnesses%"
@@ -79,7 +79,7 @@ line:
   cold: "§3§l你感觉太冷了...;§e不行!你需要烤火."
 #Energy Messages
   no-energy: "§c你跑不动了!"
-  energt-fullly: "§c你又可以开始奔跑了"
+  energy-fullly: "§c你又可以开始奔跑了"
 #Warkbench Messages
   WorkbenchIsUsing: "§c这个工作台正在被%player%使用中!"
   Exception: "§4制作的时候出了一个错误!"
@@ -103,7 +103,10 @@ line:
   WorkbenchUndone: "§4当前物品未制作完成!"
   WorkbenchProgress1: "§b已完成: %pass%%"
   WorkbenchProgress2: "§b物品已经制作完成!"
-  #Commands Des
+#Recipe Viewer GUI
+  recipe-viewer-title: "配方"
+  
+#Commands Des
   HelpDes: "查看本插件的帮助"
   StateDes: "查看自身状态"
   HelpDes2: "搜索与 [Text] 有关的指令"
@@ -127,6 +130,10 @@ line:
   ItemDeleteLoreDes: "移除手中物品的某一行描述"
   ItemRemoveLoreDes: "移除手中物品的所有描述"
   StateUnlimitedDes: "将某人的属性设置为无限"
+  ReloadDes: "重载RealSurvival"
+  SetWaterDes: "设置一种水为手中的物品"
+  GetWaterDes: "得到一种水"
+  GetWaterTypeDes: "获取水的种类"
   #Normer Command Message
   NoPermissions: "§c§l抱歉,你没有权利这样做."
   CommandNotFind: "§c§l抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"
@@ -155,6 +162,6 @@ line:
   HandIsNull: "你什么都没拿唉"
   ItemSaveS: "你手上的物品成功保存为%name%"
   #State Command
-  state-command-cooldown: "这个指令还在冷却中呢..."
+  state-command-cooldown: "现在显示的是已过时的数据,需要一段时间后才能刷新你的数据."
   state-unlimited: "你的属性是无限的!"
   player-is-offline: "%player% 现在不在线"

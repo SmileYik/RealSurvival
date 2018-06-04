@@ -25,17 +25,17 @@ public class Papi extends EZPlaceholderHook {
 		
 		if(time>=1000){
 			time=0;
-			if(pd.getIllness().isIllness())
-				index=(int) (Math.random()*pd.getIllness().getIllness().size());
+			if(pd.isIllness())
+				index=(int) (Math.random()*pd.getIllness().size());
 			else 
 				index=-1;
 		}else time++;
 		
 		if(arg.equalsIgnoreCase("sleep"))
-			return _2f(pd.getSleep().getSleep()/pd.getSleep().getMaxSleep()*100)+"%";
+			return _2f(pd.getSleep().getSleep()/pd.getSleep().getSleepMax()*100)+"%";
 		
 		if(arg.equalsIgnoreCase("thirst"))
-			return _2f(pd.getThirst().getThirst()/pd.getThirst().getMaxThirst()*100)+"%";
+			return _2f(pd.getThirst().getThirst()/pd.getThirst().getThirstMax()*100)+"%";
 		
 		if(arg.equalsIgnoreCase("temperature")){
 			if(pd.getTemperature().getTemperature()>pd.getTemperature().getOldTemperature())
@@ -47,40 +47,40 @@ public class Papi extends EZPlaceholderHook {
 		}
 		
 		if(arg.equalsIgnoreCase("illness")){
-			while(index>=0&&index>=pd.getIllness().getIllness().size())
+			while(index>=0&&index>=pd.getIllness().size())
 				index--;
 			if(index<0)
 				return Msg.getMsg("body2", false);
 			else
-				return pd.getIllness().getIllness().keySet().toArray(new String[pd.getIllness().getIllness().size()])[index];
+				return pd.getIllness().keySet().toArray(new String[pd.getIllness().size()])[index];
 			
 		}
 		
 		
 		if(arg.equalsIgnoreCase("weight"))
-			return _2f(pd.getWeight().getWeight());
+			return _2f(pd.getWeight().getWeight()/pd.getWeight().getWeightMax()*100)+"%";
 		
 		if(arg.equalsIgnoreCase("energy"))
-			return _2f(pd.getEnergy().getEnergy()/Data.energy[0]*100)+"%";
+			return _2f(pd.getEnergy().getEnergy()/pd.getEnergy().getEnergyMax()*100)+"%";
 		
 		if(arg.equalsIgnoreCase("md")){
-			while(index>=0&&index>=pd.getIllness().getIllness().size())
+			while(index>=0&&index>=pd.getIllness().size())
 				index--;
 			if(index==-1)
 				return "0s";
 			else
-				return pd.getIllness().getIllness().get(pd.getIllness().getIllness().keySet().toArray(
-						new String[pd.getIllness().getIllness().size()])[index]).getDuratio()+"s";
+				return pd.getIllness().get(pd.getIllness().keySet().toArray(
+						new String[pd.getIllness().size()])[index]).getDuratio()+"s";
 		}
 		
 		if(arg.equalsIgnoreCase("recovery")){
-			while(index>=0&&index>=pd.getIllness().getIllness().size())
+			while(index>=0&&index>=pd.getIllness().size())
 				index--;
 			if(index==-1)
 				return "100%";
 			else
-				return _2f(pd.getIllness().getIllness().get(pd.getIllness().getIllness().keySet().toArray(
-						new String[pd.getIllness().getIllness().size()])[index]).getRecovery())+"%";
+				return _2f(pd.getIllness().get(pd.getIllness().keySet().toArray(
+						new String[pd.getIllness().size()])[index]).getRecovery())+"%";
 		}
 		
 		return null;

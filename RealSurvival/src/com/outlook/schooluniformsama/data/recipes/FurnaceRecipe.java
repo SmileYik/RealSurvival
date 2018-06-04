@@ -23,8 +23,8 @@ public class FurnaceRecipe extends Recipe{
 	private ItemStack[] product;
 	
 	public FurnaceRecipe(String name,int needTime,int saveTime,double minTemperature,
-			double maxTemperature,List<String> shape, HashMap<Character, ItemStack> materials,ItemStack[] product){
-		super(name, WorkbenchType.FURNACE,shape,needTime);
+			double maxTemperature,List<String> shape, HashMap<Character, ItemStack> materials,ItemStack[] product,String tableType){
+		super(name, WorkbenchType.FURNACE,shape,needTime,tableType);
 		this.materials = materials;
 		this.product = product;
 		this.saveTime=saveTime;
@@ -33,8 +33,8 @@ public class FurnaceRecipe extends Recipe{
 		
 	}
 	
-	public FurnaceRecipe(String name,int needTime,int saveTime,double minTemperature,double maxTemperature){
-		super(name,WorkbenchType.FURNACE,needTime);
+	public FurnaceRecipe(String name,int needTime,int saveTime,double minTemperature,double maxTemperature,String tableType){
+		super(name,WorkbenchType.FURNACE,needTime,tableType);
 		this.saveTime=saveTime;
 		this.minTemperature=minTemperature;
 		this.maxTemperature=maxTemperature;
@@ -62,6 +62,7 @@ public class FurnaceRecipe extends Recipe{
 		recipe.set(name+".minTemperature", minTemperature);
 		recipe.set(name+".maxTemperature", maxTemperature);
 		recipe.set(name+".shape", shape);
+		recipe.set(name+".tableType", tableType);
 		for(Character c:materials.keySet())
 			recipe.set(name+".material."+c,materials.get(c) );
 		for(int i=0;i<3;i++)
@@ -88,7 +89,7 @@ public class FurnaceRecipe extends Recipe{
 		 
 		 return new FurnaceRecipe(name,recipe.getInt(name+".needTime"),recipe.getInt(name+".saveTime"),
 				 recipe.getDouble(name+".minTemperature"),recipe.getDouble(name+".maxTemperature"),
-				 recipe.getStringList(name+".shape"), materials, product);
+				 recipe.getStringList(name+".shape"), materials, product,recipe.getString(name+".tableType"));
 	}
 	
 	public static boolean createFurnaceRecipe(Inventory inv,FurnaceRecipe fr){
@@ -129,7 +130,7 @@ public class FurnaceRecipe extends Recipe{
 		
 		FurnaceRecipe wr=new FurnaceRecipe(fr.name ,fr.needTime,fr.saveTime,fr.minTemperature,fr.maxTemperature,
 				Arrays.asList(s.substring(0,3),s.substring(3, 6)),m2, new ItemStack[]{inv.getItem(Furnace.pSlot.get(0)),
-						inv.getItem(Furnace.pSlot.get(1)),inv.getItem(Furnace.pSlot.get(2))});
+						inv.getItem(Furnace.pSlot.get(1)),inv.getItem(Furnace.pSlot.get(2))},fr.tableType);
 		return wr.save();
 		
 	}

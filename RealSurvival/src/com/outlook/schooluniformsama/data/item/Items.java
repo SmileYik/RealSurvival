@@ -14,6 +14,8 @@ import com.outlook.schooluniformsama.util.HashMap;
 import com.outlook.schooluniformsama.util.Msg;
 
 public class Items{
+	private static YamlConfiguration water ;
+	
 	public static ItemStack createPItem(short damage,String name){
 		ItemStack is=new ItemStack(Material.STAINED_GLASS_PANE,1,damage);
 		ItemMeta im=is.getItemMeta();
@@ -23,8 +25,15 @@ public class Items{
 	}
 	
 	public static ItemStack getWater(String name){
-		//Msg.getMsg(name, false)
-		return YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml")).getItemStack(name);
+		if(water==null)water = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml"));
+		return water.getItemStack(name);
+	}
+	
+	public static void setWater(String name,ItemStack is) throws IOException{
+		if(water==null)water = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml"));
+		water.set(name, is.clone());
+		water.save(new File(Data.DATAFOLDER+"/items/waters.yml"));
+		water = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml"));
 	}
 	
 	public boolean createWater(){

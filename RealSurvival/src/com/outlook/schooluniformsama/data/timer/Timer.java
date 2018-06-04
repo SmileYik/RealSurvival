@@ -46,7 +46,7 @@ public class Timer {
 	}
 	
 	public WorkbenchTimer toWorkbenchTimer(){
-		return new WorkbenchTimer(workbenchName,playerName, worldName, x, y, z);
+		return new WorkbenchTimer(workbenchName,playerName,worldName, x, y, z);
 	}
 	
 	public FurnaceTimer toFurnaceTimer(){
@@ -104,4 +104,5 @@ public class Timer {
 	public WorkbenchShape getWorkbenchShape(){
 		return Data.workbenchs.get(workbenchName);
 	}
+	
 }

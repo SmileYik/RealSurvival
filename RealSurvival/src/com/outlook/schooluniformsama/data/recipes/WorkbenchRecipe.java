@@ -32,14 +32,14 @@ public class WorkbenchRecipe extends Recipe{
 	 * @param product
 	 */
 	public WorkbenchRecipe(String name,int needTime,
-			List<String> shape, HashMap<Character, ItemStack> materials,ItemStack[] product){
-		super(name, WorkbenchType.WORKBENCH,shape,needTime);
+			List<String> shape, HashMap<Character, ItemStack> materials,ItemStack[] product,String tableType){
+		super(name, WorkbenchType.WORKBENCH,shape,needTime,tableType);
 		this.materials = materials;
 		this.product = product;
 	}
 	
-	public WorkbenchRecipe(String name,int needTime){
-		super(name, WorkbenchType.WORKBENCH,needTime);
+	public WorkbenchRecipe(String name,int needTime,String tableType){
+		super(name, WorkbenchType.WORKBENCH,needTime,tableType);
 	}
 	
 	public static String getRecipePath(String recipeName){
@@ -60,6 +60,7 @@ public class WorkbenchRecipe extends Recipe{
 		recipe.set(name+".name", name);
 		recipe.set(name+".needTime", needTime);
 		recipe.set(name+".shape", shape);
+		recipe.set(name+".tableType", tableType);
 		for(Character c:materials.keySet())
 			recipe.set(name+".material."+c,materials.get(c) );
 		for(int i=0;i<4;i++)
@@ -89,7 +90,7 @@ public class WorkbenchRecipe extends Recipe{
 		 ItemStack[] product=new ItemStack[4];
 		 for(int i=0;i<4;i++)
 			 product[i]=recipe.getItemStack(name+".product."+i);
-		 return new WorkbenchRecipe(name,  recipe.getInt(name+".needTime"), recipe.getStringList(name+".shape"), materials, product);
+		 return new WorkbenchRecipe(name,  recipe.getInt(name+".needTime"), recipe.getStringList(name+".shape"), materials, product,recipe.getString(name+".tableType"));
 	}
 	
 	/**
@@ -140,7 +141,7 @@ public class WorkbenchRecipe extends Recipe{
 				Arrays.asList(s.substring(0,4),s.substring(4, 8),s.substring(8,12),s.substring(12,16)),m2, 
 				new ItemStack[]{inv.getItem(Workbench.products.get(0)),inv.getItem(
 						Workbench.products.get(1)),inv.getItem(Workbench.products.get(2)),
-						inv.getItem(Workbench.products.get(3))});
+						inv.getItem(Workbench.products.get(3))},r.tableType);
 		
 		return wr.save();
 		

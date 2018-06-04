@@ -46,7 +46,7 @@ public class Workbench {
 			inv.setItem(49, Items.createPItem((short)5, Msg.getMsg("WorkbenchProgress2", false)));
 		else
 			inv.setItem(49, Items.createPItem((short)14, Msg.getMsg("WorkbenchProgress1", new String[]{"%pass%"}, 
-					new String[]{Util.ReservedDecimalPlaces(((wt.getTime()/(double)wt.getNeedTime())*100),2)}, false)));
+					new String[]{Util.RDP(((wt.getTime()/(double)wt.getNeedTime())*100),2)}, false)));
 		
 		return inv;
 	}

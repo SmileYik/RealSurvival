@@ -8,18 +8,21 @@ public class Recipe {
 	protected String name;
 	protected List<String> shape=new ArrayList<>();
 	protected WorkbenchType type;
+	protected String tableType;
 	
-	protected Recipe(String name,WorkbenchType type,List<String> shape,int needTime){
+	protected Recipe(String name,WorkbenchType type,List<String> shape,int needTime,String tableType){
 		this.name=name;
 		this.type=type;
 		this.shape=shape;
 		this.needTime=needTime;
+		this.tableType = tableType;
 	}
 	
-	protected Recipe(String name,WorkbenchType type,int needTime){
+	protected Recipe(String name,WorkbenchType type,int needTime,String tableType){
 		this.name=name;
 		this.type=type;
 		this.needTime=needTime;
+		this.tableType = tableType;
 	}
 
 	public int getNeedTime() {
@@ -45,5 +48,13 @@ public class Recipe {
 	public void setShape(List<String> shape) {
 		this.shape = shape;
 	}
-	
+
+	public String getTableType() {
+		return tableType;
+	}
+
+	public void setTableType(String tableType) {
+		this.tableType = tableType;
+	}
+
 }

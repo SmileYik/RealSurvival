@@ -7,8 +7,8 @@ import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.NBTItemData;
+import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.util.Msg;
 
 public class WeightTask implements Runnable{
 	@Override
@@ -34,7 +34,7 @@ public class WeightTask implements Runnable{
 				}else if(Data.itemData.containsKey(is.getType().name()))
 					weight+=Data.itemData.get(is.getType().name()).getWeight()*is.getAmount();
 			}
-			Msg.sendRandomTitleToPlayer(p, pd.getWeight().setWeight(weight),Data.enablePrefixInTitle);
+			pd.change(EffectType.WEIGHT, weight);
 		}
 	}
 }

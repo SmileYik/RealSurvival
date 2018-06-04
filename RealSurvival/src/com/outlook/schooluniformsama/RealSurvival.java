@@ -77,7 +77,6 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	public void onEnable() {
 		firstLoad();
 		getNMS();
-
 		loadConfig();
 		registerListeners();
 		if(Data.versionData[0]<=7)addPlayers_LOW_VERSION(); else addPlayers();
@@ -168,81 +167,63 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		
 		if(label.equalsIgnoreCase("rs") || label.equalsIgnoreCase("RealSurvival")){
-			
-			if(!(sender instanceof Player)){
-				sender.sendMessage(Msg.getMsg("IsNotPlayer", true));
-				return true;
-			}
-			
-			Player p = (Player)sender;
-			if(args.length==2){
-				if(args[0].equalsIgnoreCase("help")){
-					p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
-					for(Method method:cmdsType.getClazz().getDeclaredMethods()){
-						if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
-							continue;
-						com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
-						if(!cmd.type().equalsIgnoreCase(args[1].toLowerCase()))
-							continue;
-						if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
-							continue;
-						String arg="";
-						if(cmd.childCmds()[0]!="")
-							for(String temp:cmd.childCmds())
-								arg+=temp+" ";
-						if(cmd.args()[0]!="")
-							for(String temp:cmd.args())
-								arg+=temp+" ";
-						 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
-					}
-					return true;
+			if(args.length==0 ||  args[0].equalsIgnoreCase("help")){
+				String help = "HELP";
+				if(args.length<=1)
+					sender.sendMessage(Msg.getMsg("Help1", true));
+				else{
+					sender.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));
+					help = args[1].toLowerCase();
 				}
-			}else if(args.length==0 || (args.length==1 && args[0].equalsIgnoreCase("help"))){
-				p.sendMessage(Msg.getMsg("Help1", true));
 				for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 					if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 						continue;
 					com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
-					if(!cmd.type().equalsIgnoreCase("HELP"))
+					if(!cmd.type().equalsIgnoreCase(help))
 						continue;
-					if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions())))
+					if( !(cmd.permissions().equals("") || sender.hasPermission(cmd.permissions())))
 						continue;
 					String arg="";
-					if(cmd.childCmds()[0]!="")
-						for(String temp:cmd.childCmds())
-							arg+=temp+" ";
+					if(cmd.hasChildCmds()){
+						for(String cc : cmd.childCmds())
+							arg+=cc+" ";
+					}
 					if(cmd.args()[0]!="")
 						for(String temp:cmd.args())
 							arg+=temp+" ";
-					 p.sendMessage(ChatColor.translateAlternateColorCodes('&',"  &c&l/rs &3&l"+cmd.cmd()+" &3"+arg.replace("  ", " ")+"&f- &b&l"+Msg.getMsg(cmd.des(),false)));
-					 
+					String text = "&c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false);
+					while(text.contains("  ")){
+						text=text.replace("  ", " ");
+					}
+					 sender.sendMessage(ChatColor.translateAlternateColorCodes('&',"  "+text)); 
 				}
 				return true;
 			}
+			
 			for(Method method:cmdsType.getClazz().getDeclaredMethods()){
 				if(!method.isAnnotationPresent(com.outlook.schooluniformsama.command.Command.class))
 					continue;
 				com.outlook.schooluniformsama.command.Command cmd=method.getAnnotation(com.outlook.schooluniformsama.command.Command.class);
-				if(!cmd.cmd().equalsIgnoreCase(args[0]))
-                    continue;
-				if(args.length>1&&cmd.childCmds()[0]!=""){
-					int i=1;
-					boolean isc=false;
-					for(String str:cmd.childCmds())
-						if(!str.equalsIgnoreCase(args[i++])){
-							isc=true;
-							break;
-						}
-					if(isc)continue;
+				if(cmd.argsLenght()>0&&cmd.argsLenght()!=args.length)continue;
+				if(!cmd.cmd().equalsIgnoreCase(args[0]))continue;
+				if(cmd.hasChildCmds()){
+					int i = 1;
+					for(String cc:cmd.childCmds())if(!args[i++].equalsIgnoreCase(cc)){i=-1; break;}
+					if(i==-1)continue;
 				}
-				if( !(cmd.permissions().equals("") || p.hasPermission(cmd.permissions()))){
-					p.sendMessage(Msg.getMsg("NoPermissions", true));
+				if( !(cmd.permissions()=="" || sender.hasPermission(cmd.permissions()))){
+					sender.sendMessage(Msg.getMsg("NoPermissions", true));
 					return true;
 				}
-				 try {method.invoke(cmds, p,args);}catch (Exception e) { e.printStackTrace();}
+				if(!(sender instanceof Player)&&cmd.needPlayer()){
+					sender.sendMessage(Msg.getMsg("IsNotPlayer", true));
+					return true;
+				}	
+				//((Player)sender).openInventory(FeatureGUI.openRecipeViewer());
+				try {method.invoke(cmds, (sender instanceof Player)?(Player)sender:sender,args);}catch (Exception e) { e.printStackTrace();}
 				return true;
 			}
-			p.sendMessage(Msg.getMsg("CommandNotFind", true));
+			sender.sendMessage(Msg.getMsg("CommandNotFind", true));
 			return true;
 		}
 		return false;
@@ -412,8 +393,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			Data.mobEffect.put(mob.split(":")[0], new Mob(mob.split(":")[0], mob.split(":")[1]));
 		for(String effect:getConfig().getStringList("effect.illness-effects")){
 			ArrayList<Effect> l=new ArrayList<>();
-			for(String effects:effect.split(":")[1].split(";"))
-				l.add(new Effect(effects.split(",")[0], Integer.parseInt(effects.split(",")[1]), Integer.parseInt(effects.split(",")[2])));
+			for(String effects:effect.split(":")[1].split(";"))l.add(new Effect(effects));
 			Data.illnessEffects.put(effect.split(":")[0],l );
 		}
 		for(String strainer:getConfig().getStringList("strainer"))
@@ -435,35 +415,39 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 				Data.furnaceRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
 		}
 		
-		
-		
-		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
-		for(String key:timer.getStringList("list")){
-			Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
-					timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
-			switch(tt.getType()){
-				case FURNACE:
-					FurnaceTimer ft = tt.toFurnaceTimer();
-					FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
-					ft.start(fr, TemperatureTask.getBaseTemperature(ft.getLocation(),true));
-					ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean("isBad"),timer.getInt(key+".time"));
-					Data.timer.put(key, ft);
-					break;
-				case WORKBENCH:
-					WorkbenchTimer wt = tt.toWorkbenchTimer();
-					wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
-					Data.timer.put(key, wt);
-					break;
-			case RAINWATER_COLLECTOR:
-				RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
-				rct.start(timer.getInt(key+".time"));
-				Data.timer.put(key, rct);
-				break;
-			}
-		}
-		
 		if(!new Items().createWater())
 			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
+		
+		this.getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
+			@Override
+			public void run() {
+				YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
+				for(String key:timer.getStringList("list")){
+					Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
+							timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
+					switch(tt.getType()){
+						case FURNACE:
+							FurnaceTimer ft = tt.toFurnaceTimer();
+							FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
+							ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean(key+".isBad",false),timer.getInt(key+".time"));
+							ft.start(fr, TemperatureTask.getBaseTemperature(tt.getLocation(),true));
+							Data.timer.put(key, ft);
+							break;
+						case WORKBENCH:
+							WorkbenchTimer wt = tt.toWorkbenchTimer();
+							wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
+							Data.timer.put(key, wt);
+							break;
+					case RAINWATER_COLLECTOR:
+						RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
+						rct.start(timer.getInt(key+".time"));
+						Data.timer.put(key, rct);
+						break;
+					}
+				}
+			}
+		}, 60);
+		
 	}
 	
 	//Load Online Player's Data

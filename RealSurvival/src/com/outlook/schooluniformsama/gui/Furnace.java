@@ -63,7 +63,7 @@ public class Furnace{
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
 			temp= Items.createPItem((short)1, Msg.getMsg("FurnaceWorkProgress+", new String[]{"%temperature%","%minTemperature%"},
-					new String[]{Util.ReservedDecimalPlaces(nowTemperature,2),Util.ReservedDecimalPlaces( ft.getMinTemperature(),2)},false));
+					new String[]{Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)},false));
 			if(pass>0)
 				inv.setItem(43,temp );
 			if(pass>0.25)
@@ -74,7 +74,7 @@ public class Furnace{
 				inv.setItem(16,temp);
 		}else{
 			temp= Items.createPItem((short)3, Msg.getMsg("FurnaceWorkProgress-", new String[]{"%temperature%","%minTemperature%"},
-					new String[]{Util.ReservedDecimalPlaces(nowTemperature,2),Util.ReservedDecimalPlaces( ft.getMinTemperature(),2)},false));
+					new String[]{Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)},false));
 			if(pass>0)
 				inv.setItem(43,temp );
 			if(pass>0.25)
@@ -87,7 +87,7 @@ public class Furnace{
 		//Time
 		pass=ft.getTime()/(double)ft.getNeedTime();
 		temp=Items.createPItem((short)5, Msg.getMsg("FurnaceTimeProgress", new String[]{"%timeProgress%","%time%"},
-				new String[]{Util.ReservedDecimalPlaces(pass*100,2),(ft.getNeedTime()-ft.getTime())+""},false));
+				new String[]{Util.RDP(pass*100,2),(ft.getNeedTime()-ft.getTime())+""},false));
 		if(pass>=0)
 			inv.setItem(37, temp );
 		if(pass>=0.5)

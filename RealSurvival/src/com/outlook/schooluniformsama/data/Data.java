@@ -94,6 +94,20 @@ public class Data {
 	/**v1_[0]_R[1]*/
 	public static int versionData[];
 	
+	public static void clear(){
+		worlds.clear();
+		itemData.clear();
+		label.clear();
+		workbenchs.clear();
+		foodEffect.clear();
+		mobEffect.clear();
+		illnessEffects.clear();
+		playerData.clear();
+		timer.clear();
+		workbenchRecipe.clear();
+		furnaceRecipe.clear();
+		strainer.clear();
+	}
 	
 	public static void addPlayer(Player p){
 		if(Data.worlds.contains(p.getWorld().getName())&&!p.hasMetadata("NPC"))

@@ -14,6 +14,7 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.NBTItemData;
+import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
 /*
@@ -85,35 +86,35 @@ public class UseItemEvent_1_8 implements Listener {
 	
 	
 	private void eatFood(PlayerData pd,Food f){
-		pd.getSleep().change(f.getSleep());
-		pd.getThirst().change(f.getThirst());
-		pd.getEnergy().change(f.getEnergy());
+		pd.change(EffectType.SLEEP, f.getSleep());
+		pd.change(EffectType.THIRST, f.getThirst());
+		pd.change(EffectType.ENERGY, f.getEnergy());
 		if(f.isHasIllness())
 			for(Map.Entry<String,Double> entity:f.getIllness().entrySet())
-					pd.getIllness().addIllness(entity.getKey(),entity.getValue(),null);
+					pd.addIllness(entity.getKey(),entity.getValue(),null);
 	}
 	
 	private boolean useItem(ItemLoreData id,PlayerData pd){
 		boolean isUsed = false;
 		if(id.getSleep()!=ItemLoreData.badCode()){
-			pd.getSleep().change(id.getSleep());
+			pd.change(EffectType.SLEEP, id.getSleep());
 			isUsed=true;
 		}
 		if(id.getThirst()!=ItemLoreData.badCode()){
-			pd.getThirst().change(id.getThirst());
+			pd.change(EffectType.THIRST, id.getThirst());
 			isUsed=true;
 		}
 		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
-			pd.getIllness().eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
+			pd.eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
 			isUsed=true;
 		}
 		if(id.getIllnessNames()!=null && id.getIllnessProbability()!=ItemLoreData.badCode()){
 			for(String str:id.getIllnessNames())
-					pd.getIllness().addIllness(str,id.getIllnessProbability(),null);
+					pd.addIllness(str,id.getIllnessProbability(),null);
 			isUsed=true;
 		}
 		if(id.getEnergy()!=ItemLoreData.badCode()){
-			pd.getEnergy().change(id.getEnergy());
+			pd.change(EffectType.ENERGY, id.getEnergy());
 			isUsed=true;
 		}
 		if(id.getHungery()!=ItemLoreData.badCode()){
@@ -126,25 +127,24 @@ public class UseItemEvent_1_8 implements Listener {
 	private boolean useItem(NBTItemData id,PlayerData pd){
 		boolean isUsed = false;
 		if(id.getSleep()!=ItemLoreData.badCode()){
-			pd.getSleep().change(id.getSleep());
+			pd.change(EffectType.SLEEP, id.getSleep());
 			isUsed=true;
 		}
 		if(id.getThirst()!=ItemLoreData.badCode()){
-			pd.getThirst().change(id.getThirst());
+			pd.change(EffectType.THIRST, id.getThirst());
 			isUsed=true;
 		}
 		if(id.getDrugEffect()!=ItemLoreData.badCode() && id.getMedicineDuration()!=ItemLoreData.badCode()){
-			pd.getIllness().eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
-			
+			pd.eatMedicine(id.getTreatable(), id.getDrugEffect(), (long)id.getMedicineDuration());
 			isUsed=true;
 		}
 		if(id.getIllness()!=null){
 			for(Map.Entry<String, Double> entity:id.getIllness().entrySet())
-				pd.getIllness().addIllness(entity.getKey(),entity.getValue(),null);
+				pd.addIllness(entity.getKey(),entity.getValue(),null);
 			isUsed=true;
 		}
 		if(id.getEnergy()!=ItemLoreData.badCode()){
-			pd.getEnergy().change(id.getEnergy());
+			pd.change(EffectType.ENERGY, id.getEnergy());
 			isUsed=true;
 		}
 		if(id.getHungery()!=ItemLoreData.badCode()){

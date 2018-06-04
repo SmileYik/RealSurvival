@@ -23,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.TempData;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.Items;
@@ -129,11 +130,13 @@ public class CraftItemEvent implements Listener{
 				
 				for(String str:Data.workbenchRecipe){
 					WorkbenchRecipe wr = WorkbenchRecipe.load(str);
+					WorkbenchTimer wt = TempData.createTimerTemp.get(p.getName()).toWorkbenchTimer();
 					if(wr==null)continue;
+					if(wr.getTableType()!=null && !wr.getTableType().equalsIgnoreCase(wt.getWorkbenchName()))continue;
 					if(wr.containsShape(e.getInventory())){
+						if(!p.hasPermission("RealSurvival.Recipe.Workbench."+wr.getName()))continue; // if player no permission, skip this
 						//Success
 						try{
-							WorkbenchTimer wt = TempData.createTimerTemp.get(p.getName()).toWorkbenchTimer();
 							wt.start(wr);
 							Data.timer.put(Util.getWorkbenchID(wt), wt);
 							TempData.openingWorkbench.remove(p.getName());
@@ -224,10 +227,12 @@ public class CraftItemEvent implements Listener{
 				
 				for(String str:Data.furnaceRecipe){
 					FurnaceRecipe fr = FurnaceRecipe.load(str);
+					FurnaceTimer ft = TempData.createTimerTemp.get(p.getName()).toFurnaceTimer();
 					if(fr==null)continue;
+					if(fr.getTableType()!=null && !fr.getTableType().equalsIgnoreCase(ft.getWorkbenchName()))continue;
 					if(fr.containsShape(e.getInventory())){
+						if(!p.hasPermission("RealSurvival.Recipe.Furnace."+fr.getName()))continue; // if player no permission, skip this
 						try{
-							FurnaceTimer ft = TempData.createTimerTemp.get(p.getName()).toFurnaceTimer();
 							ft.start(fr,TemperatureTask.getBaseTemperature(ft.getLocation(),true));
 							Data.timer.put(Util.getWorkbenchID(ft), ft);
 							TempData.openingWorkbench.remove(p.getName());
@@ -249,87 +254,6 @@ public class CraftItemEvent implements Listener{
 				e.setCancelled(true);
 				p.closeInventory();
 				p.openInventory(FeatureGUI.openRainwaterCollector(rct));
-			}
-		}
-	}
-	
-	@SuppressWarnings("deprecation")
-	@EventHandler
-	public void getRainwaterAndStrainer(PlayerInteractEvent e){
-		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK  || e.getItem()==null || e.getItem().getType()!=Material.GLASS_BOTTLE)return;
-		if((e.getClickedBlock().getType()==Material.CAULDRON&&(e.getClickedBlock().getRelative(BlockFace.UP).getState() instanceof Hopper))){
-			e.setCancelled(true);
-			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(Util.getWorkbenchID(e.getClickedBlock()));
-			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){Msg.sendTitleToPlayer(e.getPlayer(),"rainwater-not-yours", Data.enablePrefixInTitle); return ;}
-			if(!Msg.sendTitleToPlayer(e.getPlayer(), rct.hasWater(), Data.enablePrefixInTitle)){
-				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
-				}else{
-					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-				}
-				rct.removeWater(1);
-				givePlayerItem(e.getPlayer(), Items.getWater("Rainwater"));
-			}
-		}else if((e.getClickedBlock().getState() instanceof Hopper) && (e.getClickedBlock().getRelative(BlockFace.UP).getType()==Material.DROPPER)){
-			e.setCancelled(true);
-			Inventory up =( (Dropper)e.getClickedBlock().getRelative(BlockFace.UP).getState()).getInventory();
-			Inventory down = ((Hopper)e.getClickedBlock().getState()).getInventory();
-			ItemStack strainer = down.getItem(2);
-			if(strainer == null || !strainer.hasItemMeta() || !strainer.getItemMeta().hasLore()){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
-			double data = ItemLoreData.getLore("Strainer", strainer.getItemMeta().getLore(), false);
-			if(data<=0){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
-			Object allData[] = {null,null,false,null};
-			for(ItemStack water : up.getContents()){
-				if(water == null)continue;
-				String type = Data.nbtitem.getNBTValue(water, "RealSurvival");
-				if(type == null || type.matches("Freshwater"))continue;
-				int waterData = Data.strainer.get(type);
-				if(data>waterData){
-					allData[0]=water;
-					allData[1] = waterData;
-					allData[2] = true;
-					allData[3] = type;
-					break;
-				}else if(data == waterData){
-					allData[0]=water;
-					strainer = null;
-					allData[2] = true;
-					allData[3] = type;
-					break;
-				}
-			}
-			if(!(boolean)allData[2]){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-cannot-continue", Data.enablePrefixInTitle); return ;}
-			else{
-				up.setItem(up.first((ItemStack)allData[0]),new ItemStack(Material.GLASS_BOTTLE));
-				if(strainer == null)  down.setItem(2,null);
-				else{
-					ItemMeta im = strainer.getItemMeta();
-					List<String> lore = im.getLore();
-					Iterator<String> line = lore.iterator();
-					short index = 0;
-					while(line.hasNext()){
-						String loreLine = line.next();
-						if(Util.removeColor(loreLine).contains(Data.label.get("strainer"))){
-							loreLine = loreLine.replace(((int)data)+"", (int)(data-(int)allData[1])+"");
-							lore.set(index, loreLine);
-							break;
-						}
-						index ++;
-					}
-					im.setLore(lore);
-					strainer.setItemMeta(im);
-					down.setItem(2,strainer);
-				}
-				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
-					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
-					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
-				}else{
-					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
-				}
-				if(((String)allData[3]).contains("Ice")) givePlayerItem(e.getPlayer(), Items.getWater("IceWater"));
-				else if(((String)allData[3]).contains("Hot")) givePlayerItem(e.getPlayer(), Items.getWater("HotWater"));
-				else givePlayerItem(e.getPlayer(), Items.getWater("Freshwater"));
 			}
 		}
 	}
@@ -421,6 +345,7 @@ public class CraftItemEvent implements Listener{
 		}else{			
 			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.FURNACE, 
 					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
+			TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 			p.openInventory(Furnace.createFurnaceGUI(Data.workbenchs.get(ws).getTitle()));
 		}
 	}
@@ -435,6 +360,7 @@ public class CraftItemEvent implements Listener{
 		}else{			
 			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.WORKBENCH, 
 					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
+			TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 			p.openInventory(Workbench.createWorkbenchGUI(Data.workbenchs.get(ws).getTitle()));
 		}
 	}
@@ -443,5 +369,86 @@ public class CraftItemEvent implements Listener{
 		if(name==null || name.equalsIgnoreCase("null"))
 			return true;
 		return b.getRelative(face).getType().name().equalsIgnoreCase(name);
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler
+	public void getRainwaterAndStrainer(PlayerInteractEvent e){
+		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK  || e.getItem()==null || e.getItem().getType()!=Material.GLASS_BOTTLE)return;
+		if((e.getClickedBlock().getType()==Material.CAULDRON&&(e.getClickedBlock().getRelative(BlockFace.UP).getState() instanceof Hopper))){
+			e.setCancelled(true);
+			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(Util.getWorkbenchID(e.getClickedBlock()));
+			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){Msg.sendTitleToPlayer(e.getPlayer(),"rainwater-not-yours", Data.enablePrefixInTitle); return ;}
+			if(!Msg.sendTitleToPlayer(e.getPlayer(), rct.hasWater(), Data.enablePrefixInTitle)){
+				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
+					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
+				}else{
+					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
+				}
+				rct.removeWater(1);
+				givePlayerItem(e.getPlayer(), Items.getWater("Rainwater"));
+			}
+		}else if((e.getClickedBlock().getState() instanceof Hopper) && (e.getClickedBlock().getRelative(BlockFace.UP).getType()==Material.DROPPER)){
+			e.setCancelled(true);
+			Inventory up =( (Dropper)e.getClickedBlock().getRelative(BlockFace.UP).getState()).getInventory();
+			Inventory down = ((Hopper)e.getClickedBlock().getState()).getInventory();
+			ItemStack strainer = down.getItem(2);
+			if(strainer == null || !strainer.hasItemMeta() || !strainer.getItemMeta().hasLore()){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
+			double data = ItemLoreData.getLore("Strainer", strainer.getItemMeta().getLore(), false);
+			if(data<=0){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
+			Object allData[] = {null,null,false,null};
+			for(ItemStack water : up.getContents()){
+				if(water == null)continue;
+				String type = Data.nbtitem.getNBTValue(water, "RealSurvival");
+				if(type == null || type.matches("Freshwater"))continue;
+				int waterData = Data.strainer.get(type);
+				if(data>waterData){
+					allData[0]=water;
+					allData[1] = waterData;
+					allData[2] = true;
+					allData[3] = type;
+					break;
+				}else if(data == waterData){
+					allData[0]=water;
+					strainer = null;
+					allData[2] = true;
+					allData[3] = type;
+					break;
+				}
+			}
+			if(!(boolean)allData[2]){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-cannot-continue", Data.enablePrefixInTitle); return ;}
+			else{
+				up.setItem(up.first((ItemStack)allData[0]),new ItemStack(Material.GLASS_BOTTLE));
+				if(strainer == null)  down.setItem(2,null);
+				else{
+					ItemMeta im = strainer.getItemMeta();
+					List<String> lore = im.getLore();
+					Iterator<String> line = lore.iterator();
+					short index = 0;
+					while(line.hasNext()){
+						String loreLine = line.next();
+						if(Util.removeColor(loreLine).contains(Data.label.get("strainer"))){
+							loreLine = loreLine.replace(((int)data)+"", (int)(data-(int)allData[1])+"");
+							lore.set(index, loreLine);
+							break;
+						}
+						index ++;
+					}
+					im.setLore(lore);
+					strainer.setItemMeta(im);
+					down.setItem(2,strainer);
+				}
+				if(Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)){
+					if(e.getHand()==EquipmentSlot.HAND) e.getPlayer().getInventory().setItemInMainHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInMainHand()));
+					else if(e.getHand()==EquipmentSlot.OFF_HAND) e.getPlayer().getInventory().setItemInOffHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInOffHand()));
+				}else{
+					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
+				}
+				if(((String)allData[3]).contains("Ice")) givePlayerItem(e.getPlayer(), Items.getWater("IceWater"));
+				else if(((String)allData[3]).contains("Hot")) givePlayerItem(e.getPlayer(), Items.getWater("HotWater"));
+				else givePlayerItem(e.getPlayer(), Items.getWater("Freshwater"));
+			}
+		}
 	}
 }

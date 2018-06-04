@@ -20,7 +20,7 @@ public class FurnaceTimer extends Timer{
 		super(workbenchName,playerName,WorkbenchType.FURNACE,worldName,x,y,z);
 	}
 	
-	public FurnaceTimer(String workbenchName,String playerName,String worldName,int x,int y,int z,double extra,boolean isBad){
+	public FurnaceTimer(String workbenchName,String playerName,String tabelType,String worldName,int x,int y,int z,double extra,boolean isBad){
 		super(workbenchName,playerName,WorkbenchType.FURNACE,worldName,x,y,z);
 		this.extraTemperature=extra;
 		this.isBad=isBad;

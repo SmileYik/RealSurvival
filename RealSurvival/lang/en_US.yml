@@ -7,11 +7,11 @@ prefix: "§9[RealSurvival]§f >"
 player-data: 
   - "§9===============%Player%==============="
   - "    §bBody_Situation: %body%"
-  - "    §bSpirit: %sleep% %"
-  - "    §bThirst: %thirst% %"
+  - "    §bSpirit: %sleep-now%/%sleep-max% -- %sleep% %"
+  - "    §bThirst: %thirst-now%/%thirst-max% -- %thirst% %"
   - "    §bBody_Temperature: %temperature% ℃"
-  - "    §bStrength: %energy% %"
-  - "    §bWeight: %weight% Kg"
+  - "    §bStrength: %energy-now%/%energy-max% -- %energy% %"
+  - "    §bWeight: %weight-now%/%weight-max% -- %weight%"
   - "§9====================================="
   - "§9===============Illness==============="
   - "§b%illnesses%"
@@ -81,7 +81,7 @@ line:
   cold: "§3§lIs was so cold...;§eYou need to get warm."
 #Energy Messages
   no-energy: "§cYou can not run anymore!"
-  energt-fullly: "§cYour Can run now!"
+  energy-fullly: "§cYour Can run now!"
 #Warkbench Messages
   WorkbenchIsUsing: "§cThis table is used by %player%"
   Exception: "§4Occur an error when craft"
@@ -105,7 +105,9 @@ line:
   WorkbenchUndone: "§4The current item is not completed!"
   WorkbenchProgress1: "§bFinishing: %pass%%"
   WorkbenchProgress2: "§bItem has been created!"
-  #Commands Des
+#Recipe Viewer GUI
+  recipe-viewer-title: "Recipes"
+#Commands Des
   HelpDes: "Help"
   StateDes: "Check your status"
   HelpDes2: "Search about the [Text] 's command"
@@ -129,6 +131,10 @@ line:
   ItemDeleteLoreDes: "Remove a row from the item description"
   ItemRemoveLoreDes: "Remove all descriptions of items in your hand"
   StateUnlimitedDes: "Set someone's state is Unlimited"
+  ReloadDes: "Reload RealSurvival"
+  SetWaterDes: "Set a kind of water of the item in your hand"
+  GetWaterDes: "Get a kind of water"
+  GetWaterTypeDes: "Get types of water"
   #Normer Command Message
   NoPermissions: "§c§lPermission denied"
   CommandNotFind: "§c§lWrong command,you can use /rs help to get help"
@@ -157,6 +163,6 @@ line:
   HandIsNull: "You have not got anything"
   ItemSaveS: "Your item is successfully saved as name of %name%"
   #State Command
-  state-command-cooldown: "This command is cooldown..."
+  state-command-cooldown: "This command is cooldown... You need wait a moment to refresh"
   state-unlimited: "Your state is unlimited"
   player-is-offline: "%player% is offline"

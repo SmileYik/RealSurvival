@@ -3,6 +3,7 @@ package com.outlook.schooluniformsama.data.player;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
@@ -47,15 +48,28 @@ public class Illness {
 		}
 	}
 	
-	public boolean subTime(double buff,Player p){
-		if(duratio<=0&&recovery>0){
-			recovery-=medicineEfficacy*buff*Util.randomNum(0.1, 0.8);
+	public boolean subTime(Player p){
+		if(duratio<=0&&recovery>0){	//No efficacy
+			recovery-=medicineEfficacy*Util.randomNum(0.1, 0.8);
 			if(recovery<0)
 				recovery=0;
 			return false;
 		}
-		//TODO
-		recovery+=medicineEfficacy*buff;
+		//TODO efficacy
+		
+		double afterFix = medicineEfficacy;
+		
+		if(medicineEfficacy<0){
+			EffectTask.EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
+			if(ed!=null) afterFix += ed.isPercentage()?medicineEfficacy*ed.getAmplifier():ed.getAmplifier();
+			if(afterFix>0) afterFix = 0;
+		}else{
+			EffectTask.EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
+			if(ed!=null) afterFix += ed.isPercentage()?medicineEfficacy*ed.getAmplifier():ed.getAmplifier();
+			if(afterFix<0) afterFix = 0;
+		}
+		
+		recovery+=afterFix;
 		if(--duratio<=0){
 			duratio=0;
 			Msg.sendRandomTitleToPlayer(p, "efficacy-over", new String[]{"%sick%"}, new String[]{name}, Data.enablePrefixInTitle);

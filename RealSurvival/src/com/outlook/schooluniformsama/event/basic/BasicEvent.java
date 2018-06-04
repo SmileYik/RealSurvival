@@ -8,8 +8,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.util.HashMap;
 
 public class BasicEvent implements Listener{
 	//Player Join
@@ -40,7 +40,8 @@ public class BasicEvent implements Listener{
 			Data.playerData.remove(pd.getUuid());
 			return;
 		}
-		Data.addPlayer(e.getPlayer());
+		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))
+			Data.addPlayer(e.getPlayer());
 	}
 	//Player Join End
 	
@@ -51,12 +52,13 @@ public class BasicEvent implements Listener{
 		if(!Data.playerData.containsKey(p.getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
 		
-		pd.getSleep().change(Data.deathData[0]);
-		pd.getThirst().change(Data.deathData[1]);
-		pd.getEnergy().change(Data.deathData[2]);
-		pd.getTemperature().setTemperature(Data.deathData[3]);
+		pd.change(EffectType.SLEEP, Data.deathData[0]);
+		pd.change(EffectType.THIRST, Data.deathData[1]);
+		pd.change(EffectType.ENERGY, Data.deathData[2]);
+		pd.change(EffectType.TEMPERATURE, Data.deathData[3]);
+		
 		if(Data.deathData[4]==1)
-			pd.getIllness().setIllness(new HashMap<>());
+			pd.getIllness().clear();
 	}
 	//Player Death End
 }

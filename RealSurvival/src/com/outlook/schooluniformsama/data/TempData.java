@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.event.basic;
+package com.outlook.schooluniformsama.data;
 
 import com.outlook.schooluniformsama.data.recipes.Recipe;
 import com.outlook.schooluniformsama.data.timer.Timer;

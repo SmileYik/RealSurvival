@@ -9,9 +9,9 @@ import org.bukkit.inventory.PlayerInventory;
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
+import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.randomday.RandomDayTask;
-import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 public class TemperatureTask implements Runnable{
@@ -21,12 +21,13 @@ public class TemperatureTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			
 			if(p==null || pd==null || p.isDead())return;
-			Msg.sendTitleToPlayer(p, pd.getTemperature().change((Data.versionData[0] >= 9)?getTemFix(p.getLocation(), p.getInventory()):getTemFixLow(p.getLocation(), p.getInventory())),Data.enablePrefixInTitle);
+			pd.change(EffectType.TEMPERATURE, (Data.versionData[0] >= 9)?getTemFix(p.getLocation(), p.getInventory()):getTemFixLow(p.getLocation(), p.getInventory()));
 		}
 	}
 	
 	public static double getBaseTemperature(Location loc,boolean isFix){
-		double baseTemperature=RandomDayTask.getBiomeTemperature(loc.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()));
+		double baseTemperature;
+		baseTemperature = RandomDayTask.getBiomeTemperature(loc.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()));
 		baseTemperature+=RandomDayTask.todayData[4] +getBlocks(loc,isFix);
 		baseTemperature+=loc.getWorld().hasStorm()?RandomDayTask.temperaturefix[2]:0;
 		long time = loc.getWorld().getTime();
@@ -40,8 +41,8 @@ public class TemperatureTask implements Runnable{
 	}
 	
 	private double getTemFix(Location loc,PlayerInventory inv){
-		int amount = 0;
-		double fixMax = 0,fixMin = 0;
+		int amount = 1;
+		double fixMax = 100,fixMin = 100;
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());
@@ -81,7 +82,7 @@ public class TemperatureTask implements Runnable{
 			fixMin/=amount*100;
 			
 			if(fixMax==fixMin) return getApparentTemperature(loc, fixMax==0?1:fixMax);
-			
+
 			double tem1,tem2;
 			
 			tem1 = getApparentTemperature(loc, fixMax);
@@ -93,8 +94,8 @@ public class TemperatureTask implements Runnable{
 	}
 	
 	private double getTemFixLow(Location loc, PlayerInventory inv){
-		int amount = 0;
-		double fixMax = 0,fixMin = 0;
+		int amount = 1;
+		double fixMax = 100,fixMin = 100;
 		for(ItemStack is : inv.getArmorContents()){
 			if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore()) continue;
 			String temp = ItemLoreData.getLoreString("Temperature", is.clone().getItemMeta().getLore());

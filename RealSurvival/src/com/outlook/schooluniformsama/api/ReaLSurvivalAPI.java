@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.effect.EffectType;
+import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
@@ -88,7 +88,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default Set<String> getPlayerIllness(Player p){
 		if(!checkPlayerData(p))return new HashSet<>();
-		return Data.playerData.get(p.getUniqueId()).getIllness().getIllness().keySet();
+		return Data.playerData.get(p.getUniqueId()).getIllness().keySet();
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void addIllness(Player p,String name){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).getIllness().addIllness(name, 100, null);
+		Data.playerData.get(p.getUniqueId()).addIllness(name, 100, null);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void removeIllness(Player p,String name){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).getIllness().getIllness().remove(name);
+		Data.playerData.get(p.getUniqueId()).getIllness().remove(name);
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void removeAllIllness(Player p){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).getIllness().getIllness().clear();
+		Data.playerData.get(p.getUniqueId()).getIllness().clear();
 	}
 	
 	/**

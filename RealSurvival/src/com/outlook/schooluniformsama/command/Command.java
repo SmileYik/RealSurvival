@@ -14,6 +14,8 @@ public @interface Command {
 	String permissions() default "";
 	String des();
 	boolean needPlayer() default true;
+	boolean hasChildCmds();
+	int argsLenght();
 	String type();
 	//"Type"'s feature is mainly classified command type to facilitate the display of information
 	//"HELP" is the help info

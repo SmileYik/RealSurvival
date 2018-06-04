@@ -18,8 +18,8 @@ import com.outlook.schooluniformsama.data.Data;
 public class Update {
 	//https://raw.githubusercontent.com/SchoolUniform/RealSurvival/master/update/update.properties
 	//https://raw.githubusercontent.com/SchoolUniform/RealSurvival/master/update/old/[version].properties
-	public final static long now_version = 202;
-	public final static String now_version_show="0.2.4";
+	public final static long now_version = 203;
+	public final static String now_version_show="0.2.5";
 	private long version;
 	private String download;
 	private String version_show;

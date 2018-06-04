@@ -7,17 +7,29 @@ public class Effect {
 	private PotionEffectType type1;
 	private EffectType type2;
 	private int duration;
-	private int amplifier;
-	public Effect(String type, int duration, int amplifier) {
-		super();
-		type1=PotionEffectType.getByName(type);
-		try{
-			type2=EffectType.valueOf(type);
-		}catch (Exception e) {
+	private double amplifier;
+	private boolean percentage =false;
+	private int replaceLevel;
+	
+	public Effect(String effectString){
+		String data[] = effectString.split(",");
+		type1 = PotionEffectType.getByName(data[0]);
+		type2 = EffectType.getByName(data[0]);
+		duration = Integer.parseInt(data[1]);
+		if(type2!=null){
+			type1=null;
+			if(data[2].contains("%")){
+				amplifier = Double.parseDouble(data[2].replaceAll("[^0-9.+-]", ""))/100D;
+				percentage = true;
+			}else{
+				amplifier = Double.parseDouble(data[2]);
+				percentage = false;
+			}
+			replaceLevel = Integer.parseInt(data[3]);
+		}else{
 			type2=null;
+			amplifier = Integer.parseInt(data[2]);
 		}
-		this.duration = duration;
-		this.amplifier = amplifier;
 	}
 	
 	public boolean isPotion(){
@@ -25,7 +37,7 @@ public class Effect {
 	}
 	
 	public PotionEffect getEffect(){
-		return new PotionEffect(type1, duration, amplifier);
+		return new PotionEffect(type1, duration, (int)amplifier);
 	}
 
 	public EffectType getType2() {
@@ -36,10 +48,16 @@ public class Effect {
 		return duration;
 	}
 
-	public float getAmplifier() {
-		if(type1==null)
-			return amplifier/100.0F;
+	public double getAmplifier() {
 		return amplifier;
+	}
+	
+	public boolean isPercentage(){
+		return percentage;
+	}
+
+	public int getReplaceLevel() {
+		return replaceLevel;
 	}
 	
 	

@@ -93,7 +93,7 @@ public class Converter {
 				log.add(getLogHead()+"Find the target file: \""+wrFile+"\"");
 				log.add(getLogHead()+"Start converting recipe: \""+wrFile+"\"");
 				Inventory inv = wr.setInv(Workbench.createWorkbenchGUI("Converter"));
-				com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe newWR = new com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe(wr.getName(), (int) wr.getBuiltTime());
+				com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe newWR = new com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe(wr.getName(), (int) wr.getBuiltTime(),null);
 				if(com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe.createRecipe(inv, newWR)){
 					File newRecipe = new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+newWR.getName()+".yml");
 					log.add(getLogHead()+"Conversion successful!!: \""+moveRecipe(newRecipe, "workbench")+"\"");
@@ -138,7 +138,7 @@ public class Converter {
 				log.add(getLogHead()+"Start converting recipe: \""+wrFile+"\"");
 				
 				Inventory inv = fctr.setInv(Furnace.createFurnaceGUI("Converter"));
-				FurnaceRecipe fr = new FurnaceRecipe(fctr.getName(), fctr.getTime(), fctr.getmaxTime()-fctr.getTime(), fctr.getTemperature(), fctr.getTemperature()+100);
+				FurnaceRecipe fr = new FurnaceRecipe(fctr.getName(), fctr.getTime(), fctr.getmaxTime()-fctr.getTime(), fctr.getTemperature(), fctr.getTemperature()+100,null);
 				if(FurnaceRecipe.createFurnaceRecipe(inv, fr)){
 					File newRecipe = new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"furnace"+File.separator+fr.getName()+".yml");
 					log.add(getLogHead()+"Conversion successful!!: \""+moveRecipe(newRecipe, "furnace")+"\"");

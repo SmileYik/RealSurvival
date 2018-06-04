@@ -16,7 +16,7 @@ public class SickTask implements Runnable{
 			if(p==null || pd==null || p.isDead())return;
 			
 			try {
-				pd.getIllness().subTime(p);
+				pd.recoverIllnesses(p);
 			} catch (Exception e) {
 				
 			}

@@ -28,7 +28,7 @@ public class Util{
 	 * @param n
 	 * @return String
 	 */
-	public static String ReservedDecimalPlaces(double d,int n){
+	public static String RDP(double d,int n){
 		return String.format("%."+n+"f", d);
 	}
 	

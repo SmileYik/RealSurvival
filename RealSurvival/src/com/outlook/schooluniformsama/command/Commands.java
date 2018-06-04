@@ -1,6 +1,7 @@
 package com.outlook.schooluniformsama.command;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.LinkedList;
 import java.util.List;
@@ -12,17 +13,19 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.TempData;
+import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.recipes.*;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
-import com.outlook.schooluniformsama.event.basic.TempData;
 import com.outlook.schooluniformsama.gui.*;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 import org.bukkit.*;
+import org.bukkit.command.CommandSender;
 
 public class Commands {
 	
@@ -55,11 +58,18 @@ public class Commands {
 	}
 	
 	//TODO Other cmd
-	@Command(cmd = "update",des="UpdateDes",type="Update",permissions = "RealSurvival.Admin")
-	public void update(Player p,String args[]){
+	
+	@Command(cmd = "reload",des="ReloadDes",type="Update",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
+	public void reload(CommandSender p,String args[]){
+		plugin.getServer().getPluginManager().disablePlugin(plugin);
+		plugin.getServer().getPluginManager().enablePlugin(plugin);
+	}
+	
+	@Command(cmd = "update",des="UpdateDes",type="Update",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
+	public void update(CommandSender p,String args[]){
 		Update u = Update.getUpdate("update");
 		if(u==null){
-			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			p.sendMessage(Msg.getMsg( "CheckUpdateFailed", true));
 			return;
 		}
 		if(u.hasUpdate()){
@@ -69,20 +79,20 @@ public class Commands {
 				return;
 			}
 			u.download();
-			Msg.sendMsgToPlayer(p, "DownloadOver", new String[]{"%version%"},new String[]{u.getVersion_show()},true);
+			p.sendMessage(Msg.getMsg("DownloadOver", new String[]{"%version%"},new String[]{u.getVersion_show()},true));
 			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
 			return;
 		}else{
-			Msg.sendMsgToPlayer(p, "IsNewVersion", true);
+			p.sendMessage(Msg.getMsg( "IsNewVersion", true));
 			return;
 		}
 	}
 	
-	@Command(cmd = "cupdate",des="CUpdateDes",type="Update",permissions = "RealSurvival.Admin")
-	public void cUpdate(Player p,String args[]){
+	@Command(cmd = "cupdate",des="CUpdateDes",type="Update",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
+	public void cUpdate(CommandSender p,String args[]){
 		Update u = Update.getUpdate("update");
 		if(u==null){
-			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			p.sendMessage(Msg.getMsg( "CheckUpdateFailed", true));
 			return;
 		}
 		if(u.hasUpdate()){
@@ -92,22 +102,22 @@ public class Commands {
 			p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
 			return;
 		}else{
-			Msg.sendMsgToPlayer(p, "IsNewVersion", true);
+			p.sendMessage(Msg.getMsg( "IsNewVersion", true));
 			return;
 		}
 	}
 	
-	@Command(cmd = "getUpdateInfo",des="UpdateInfoDes",type="Update",permissions = "RealSurvival.Admin")
-	public void getUpdateInfo(Player p,String args[]){
+	@Command(cmd = "getUpdateInfo",des="UpdateInfoDes",type="Update",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
+	public void getUpdateInfo(CommandSender p,String args[]){
 		Update u= Update.getUpdate("update");
 		if(u==null){
-			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			p.sendMessage(Msg.getMsg( "CheckUpdateFailed", true));
 			return;
 		}
 		if(u.hasUpdate())
 			u = Update.getUpdate("old/"+Update.now_version);
 		if(u==null){
-			Msg.sendMsgToPlayer(p, "CheckUpdateFailed", true);
+			p.sendMessage(Msg.getMsg( "CheckUpdateFailed", true));
 			return;
 		}
 		p.sendMessage(Msg.getPrefix()+u.getUpdate_info());
@@ -115,21 +125,21 @@ public class Commands {
 	}
 	
 	//TODO help
-	@Command(cmd = "help",des="HelpDes",type="Help")
+	@Command(cmd = "help",des="HelpDes",type="Help",needPlayer = false,argsLenght = 1, hasChildCmds = false)
 	public void help(Player p,String args[]){}
 	
-	@Command(cmd = "help",args={"item"},des="ItemHelpDes",type="Help",permissions = "RealSurvival.Admin")
+	@Command(cmd = "help",childCmds="item",des="ItemHelpDes",type="Help",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 2, hasChildCmds = true)
 	public void helpItem(Player p,String args[]){}
 	
-	@Command(cmd="shelp",args={"[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin")
-	public void helpSearch(Player p,String args[]){
+	@Command(cmd="shelp",args={"[Text]"},des="HelpDes2",type="HELP",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 2, hasChildCmds = false)
+	public void helpSearch(CommandSender p,String args[]){
 		
 		if(args.length!=2){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
+			p.sendMessage(Msg.getMsg( "BadCmd", true));
 			return;
 		}
 		
-		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));//以下是关于type的信息
+		p.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));
 		for(Method method:Commands.class.getDeclaredMethods()){
 			if(!method.isAnnotationPresent(Command.class))
 				continue;
@@ -139,9 +149,10 @@ public class Commands {
 			if(!(cmd.permissions()!="" && p.hasPermission(cmd.permissions())))
 				continue;
 			String arg="";
-			if(cmd.childCmds()[0]!="")
-				for(String temp:cmd.childCmds())
-					arg+=temp+" ";
+			if(cmd.hasChildCmds()){
+				for(String cc : cmd.childCmds())
+					arg+=cc+" ";
+			}
 			if(cmd.args()[0]!="")
 				for(String temp:cmd.args())
 					arg+=temp+" ";
@@ -149,24 +160,21 @@ public class Commands {
 		}
 	}
 	
-	@Command(cmd = "help",args={"workbench"},des="WorkbenchHelpDes",type="Help",permissions = "RealSurvival.Admin")
+	@Command(cmd = "help",childCmds="workbench",des="WorkbenchHelpDes",type="Help",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 2, hasChildCmds = true)
 	public void workbenchHelp(){}
 	
 	//TODO create recipe
-	@Command(cmd = "cr",childCmds={"furnace"},args={"[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "CreateFuranceRecipeDes", type = "workbench" ,permissions = "RealSurvival.Admin")
+	@Command(cmd = "cr",childCmds="furnace",args={"[name]","[TableType]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "CreateFuranceRecipeDes", type = "workbench" ,permissions = "RealSurvival.Admin", argsLenght = 8, hasChildCmds = true)
 	public void createFuranceRecipe(Player p,String args[]){
-		if(args.length!=7){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		
 		if(new File(FurnaceRecipe.getRecipePath(args[2])).exists()){
 			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[2]}, true);
 			return;
 		}
 		try {
+			if(args[3].equalsIgnoreCase("null"))args[3] = null;
 			TempData.createRecipeTemp.put(p.getName(), new FurnaceRecipe(args[2], 
-					isInt(p, args[3], 3),isInt(p, args[4], 4),isDouble(p,args[5],5),isDouble(p,args[6],6)));
+					isInt(p, args[4], 4),isInt(p, args[5], 5),isDouble(p,args[6],6),isDouble(p,args[7],7),args[3]));
 		} catch (Exception e) {
 			return;
 		}
@@ -174,12 +182,8 @@ public class Commands {
 		return;
 	}
 	
-	@Command(cmd="cr",childCmds={"Furnace","SetDate"},args={"[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "ReplaceFuranceRecipeDataDes", type = "workbench" ,permissions = "RealSurvival.Admin")
+	@Command(cmd="cr",childCmds="SetFurnace",args={"[name]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "ReplaceFuranceRecipeDataDes", type = "workbench" ,permissions = "RealSurvival.Admin", argsLenght = 7, hasChildCmds = true)
 	public void replaceFuranceRecipeData(Player p,String args[]){
-		if(args.length!=8){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		
 		if(new File(FurnaceRecipe.getRecipePath(args[3])).exists()==false){
 			Msg.sendMsgToPlayer(p, "RecipeNotExists",new String[]{"%name%"} ,new String[]{args[3]}, true);
@@ -203,19 +207,16 @@ public class Commands {
 		return;
 	}
 	
-	@Command(cmd = "cr",childCmds="workbench",args={"[name]","[NeedTime]"}, des = "CreateWorkbenchRecipeDes", type = "workbench",permissions = "RealSurvival.Admin")
+	@Command(cmd = "cr",childCmds="workbench",args={"[name]","[TableType]","[NeedTime]"}, des = "CreateWorkbenchRecipeDes", type = "workbench",permissions = "RealSurvival.Admin", argsLenght = 5, hasChildCmds = true)
 	public void createWorkbenceRecipe(Player p,String args[]){
-		if(args.length!=4){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		
 		if(new File(WorkbenchRecipe.getRecipePath(args[2])).exists()){
 			Msg.sendMsgToPlayer(p, "RecipeExists",new String[]{"%name%"} ,new String[]{args[2]}, true);
 			return;
 		}
 		try {
-			TempData.createRecipeTemp.put(p.getName(), new WorkbenchRecipe(args[2], isInt(p, args[3], 3)));
+			if(args[3].equalsIgnoreCase("null"))args[3] = null;
+			TempData.createRecipeTemp.put(p.getName(), new WorkbenchRecipe(args[2], isInt(p, args[4], 4),args[3]));
 		} catch (Exception e) {
 			return;
 		}
@@ -234,7 +235,7 @@ public class Commands {
 			return text.substring(0, text.length()-1);
 	}
 	
-	@Command(cmd = "item",childCmds = "save",args={"[FileName]"},des = "ItemSaveDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "save",args={"[FileName]"},des = "ItemSaveDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void saveItem(Player p, String args[]){
 		if(args.length>3){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -273,7 +274,7 @@ public class Commands {
 		}
 	}
 	
-	@Command(cmd = "item",childCmds = "load",args={"[FileName]"},des = "ItemLoadDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "load",args={"[FileName]"},des = "ItemLoadDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void loadItem(Player p, String args[]){
 		if(args.length<3){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -288,7 +289,7 @@ public class Commands {
 		CraftItemEvent.givePlayerItem(p, rsi.getItem());
 	}
 	
-	@Command(cmd = "item",childCmds = "delete",args={"[FileName]"},des = "ItemDeleteDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "delete",args={"[FileName]"},des = "ItemDeleteDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void deleteItem(Player p, String args[]){
 		if(args.length!=3){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -303,7 +304,7 @@ public class Commands {
 		if(!item.delete())Msg.sendMsgToPlayer(p, "DeleteFailed", true);
 	}
 	
-	@Command(cmd = "item",childCmds = "setName",args={"[name]"},des = "ItemSetNameDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "setName",args={"[name]"},des = "ItemSetNameDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void setItemName(Player p, String args[]){
 		if(args.length<3){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -319,7 +320,7 @@ public class Commands {
 		p.getInventory().getItemInMainHand().setItemMeta(im);
 	}
 	
-	@Command(cmd = "item",childCmds = "lore",args={"[lore]"},des = "ItemAddLoreDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "lore",args={"[lore]"},des = "ItemAddLoreDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void addItemLore(Player p, String args[]){
 		if(args.length<3){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -343,12 +344,139 @@ public class Commands {
 		p.getInventory().getItemInMainHand().setItemMeta(im);
 	}
 	
-	@Command(cmd = "item",childCmds = "setNBT",args={"[NBTFileName]"},des = "ItemSetNBTDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = {"water","get"},args={"[name]"},des = "GetWaterDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
+	public void getWater(Player p, String args[]){
+		switch (args[3].toLowerCase()) {
+		case "seawater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("Seawater"));
+			break;
+		case "iceseawater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("IceSeawater"));
+			break;
+		case "swampwater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("SwampWater"));
+			break;
+		case "lakewater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("LakeWater"));
+			break;
+		case "icelakewater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("IceLakeWater"));
+			break;
+		case "hotlakewater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("HotLakeWater"));
+			break;
+		case "freshwater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("Freshwater"));
+			break;
+		case "hotwater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("HotWater"));
+			break;
+		case "icewater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("IceWater"));
+			break;
+		case "rainwater":
+			CraftItemEvent.givePlayerItem(p, Items.getWater("Rainwater"));
+			break;
+		default:
+			Msg.sendMsgToPlayer(p, "NotFindItem", true);
+			break;
+		}
+/*		
+		Seawater:
+		IceSeawater:
+		SwampWater:
+		LakeWater:
+		IceLakeWater:
+		HotLakeWater:
+		Freshwater:
+		HotWater:
+		IceWater:
+		Rainwater:*/
+			
+	}
+	
+	@Command(cmd = "item",childCmds = {"water","set"},args={"[name]"},des = "SetWaterDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
+	public void setWater(Player p, String args[]){
+		if(p.getInventory().getItemInMainHand()==null || p.getInventory().getItemInMainHand().getType()==Material.AIR){
+			Msg.sendMsgToPlayer(p, "HandIsNull", true);
+			return;
+		}
+		try {
+			switch (args[3].toLowerCase()) {
+			case "seawater":
+				Items.setWater("Seawater",p.getInventory().getItemInMainHand());
+				break;
+			case "iceseawater":
+				Items.setWater("IceSeawater",p.getInventory().getItemInMainHand());
+				break;
+			case "swampwater":
+				Items.setWater("SwampWater",p.getInventory().getItemInMainHand());
+				break;
+			case "lakewater":
+				Items.setWater("LakeWater",p.getInventory().getItemInMainHand());
+				break;
+			case "icelakewater":
+				 Items.setWater("IceLakeWater",p.getInventory().getItemInMainHand());
+				break;
+			case "hotlakewater":
+				Items.setWater("HotLakeWater",p.getInventory().getItemInMainHand());
+				break;
+			case "freshwater":
+				 Items.setWater("Freshwater",p.getInventory().getItemInMainHand());
+				break;
+			case "hotwater":
+				Items.setWater("HotWater",p.getInventory().getItemInMainHand());
+				break;
+			case "icewater":
+				 Items.setWater("IceWater",p.getInventory().getItemInMainHand());
+				break;
+			case "rainwater":
+				Items.setWater("Rainwater",p.getInventory().getItemInMainHand());
+				break;
+			default:
+				Msg.sendMsgToPlayer(p, "ItemSaveF", true);
+				return;
+			}
+		} catch (IOException e) {
+			Msg.sendMsgToPlayer(p, "ItemSaveF", true);
+			return;
+		}
+		Msg.sendMsgToPlayer(p, "ItemSaveS",new String[]{"%name%"} ,new String[]{args[3]}, true);
+/*		
+		Seawater:
+		IceSeawater:
+		SwampWater:
+		LakeWater:
+		IceLakeWater:
+		HotLakeWater:
+		Freshwater:
+		HotWater:
+		IceWater:
+		Rainwater:*/
+	}
+	
+	
+	@Command(cmd = "item",childCmds = {"water","getTypes"},des = "GetWaterTypeDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 3, hasChildCmds = true,needPlayer = false)
+	public void getWaterType(CommandSender p, String args[]){
+		String types[] = {
+				"=================RealSurvival=================",
+				"Seawater: "+Msg.getMsg("Seawater", false),
+				"IceSeawater: "+Msg.getMsg("IceSeawater", false),
+				"SwampWater: "+Msg.getMsg("SwampWater", false),
+				"LakeWater: "+Msg.getMsg("LakeWater", false),
+				"IceLakeWater: "+Msg.getMsg("IceLakeWater", false),
+				"HotLakeWater: "+Msg.getMsg("HotLakeWater", false),
+				"Freshwater: "+Msg.getMsg("Freshwater", false),
+				"HotWater: "+Msg.getMsg("HotWater", false),
+				"IceWater: "+Msg.getMsg("IceWater", false),
+				"Rainwater: "+Msg.getMsg("Rainwater", false),
+				"=================Water Types================="
+		};
+		p.sendMessage(types);
+	}
+	
+	@Command(cmd = "item",childCmds = "setNBT",args={"[NBTFileName]"},des = "ItemSetNBTDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -3, hasChildCmds = true)
 	public void setItemNBT(Player p, String args[]){
-		if(args.length<3){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		if(p.getInventory().getItemInMainHand()==null || p.getInventory().getItemInMainHand().getType()==Material.AIR){
 			Msg.sendMsgToPlayer(p, "HandIsNull", true);
 			return;
@@ -357,26 +485,18 @@ public class Commands {
 		p.getInventory().setItemInMainHand(Data.nbtitem.addNBT(p.getInventory().getItemInMainHand(), "RealSurvival", lore));
 	}
 	
-	@Command(cmd = "item",childCmds = "setNBT",args={"[Key]","[Value]"},des = "ItemSetNBT2Des",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "setNBT",args={"[Key]","[Value]"},des = "ItemSetNBT2Des",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
 	public void setItemNBT2(Player p, String args[]){
-		if(args.length<3){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		if(p.getInventory().getItemInMainHand()==null || p.getInventory().getItemInMainHand().getType()==Material.AIR){
 			Msg.sendMsgToPlayer(p, "HandIsNull", true);
 			return;
 		}
 		String lore = getLongText(args, 2, false);
-		p.getInventory().setItemInMainHand(Data.nbtitem.addNBT(p.getInventory().getItemInMainHand(), "RealSurvival", lore));
+		p.getInventory().setItemInMainHand(Data.nbtitem.addNBT(p.getInventory().getItemInMainHand(), args[2], lore));
 	}
 	
-	@Command(cmd = "item",childCmds = "setlore",args={"[line]","[lore]"},des = "ItemSetLoreDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "setlore",args={"[line]","[lore]"},des = "ItemSetLoreDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = -4, hasChildCmds = true)
 	public void setItemLore(Player p, String args[]){
-		if(args.length<4){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		if(p.getInventory().getItemInMainHand()==null || p.getInventory().getItemInMainHand().getType()==Material.AIR){
 			Msg.sendMsgToPlayer(p, "HandIsNull", true);
 			return;
@@ -402,7 +522,7 @@ public class Commands {
 		p.getInventory().getItemInMainHand().setItemMeta(im);
 	}
 	
-	@Command(cmd = "item",childCmds = "rLore",des = "ItemRemoveLoreDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "rLore",des = "ItemRemoveLoreDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 2, hasChildCmds = true)
 	public void removeItemLore(Player p, String args[]){
 		if(args.length!=2){
 			Msg.sendMsgToPlayer(p, "BadCmd", true);
@@ -417,12 +537,8 @@ public class Commands {
 		p.getInventory().getItemInMainHand().setItemMeta(im);
 	}
 	
-	@Command(cmd = "item",childCmds = "dLore",args={"[line]"},des = "ItemDeleteLoreDes",type = "Item",permissions = "RealSurvival.Admin")
+	@Command(cmd = "item",childCmds = "dLore",args={"[line]"},des = "ItemDeleteLoreDes",type = "Item",permissions = "RealSurvival.Admin", argsLenght = 3, hasChildCmds = true)
 	public void deleteItemLore(Player p, String args[]){
-		if(args.length!=3){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		if(p.getInventory().getItemInMainHand()==null || p.getInventory().getItemInMainHand().getType()==Material.AIR){
 			Msg.sendMsgToPlayer(p, "HandIsNull", true);
 			return;
@@ -445,26 +561,18 @@ public class Commands {
 	}
 	
 	//state command
-	@Command(cmd = "states",args={"[PlayerName]"},des = "StatePlayerDes",type = "state",permissions = "RealSurvival.Admin")
+	@Command(cmd = "states",args={"[PlayerName]"},des = "StatePlayerDes",type = "state",permissions = "RealSurvival.Admin", argsLenght = 2, hasChildCmds = false)
 	public void statePlayer(Player p, String args[]){
-		if(args.length!=2){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		Player temp = plugin.getServer().getPlayer(args[1]);
 		if(temp.isOnline()){
-			Data.playerData.get(temp.getUniqueId()).sendData(p);
+			Data.playerData.get(temp.getUniqueId()).sendData(false);
 		}else{
 		    Msg.sendMsgToPlayer(p, "player-is-offline", new String[]{"%player%"},new String[]{temp.getName()},true);
 		}
 	}
 	
-	@Command(cmd = "states",childCmds = {"unlimited"},args={"[PlayerName]","[true | false]"},des = "StateUnlimitedDes",type = "state",permissions = "RealSurvival.Admin")
+	@Command(cmd = "states",childCmds = "unlimited",args={"[PlayerName]","[true | false]"},des = "StateUnlimitedDes",type = "state",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
 	public void stateUnlimited(Player p, String args[]){
-		if(args.length!=4){
-			Msg.sendMsgToPlayer(p, "BadCmd", true);
-			return;
-		}
 		boolean bool = Boolean.parseBoolean(args[3]);
 		
 		Player temp = plugin.getServer().getPlayer(args[2]);
@@ -482,18 +590,15 @@ public class Commands {
 	
 	
 	//player command
-	@Command(cmd = "state",des = "StateDes",type = "HELP",permissions="")
+	@Command(cmd = "state",des = "StateDes",type = "HELP", argsLenght = 1, hasChildCmds = false)
 	public void getState(Player p, String args[]){
-		if(stateCD.contains(p.getUniqueId())){
-			Msg.sendMsgToPlayer(p, "state-command-cooldown", true);
-			return;
-		}
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
 		if(pd==null){
 			Msg.sendMsgToPlayer(p, "state-unlimited", true);
 			return;
 		}
-		pd.sendData(p);
+		pd.sendData(stateCD.contains(p.getUniqueId()));
+		
 		if(!p.isOp()){
 			stateCD.addLast(p.getUniqueId());
 			Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
