@@ -142,6 +142,8 @@ line:
   GetWaterDes: "Get a kind of water"
   GetWaterTypeDes: "Get types of water"
   RecipeViewerDes: "View recipe"
+  Update2Des: "Get command about update"
+  RealSurvivalMakerDes: "Open RealSurvivalMaker Window"
   #Normer Command Message
   NoPermissions: "§c§lPermission denied"
   CommandNotFind: "§c§lWrong command,you can use /rs help to get help"
@@ -173,3 +175,25 @@ line:
   state-command-cooldown: "This command is cooldown... You need wait a moment to refresh"
   state-unlimited: "Your state is unlimited"
   player-is-offline: "%player% is offline"
+  
+  real-survival-maker:
+    button:
+      create: "Create"
+      add-label: "Add Label"
+      save: "Save"
+      close: "Close"
+    radio-button:
+      edit: "Edit"
+    label:
+      item-name: "Name"
+      item-type: "Type"
+      item-label: "Label"
+      item-label-data: "Label Data"
+    error-message:
+      item-label-data: "Please input the Label Data"
+      item-name: "Please input name"
+      item-exists: "This file is exists"
+    tool-tip-text:
+      tree: "双击一个节点可以进行编辑!"
+    input-dialog:
+      create: "Please input a file name"

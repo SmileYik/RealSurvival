@@ -1,7 +1,5 @@
 package app;
 
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JOptionPane;
@@ -9,16 +7,18 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
-import com.outlook.schooluniformsama.util.HashMap;
+import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.item.RSItem;
+import com.outlook.schooluniformsama.util.Msg;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
@@ -30,55 +30,41 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JRadioButton;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class RealSurvivalMaker {
-
-	private JFrame frmRealsurvivalmaker;
+public class RealSurvivalMaker extends JFrame{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private JTextField item_name;
 	private JTextField item_label_data;
-	private HashMap<String, String> labels = new HashMap<>();
-	private String split;
-	private String root = "RealSurvival/items/";
-	private String form = "%name%:\n  ==: org.bukkit.inventory.ItemStack\n  type: %type%\n  meta:\n    ==: ItemMeta\n    meta-type: UNSPECIFIC\n    display-name: %name2%\n    lore:\n%lore%\n";
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		
-		if(!new File("RealSurvival").exists() || !new File("RealSurvival/config.yml").exists()){
-			JOptionPane.showMessageDialog(null, "请先运行一次服务器后再打开此gui界面!");
-			return;
-		}
-		
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					RealSurvivalMaker window = new RealSurvivalMaker();
-					window.frmRealsurvivalmaker.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
+	private JFrame window;
+	
+	public static void showGUI(){
+		new RealSurvivalMaker().setVisible(true);
 	}
 
 	/**
 	 * Create the application.
 	 */
 	public RealSurvivalMaker() {
+		window = this;
 		initialize();
 	}
 	
-	private DefaultMutableTreeNode getItemsDir(){
-		DefaultMutableTreeNode dtm = new DefaultMutableTreeNode("items");
-		File items = new File(root);
+	private DefaultMutableTreeNode getItemsDir(File items){
+		DefaultMutableTreeNode dtm = new DefaultMutableTreeNode(items.getName());
 		if(!items.exists()){
 			items.mkdirs();
 			return dtm;
 		}
 		for(File item:items.listFiles()){
-			if(!item.isFile()||!item.getName().substring(item.getName().lastIndexOf(".")+1).equalsIgnoreCase("yml"))continue;
-			dtm.add(new DefaultMutableTreeNode(item.getName().substring(0,item.getName().lastIndexOf("."))));
+			if(item.isDirectory())
+				dtm.add(getItemsDir(item));
+			if(item.isFile()&&item.getName().substring(item.getName().lastIndexOf(".")+1).equalsIgnoreCase("yml"))
+				dtm.add(new DefaultMutableTreeNode(item.getName().substring(0,item.getName().lastIndexOf("."))));
 		}
 		return dtm;
 	}
@@ -90,52 +76,42 @@ public class RealSurvivalMaker {
 	private DefaultComboBoxModel<String> getLabels(){
 		LinkedList<String> list = new LinkedList<>();
 		list.add("DIY");
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File("RealSurvival/config.yml"));
-		split = config.getString("label.split");
-		for(String temp:config.getStringList("label.labels")){
-			String data[] = temp.split(":");
-			list.add(data[0]);
-			labels.put(data[0], data[1]);
-		}
+		list.addAll(Data.label.keySet());
 		return new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
-	}
-	
-	private YamlConfiguration getItem(String name){
-		return YamlConfiguration.loadConfiguration(new File("RealSurvival/items/"+name+".yml"));
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmRealsurvivalmaker = new JFrame();
-		frmRealsurvivalmaker.setResizable(false);
-		frmRealsurvivalmaker.setTitle("RealSurvivalMaker");
-		frmRealsurvivalmaker.setBounds(100, 100, 675, 416);
-		frmRealsurvivalmaker.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmRealsurvivalmaker.getContentPane().setLayout(null);
+		this.setResizable(false);
+		this.setTitle("RealSurvivalMaker");
+		//window.setBounds(100, 100, 675, 416);
+		//this.setBounds(100, 100, 155, 416);
+		this.setBounds(100, 100, 155, 416);
+		this.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setBounds(10, 10, 131, 345);
-		frmRealsurvivalmaker.getContentPane().add(scrollPane);
+		this.getContentPane().add(scrollPane);
 		
 		JTree tree = new JTree();
-		tree.setRootVisible(false);
+		tree.setToolTipText(Msg.getMsg("real-survival-maker.tool-tip-text.tree", false));
 		tree.setShowsRootHandles(true);
-		tree.setModel(new DefaultTreeModel(getItemsDir()));
+		tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/items"))));
 		scrollPane.setViewportView(tree);
 		
-		JButton create_new_item = new JButton("创建");
+		JButton create_new_item = new JButton(Msg.getMsg("real-survival-maker.button.create", false));
 		create_new_item.setBounds(10, 358, 131, 23);
-		frmRealsurvivalmaker.getContentPane().add(create_new_item);
+		this.getContentPane().add(create_new_item);
 		
 		JPanel create_new_item_panel = new JPanel();
 		create_new_item_panel.setBounds(152, 10, 507, 371);
-		frmRealsurvivalmaker.getContentPane().add(create_new_item_panel);
+		this.getContentPane().add(create_new_item_panel);
 		create_new_item_panel.setLayout(null);
 		create_new_item_panel.setVisible(false);
 		
-		JLabel lblNewLabel = new JLabel("物品名: ");
+		JLabel lblNewLabel = new JLabel(Msg.getMsg("real-survival-maker.label.item-name", false)+": ");
 		lblNewLabel.setBounds(22, 10, 54, 15);
 		create_new_item_panel.add(lblNewLabel);
 		
@@ -144,7 +120,7 @@ public class RealSurvivalMaker {
 		create_new_item_panel.add(item_name);
 		item_name.setColumns(10);
 		
-		JLabel label = new JLabel("物品类型:");
+		JLabel label = new JLabel(Msg.getMsg("real-survival-maker.label.item-type", false)+": ");
 		label.setBounds(180, 10, 54, 15);
 		create_new_item_panel.add(label);
 		
@@ -153,7 +129,7 @@ public class RealSurvivalMaker {
 		item_type.setBounds(236, 7, 155, 21);
 		create_new_item_panel.add(item_type);
 		
-		JLabel label_1 = new JLabel("物品标签:");
+		JLabel label_1 = new JLabel(Msg.getMsg("real-survival-maker.label.item-label", false)+": ");
 		label_1.setBounds(10, 39, 54, 15);
 		create_new_item_panel.add(label_1);
 		
@@ -162,7 +138,7 @@ public class RealSurvivalMaker {
 		item_label.setBounds(70, 36, 100, 21);
 		create_new_item_panel.add(item_label);
 		
-		JLabel label_2 = new JLabel("标签数值:");
+		JLabel label_2 = new JLabel(Msg.getMsg("real-survival-maker.label.item-label-data", false)+": ");
 		label_2.setBounds(180, 39, 54, 15);
 		create_new_item_panel.add(label_2);
 		
@@ -171,7 +147,7 @@ public class RealSurvivalMaker {
 		create_new_item_panel.add(item_label_data);
 		item_label_data.setColumns(10);
 		
-		JButton add_label = new JButton("添加标签");
+		JButton add_label = new JButton(Msg.getMsg("real-survival-maker.button.add-label", false));
 		add_label.setBounds(397, 35, 100, 23);
 		create_new_item_panel.add(add_label);
 		
@@ -183,18 +159,35 @@ public class RealSurvivalMaker {
 		lore_editer.setEditable(false);
 		scrollPane_1.setViewportView(lore_editer);
 		
-		JButton save_item = new JButton("保存");
+		JButton save_item = new JButton(Msg.getMsg("real-survival-maker.button.save", false));
 		save_item.setBounds(397, 338, 100, 23);
 		create_new_item_panel.add(save_item);
 		
-		JLabel file_name = new JLabel("File: ");
+		JLabel file_name = new JLabel("");
 		file_name.setBounds(401, 10, 96, 15);
 		create_new_item_panel.add(file_name);
 		
-		JRadioButton edit_check = new JRadioButton("编辑");
-		edit_check.setBounds(318, 338, 73, 23);
+		JRadioButton edit_check = new JRadioButton(Msg.getMsg("real-survival-maker.radio-button.edit", false));
+		edit_check.setBounds(220, 338, 73, 23);
 		create_new_item_panel.add(edit_check);
 		
+		JButton closeWindow = new JButton(Msg.getMsg("real-survival-maker.button.close", false));
+		closeWindow.setBounds(293, 338, 100, 23);
+		create_new_item_panel.add(closeWindow);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent arg0) {
+				dispose();
+			}
+		});
+		
+		closeWindow.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				create_new_item_panel.setVisible(false);
+				window.setBounds(100, 100, 155, 416);
+			}
+		});
 		
 		edit_check.addMouseListener(new MouseAdapter() {
 			@Override
@@ -207,27 +200,47 @@ public class RealSurvivalMaker {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				if(arg0.getClickCount()!=2 || create_new_item_panel.isVisible())return;
-				String name = tree.getSelectionPath().getLastPathComponent().toString();
-				YamlConfiguration item = getItem(name);
-				item_type.setSelectedItem(Material.getMaterial(item.getString(name+".type")));
-				item_name.setText(item.getString(name+".meta.display-name"));
-				String lore = "";
-				for(String line : item.getStringList(name+".meta.lore"))
-					lore+=line+"\n";
-				lore.substring(0, lore.length()-2);
-				lore_editer.setText(lore);
-				file_name.setText("File: "+name+".yml");
+				DefaultMutableTreeNode note = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+				if(note == null || note.getChildCount()>0) return;
+				String name = "";
+				for(Object temp:tree.getSelectionPath().getPath())
+					name+=temp.toString()+"/";
+				name = name.substring(0, name.length()-1).replace("items/", "");
+				ItemStack item = RSItem.loadItem(name).getItem();
+				item_type.setSelectedItem(item.getType());
+				
+				if(item.hasItemMeta()){
+					ItemMeta itemM = item.getItemMeta();
+					if(itemM.hasDisplayName())
+						item_name.setText(itemM.getDisplayName());
+					if(itemM.hasLore()){
+						String lore = "";
+						for(String line : itemM.getLore())
+							lore += line+"\n";
+						lore.substring(0,lore.length()-2);
+						lore_editer.setText(lore);
+					}
+						
+				}
+				
+				file_name.setText(""+name);
 				create_new_item_panel.setVisible(true);
+				window.setBounds(100, 100, 675, 416);
 			}
 		});
 		
 		create_new_item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String name = JOptionPane.showInputDialog(frmRealsurvivalmaker, "enter a name" );
+				String name = JOptionPane.showInputDialog(window, Msg.getMsg("real-survival-maker.input-dialog.create", false) );
 				if(name==null||name.replace(" ", "").equals(""))return;
-				file_name.setText("File: "+name+".yml");
+				if(new File(Data.DATAFOLDER+"/items/"+name+".yml").exists()){
+					JOptionPane.showMessageDialog(window, Msg.getMsg("real-survival-maker.error-message.item-exists", false));
+					return;
+				}
+				file_name.setText(name);
 				item_name.setText(name);
 				create_new_item_panel.setVisible(true);
+				window.setBounds(100, 100, 675, 416);
 			}
 		});
 		
@@ -237,10 +250,10 @@ public class RealSurvivalMaker {
 					lore_editer.setText(lore_editer.getText()+item_label_data.getText()+"\n");
 				}else{
 					if(item_label_data.getText()==null || item_label_data.getText().replace(" ", "").equals("")){
-						JOptionPane.showMessageDialog(frmRealsurvivalmaker, "请输入一个数据!");
+						JOptionPane.showMessageDialog(window,  Msg.getMsg("real-survival-maker.error-message.item-label-data", false));
 						return;
 					}
-					lore_editer.setText(lore_editer.getText()+labels.get(((String)item_label.getSelectedItem()))+split+item_label_data.getText()+"\n");
+					lore_editer.setText(lore_editer.getText()+Data.label.get(((String)item_label.getSelectedItem()))+Data.split+item_label_data.getText()+"\n");
 				}
 			}
 		});
@@ -248,28 +261,19 @@ public class RealSurvivalMaker {
 		save_item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(item_name.getText() == null || item_name.getText().replace(" ", "").equals("")){
-					JOptionPane.showMessageDialog(frmRealsurvivalmaker, "请输入一个名字!");
+					JOptionPane.showMessageDialog(window,  Msg.getMsg("real-survival-maker.error-message.item-name", false));
 					return;
 				}
-				String lore = "    - '"+lore_editer.getText().replace("\n", "'\n    - '");
-				lore=lore.substring(0, lore.lastIndexOf("\n")-1);
-				String savedate = form.replace("%name%", file_name.getText().replace("File: ", ""))
-						.replace("%name2%", item_name.getText())
-						.replace("%type%", ((Material) item_type.getSelectedItem()).name())
-						.replace("%lore%", lore);
 				
-				try {
-					File file = new File(root+file_name.getText().replace("File: ", ""));
-					FileWriter fw = new FileWriter(file);
-					fw.write(savedate);
-					fw.flush();
-					fw.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				tree.setModel(new DefaultTreeModel(getItemsDir()));
+				ItemStack item = new ItemStack((Material) item_type.getSelectedItem());
+				ItemMeta itemM = item.getItemMeta();
+				itemM.setDisplayName(item_name.getText());
+				itemM.setLore(Arrays.asList(lore_editer.getText().split("\n")));
+				item.setItemMeta(itemM);
+				new RSItem(item).save(file_name.getText());
+				tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/items"))));
 				create_new_item_panel.setVisible(false);
+				window.setBounds(100, 100, 155, 416);
 			}
 		});
 		

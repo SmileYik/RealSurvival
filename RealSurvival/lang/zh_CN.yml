@@ -140,6 +140,8 @@ line:
   GetWaterDes: "得到一种水"
   GetWaterTypeDes: "获取水的种类"
   RecipeViewerDes: "查看配方"
+  Update2Des: "查看与升级有关的指令"
+  RealSurvivalMakerDes: "打开RealSurvival物品制作器"
   #Normer Command Message
   NoPermissions: "§c§l抱歉,你没有权利这样做."
   CommandNotFind: "§c§l抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"
@@ -171,3 +173,26 @@ line:
   state-command-cooldown: "现在显示的是已过时的数据,需要一段时间后才能刷新你的数据."
   state-unlimited: "你的属性是无限的!"
   player-is-offline: "%player% 现在不在线"
+  
+  real-survival-maker:
+    button:
+      create: "创建"
+      add-label: "添加标签"
+      save: "保存"
+      close: "关闭"
+    radio-button:
+      edit: "编辑"
+    label:
+      item-name: "物品名"
+      item-type: "物品类型"
+      item-label: "物品标签"
+      item-label-data: "标签数据"
+    error-message:
+      item-label-data: "请输入一个对应的标签数据"
+      item-name: "请输入物品名字"
+      item-exists: "这个物品已经存在了"
+    tool-tip-text:
+      tree: "双击一个节点可以进行编辑!"
+    input-dialog:
+      create: "请输入文件名"
+    

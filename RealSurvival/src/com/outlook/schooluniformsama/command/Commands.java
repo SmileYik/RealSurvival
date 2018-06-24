@@ -25,6 +25,8 @@ import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
+import app.RealSurvivalMaker;
+
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;
 
@@ -59,7 +61,7 @@ public class Commands {
 	}
 	
 	//TODO Other cmd
-	
+	//		
 	@Command(cmd = "reload",des="ReloadDes",type="Update",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
 	public void reload(CommandSender p,String args[]){
 		plugin.getServer().getPluginManager().disablePlugin(plugin);
@@ -125,6 +127,11 @@ public class Commands {
 		return;
 	}
 	
+	@Command(cmd = "rsm",des="RealSurvivalMakerDes",type="help",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 1, hasChildCmds = false)
+	public void openRealSurvivalMaker(CommandSender p,String args[]){
+		RealSurvivalMaker.showGUI();
+	}
+	
 	//TODO help
 	@Command(cmd = "help",des="HelpDes",type="Help",needPlayer = false,argsLenght = 1, hasChildCmds = false)
 	public void help(Player p,String args[]){}
@@ -163,6 +170,9 @@ public class Commands {
 	
 	@Command(cmd = "help",childCmds="workbench",des="WorkbenchHelpDes",type="Help",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 2, hasChildCmds = true)
 	public void workbenchHelp(){}
+	
+	@Command(cmd = "help",childCmds="update",des="Update2Des",type="Help",permissions = "RealSurvival.Admin",needPlayer = false, argsLenght = 2, hasChildCmds = true)
+	public void update(){}
 	
 	//TODO create recipe
 	@Command(cmd = "cr",childCmds="furnace",args={"[name]","[TableType]","[NeedTime]","[BadTime]","[MinTemperature]","[MaxTemperature]"}, des = "CreateFuranceRecipeDes", type = "workbench" ,permissions = "RealSurvival.Admin", argsLenght = 8, hasChildCmds = true)
