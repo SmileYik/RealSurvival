@@ -31,7 +31,7 @@ public class Items{
 	
 	public static void setWater(String name,ItemStack is) throws IOException{
 		if(water==null)water = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml"));
-		water.set(name, is.clone());
+		water.set(name, new RSItem(is.clone()).getSaveItem());
 		water.save(new File(Data.DATAFOLDER+"/items/waters.yml"));
 		water = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/waters.yml"));
 	}

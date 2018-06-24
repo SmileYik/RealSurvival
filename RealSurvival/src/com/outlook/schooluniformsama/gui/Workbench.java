@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
@@ -21,6 +23,20 @@ public class Workbench {
 			if(!(materials.contains(i)||products.contains(i)))
 				inv.setItem(i, Items.createPItem((short)15, " "));
 		return inv;
+	}
+	
+	public static Inventory createRecipeViewerGUI(WorkbenchRecipe recipe){
+		if(recipe==null)return null;
+		Inventory inv=Bukkit.createInventory(null, 54,recipe.getName()+" - §7RV");
+		for(int i=0;i<54;i++)
+			if(!(materials.contains(i)||products.contains(i)))
+				inv.setItem(i, Items.createPItem((short)15, " "));
+		ItemStack item =  Items.createPItem((short) 14, Msg.getMsg("recipe-viewer.ok", false));
+		ItemMeta im = item.getItemMeta();
+		im.setLore(Arrays.asList(Msg.getMsg("recipe-viewer.workbench-passslot", new String[]{"%time%"},new String[]{Util.RDP(recipe.getNeedTime(), 2)},false)));
+		item.setItemMeta(im);
+		inv.setItem(49,item.clone());
+		return recipe.setInv(inv);
 	}
 	
 	public static Inventory createWorkbenchGUI(String title){

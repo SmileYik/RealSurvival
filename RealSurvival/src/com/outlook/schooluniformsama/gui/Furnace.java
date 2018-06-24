@@ -33,6 +33,20 @@ public class Furnace{
 		return inv;
 	}
 	
+	public static Inventory createRecipeViewerGUI(FurnaceRecipe recipe){
+		if(recipe == null) return null;
+		Inventory inv = Bukkit.createInventory(null,54 , recipe.getName()+" - §7RV");
+		for(int i=0;i<54;i++)
+			if(!mSlot.contains(i)&&!pSlot.contains(i)&&!tSlot.contains(i)&&!passSlot.contains(i))
+				inv.setItem(i, Items.createPItem((short)15, " "));
+		for(int i:passSlot)
+			inv.setItem(i, Items.createPItem((short)0, Msg.getMsg("recipe-viewer.furnace-passslot", new String[]{"%time1%","%time2%"},new String[]{Util.RDP(recipe.getNeedTime(), 2),Util.RDP(recipe.getSaveTime(), 2)},false)));
+		for(int i:tSlot)
+			inv.setItem(i, Items.createPItem((short)0, Msg.getMsg("recipe-viewer.furnace-temslot", new String[]{"%tem1%","%tem2%"},new String[]{Util.RDP(recipe.getMinTemperature(), 2),Util.RDP(recipe.getMaxTemperature(), 2)},false)));
+		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("recipe-viewer.ok", false)));
+		return recipe.setInv(inv);
+	}
+	
 	public static Inventory createFurnaceGUI(String title){
 		Inventory inv=createDefGUI(title+" §f- F");
 		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("FurnaceStart", false)));

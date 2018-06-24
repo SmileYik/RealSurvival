@@ -19,10 +19,12 @@ public class ItemLoreData {
 	private double medicineDuration;
 	private double temperature;
 	private double hungery;
+	private String workbenchType;
+	private String recipeName;
 	
 	private ItemLoreData(double thirst, double sleep, double energy, double weight, String[] illnessNames,
 			double illnessProbability, String[] treatable, double drugEffect, double medicineDuration,
-			double temperature,double hungery) {
+			double temperature,double hungery,String workbenchType,String recipeName) {
 		super();
 		this.thirst = thirst;
 		this.sleep = sleep;
@@ -35,6 +37,8 @@ public class ItemLoreData {
 		this.medicineDuration = medicineDuration;
 		this.temperature = temperature;
 		this.hungery=hungery;
+		this.workbenchType=workbenchType;
+		this.recipeName = recipeName;
 	}
 	
 	
@@ -44,7 +48,7 @@ public class ItemLoreData {
 		List<String> lore=is.clone().getItemMeta().getLore();
 		return new ItemLoreData(getLore("thirst", lore, false), getLore("sleep", lore, false), getLore("energy", lore, false), getLore("weight", lore, true),
 					getLoreString("illness", lore)==null?null:getLoreString("illness", lore).split(";"), getLore("illnessprobability", lore, true), getLoreString("treatable", lore)==null?null:
-					getLoreString("treatable", lore).split(";"), getLore("drugeffect", lore, true),getLore("medicineduration", lore, true), getLore("temperature", lore, true),getLore("hungr", lore, false));
+					getLoreString("treatable", lore).split(";"), getLore("drugeffect", lore, true),getLore("medicineduration", lore, true), getLore("temperature", lore, true),getLore("hungr", lore, false),getLoreString("workbenchtype", lore),getLoreString("recipename", lore));
 	}
 	
 	public static String getLoreString(String tabel,List<String> lore){
@@ -134,6 +138,12 @@ public class ItemLoreData {
 	public double getHungery() {
 		return hungery;
 	}
+
+	public String getWorkbenchType() {
+		return workbenchType;
+	}
 	
-	
+	public String getRecipeName() {
+		return recipeName;
+	}
 }

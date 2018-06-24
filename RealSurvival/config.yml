@@ -109,6 +109,8 @@ label:
     - "MedicineDuration:Medicine Duration"
     - "Hungr:Hungry"
     - "Strainer:Strainer"
+    - "WorkbenchType:Workbench Type"
+    - "RecipeName:Recipe Name"
       
 workbenchs:
   workbenchs-type:

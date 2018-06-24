@@ -106,7 +106,13 @@ line:
   WorkbenchProgress1: "§bFinishing: %pass%%"
   WorkbenchProgress2: "§bItem has been created!"
 #Recipe Viewer GUI
-  recipe-viewer-title: "Recipes"
+  recipe-viewer-title: "§bRecipe Viewer"
+  recipe-viewer:
+    recipe-not-find: "§cNot find this recipe!"
+    furnace-passslot: "§bNeed Time: %time1% s | Save Time: %time2%s"
+    furnace-temslot: "§bNeed Temperature: %tem1% ℃ | Max Temperature: %tem2%℃"
+    workbench-passslot: "§bNeed Time: %time%s"
+    ok: "§bOK"
 #Commands Des
   HelpDes: "Help"
   StateDes: "Check your status"
@@ -135,6 +141,7 @@ line:
   SetWaterDes: "Set a kind of water of the item in your hand"
   GetWaterDes: "Get a kind of water"
   GetWaterTypeDes: "Get types of water"
+  RecipeViewerDes: "View recipe"
   #Normer Command Message
   NoPermissions: "§c§lPermission denied"
   CommandNotFind: "§c§lWrong command,you can use /rs help to get help"

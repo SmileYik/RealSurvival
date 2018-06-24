@@ -104,8 +104,13 @@ line:
   WorkbenchProgress1: "§b已完成: %pass%%"
   WorkbenchProgress2: "§b物品已经制作完成!"
 #Recipe Viewer GUI
-  recipe-viewer-title: "配方"
-  
+  recipe-viewer-title: "§b配方"
+  recipe-viewer:
+    recipe-not-find: "§c没有找到这个配方"
+    furnace-passslot: "§b制造时间: %time1% 秒 | 保存时间: %time2%秒"
+    furnace-temslot: "§b需要温度: %tem1% ℃ | 最大温度: %tem2%℃"
+    workbench-passslot: "§b制造时间: %time%秒"
+    ok: "§b看完了"
 #Commands Des
   HelpDes: "查看本插件的帮助"
   StateDes: "查看自身状态"
@@ -134,6 +139,7 @@ line:
   SetWaterDes: "设置一种水为手中的物品"
   GetWaterDes: "得到一种水"
   GetWaterTypeDes: "获取水的种类"
+  RecipeViewerDes: "查看配方"
   #Normer Command Message
   NoPermissions: "§c§l抱歉,你没有权利这样做."
   CommandNotFind: "§c§l抱歉,这个指令不存在,请使用/rs help来查看帮助信息!"

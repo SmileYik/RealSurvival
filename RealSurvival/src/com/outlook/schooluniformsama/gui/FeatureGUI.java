@@ -4,10 +4,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
+import com.outlook.schooluniformsama.api.event.RSOpenRecipeViewerEvent;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
+import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipes.Recipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
 import com.outlook.schooluniformsama.util.Msg;
 
@@ -28,13 +34,50 @@ public class FeatureGUI{
 		return inv;
 	}
 	
-	public static Inventory openRecipeViewer(){
-		int size = Data.workbenchs.size();
-		if(size%9!=0)size=size/9+1;
-		else size/=9;
-		Inventory inv = Bukkit.createInventory(null, size,Msg.getMsg("recipe-viewer-title", false));
-		for(String str : Data.workbenchs.keySet())
-			inv.addItem(Items.createPItem((short)14, str));
+	public static void openRecipeViewer(Player p,String type,String recipeName){
+		//String nextSlot = Msg.getMsg("recipe-viewer.next-slot", false);
+		//String previousSlot = Msg.getMsg("recipe-viewer.previous-slot", false); 
+		if(!Data.workbenchs.containsKey(type))return;
+		Inventory inv = null;
+		Recipe recipe = null;
+		WorkbenchType type2 = Data.workbenchs.get(type).getType();
+		switch (type2) {
+		case FURNACE:
+			recipe = FurnaceRecipe.load(recipeName);
+			inv =  Furnace.createRecipeViewerGUI((FurnaceRecipe)recipe);
+			break;
+		case WORKBENCH:
+			recipe = WorkbenchRecipe.load(recipeName);
+			inv =  Workbench.createRecipeViewerGUI((WorkbenchRecipe)recipe);
+			break;
+		default:
+			break;
+		}
+		
+		//Event RSOpenRecipeViewer
+		RSOpenRecipeViewerEvent event = new RSOpenRecipeViewerEvent(p, recipe, inv,type2);
+		Bukkit.getServer().getPluginManager().callEvent(event);
+		if (!event.isCancelled()) {
+		    p.openInventory(inv);
+		}
+	}
+	
+	public static Inventory openRecipeViewer(String type,String recipeName){
+		//String nextSlot = Msg.getMsg("recipe-viewer.next-slot", false);
+		//String previousSlot = Msg.getMsg("recipe-viewer.previous-slot", false); 
+		if(!Data.workbenchs.containsKey(type))return null;
+		Inventory inv = null;
+		switch (Data.workbenchs.get(type).getType()) {
+		case FURNACE:
+			inv =  Furnace.createRecipeViewerGUI(FurnaceRecipe.load(recipeName));
+			break;
+		case WORKBENCH:
+			inv =  Workbench.createRecipeViewerGUI(WorkbenchRecipe.load(recipeName));
+			break;
+		default:
+			break;
+		}
+		
 		return inv;
 	}
 }

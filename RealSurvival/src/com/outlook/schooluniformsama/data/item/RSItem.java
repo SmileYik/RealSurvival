@@ -37,7 +37,13 @@ public class RSItem {
 	 */
 	
 	public static RSItem loadItem(String name){
-		ItemStack is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name,null);
+		ItemStack is;
+		if(name.contains("/"))
+			is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name.substring(name.lastIndexOf("/")+1),null);
+		else if(name.contains("\\"))
+			is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name.substring(name.lastIndexOf("\\")+1),null);
+		else 
+			is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name,null);
 		if(is==null)return null;
 		if(!is.hasItemMeta() || !is.getItemMeta().hasLore())return new RSItem(is);
 		ItemMeta im=is.getItemMeta();
@@ -55,7 +61,13 @@ public class RSItem {
 	}
 	
 	public static RSItem loadItem(String path,String name){
-		ItemStack is = YamlConfiguration.loadConfiguration(new File(path)).getItemStack(name,null);
+		ItemStack is;
+		if(name.contains("/"))
+			is = YamlConfiguration.loadConfiguration(new File(path+name+".yml")).getItemStack(name.substring(name.lastIndexOf("/")+1),null);
+		else if(name.contains("\\"))
+			is = YamlConfiguration.loadConfiguration(new File(path+name+".yml")).getItemStack(name.substring(name.lastIndexOf("\\")+1),null);
+		else 
+			is = YamlConfiguration.loadConfiguration(new File(path+name+".yml")).getItemStack(name,null);
 		if(is==null)return null;
 		if(!is.hasItemMeta() || !is.getItemMeta().hasLore())return new RSItem(is);
 		ItemMeta im=is.getItemMeta();
@@ -139,10 +151,42 @@ public class RSItem {
 		}
 		im.setLore(lore);
 		item.setItemMeta(im);
-
-		itemData.set(name, item);
+		if(name.contains("/"))
+			itemData.set(name.substring(name.lastIndexOf("/")+1), item);
+		else if(name.contains("\\"))
+			itemData.set(name.substring(name.lastIndexOf("\\")+1), item);
+		else
+			itemData.set(name, item);
 		try {
 			itemData.save(new File(Data.DATAFOLDER+"/items/"+name+".yml"));
+		} catch (IOException e) {
+			return -1;
+		}
+		return 1;
+	}
+	
+	public int save(String path,String name){
+		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(path+name+".yml"));
+		ItemStack item=this.item.clone();
+		ItemMeta im=item.getItemMeta();
+		List<String> temp = im.hasLore()?im.getLore():new LinkedList<>();
+		List<String>lore = new LinkedList<>();
+		for(String line:temp){
+			for(Entry<String, String> str:Data.label.entrySet())
+				line=line.replaceAll(str.getValue(),"%"+str.getKey()+"%" );
+			line=line.replaceAll(Data.split,"%split%");
+			lore.add(line);
+		}
+		im.setLore(lore);
+		item.setItemMeta(im);
+		if(name.contains("/"))
+			itemData.set(name.substring(name.lastIndexOf("/")+1), item);
+		else if(name.contains("\\"))
+			itemData.set(name.substring(name.lastIndexOf("\\")+1), item);
+		else
+			itemData.set(name, item);
+		try {
+			itemData.save(new File(path+name+".yml"));
 		} catch (IOException e) {
 			return -1;
 		}

@@ -16,6 +16,7 @@ import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.NBTItemData;
 import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
+import com.outlook.schooluniformsama.gui.FeatureGUI;
 
 /*
  * SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN
@@ -53,13 +54,18 @@ public class UseItemEvent_1_8 implements Listener {
 				return;
 			}
 		}else{
-			if(!useItem(id, pd))
+			if(!useItem(id, pd)){
 				if(Data.foodEffect.containsKey(e.getItem().getType().name())){
 					eatFood(pd,Data.foodEffect.get(e.getItem().getType().name()));
 					//e.getItem().setAmount(e.getItem().getAmount()-1);
 					return;
 				}
-			return;
+				return;
+			}else if(id.getWorkbenchType()!=null && id.getRecipeName() != null){//Check Recipe
+				e.setCancelled(true);
+				FeatureGUI.openRecipeViewer(e.getPlayer(),id.getWorkbenchType(), id.getRecipeName());
+				return;
+			}
 		}
 	}
 	

@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
@@ -225,6 +226,16 @@ public class Commands_1_8 {
 		}
 	     p.openInventory(Workbench.createWorkbenchRecipeGUI(args[2]));
 		return;
+	}
+	
+	@Command(cmd = "cr",childCmds="view",args={"[workbenchType]","[RecipeName]"},des = "RecipeViewerDes",type = "workbench",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
+	public void openRecipeViewer(Player p, String args[]){
+		Inventory inv = FeatureGUI.openRecipeViewer(args[1], args[2]);
+		if(inv==null){
+			p.sendMessage(Msg.getMsg("recipe-not-find", true));
+			return;
+		}
+		p.openInventory(inv);
 	}
 	
 	//TODO Item

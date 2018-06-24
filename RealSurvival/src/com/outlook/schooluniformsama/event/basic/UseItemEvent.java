@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
@@ -17,6 +18,7 @@ import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.NBTItemData;
 import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
+import com.outlook.schooluniformsama.gui.FeatureGUI;
 
 /*
  * SPECKLED_MELON FERMENTED_SPIDER_EYE RABBIT RABBIT_FOOT POISONOUS_POTATO BAKED_POTATO POTATO_ITEM CARROT_ITEM ROTTEN_FLESH SPIDER_EYE GOLDEN_APPLE GOLDEN_APPLE RAW_FISH RAW_FISH GRILLED_PORK PORK BREAD MUSHROOM_SOUP APPLE RAW_FISH RAW_FISH COOKED_FISH COOKED_FISH MELON COOKIE COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET POTION COOKED_CHICKEN
@@ -91,7 +93,24 @@ public class UseItemEvent implements Listener {
 					e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				}
 				return;
+			}else if(id!=null && id.getWorkbenchType()!=null && id.getRecipeName() != null){//Check Recipe
+				e.setCancelled(true);
+				FeatureGUI.openRecipeViewer(e.getPlayer(),id.getWorkbenchType(), id.getRecipeName());
+				return;
 			}
+		}
+		
+		if(e.getItem().getItemMeta() instanceof BookMeta){
+			BookMeta book = (BookMeta) e.getItem().getItemMeta();
+			if(!book.hasTitle())return;
+			if(!book.hasPages() || book.getPageCount()!=1)return;
+			String temp = book.getPage(1);
+			if(temp==null||temp.length()<=0)return;
+			String text[] = temp.replace("§0", "").split("\n");
+			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[Recipe]")))return;
+			FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]);
+			e.setCancelled(true);
+			return;
 		}
 	}
 	
