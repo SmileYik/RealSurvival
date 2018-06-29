@@ -182,6 +182,8 @@ line:
       add-label: "Add Label"
       save: "Save"
       close: "Close"
+      refresh: "Refresh"
+      add-item: "Add Item"
     radio-button:
       edit: "Edit"
     label:
@@ -189,11 +191,34 @@ line:
       item-type: "Type"
       item-label: "Label"
       item-label-data: "Label Data"
+      materials-editor: "Materials"
+      products-editor: "Products"
+      recipe-name: "Recipe Name"
+      workbench-type: "Workbench Type"
+      need-time: "Need Time"
+      save-time: "Save Time"
+      min-temperature: "Min Temperature"
+      max-temperature: "Max Temperature"
+      original-item: "Original Item"
+      item-type: "Item Type"
+      item-slot: "Item Slot"
     error-message:
       item-label-data: "Please input the Label Data"
       item-name: "Please input name"
       item-exists: "This file is exists"
+      recipe-in-doing: "你正在编辑一个配方!"
+      not-int: "不是一个数字|"
+      not-int-2: "不是一个有效的数字!"
+      can-not-be-null: "不能为空!"
+      no-selected-item: "请在左边列表里选择一个自定义物品!"
     tool-tip-text:
       tree: "双击一个节点可以进行编辑!"
     input-dialog:
       create: "Please input a file name"
+    key-word:
+      original-item: "ORIGINAL ITEM"
+      diy-item: "DIY ITEM"
+      nothing: "Nothing"
+      materials: "Materials"
+      products: "Products"
+      amount: "amount"

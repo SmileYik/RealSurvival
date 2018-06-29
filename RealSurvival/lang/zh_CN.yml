@@ -180,6 +180,8 @@ line:
       add-label: "添加标签"
       save: "保存"
       close: "关闭"
+      refresh: "刷新"
+      add-item: "添加物品"
     radio-button:
       edit: "编辑"
     label:
@@ -187,12 +189,36 @@ line:
       item-type: "物品类型"
       item-label: "物品标签"
       item-label-data: "标签数据"
+      materials-editor: "材料区"
+      products-editor: "生成物区"
+      recipe-name: "配方名"
+      workbench-type: "工作台类型"
+      need-time: "制造时间"
+      save-time: "保存时间"
+      min-temperature: "最小温度"
+      max-temperature: "最大温度"
+      original-item: "原版物品"
+      item-type: "物品类型"
+      item-slot: "物品位置"
+      item-amount: "物品数量"
     error-message:
       item-label-data: "请输入一个对应的标签数据"
       item-name: "请输入物品名字"
       item-exists: "这个物品已经存在了"
+      recipe-in-doing: "你正在编辑一个配方!"
+      not-int: "不是一个数字|"
+      not-int-2: "不是一个有效的数字!"
+      can-not-be-null: "不能为空!"
+      no-selected-item: "请在左边列表里选择一个自定义物品!"
     tool-tip-text:
       tree: "双击一个节点可以进行编辑!"
     input-dialog:
       create: "请输入文件名"
+    key-word:
+      original-item: "原版物品"
+      diy-item: "自定义物品"
+      nothing: "无"
+      materials: "材料槽"
+      products: "生成物槽"
+      amount: "数量"
     
