@@ -59,7 +59,7 @@ public class CraftItemEvent implements Listener{
 			return;
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
 		
-		if(e.getInventory().getTitle().contains(" - §7RV")){
+		if(e.getInventory().getTitle().equalsIgnoreCase(Msg.getMsg("recipe-viewer.title", false))){
 			e.setCancelled(true);
 			p.closeInventory();
 			if(e.getRawSlot() == 49)return;
@@ -361,6 +361,7 @@ public class CraftItemEvent implements Listener{
 		}else{	
 			RainwaterCollectorTimer rct = new RainwaterCollectorTimer(p.getName(),b.getWorld().getName(), b.getX(), b.getY(), b.getZ());
 			rct.start();
+			TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 			Data.timer.put(Util.getWorkbenchID(b), rct);
 			p.openInventory(FeatureGUI.openRainwaterCollector((RainwaterCollectorTimer) Data.timer.get(Util.getWorkbenchID(b))));
 		}

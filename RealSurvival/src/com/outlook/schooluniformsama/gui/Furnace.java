@@ -35,7 +35,7 @@ public class Furnace{
 	
 	public static Inventory createRecipeViewerGUI(FurnaceRecipe recipe){
 		if(recipe == null) return null;
-		Inventory inv = Bukkit.createInventory(null,54 , recipe.getName()+" - §7RV");
+		Inventory inv = Bukkit.createInventory(null,54 , Msg.getMsg("recipe-viewer.title", false));
 		for(int i=0;i<54;i++)
 			if(!mSlot.contains(i)&&!pSlot.contains(i)&&!tSlot.contains(i)&&!passSlot.contains(i))
 				inv.setItem(i, Items.createPItem((short)15, " "));

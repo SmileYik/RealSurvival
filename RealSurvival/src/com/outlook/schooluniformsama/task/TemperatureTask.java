@@ -11,7 +11,7 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.randomday.RandomDayTask;
+import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.util.Util;
 
 public class TemperatureTask implements Runnable{
@@ -27,16 +27,16 @@ public class TemperatureTask implements Runnable{
 	
 	public static double getBaseTemperature(Location loc,boolean isFix){
 		double baseTemperature;
-		baseTemperature = RandomDayTask.getBiomeTemperature(loc.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()));
-		baseTemperature+=RandomDayTask.todayData[4] +getBlocks(loc,isFix);
-		baseTemperature+=loc.getWorld().hasStorm()?RandomDayTask.temperaturefix[2]:0;
+		baseTemperature = RandomDayManager.getBiomeTemperature(loc.getWorld().getBiome(loc.getBlockX(), loc.getBlockZ()));
+		baseTemperature+=RandomDayManager.getTodayData(loc.getWorld().getName())[4] +getBlocks(loc,isFix);
+		baseTemperature+=loc.getWorld().hasStorm()?RandomDayManager.getTemperaturefix()[2]:0;
 		long time = loc.getWorld().getTime();
 		
-		if(time>22550)baseTemperature+=RandomDayTask.temperaturefix[1]*(24000-time);
-		else if(time<6000) baseTemperature+=RandomDayTask.temperaturefix[1]*(time-4550);
-		else baseTemperature+=RandomDayTask.temperaturefix[0]*(time-6000);
+		if(time>22550)baseTemperature+=RandomDayManager.getTemperaturefix()[1]*(24000-time);
+		else if(time<6000) baseTemperature+=RandomDayManager.getTemperaturefix()[1]*(time-4550);
+		else baseTemperature+=RandomDayManager.getTemperaturefix()[0]*(time-6000);
 		
-		if(loc.getBlockY()>64) baseTemperature+=RandomDayTask.temperaturefix[3]*(loc.getBlockY()-64);
+		if(loc.getBlockY()>64) baseTemperature+=RandomDayManager.getTemperaturefix()[3]*(loc.getBlockY()-64);
 		return baseTemperature;
 	}
 	
@@ -145,7 +145,7 @@ public class TemperatureTask implements Runnable{
 	 */
 	private double getApparentTemperature(Location loc,double fix){
 		double T = getBaseTemperature(loc,false)*fix*9/5+32;
-		double RH = RandomDayTask.todayData[1];
+		double RH = RandomDayManager.getTodayData(loc.getWorld().getName())[1];
 		double HI;
 		if(T<80) HI = 0.5 * (T + 61.0 + ((T-68.0)*1.2) + (RH*0.094));
 		else{

@@ -11,15 +11,15 @@ worlds:
 #Create a random data when a new player join server
 create-random-data:
   enable: false
-  min: 0
-  max: 10
+  min: 100
+  max: 100
 #Set a player's state when the player was death.
 #"sleep" is set the death player's sleep number of the max sleep's 20%
 #"thirst" and "energy" as same as "sleep"
 #"temperature" is set the death player's temperature of a number that you want
 #If "illness"  was true ,It will remove the player's illness.
 death:
-  enable: true
+  enable: false
   sleep: 20
   thirst: 20
   energy: 20
@@ -63,9 +63,6 @@ state:
     severe-chance: 30
   illness:
     enable: true
-    default-illness: 
-      - cold
-      - fever
   weight:
     enable: true
     max: 100
@@ -185,10 +182,10 @@ effect:
     - ENDERMAN:Cold,10%
   illness-effects:
     - ThirstMin:WEAKNESS,130,3;WITHER,30,3
-    - ThirstMax:SATURATION,130,1
+    - ThirstMax:
     - EnergyMin:SLOW,130,1;WEAKNESS,130,3
     - SleepMin:SLOW,130,1;WEAKNESS,130,3
-    - SleepMax:SPEED,140,1;DAMAGE_RESISTANCE,130,1
+    - SleepMax:
     - Weight:SLOW,300,3
     - Fever:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
@@ -196,4 +193,3 @@ effect:
     - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
     - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-    - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

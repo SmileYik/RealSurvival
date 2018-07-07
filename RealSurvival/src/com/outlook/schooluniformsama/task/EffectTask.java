@@ -65,7 +65,7 @@ public class EffectTask implements Runnable{
 	}
 	
 	private void addEffect(Player p,PlayerData pd,Effect effect){
-		if(effect.isPotion()){ p.addPotionEffect(effect.getEffect()); return; }
+		if(effect.isPotion()){ p.addPotionEffect(effect.getEffect(),true); return; }
 		if(playerEffect.containsKey(p.getName())){
 			HashMap<EffectType, EffectData> effects = playerEffect.get(p.getName());
 			if(effects.containsKey(effect.getType2())&&effect.getReplaceLevel()>effects.get(effect.getType2()).replaceLevel){
@@ -108,7 +108,7 @@ public class EffectTask implements Runnable{
 	}
 	
 	private void addEffect(String name,Player p,PlayerData pd){
-		if(name==null)return;
+		if(name==null || !Data.illnessEffects.containsKey(name))return;
 		for(Effect effect:Data.illnessEffects.get(name))
 			addEffect(p, pd, effect);
 	}

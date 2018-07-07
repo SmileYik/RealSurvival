@@ -1,179 +1,46 @@
 package com.outlook.schooluniformsama.randomday;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import org.bukkit.block.Biome;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.junit.Test;
-
-import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.item.ItemLoreData;
-import com.outlook.schooluniformsama.util.HashMap;
-import com.outlook.schooluniformsama.util.Msg;
+import org.bukkit.Bukkit;
 import com.outlook.schooluniformsama.util.Util;
 
 public class RandomDayTask implements Runnable{
+	private String world;
 	/** duration humidity wind-speed frequency base-temperature*/
 	private double[] spring,summer,autumn,winter;
 	/** day humidity wind-speed frequency base-temperature */
-	public static double[] todayData,tomorrowData;
-	/** night day rain high*/
-	public static double[] temperaturefix;
-	/**The Biome base temperature*/
-	private static HashMap<Biome,Double> biomeBaseTemperature = new HashMap<>();
+	private double[] todayData,tomorrowData;
 
-	public RandomDayTask() {
-		writerYml();
-		load();
-	}
-	
-	public static double getBiomeTemperature(Biome b){
-		if(biomeBaseTemperature.containsKey(b))return biomeBaseTemperature.get(b);
-		return 0;
-	}
-	
-	@Test
-	public void test(){
-		//print all of biomes
-		for(Biome b: Biome.values())
-			System.out.println("    "+b.name().toLowerCase()+": 1.0");
-	}
-	
-	private void save(){
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/randomday.yml"));
-		config.set("data.day", todayData[0]);
-		config.set("data.humidity", todayData[1]);
-		config.set("data.wind-speed", todayData[2]);
-		config.set("data.frequency", todayData[3]);
-		config.set("data.base-temperature", todayData[4]);
-	}
-	
-	private void writerYml(){
-		
-		if(new File(Data.DATAFOLDER+"/randomday.yml").exists())return;
-		
-		InputStream is=null;
-		OutputStream os=null;
-		try {
-			is=Msg.class.getResourceAsStream("/randomday.yml");
-			os=new FileOutputStream(new File(Data.DATAFOLDER+"/randomday.yml"));
-			int i;
-			byte[] buffer = new byte[1024];
-			while((i=is.read(buffer))!=-1)
-				os.write(buffer,0,i);
-			os.flush();
-			
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 
-			e.printStackTrace();
-		}finally {
-			if(is!=null)
-				try {
-					is.close();
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
-			if(os!=null)
-				try {
-					os.close();
-				} catch (IOException e) {
-
-					e.printStackTrace();
-				}
+	public RandomDayTask(String world,double[] spring,double[] summer,double[] autumn,double[] winter,double[] todayData,double[] tomorrowData) {
+		this.world = world;
+		this.spring = spring;
+		this.summer = summer;
+		this.autumn = autumn;
+		this.winter = winter;
+		this.todayData = todayData;
+		this.tomorrowData = tomorrowData;
+		if(tomorrowData==null){
+			randomTomorrow();
 		}
-		
-	}
-	
-	public void load(){
-		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/randomday.yml"));
-		
-		spring = new double[]{
-				config.getDouble("setting.season.spring.duration"),
-				Double.parseDouble(config.getString("setting.season.spring.humidity").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.humidity").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.wind-speed").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.frequency").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.frequency").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.spring.base-temperature").split("--")[1]),
-		};
-		summer = new double[]{
-				config.getDouble("setting.season.summer.duration"),
-				Double.parseDouble(config.getString("setting.season.summer.humidity").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.humidity").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.wind-speed").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.frequency").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.frequency").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.summer.base-temperature").split("--")[1]),
-		};
-		autumn = new double[]{
-				config.getDouble("setting.season.autumn.duration"),
-				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.humidity").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.wind-speed").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.frequency").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.autumn.base-temperature").split("--")[1]),
-		};
-		winter = new double[]{
-				config.getDouble("setting.season.winter.duration"),
-				Double.parseDouble(config.getString("setting.season.winter.humidity").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.humidity").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.wind-speed").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.frequency").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.frequency").split("--")[1]),
-				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("--")[0]),
-				Double.parseDouble(config.getString("setting.season.winter.base-temperature").split("--")[1]),
-		};
-		
-		temperaturefix = new double[]{
-				config.getDouble("setting.temperature-fix.night"),
-				config.getDouble("setting.temperature-fix.day"),
-				config.getDouble("setting.temperature-fix.rain"),
-				config.getDouble("setting.temperature-fix.high"),
-		};
-		
-		todayData = new double[]{
-				config.getDouble("data.day"),
-				config.getDouble("data.humidity"),
-				config.getDouble("data.wind-speed"),
-				config.getDouble("data.frequency"),
-				config.getDouble("data.base-temperature"),
-		};
-		
-		for(Biome biome: Biome.values()){
-			double temperature = config.getDouble("setting.biome-temperature."+biome.name().toLowerCase(), ItemLoreData.badCode());
-			if(temperature == ItemLoreData.badCode())continue;
-			biomeBaseTemperature.put(biome, temperature);
+		if(todayData==null){
+			this.todayData = this.tomorrowData;
+			randomTomorrow();
 		}
-		
-		randomTomorrow();
-		
 	}
-	
+
 	@Override
 	public void run() {
-		todayData = tomorrowData;
-		randomTomorrow();
-		save();
+		if(Bukkit.getWorld(world).getTime()<=RandomDayManager.getTick()){
+			todayData = tomorrowData;
+			randomTomorrow();
+		}
 	}
 	
 	public void randomTomorrow(){
-		double day = todayData[0]+1;
+		double day;
+		if(todayData == null){
+			day = 0;
+		}else day  = todayData[0]+1;
 		double temp = day % (spring[0]+summer[0]+autumn[0]+winter[0]);
 		
 		if(temp<=spring[0]){
@@ -209,5 +76,33 @@ public class RandomDayTask implements Runnable{
 					Util.randomNum(winter[7], winter[8]),
 			};
 		}
+	}
+	
+	public String getWorld() {
+		return world;
+	}
+
+	public double[] getSpring() {
+		return spring;
+	}
+
+	public double[] getSummer() {
+		return summer;
+	}
+
+	public double[] getAutumn() {
+		return autumn;
+	}
+
+	public double[] getWinter() {
+		return winter;
+	}
+
+	public double[] getTodayData() {
+		return todayData;
+	}
+
+	public double[] getTomorrowData() {
+		return tomorrowData;
 	}
 }

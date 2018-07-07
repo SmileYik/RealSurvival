@@ -1,6 +1,7 @@
 package com.outlook.schooluniformsama.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 
 import com.outlook.schooluniformsama.data.timer.Timer;
@@ -30,6 +31,13 @@ public class Util{
 	 */
 	public static String RDP(double d,int n){
 		return String.format("%."+n+"f", d);
+	}
+	
+	public static double getDistanceBetweenPoints(Location q,Location p){
+		double x = p.getX()-q.getX(),
+				y = p.getY()-q.getY(),
+				z = p.getZ()-q.getZ();
+		return Math.sqrt(x*x+y*y+z*z);
 	}
 	
 	/**

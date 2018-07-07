@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
+import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.recipes.Recipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.gui.Workbench;
@@ -53,18 +54,23 @@ public class WorkbenchRecipe extends Recipe{
 	public boolean save(){
 		YamlConfiguration recipe;
 		File f=new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+name+".yml");
-			if(!f.exists())
-				try {f.createNewFile();} catch (IOException e1) {return false;}
+		if(!f.exists())try {f.createNewFile();} catch (IOException e1) {return false;}
+		
+		String saveName;
+		if(name.contains("/"))saveName=name.substring(name.lastIndexOf("/")+1);
+		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
+		else saveName = name;
+		
 		recipe=YamlConfiguration.loadConfiguration(f);
-		recipe.set(name+".type", type.name());
-		recipe.set(name+".name", name);
-		recipe.set(name+".needTime", needTime);
-		recipe.set(name+".shape", shape);
-		recipe.set(name+".tableType", tableType);
+		recipe.set(saveName+".type", type.name());
+		recipe.set(saveName+".name", name);
+		recipe.set(saveName+".needTime", needTime);
+		recipe.set(saveName+".shape", shape);
+		recipe.set(saveName+".tableType", tableType);
 		for(Character c:materials.keySet())
-			recipe.set(name+".material."+c,materials.get(c) );
+			recipe.set(saveName+".material."+c,new RSItem(materials.get(c)).getSaveItem() );
 		for(int i=0;i<4;i++)
-			recipe.set(name+".product."+i, product[i]);
+			recipe.set(saveName+".product."+i, new RSItem(product[i]).getSaveItem());
 		try {recipe.save(f);} catch (IOException e) {return false;}
 		return true;
 	}
@@ -77,20 +83,26 @@ public class WorkbenchRecipe extends Recipe{
 	 */
 	public static WorkbenchRecipe load(String name){
 		 File f=new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+name+".yml");
+		 
+		 String saveName;
+		if(name.contains("/"))saveName=name.substring(name.lastIndexOf("/")+1);
+		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
+		else saveName = name;
+		 
 		 if(!f.exists())return null;
 		 YamlConfiguration recipe=YamlConfiguration.loadConfiguration(f);
 		 HashMap<Character,ItemStack> materials=new HashMap<>();
 		 char c=' ';
-		 for(String s:recipe.getStringList(name+".shape"))
+		 for(String s:recipe.getStringList(saveName+".shape"))
 			 for(char temp:s.toCharArray())
 				 if(temp!=' '&&temp!=c){
 					 c=temp;
-					 materials.put(c, recipe.getItemStack(name+".material."+c));
+					 materials.put(c, new RSItem(recipe.getItemStack(saveName+".material."+c)).getItem());
 				 }
 		 ItemStack[] product=new ItemStack[4];
 		 for(int i=0;i<4;i++)
-			 product[i]=recipe.getItemStack(name+".product."+i);
-		 return new WorkbenchRecipe(name,  recipe.getInt(name+".needTime"), recipe.getStringList(name+".shape"), materials, product,recipe.getString(name+".tableType"));
+			 product[i]=new RSItem(recipe.getItemStack(saveName+".product."+i)).getItem();
+		 return new WorkbenchRecipe(name,  recipe.getInt(saveName+".needTime"), recipe.getStringList(saveName+".shape"), materials, product,recipe.getString(saveName+".tableType"));
 	}
 	
 	/**

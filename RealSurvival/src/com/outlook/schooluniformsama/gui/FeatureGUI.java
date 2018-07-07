@@ -34,20 +34,22 @@ public class FeatureGUI{
 		return inv;
 	}
 	
-	public static void openRecipeViewer(Player p,String type,String recipeName){
+	public static boolean openRecipeViewer(Player p,String type,String recipeName){
 		//String nextSlot = Msg.getMsg("recipe-viewer.next-slot", false);
 		//String previousSlot = Msg.getMsg("recipe-viewer.previous-slot", false); 
-		if(!Data.workbenchs.containsKey(type))return;
+		if(!Data.workbenchs.containsKey(type))return false;
 		Inventory inv = null;
 		Recipe recipe = null;
 		WorkbenchType type2 = Data.workbenchs.get(type).getType();
 		switch (type2) {
 		case FURNACE:
 			recipe = FurnaceRecipe.load(recipeName);
+			if(recipe == null)return false;
 			inv =  Furnace.createRecipeViewerGUI((FurnaceRecipe)recipe);
 			break;
 		case WORKBENCH:
 			recipe = WorkbenchRecipe.load(recipeName);
+			if(recipe == null)return false;
 			inv =  Workbench.createRecipeViewerGUI((WorkbenchRecipe)recipe);
 			break;
 		default:
@@ -60,6 +62,7 @@ public class FeatureGUI{
 		if (!event.isCancelled()) {
 		    p.openInventory(inv);
 		}
+		return true;
 	}
 	
 	public static Inventory openRecipeViewer(String type,String recipeName){

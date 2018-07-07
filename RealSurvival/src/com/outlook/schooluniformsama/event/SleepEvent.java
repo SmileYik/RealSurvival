@@ -14,7 +14,7 @@ public class SleepEvent implements Listener{
 	public void Sleep(PlayerBedEnterEvent e){
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
-		pd.getSleep().setHasSleep(true);
+		pd.getSleep().setHasSleep(true,e.getBed().getLocation());
 		Msg.sendMsgToPlayer(e.getPlayer(), "Sleeping", true);
 		return;
 	}
@@ -23,8 +23,7 @@ public class SleepEvent implements Listener{
 	public void leaveSleep(PlayerBedLeaveEvent e){
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
-		pd.getSleep().setHasSleep(false);
-		Data.bnms.level(pd.getPlayer());
+		pd.getSleep().setHasSleep(false,null);
 		return;
 	}
 }

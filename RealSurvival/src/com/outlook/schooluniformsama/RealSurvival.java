@@ -12,6 +12,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.outlook.schooluniformsama.command.Commands;
@@ -49,7 +50,7 @@ import com.outlook.schooluniformsama.lowversion.converter.Converter;
 import com.outlook.schooluniformsama.nms.bed.*;
 import com.outlook.schooluniformsama.nms.item.*;
 import com.outlook.schooluniformsama.papi.Papi;
-import com.outlook.schooluniformsama.randomday.RandomDayTask;
+import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.task.EnergyTask;
 import com.outlook.schooluniformsama.task.SaveConfigTask;
@@ -73,9 +74,11 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
 	private Object cmds;
 	private CommandsType cmdsType;
+	public static Plugin plugin;
 	
 	@Override
 	public void onEnable() {
+		plugin = this;
 		firstLoad();
 		getNMS();
 		loadConfig();
@@ -338,10 +341,6 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 					getConfig().getDouble("state.fracture.slight-chance"),
 					getConfig().getDouble("state.fracture.severe-chance")};
 		
-		if(Data.switchs[6])
-			Data.defualtIllness=getConfig().getStringList("state.illness.default-illness").toArray(
-					new String[getConfig().getStringList("state.illness.default-illness").size()]);
-		
 		if(Data.switchs[7]){
 			Data.weight=getConfig().getDouble("state.weight.max");
 			for(String items:getConfig().getStringList("state.weight.item"))
@@ -373,12 +372,12 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			Data.workbenchs.put(name, new WorkbenchShape(WorkbenchType.valueOf(type), name, 
 							getConfig().getString("workbenchs.workbenchs."+name+".title"),
 							getConfig().getString("workbenchs.workbenchs."+name+".main-block"),
-							getConfig().getString("workbenchs.workbenchs."+name+".left-block"), 
-							getConfig().getString("workbenchs.workbenchs."+name+".right-block"),
-							getConfig().getString("workbenchs.workbenchs."+name+".up-block"),
-							getConfig().getString("workbenchs.workbenchs."+name+".down-block"),
-							getConfig().getString("workbenchs.workbenchs."+name+".front-block"),
-							getConfig().getString("workbenchs.workbenchs."+name+".behind-block")));
+							getConfig().getString("workbenchs.workbenchs."+name+".left-block",null),
+							getConfig().getString("workbenchs.workbenchs."+name+".right-block",null),
+							getConfig().getString("workbenchs.workbenchs."+name+".up-block",null),
+							getConfig().getString("workbenchs.workbenchs."+name+".down-block",null),
+							getConfig().getString("workbenchs.workbenchs."+name+".front-block",null),
+							getConfig().getString("workbenchs.workbenchs."+name+".behind-block",null)));
 		}
 		
 		for(String food:getConfig().getStringList("effect.food-effects.foods")){
@@ -401,7 +400,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			Data.strainer.put(strainer.split(":")[0], Integer.parseInt(strainer.split(":")[1]));
 		
 		
-		File path=new File(this.getDataFolder()+File.separator+"recipe/workbench/");
+/*		File path=new File(this.getDataFolder()+File.separator+"recipe/workbench/");
 		for(File sf:path.listFiles()){
 			if(!sf.isFile())continue;
 			String fileName=sf.getName();
@@ -414,41 +413,52 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			String fileName=sf.getName();
 			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
 				Data.furnaceRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
-		}
+		}*/
+		
+		loadRecipes(Data.furnaceRecipe, new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"furnace/"),"");
+		loadRecipes(Data.workbenchRecipe, new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"workbench/"),"");
 		
 		if(!new Items().createWater())
 			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
+		new RandomDayManager(this);
+		//Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new RandomDayTask(), 24000-this.getServer().getWorld(Data.worlds.get(0)).getTime(), 24000);
 		
-		this.getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
-			@Override
-			public void run() {
-				YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
-				for(String key:timer.getStringList("list")){
-					Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
-							timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
-					switch(tt.getType()){
-						case FURNACE:
-							FurnaceTimer ft = tt.toFurnaceTimer();
-							FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
-							ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean(key+".isBad",false),timer.getInt(key+".time"));
-							ft.start(fr, TemperatureTask.getBaseTemperature(tt.getLocation(),true));
-							Data.timer.put(key, ft);
-							break;
-						case WORKBENCH:
-							WorkbenchTimer wt = tt.toWorkbenchTimer();
-							wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
-							Data.timer.put(key, wt);
-							break;
-					case RAINWATER_COLLECTOR:
-						RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
-						rct.start(timer.getInt(key+".time"));
-						Data.timer.put(key, rct);
-						break;
-					}
-				}
+		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
+		for(String key:timer.getKeys(false)){
+			if(key.equals("list"))continue;
+			Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
+					timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
+			switch(tt.getType()){
+				case FURNACE:
+					FurnaceTimer ft = tt.toFurnaceTimer();
+					FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
+					ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean(key+".isBad",false),timer.getInt(key+".time"));
+					ft.start(fr, TemperatureTask.getBaseTemperature(tt.getLocation(),true));
+					Data.timer.put(key, ft);
+					break;
+				case WORKBENCH:
+					WorkbenchTimer wt = tt.toWorkbenchTimer();
+					wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
+					Data.timer.put(key, wt);
+					break;
+			case RAINWATER_COLLECTOR:
+				RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
+				rct.start(timer.getInt(key+".time"));
+				Data.timer.put(key, rct);
+				break;
 			}
-		}, 60);
+		}
 		
+	}
+	
+	private void loadRecipes(ArrayList<String> recipe,File path,String recipeName){
+		for(File sf:path.listFiles()){
+			if(sf.isFile()){
+				String fileName=sf.getName();
+				if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
+				recipe.add(recipeName+fileName.substring(0, fileName.lastIndexOf(".")));
+			}else loadRecipes(recipe,sf,recipeName+sf.getName()+"/");
+		}
 	}
 	
 	//Load Online Player's Data
@@ -481,8 +491,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		if(Data.switchs[2]){
 			getServer().getPluginManager().registerEvents(new SleepEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);
-			if(getConfig().getBoolean("state.sleep.sleep-during-the-day"))
-				getServer().getPluginManager().registerEvents(new SleepDuringTheDay(), this);
+			if(getConfig().getBoolean("state.sleep.sleep-during-the-day"))getServer().getPluginManager().registerEvents(new SleepDuringTheDay(), this);
 		}
 		if(Data.switchs[3]){
 			if(Data.versionData[0]<=7) getServer().getPluginManager().registerEvents(new ThirstEvent_1_7(), this);
@@ -495,7 +504,6 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EnergyTask(), 20L, 20L);
 		}
 		if(Data.switchs[8]){
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new RandomDayTask(), 24000-this.getServer().getWorld(Data.worlds.get(0)).getTime(), 24000);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new TemperatureTask(), 20L, 10*20L);
 		}
 		if(Data.switchs[7]){

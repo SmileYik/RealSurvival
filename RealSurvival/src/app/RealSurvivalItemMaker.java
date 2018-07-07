@@ -42,6 +42,7 @@ public class RealSurvivalItemMaker extends JFrame{
 	private JTextField item_name;
 	private JTextField item_label_data;
 	private JFrame window;
+	private JTextField damage;
 	
 	public static void showGUI(){
 		new RealSurvivalItemMaker().setVisible(true);
@@ -78,7 +79,7 @@ public class RealSurvivalItemMaker extends JFrame{
 	private DefaultComboBoxModel<String> getLabels(){
 		LinkedList<String> list = new LinkedList<>();
 		list.add("DIY");
-		list.addAll(Data.label.keySet());
+		list.addAll(Data.label.values());
 		return new DefaultComboBoxModel<>(list.toArray(new String[list.size()]));
 	}
 
@@ -88,9 +89,8 @@ public class RealSurvivalItemMaker extends JFrame{
 	private void initialize() {
 		this.setResizable(false);
 		this.setTitle("RealSurvivalItemMaker");
-		//window.setBounds(100, 100, 675, 416);
+		this.setBounds(100, 100, 675, 416);
 		//this.setBounds(100, 100, 155, 416);
-		this.setBounds(100, 100, 155, 416);
 		this.getContentPane().setLayout(null);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -129,7 +129,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		JComboBox<Material> item_type = new JComboBox<Material>();
 		item_type.setEditable(true);
 		item_type.setModel(getItemType());
-		item_type.setBounds(236, 7, 155, 21);
+		item_type.setBounds(236, 7, 78, 21);
 		create_new_item_panel.add(item_type);
 		
 		JLabel label_1 = new JLabel(Msg.getMsg("real-survival-maker.label.item-label", false)+": ");
@@ -178,6 +178,16 @@ public class RealSurvivalItemMaker extends JFrame{
 		closeWindow.setBounds(293, 338, 100, 23);
 		create_new_item_panel.add(closeWindow);
 		
+		damage = new JTextField();
+		damage.setText("0");
+		damage.setColumns(10);
+		damage.setBounds(324, 7, 66, 21);
+		create_new_item_panel.add(damage);
+		
+		JLabel label_3 = new JLabel(":");
+		label_3.setBounds(313, 10, 12, 15);
+		create_new_item_panel.add(label_3);
+		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent arg0) {
@@ -188,7 +198,6 @@ public class RealSurvivalItemMaker extends JFrame{
 		closeWindow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				create_new_item_panel.setVisible(false);
-				window.setBounds(100, 100, 155, 416);
 			}
 		});
 		
@@ -228,22 +237,29 @@ public class RealSurvivalItemMaker extends JFrame{
 				
 				file_name.setText(""+name);
 				create_new_item_panel.setVisible(true);
-				window.setBounds(100, 100, 675, 416);
 			}
 		});
 		
 		create_new_item.addActionListener(new ActionListener() {
+			String name = "";
 			public void actionPerformed(ActionEvent arg0) {
-				String name = JOptionPane.showInputDialog(window, Msg.getMsg("real-survival-maker.input-dialog.create", false) );
+				DefaultMutableTreeNode note = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+				if(!(note == null)){
+					for(Object temp:tree.getSelectionPath().getPath())
+						if(temp!=null && !temp.toString().equals("null"))name+=temp.toString()+"/";
+					name=name.replace("items/", "").replace("null", "");
+					if(note.getChildCount()<=0)
+						name = name.substring(0, name.length()-1);
+				}
+				name = JOptionPane.showInputDialog(window, Msg.getMsg("real-survival-maker.input-dialog.create", false),name);
 				if(name==null||name.replace(" ", "").equals(""))return;
 				if(new File(Data.DATAFOLDER+"/items/"+name+".yml").exists()){
 					JOptionPane.showMessageDialog(window, Msg.getMsg("real-survival-maker.error-message.item-exists", false));
 					return;
 				}
 				file_name.setText(name);
-				item_name.setText(name);
+				item_name.setText(name.substring(name.lastIndexOf("/")+1));
 				create_new_item_panel.setVisible(true);
-				window.setBounds(100, 100, 675, 416);
 			}
 		});
 		
@@ -256,7 +272,7 @@ public class RealSurvivalItemMaker extends JFrame{
 						JOptionPane.showMessageDialog(window,  Msg.getMsg("real-survival-maker.error-message.item-label-data", false));
 						return;
 					}
-					lore_editer.setText(lore_editer.getText()+Data.label.get(((String)item_label.getSelectedItem()))+Data.split+item_label_data.getText()+"\n");
+					lore_editer.setText(lore_editer.getText()+((String)item_label.getSelectedItem())+Data.split+item_label_data.getText()+"\n");
 				}
 			}
 		});
@@ -268,19 +284,27 @@ public class RealSurvivalItemMaker extends JFrame{
 					return;
 				}
 				
-				ItemStack item = new ItemStack(getItem(item_type));
+				ItemStack item = new ItemStack(getItem(item_type),1,getShort());
 				ItemMeta itemM = item.getItemMeta();
 				itemM.setDisplayName(item_name.getText());
-				itemM.setLore(Arrays.asList(Util.setColor(lore_editer.getText()).split("\n")));
+				itemM.setLore(Arrays.asList(Util.setColor(lore_editer.getText()).replace("\r", "").split("\n")));
 				item.setItemMeta(itemM);
 				new RSItem(item).save(file_name.getText());
 				tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/items"))));
 				create_new_item_panel.setVisible(false);
-				window.setBounds(100, 100, 155, 416);
 			}
 		});
 		
 		
+	}
+	
+	private short getShort(){
+		if(damage.getText() == null || damage.getText().replace(" ", "").equals(""))return 0;
+		try {
+			return Short.parseShort(damage.getText());
+		} catch (NumberFormatException e) {
+			return 0;
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -301,5 +325,4 @@ public class RealSurvivalItemMaker extends JFrame{
 		if(item==null) item = Material.WOOD_SWORD;
 		return item;
 	}
-	
 }

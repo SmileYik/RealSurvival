@@ -2,7 +2,6 @@ package com.outlook.schooluniformsama.task;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
 import java.util.Map;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,6 +10,7 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
 import com.outlook.schooluniformsama.data.timer.Timer;
+import com.outlook.schooluniformsama.randomday.RandomDayManager;
 
 public class SaveConfigTask implements Runnable{
 
@@ -22,14 +22,14 @@ public class SaveConfigTask implements Runnable{
 		}
 		
 		saveWorkbench();
+		RandomDayManager.save();
 	}
 	
 	public static void saveWorkbench(){
 		File data=new File(Data.DATAFOLDER+File.separator+"timer.yml");
+		data.delete();
 		YamlConfiguration dataC=YamlConfiguration.loadConfiguration(data);
-		LinkedList<String> l=new LinkedList<String>();
 		for(Map.Entry<String, Timer> entry : Data.timer.entrySet()){
-			l.add(entry.getKey());
 			dataC.set(entry.getKey()+".playerName", entry.getValue().getPlayerName());
 			dataC.set(entry.getKey()+".worldName", entry.getValue().getWorldName());
 			dataC.set(entry.getKey()+".workbenchName", entry.getValue().getWorkbenchName());
@@ -51,8 +51,6 @@ public class SaveConfigTask implements Runnable{
 			}
 			
 		}
-		
-		dataC.set("list", l);
 		try {dataC.save(data);} catch (IOException e) {}
 	}
 }

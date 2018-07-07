@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.outlook.schooluniformsama.data.Data;
@@ -47,18 +48,28 @@ public class BasicEvent implements Listener{
 	
 	//Player Death
 	@EventHandler
-	public void death(org.bukkit.event.entity.PlayerDeathEvent e){
+	public void onDeath(org.bukkit.event.entity.PlayerDeathEvent e){
 		Player p = e.getEntity();
 		if(!Data.playerData.containsKey(p.getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
-		
-		pd.change(EffectType.SLEEP, Data.deathData[0]);
-		pd.change(EffectType.THIRST, Data.deathData[1]);
-		pd.change(EffectType.ENERGY, Data.deathData[2]);
-		pd.change(EffectType.TEMPERATURE, Data.deathData[3]);
-		
-		if(Data.deathData[4]==1)
-			pd.getIllness().clear();
+		if(Data.switchs[1]){
+			pd.change(EffectType.SLEEP, Data.deathData[0]);
+			pd.change(EffectType.THIRST, Data.deathData[1]);
+			pd.change(EffectType.ENERGY, Data.deathData[2]);
+			pd.change(EffectType.TEMPERATURE, Data.deathData[3]);
+			if(Data.deathData[4]==1)
+				pd.getIllness().clear();
+		}
 	}
 	//Player Death End
+	@EventHandler
+	public void onRespawn(PlayerRespawnEvent e){
+		if(!Data.worlds.contains(e.getPlayer().getWorld().getName())){
+			PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
+			if(pd==null)return;
+			pd.save();
+			Data.playerData.remove(pd.getUuid());
+			return;
+		}else Data.addPlayer(e.getPlayer());
+	}
 }

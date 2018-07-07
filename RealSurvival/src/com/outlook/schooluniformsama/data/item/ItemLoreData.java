@@ -61,8 +61,54 @@ public class ItemLoreData {
 		return null;
 	}
 	
-	public static double getLore(String tabel,List<String> lore,boolean isChance){
-		tabel=Data.label.get(tabel.toLowerCase());
+	public static double getLore(String key,List<String> lore,boolean isChance){
+		String tabel=Data.label.get(key.toLowerCase());
+		
+		for(String line:lore){
+			line=Util.removeColor(line);
+			if(line.contains(tabel)){
+				String temp=line.replaceAll("[^0-9.+-]", "");
+				if(line.contains("%")){
+					if(line.contains("--")){
+						//min -- max
+						if(key.equalsIgnoreCase("sleep"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.sleep[0], Double.parseDouble(temp.split("--")[1])*Data.sleep[0])/100D;
+						else if(key.equalsIgnoreCase("thirst"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.thirst[0], Double.parseDouble(temp.split("--")[1])*Data.thirst[0])/100D;
+						else if(key.equalsIgnoreCase("energy"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.energy[0], Double.parseDouble(temp.split("--")[1])*Data.energy[0])/100D;
+						else
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))/100D;
+					}else{
+						if(key.equalsIgnoreCase("sleep"))
+							return Double.parseDouble(temp)*Data.sleep[0]/100D;
+						else if(key.equalsIgnoreCase("thirst"))
+							return Double.parseDouble(temp)*Data.thirst[0]/100D;
+						else if(key.equalsIgnoreCase("energy"))
+							return Double.parseDouble(temp)*Data.energy[0]/100D;
+						else
+							return Double.parseDouble(temp)/100D;
+					}
+				}else{
+					if(line.contains("--")){
+						//min -- max
+						if(key.equalsIgnoreCase("sleep"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
+						else if(key.equalsIgnoreCase("thirst"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
+						else if(key.equalsIgnoreCase("energy"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
+						else
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
+					}else{
+						return Double.parseDouble(temp);
+					}
+				}
+			}
+		}
+		
+		
+		/*tabel=Data.label.get(tabel.toLowerCase());
 		for(String line:lore){
 			line=Util.removeColor(line);
 			if(line.contains(tabel)){
@@ -87,7 +133,7 @@ public class ItemLoreData {
 						return Double.parseDouble(temp);
 				}
 			}
-		}
+		}*/
 		return badCode();
 	}
 	

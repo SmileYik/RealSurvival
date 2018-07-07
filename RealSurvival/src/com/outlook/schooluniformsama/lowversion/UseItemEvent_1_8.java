@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.BookMeta;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.Food;
@@ -61,10 +62,6 @@ public class UseItemEvent_1_8 implements Listener {
 					return;
 				}
 				return;
-			}else if(id.getWorkbenchType()!=null && id.getRecipeName() != null){//Check Recipe
-				e.setCancelled(true);
-				FeatureGUI.openRecipeViewer(e.getPlayer(),id.getWorkbenchType(), id.getRecipeName());
-				return;
 			}
 		}
 	}
@@ -86,7 +83,23 @@ public class UseItemEvent_1_8 implements Listener {
 				e.setCancelled(true);
 				e.getPlayer().setItemInHand(UseItemEvent_1_8.sub(e.getPlayer().getInventory().getItemInHand()));
 				return;
+			}else if(id.getWorkbenchType()!=null && id.getRecipeName() != null){//Check Recipe
+				e.setCancelled(true);
+				FeatureGUI.openRecipeViewer(e.getPlayer(),id.getWorkbenchType(), id.getRecipeName());
+				return;
 			}
+		}
+		
+		if(e.getItem().getItemMeta() instanceof BookMeta){
+			BookMeta book = (BookMeta) e.getItem().getItemMeta();
+			if(!book.hasTitle())return;
+			if(!book.hasPages() || book.getPageCount()!=1)return;
+			String temp = book.getPage(1);
+			if(temp==null||temp.length()<=0)return;
+			String text[] = temp.replace("§0", "").split("\n");
+			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[Recipe]")))return;
+			if(FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]))e.setCancelled(true);
+			return;
 		}
 	}
 	

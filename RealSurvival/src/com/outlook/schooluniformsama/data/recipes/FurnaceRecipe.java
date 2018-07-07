@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
+import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.gui.Furnace;
 
 public class FurnaceRecipe extends Recipe{
@@ -54,19 +55,24 @@ public class FurnaceRecipe extends Recipe{
 		 File f=new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"furnace"+File.separator+name+".yml");
 		if(!f.exists())try {f.createNewFile();} catch (IOException e1) {return false;}
 		
+		String saveName;
+		if(name.contains("/"))saveName=name.substring(name.lastIndexOf("/")+1);
+		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
+		else saveName = name;
+		
 		recipe=YamlConfiguration.loadConfiguration(f);
-		recipe.set(name+".type", type.name());
-		recipe.set(name+".name", name);
-		recipe.set(name+".needTime", needTime);
-		recipe.set(name+".saveTime", saveTime);
-		recipe.set(name+".minTemperature", minTemperature);
-		recipe.set(name+".maxTemperature", maxTemperature);
-		recipe.set(name+".shape", shape);
-		recipe.set(name+".tableType", tableType);
+		recipe.set(saveName+".type", type.name());
+		recipe.set(saveName+".name", name);
+		recipe.set(saveName+".needTime", needTime);
+		recipe.set(saveName+".saveTime", saveTime);
+		recipe.set(saveName+".minTemperature", minTemperature);
+		recipe.set(saveName+".maxTemperature", maxTemperature);
+		recipe.set(saveName+".shape", shape);
+		recipe.set(saveName+".tableType", tableType);
 		for(Character c:materials.keySet())
-			recipe.set(name+".material."+c,materials.get(c) );
+			recipe.set(saveName+".material."+c,new RSItem(materials.get(c)).getSaveItem() );
 		for(int i=0;i<3;i++)
-			recipe.set(name+".product."+i, product[i]);
+			recipe.set(saveName+".product."+i, new RSItem(product[i]).getSaveItem());
 		try {recipe.save(f);} catch (IOException e) {return false;}
 		return true;
 	}
@@ -74,22 +80,28 @@ public class FurnaceRecipe extends Recipe{
 	public static FurnaceRecipe load(String name){
 		 File f=new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"furnace"+File.separator+name+".yml");
 		 if(!f.exists())return null;
+		 
+		 String saveName;
+		if(name.contains("/"))saveName=name.substring(name.lastIndexOf("/")+1);
+		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
+		else saveName = name;
+		
 		 YamlConfiguration recipe=YamlConfiguration.loadConfiguration(f);
 		 HashMap<Character,ItemStack> materials=new HashMap<>();
 		 char c=' ';
-		 for(String s:recipe.getStringList(name+".shape"))
+		 for(String s:recipe.getStringList(saveName+".shape"))
 			 for(char temp:s.toCharArray())
 				 if(temp!=' '&&temp!=c){
 					 c=temp;
-					 materials.put(c, recipe.getItemStack(name+".material."+c));
+					 materials.put(c, new RSItem(recipe.getItemStack(saveName+".material."+c)).getItem());
 				 }
 		 ItemStack[] product=new ItemStack[4];
 		 for(int i=0;i<3;i++)
-			 product[i]=recipe.getItemStack(name+".product."+i);
+			 product[i]=new RSItem(recipe.getItemStack(saveName+".product."+i)).getItem();
 		 
-		 return new FurnaceRecipe(name,recipe.getInt(name+".needTime"),recipe.getInt(name+".saveTime"),
-				 recipe.getDouble(name+".minTemperature"),recipe.getDouble(name+".maxTemperature"),
-				 recipe.getStringList(name+".shape"), materials, product,recipe.getString(name+".tableType"));
+		 return new FurnaceRecipe(name,recipe.getInt(saveName+".needTime"),recipe.getInt(saveName+".saveTime"),
+				 recipe.getDouble(saveName+".minTemperature"),recipe.getDouble(saveName+".maxTemperature"),
+				 recipe.getStringList(saveName+".shape"), materials, product,recipe.getString(saveName+".tableType"));
 	}
 	
 	public static boolean createFurnaceRecipe(Inventory inv,FurnaceRecipe fr){

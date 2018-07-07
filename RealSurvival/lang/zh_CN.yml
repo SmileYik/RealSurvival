@@ -70,6 +70,8 @@ line:
   spirit: "§b§l你感觉非常有精神!"
   Sleeping: "如果要起床,请在聊天窗口输入 \"leave\" 即可起床!"
   BedSoFar: "床离你太远了!"
+  sleep:
+    sleeping: "你正在沉睡,现在还不能起来!"
 #Thirst Messages
   thirst: "§3§l你开始感觉有点口渴了..."
   dehydration: "§c§l你快要渴死了;§e要晒干了!!!"
@@ -104,8 +106,8 @@ line:
   WorkbenchProgress1: "§b已完成: %pass%%"
   WorkbenchProgress2: "§b物品已经制作完成!"
 #Recipe Viewer GUI
-  recipe-viewer-title: "§b配方"
   recipe-viewer:
+    title: "§b配方查看器"
     recipe-not-find: "§c没有找到这个配方"
     furnace-passslot: "§b制造时间: %time1% 秒 | 保存时间: %time2%秒"
     furnace-temslot: "§b需要温度: %tem1% ℃ | 最大温度: %tem2%℃"

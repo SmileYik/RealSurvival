@@ -27,7 +27,7 @@ public class Workbench {
 	
 	public static Inventory createRecipeViewerGUI(WorkbenchRecipe recipe){
 		if(recipe==null)return null;
-		Inventory inv=Bukkit.createInventory(null, 54,recipe.getName()+" - §7RV");
+		Inventory inv=Bukkit.createInventory(null, 54,Msg.getMsg("recipe-viewer.title", false));
 		for(int i=0;i<54;i++)
 			if(!(materials.contains(i)||products.contains(i)))
 				inv.setItem(i, Items.createPItem((short)15, " "));

@@ -106,8 +106,8 @@ line:
   WorkbenchProgress1: "§bFinishing: %pass%%"
   WorkbenchProgress2: "§bItem has been created!"
 #Recipe Viewer GUI
-  recipe-viewer-title: "§bRecipe Viewer"
   recipe-viewer:
+    title: "§bRecipe Viewer"
     recipe-not-find: "§cNot find this recipe!"
     furnace-passslot: "§bNeed Time: %time1% s | Save Time: %time2%s"
     furnace-temslot: "§bNeed Temperature: %tem1% ℃ | Max Temperature: %tem2%℃"

@@ -1,8 +1,12 @@
 package com.outlook.schooluniformsama.nms.bed;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
+
+import com.outlook.schooluniformsama.RealSurvival;
 
 import net.minecraft.server.v1_11_R1.BlockPosition;
 import net.minecraft.server.v1_11_R1.PacketPlayOutAnimation;
@@ -15,8 +19,21 @@ public class BED_1_11_R1 implements BedNMS{
 	
 	@Override
 	public void sleep(Player p, Location l) {
-		ppob = new PacketPlayOutBed(((CraftPlayer) p).getHandle(), new BlockPosition(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
-		((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppob);
+		if(l.getBlock().getType() == Material.BED_BLOCK){
+			ppob = new PacketPlayOutBed(((CraftPlayer) p).getHandle(), new BlockPosition(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
+			((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppob);
+		}else{
+			Material m = l.getBlock().getType();
+			l.getBlock().setType(Material.BED_BLOCK);
+			Bukkit.getScheduler().runTaskLater(RealSurvival.plugin, new Runnable() {
+				@Override
+				public void run() {
+					ppob = new PacketPlayOutBed(((CraftPlayer) p).getHandle(), new BlockPosition(l.getBlockX(), l.getBlockY(), l.getBlockZ()));
+					((CraftPlayer) p).getHandle().playerConnection.sendPacket(ppob);
+					l.getBlock().setType(m);
+				}
+			}, 3);			
+		}
 	}
 
 	@Override

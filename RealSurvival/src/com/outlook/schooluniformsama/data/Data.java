@@ -62,7 +62,6 @@ public class Data {
 	 * slight: high chance <p> severe: high chance <p> damage slight-chance severe-chance
 	 */
 	public static double[] fracture;
-	public static String[] defualtIllness;
 	public static double weight;
 	/**
 	 * Key: ItemName Value: ItemData

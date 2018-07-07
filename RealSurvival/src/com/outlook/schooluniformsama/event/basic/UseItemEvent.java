@@ -108,8 +108,7 @@ public class UseItemEvent implements Listener {
 			if(temp==null||temp.length()<=0)return;
 			String text[] = temp.replace("§0", "").split("\n");
 			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[Recipe]")))return;
-			FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]);
-			e.setCancelled(true);
+			if(FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]))e.setCancelled(true);
 			return;
 		}
 	}
