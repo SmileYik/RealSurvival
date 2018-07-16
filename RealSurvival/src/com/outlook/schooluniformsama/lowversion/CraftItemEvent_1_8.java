@@ -22,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.api.event.RSMakeItemByFurnaceEvent;
 import com.outlook.schooluniformsama.api.event.RSMakeItemByWorkbenchEvent;
 import com.outlook.schooluniformsama.api.event.RSMakeItemDoneByFurnaceEvent;
@@ -42,11 +43,12 @@ import com.outlook.schooluniformsama.event.basic.UseItemEvent;
 import com.outlook.schooluniformsama.gui.FeatureGUI;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
+import com.outlook.schooluniformsama.nms.NBTItem;
 import com.outlook.schooluniformsama.task.TemperatureTask;
-import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 public class CraftItemEvent_1_8 implements Listener{
+
 	@EventHandler
 	public void openCarftTable(InventoryClickEvent e){
 		
@@ -58,7 +60,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			return;
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
 		
-		if(e.getInventory().getTitle().equalsIgnoreCase(Msg.getMsg("recipe-viewer.title", false))){
+		if(e.getInventory().getTitle().equalsIgnoreCase(I18n.tr("recipe1"))){
 			e.setCancelled(true);
 			p.closeInventory();
 			if(e.getRawSlot() == 49)return;
@@ -87,16 +89,16 @@ public class CraftItemEvent_1_8 implements Listener{
 				
 				try {
 					if(WorkbenchRecipe.createRecipe(e.getInventory(),(WorkbenchRecipe) TempData.createRecipeTemp.get(p.getName()))){
-						Msg.sendMsgToPlayer(p, "CreateRecipeSucceed", true);
+						p.sendMessage(I18n.trp("workbench4"));
 						Data.workbenchRecipe.add(TempData.createRecipeTemp.get(p.getName()).getName());
 						TempData.createRecipeTemp.remove(p.getName());
 						p.closeInventory();
 					}else{
-						Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+						p.sendMessage(I18n.trp("workbench3"));
 						return;
 					}
 				} catch (Exception e2) {
-					Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+					p.sendMessage(I18n.trp("workbench3"));
 					return;
 				}
 				return;
@@ -118,7 +120,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					}
 					return;						
 				}else{
-					Msg.sendMsgToPlayer(p, "WorkbenchUndone", true);
+					p.sendMessage(I18n.trp("workbench8"));
 					return;
 				}
 			}else{
@@ -138,8 +140,10 @@ public class CraftItemEvent_1_8 implements Listener{
 				e.setCancelled(true);
 				boolean hasMaterials=true;
 				for(int i:Workbench.materials)
-					if(e.getInventory().getItem(i)!=null)
+					if(e.getInventory().getItem(i)!=null){
 						hasMaterials=false;
+						break;
+					}
 				if(hasMaterials)
 					 return; 
 				
@@ -149,7 +153,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					if(wr==null)continue;
 					if(wr.getTableType()!=null && !wr.getTableType().equalsIgnoreCase(wt.getWorkbenchName()))continue;
 					if(wr.containsShape(e.getInventory())){
-						if(!p.hasPermission("RealSurvival.Recipe.Workbench."+wr.getName()))continue; // if player no permission, skip this
+						if(!hasPermission(p, wr.getPermission()))continue; // if player no permission, skip this
 						//Success
 						RSMakeItemByWorkbenchEvent event = new RSMakeItemByWorkbenchEvent(p,wr,wt.getLocation(),wt.getWorkbenchName());
 						Bukkit.getServer().getPluginManager().callEvent(event);
@@ -162,7 +166,7 @@ public class CraftItemEvent_1_8 implements Listener{
 									e.getInventory().setItem(i, null);
 								p.closeInventory();
 							}catch(Exception exp){
-								Msg.sendMsgToPlayer(p, "Exception", true);
+								p.sendMessage(I18n.trp("workbench2"));
 								return;
 							}
 						}
@@ -184,7 +188,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					if (!event.isCancelled()) {
 						if(ft.isBad()){
 							Data.timer.remove(Util.getWorkbenchID(ft));
-							Msg.sendMsgToPlayer(p, "FurnaceFailedMsg", true);
+							p.sendMessage(I18n.trp("furnace2"));
 							p.closeInventory();
 							return;
 						}
@@ -195,7 +199,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					}
 					return;
 				}else{
-					Msg.sendMsgToPlayer(p, "WorkbenchUndone", true);
+					p.sendMessage(I18n.trp("workbench8"));
 					return;
 				}
 			}else{
@@ -224,16 +228,16 @@ public class CraftItemEvent_1_8 implements Listener{
 				
 				try {
 					if(FurnaceRecipe.createFurnaceRecipe(e.getInventory(),(FurnaceRecipe) TempData.createRecipeTemp.get(p.getName()))){
-						Msg.sendMsgToPlayer(p, "CreateRecipeSucceed", true);
+						p.sendMessage(I18n.trp("workbench4"));
 						Data.furnaceRecipe.add(TempData.createRecipeTemp.get(p.getName()).getName());
 						TempData.createRecipeTemp.remove(p.getName());
 						p.closeInventory();
 					}else{
-						Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+						p.sendMessage(I18n.trp("workbench3"));
 						return;
 					}
 				} catch (Exception e2) {
-					Msg.sendMsgToPlayer(p, "CreateRecipeFailed", true);
+					p.sendMessage(I18n.trp("workbench3"));
 					return;
 				}
 			}
@@ -254,7 +258,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					if(fr==null)continue;
 					if(fr.getTableType()!=null && !fr.getTableType().equalsIgnoreCase(ft.getWorkbenchName()))continue;
 					if(fr.containsShape(e.getInventory())){
-						if(!p.hasPermission("RealSurvival.Recipe.Furnace."+fr.getName()))continue; // if player no permission, skip this
+						if(!hasPermission(p, fr.getPermission()))continue; // if player no permission, skip this
 						//success
 						RSMakeItemByFurnaceEvent event = new RSMakeItemByFurnaceEvent(p, fr, ft.getLocation(), ft.getWorkbenchName());
 						Bukkit.getServer().getPluginManager().callEvent(event);
@@ -268,7 +272,7 @@ public class CraftItemEvent_1_8 implements Listener{
 								e.getInventory().setItem(4, null);
 								p.closeInventory();
 							}catch(Exception exp){
-								Msg.sendMsgToPlayer(p, "Exception", true);
+								p.sendMessage(I18n.trp("workbench2"));
 								return;
 							}
 						}
@@ -276,7 +280,7 @@ public class CraftItemEvent_1_8 implements Listener{
 				}
 			}
 			return;
-		}else if(e.getInventory().getTitle().equals(Msg.getMsg("RainwaterCollectorTitle", false))){
+		}else if(e.getInventory().getTitle().equals(I18n.tr("rainwater1"))){
 			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(TempData.openingWorkbench.get(p.getName()));
 			if(e.getRawSlot()<27){
 				e.setCancelled(true);
@@ -323,11 +327,37 @@ public class CraftItemEvent_1_8 implements Listener{
 						(compare(block,BlockFace.NORTH,entry.getValue().getBehind())&&compare(block,BlockFace.SOUTH,entry.getValue().getFront())&&compare(block,BlockFace.EAST,entry.getValue().getRight())&&compare(block,BlockFace.WEST,entry.getValue().getLeft())) || 
 						(compare(block,BlockFace.NORTH,entry.getValue().getRight())&&compare(block,BlockFace.SOUTH,entry.getValue().getLeft())&&compare(block,BlockFace.EAST,entry.getValue().getFront())&&compare(block,BlockFace.WEST,entry.getValue().getBehind())) || 
 						(compare(block,BlockFace.NORTH,entry.getValue().getFront())&&compare(block,BlockFace.SOUTH,entry.getValue().getBehind())&&compare(block,BlockFace.EAST,entry.getValue().getLeft())&&compare(block,BlockFace.WEST,entry.getValue().getRight()))){
+					if(p.isSneaking()){
+						if(e.getItem()==null && Data.timer.containsKey(Util.getWorkbenchID(block))){
+							Timer t = Data.timer.get(Util.getWorkbenchID(block));
+							if(entry.getValue().getType()==WorkbenchType.WORKBENCH){
+								if(t.isOver())
+									p.sendMessage(I18n.trp("workbench13"));
+								else
+									p.sendMessage(I18n.trp("workbench12", Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
+							}else if(entry.getValue().getType()==WorkbenchType.FURNACE){
+								FurnaceTimer ft = (FurnaceTimer) t;
+								if(ft.isBad())
+									p.sendMessage(I18n.trp("furnace16"));
+								else if(ft.isOver())
+									p.sendMessage(I18n.trp("furnace15"));
+								else if(ft.getLastTemperature()<ft.getMinTemperature())
+									p.sendMessage(I18n.trp("furnace13",Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
+								else p.sendMessage(I18n.trp("furnace14",Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
+							}
+							break;
+						}
+						return;
+					}
 					e.setCancelled(true);
-					if(entry.getValue().getType()==WorkbenchType.WORKBENCH)
+					if(entry.getValue().getType()==WorkbenchType.WORKBENCH){
 						openWorkbenchGUI(p, block,entry.getKey());
-					else if(entry.getValue().getType()==WorkbenchType.FURNACE)
+						break;
+					}
+					else if(entry.getValue().getType()==WorkbenchType.FURNACE){
 						openFurnaceGUI(p, block,entry.getKey());
+						break;
+					}
 				}
 			}
 		}
@@ -356,7 +386,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			if(Data.timer.get(Util.getWorkbenchID(b)).getPlayerName().equals(p.getName())){
 				TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 				p.openInventory(FeatureGUI.openRainwaterCollector((RainwaterCollectorTimer) Data.timer.get(Util.getWorkbenchID(b))));
-			}else Msg.sendMsgToPlayer(p, "RainwaterCollectorError1",true);
+			}else p.sendMessage(I18n.trp("rainwater2"));
 		}else{	
 			RainwaterCollectorTimer rct = new RainwaterCollectorTimer(p.getName(),b.getWorld().getName(), b.getX(), b.getY(), b.getZ());
 			rct.start();
@@ -371,8 +401,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			if(Data.timer.get(Util.getWorkbenchID(b)).getPlayerName().equals(p.getName())){
 				TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 				p.openInventory(Furnace.openFurnaceGUI((FurnaceTimer) Data.timer.get(Util.getWorkbenchID(b))));
-			}else Msg.sendMsgToPlayer(p, "WorkbenchIsUsing", new String[]{"%player%"},
-					new String[]{Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()},true);
+			}else p.sendMessage(I18n.trp("workbench1",Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()));
 		}else{			
 			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.FURNACE, 
 					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
@@ -386,8 +415,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			if(Data.timer.get(Util.getWorkbenchID(b)).getPlayerName().equals(p.getName())){
 				TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
 				p.openInventory(Workbench.openWorkbenchGUI((WorkbenchTimer) Data.timer.get(Util.getWorkbenchID(b))));
-			}else Msg.sendMsgToPlayer(p, "WorkbenchIsUsing", new String[]{"%player%"},
-					new String[]{Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()},true);
+			}else p.sendMessage(I18n.trp("workbench1",Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()));
 		}else{			
 			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.WORKBENCH, 
 					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
@@ -409,24 +437,25 @@ public class CraftItemEvent_1_8 implements Listener{
 		if((e.getClickedBlock().getType()==Material.CAULDRON&&(e.getClickedBlock().getRelative(BlockFace.UP).getState() instanceof Hopper))){
 			e.setCancelled(true);
 			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(Util.getWorkbenchID(e.getClickedBlock()));
-			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){Msg.sendTitleToPlayer(e.getPlayer(),"rainwater-not-yours", Data.enablePrefixInTitle); return ;}
-			if(!Msg.sendTitleToPlayer(e.getPlayer(), rct.hasWater(), Data.enablePrefixInTitle)){
+			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){e.getPlayer().sendMessage(I18n.trp("rainwater2")); return ;}
+			
+			if(rct.hasWater()==null){
 				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
 				rct.removeWater(1);
 				givePlayerItem(e.getPlayer(), Items.getWater("Rainwater"));
-			}
+			}else e.getPlayer().sendMessage(I18n.trp("raniwater3"));
 		}else if((e.getClickedBlock().getState() instanceof Hopper) && (e.getClickedBlock().getRelative(BlockFace.UP).getType()==Material.DROPPER)){
 			e.setCancelled(true);
 			Inventory up =( (Dropper)e.getClickedBlock().getRelative(BlockFace.UP).getState()).getInventory();
 			Inventory down = ((Hopper)e.getClickedBlock().getState()).getInventory();
 			ItemStack strainer = down.getItem(2);
-			if(strainer == null || !strainer.hasItemMeta() || !strainer.getItemMeta().hasLore()){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
+			if(strainer == null || !strainer.hasItemMeta() || !strainer.getItemMeta().hasLore()){e.getPlayer().sendMessage(I18n.trp("raniwater4")); return ;}
 			double data = ItemLoreData.getLore("Strainer", strainer.getItemMeta().getLore(), false);
-			if(data<=0){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-not-enoug", Data.enablePrefixInTitle); return ;}
+			if(data<=0){e.getPlayer().sendMessage(I18n.trp("raniwater4"));return ;}
 			Object allData[] = {null,null,false,null};
 			for(ItemStack water : up.getContents()){
 				if(water == null)continue;
-				String type = Data.nbtitem.getNBTValue(water, "RealSurvival");
+				String type = NBTItem.getNBTValue(water, "RealSurvival");
 				if(type == null || type.matches("Freshwater"))continue;
 				int waterData = Data.strainer.get(type);
 				if(data>waterData){
@@ -443,7 +472,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					break;
 				}
 			}
-			if(!(boolean)allData[2]){Msg.sendTitleToPlayer(e.getPlayer(),"strainer-cannot-continue", Data.enablePrefixInTitle); return ;}
+			if(!(boolean)allData[2]){e.getPlayer().sendMessage(I18n.trp("raniwater5")); return ;}
 			else{
 				up.setItem(up.first((ItemStack)allData[0]),new ItemStack(Material.GLASS_BOTTLE));
 				if(strainer == null)  down.setItem(2,null);
@@ -471,5 +500,14 @@ public class CraftItemEvent_1_8 implements Listener{
 				else givePlayerItem(e.getPlayer(), Items.getWater("Freshwater"));
 			}
 		}
+	}
+	
+	private boolean hasPermission(Player p,String childPermission){
+		do{
+			if(p.hasPermission(childPermission))return true;
+			if(childPermission.equalsIgnoreCase("RealSurvival.Recipe.Workbench.*")||childPermission.equalsIgnoreCase("RealSurvival.Recipe.Furnace.*"))break;
+			childPermission = childPermission.substring(0,childPermission.lastIndexOf(".")+1)+"*";
+		}while(true);
+		return false;
 	}
 }

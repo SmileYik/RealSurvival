@@ -2,10 +2,10 @@ package com.outlook.schooluniformsama.papi;
 
 import org.bukkit.entity.Player;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.util.Msg;
 
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 
@@ -50,7 +50,7 @@ public class Papi extends EZPlaceholderHook {
 			while(index>=0&&index>=pd.getIllness().size())
 				index--;
 			if(index<0)
-				return Msg.getMsg("body2", false);
+				return I18n.tr("state2");
 			else
 				return pd.getIllness().keySet().toArray(new String[pd.getIllness().size()])[index];
 			

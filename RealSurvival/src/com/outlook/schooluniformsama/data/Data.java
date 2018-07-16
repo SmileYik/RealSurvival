@@ -11,12 +11,8 @@ import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.timer.Timer;
-import com.outlook.schooluniformsama.nms.bed.BedNMS;
-import com.outlook.schooluniformsama.nms.item.NBTItem;
 import com.outlook.schooluniformsama.util.ArrayList;
 import com.outlook.schooluniformsama.util.HashMap;
-
-import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
 
 public class Data {
 	public static String DATAFOLDER;
@@ -82,10 +78,6 @@ public class Data {
 	public static HashMap<String, Timer> timer = new HashMap<>();
 	public static ArrayList<String>workbenchRecipe=new ArrayList<>();
 	public static ArrayList<String>furnaceRecipe=new ArrayList<>();
-	public static  TitleManagerAPI tmapi;
-	
-	public static NBTItem nbtitem;
-	public static BedNMS bnms;
 	
 	public static boolean enablePrefixInTitle;
 	public static HashMap<String, Integer> strainer=new HashMap<>();

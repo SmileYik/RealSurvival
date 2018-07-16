@@ -75,8 +75,8 @@ state:
     high: 5
     heat-source-fix: 100.0
     distance-effect: 0.25
-    cold: 27
-    fever: 33
+    cold: 20
+    fever: 37
     heat-source:
       - FIRE:0.3
       - TORCH:0.1
@@ -113,7 +113,6 @@ workbenchs:
   workbenchs-type:
     - "workbench:WORKBENCH"
     - "furnace:FURNACE"
-    - "steamer:FURNACE"
   workbenchs:
     workbench:
       title: Workbench
@@ -121,27 +120,12 @@ workbenchs:
       left-block: BOOKSHELF
       right-block: WORKBENCH
       up-block: FURNACE
-      down-block: null
-      front-block: null
-      behind-block: null
     furnace:
       title: Furnace
       main-block: FURNACE
       left-block: BOOKSHELF
       right-block: WORKBENCH
       up-block: WORKBENCH
-      down-block: null
-      front-block: null
-      behind-block: null
-    steamer:
-      title: Steamer
-      main-block: FURNACE
-      left-block: BOOKSHELF
-      right-block: WORKBENCH
-      up-block: WORKBENCH
-      down-block: null
-      front-block: null
-      behind-block: null
 
 strainer:
   - "Seawater:10"
@@ -183,13 +167,12 @@ effect:
   illness-effects:
     - ThirstMin:WEAKNESS,130,3;WITHER,30,3
     - ThirstMax:
-    - EnergyMin:SLOW,130,1;WEAKNESS,130,3
+    - EnergyMin:SLOW,130,1;WEAKNESS,130,3;SLEEP_L,60,-50%,10
     - SleepMin:SLOW,130,1;WEAKNESS,130,3
     - SleepMax:
     - Weight:SLOW,300,3
-    - Fever:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    - Fever:THIRST_L,60,150%,10;CONFUSION,130,3
     - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-    - AfterAteWrongMedicine:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
     - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
     - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

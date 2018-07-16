@@ -22,7 +22,7 @@ public class DamageEvent implements Listener{
 		if(e.getDamager() instanceof LivingEntity && Data.mobEffect.containsKey(e.getDamager().getType().name())){
 			for(Map.Entry<String, Double> entity:Data.mobEffect.get(e.getDamager().getType().name()).getIllness().entrySet()){
 				if(pd.addIllness(entity.getKey(),entity.getValue(),null))
-					Msg.sendRandomTitleToPlayer((Player)e.getEntity(),"HitByMob", new String[]{"%sick%"}, new String[]{entity.getKey()}, true);
+					Msg.send((Player)e.getEntity(), "messages.illness.hit-by-mob",entity.getKey());
 			}
 		}
 		

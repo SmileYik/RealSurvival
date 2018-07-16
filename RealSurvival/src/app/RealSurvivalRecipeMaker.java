@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.item.RSItem;
@@ -19,7 +20,6 @@ import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
 import com.outlook.schooluniformsama.util.HashMap;
-import com.outlook.schooluniformsama.util.Msg;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JButton;
@@ -55,7 +55,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		}
 		@Override
 		public String toString() {
-			return itemName+";"+Msg.getMsg("real-survival-maker.key-word.amount", false)+":"+amount;
+			return itemName+";"+I18n.tr("GUIKeyWordamount")+":"+amount;
 		}
 	}
 	
@@ -113,21 +113,21 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		if(type == WorkbenchType.FURNACE){
 			for(int i=0;i<Furnace.mSlot.size();i++){
 				m.put(i, null);
-				slot.add(Msg.getMsg("real-survival-maker.key-word.materials", false)+":"+(i+1));
+				slot.add(I18n.tr("GUIKeyWordmaterials")+":"+(i+1));
 			}
 			for(int i=0;i<Furnace.pSlot.size();i++){
 				p.put(i, null);
-				slot.add(Msg.getMsg("real-survival-maker.key-word.products", false)+":"+(i+1));
+				slot.add(I18n.tr("GUIKeyWordproducts")+":"+(i+1));
 			}
 			
 		}else{
 			for(int i=0;i<Workbench.materials.size();i++){
 				m.put(i, null);
-				slot.add(Msg.getMsg("real-survival-maker.key-word.materials", false)+":"+(i+1));
+				slot.add(I18n.tr("GUIKeyWordmaterials")+":"+(i+1));
 			}
 			for(int i=0;i<Workbench.products.size();i++){
 				p.put(i, null);				
-				slot.add(Msg.getMsg("real-survival-maker.key-word.products", false)+":"+(i+1));
+				slot.add(I18n.tr("GUIKeyWordproducts")+":"+(i+1));
 			}
 		}
 		box.setModel( new DefaultComboBoxModel<>(slot.toArray(new String[slot.size()])));
@@ -144,7 +144,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		this.setBounds(100, 100, 500, 453);
 		this.getContentPane().setLayout(null);
 		
-		JButton create_new_item = new JButton(Msg.getMsg("real-survival-maker.button.create", false));
+		JButton create_new_item = new JButton(I18n.tr("guiButtoncreate"));
 		create_new_item.setBounds(10, 376, 131, 23);
 		this.getContentPane().add(create_new_item);
 		
@@ -186,7 +186,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		workbench_type.setModel(getWorkbenchType());
 		getContentPane().add(workbench_type);
 		
-		JButton refresh = new JButton(Msg.getMsg("real-survival-maker.button.refresh", false));
+		JButton refresh = new JButton(I18n.tr("guiButtonrefresh"));
 		refresh.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				scrollPane_1.setViewportView(item_tree);
@@ -203,15 +203,15 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		getContentPane().add(setting);
 		setting.setLayout(null);
 		
-		JLabel label = new JLabel(Msg.getMsg("real-survival-maker.label.materials-editor", false)+": ");
+		JLabel label = new JLabel(I18n.tr("guiLabelmaterials-editor")+": ");
 		label.setBounds(185, 10, 137, 15);
 		setting.add(label);
 		
-		JLabel label_1 = new JLabel(Msg.getMsg("real-survival-maker.label.products-editor", false)+": ");
+		JLabel label_1 = new JLabel(I18n.tr("guiLabelproducts-editor")+": ");
 		label_1.setBounds(185, 207, 137, 15);
 		setting.add(label_1);
 		
-		JLabel label_2 = new JLabel(Msg.getMsg("real-survival-maker.label.recipe-name", false)+": ");
+		JLabel label_2 = new JLabel(I18n.tr("guiLabelrecipe-name")+": ");
 		label_2.setBounds(10, 10, 67, 15);
 		setting.add(label_2);
 		
@@ -220,7 +220,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		setting.add(recipe_name);
 		recipe_name.setColumns(10);
 		
-		JLabel label_3 = new JLabel(Msg.getMsg("real-survival-maker.label.workbench-type", false)+": ");
+		JLabel label_3 = new JLabel(I18n.tr("guiLabelworkbench-type")+": ");
 		label_3.setBounds(10, 35, 84, 15);
 		setting.add(label_3);
 		
@@ -230,7 +230,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		setting.add(recipe_workbench_type);
 		recipe_workbench_type.setColumns(10);
 		
-		JLabel label_4 = new JLabel(Msg.getMsg("real-survival-maker.label.need-time", false)+": ");
+		JLabel label_4 = new JLabel(I18n.tr("guiLabelneed-time")+": ");
 		label_4.setBounds(10, 63, 67, 15);
 		setting.add(label_4);
 		
@@ -249,7 +249,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_furnace_save_time.setBounds(81, 0, 84, 21);
 		recipe_furnace_panel.add(recipe_furnace_save_time);
 		
-		JLabel label_5 = new JLabel(Msg.getMsg("real-survival-maker.label.save-time", false)+": ");
+		JLabel label_5 = new JLabel(I18n.tr("guiLabelsave-time")+": ");
 		label_5.setBounds(0, 3, 67, 15);
 		recipe_furnace_panel.add(label_5);
 		
@@ -258,11 +258,11 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_furnace_min_tem.setBounds(81, 27, 84, 21);
 		recipe_furnace_panel.add(recipe_furnace_min_tem);
 		
-		JLabel label_6 = new JLabel(Msg.getMsg("real-survival-maker.label.min-temperature", false)+": ");
+		JLabel label_6 = new JLabel(I18n.tr("guiLabelmin-temperature")+": ");
 		label_6.setBounds(0, 30, 67, 15);
 		recipe_furnace_panel.add(label_6);
 		
-		JLabel label_7 = new JLabel(Msg.getMsg("real-survival-maker.label.max-temperature", false)+": ");
+		JLabel label_7 = new JLabel(I18n.tr("guiLabelmax-temperature")+": ");
 		label_7.setBounds(0, 58, 67, 15);
 		recipe_furnace_panel.add(label_7);
 		
@@ -271,7 +271,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_furnace_max_tem.setBounds(81, 55, 84, 21);
 		recipe_furnace_panel.add(recipe_furnace_max_tem);
 		
-		JLabel label_8 = new JLabel(Msg.getMsg("real-survival-maker.label.original-item", false)+": ");
+		JLabel label_8 = new JLabel(I18n.tr("guiLabeloriginal-item")+": ");
 		label_8.setBounds(10, 177, 73, 15);
 		setting.add(label_8);
 		
@@ -282,11 +282,11 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		minecraft_item.setModel(getItemType());
 		
 		JComboBox<String> item_type = new JComboBox<String>();
-		item_type.setModel(new DefaultComboBoxModel<String>(new String[] {Msg.getMsg("real-survival-maker.key-word.original-item", false), Msg.getMsg("real-survival-maker.key-word.diy-item", false), Msg.getMsg("real-survival-maker.key-word.nothing", false)}));
+		item_type.setModel(new DefaultComboBoxModel<String>(new String[] {I18n.tr("GUIKeyWordoriginal-item"), I18n.tr("GUIKeyWorddiy-item"), I18n.tr("GUIKeyWordnothing")}));
 		item_type.setBounds(91, 201, 84, 21);
 		setting.add(item_type);
 		
-		JLabel label_9 = new JLabel(Msg.getMsg("real-survival-maker.label.item-type", false)+": ");
+		JLabel label_9 = new JLabel(I18n.tr("guiLabelitem-type")+": ");
 		label_9.setBounds(10, 207, 73, 15);
 		setting.add(label_9);
 		
@@ -294,19 +294,19 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_slot.setBounds(91, 232, 84, 21);
 		setting.add(recipe_slot);
 		
-		JLabel label_10 = new JLabel(Msg.getMsg("real-survival-maker.label.item-slot", false)+": ");
+		JLabel label_10 = new JLabel(I18n.tr("guiLabelitem-slot")+": ");
 		label_10.setBounds(10, 238, 73, 15);
 		setting.add(label_10);
 		
-		JButton add_item = new JButton(Msg.getMsg("real-survival-maker.button.add-item", false));
+		JButton add_item = new JButton(I18n.tr("guiButtonadd-item"));
 		add_item.setBounds(39, 312, 93, 23);
 		setting.add(add_item);
 		
-		JCheckBox recipe_p_edit = new JCheckBox(Msg.getMsg("real-survival-maker.radio-button.edit", false));
+		JCheckBox recipe_p_edit = new JCheckBox(I18n.tr("guiButtonedit"));
 		recipe_p_edit.setBounds(273, 203, 67, 23);
 		setting.add(recipe_p_edit);
 		
-		JCheckBox recipe_m_edit = new JCheckBox(Msg.getMsg("real-survival-maker.radio-button.edit", false));
+		JCheckBox recipe_m_edit = new JCheckBox(I18n.tr("guiButtonedit"));
 		recipe_m_edit.setBounds(273, 6, 67, 23);
 		setting.add(recipe_m_edit);
 		
@@ -326,15 +326,15 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_p_item.setEditable(false);
 		scrollPane_3.setViewportView(recipe_p_item);
 		
-		JButton save = new JButton(Msg.getMsg("real-survival-maker.button.save", false));
+		JButton save = new JButton(I18n.tr("guiButtonsave"));
 		save.setBounds(39, 345, 93, 23);
 		setting.add(save);
 		
-		JButton close = new JButton(Msg.getMsg("real-survival-maker.button.close", false));
+		JButton close = new JButton(I18n.tr("guiButtonclose"));
 		close.setBounds(39, 378, 93, 23);
 		setting.add(close);
 		
-		JLabel label_11 = new JLabel(Msg.getMsg("real-survival-maker.label.item-amount", false)+": ");
+		JLabel label_11 = new JLabel(I18n.tr("guiLabelitem-amount")+": ");
 		label_11.setBounds(10, 266, 67, 15);
 		setting.add(label_11);
 		
@@ -377,8 +377,8 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				int length = data.length<p.size()?data.length:p.size();
 				for(int i = 0;i<length;i++){
 					try {
-						if(data[i].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.nothing", false)))p.replace(i, null);
-						else if(!data[i].contains(Msg.getMsg("real-survival-maker.key-word.diy-item", false))&&!data[i].contains(Msg.getMsg("real-survival-maker.key-word.original-item", false))&&!data[i].contains(Msg.getMsg("real-survival-maker.key-word.amount", false)))p.replace(i, null);
+						if(data[i].equalsIgnoreCase(I18n.tr("GUIKeyWordnothing")))p.replace(i, null);
+						else if(!data[i].contains(I18n.tr("GUIKeyWorddiy-item"))&&!data[i].contains(I18n.tr("GUIKeyWordoriginal-item"))&&!data[i].contains(I18n.tr("GUIKeyWordamount")))p.replace(i, null);
 						else {
 							String item = data[i];
 							p.replace(i, new Item(item.split(";")[0], Integer.parseInt(item.split(";")[1].split(":")[1])));
@@ -398,8 +398,8 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				int length = data.length<m.size()?data.length:m.size();
 				for(int i = 0;i<length;i++){
 					try {
-						if(data[i].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.nothing", false)))m.replace(i, null);
-						else if(!data[i].contains(Msg.getMsg("real-survival-maker.key-word.diy-item", false))&&!data[i].contains(Msg.getMsg("real-survival-maker.key-word.original-item", false)))m.replace(i, null);
+						if(data[i].equalsIgnoreCase(I18n.tr("GUIKeyWordnothing")))m.replace(i, null);
+						else if(!data[i].contains(I18n.tr("GUIKeyWorddiy-item"))&&!data[i].contains(I18n.tr("GUIKeyWordoriginal-item")))m.replace(i, null);
 						else {
 							String item = data[i];
 							m.replace(i, new Item(item.split(";")[0], Integer.parseInt(item.split(";")[1].split(":")[1])));
@@ -416,7 +416,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		create_new_item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(setting.isVisible()){
-					JOptionPane.showMessageDialog(window, Msg.getMsg("real-survival-maker.error-message.recipe-in-doing", false));
+					JOptionPane.showMessageDialog(window, I18n.tr("guiMsgrecipe-in-doing"));
 					return;
 				}
 				if(workbench_type.getSelectedItem() == null){
@@ -447,23 +447,23 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		//add item
 		add_item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if(item_type.getSelectedItem().toString().equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.nothing", false)))
+				if(item_type.getSelectedItem().toString().equalsIgnoreCase(I18n.tr("GUIKeyWordnothing")))
 					putItem(recipe_slot.getSelectedItem().toString(),null);
-				else if(item_type.getSelectedItem().toString().equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.original-item", false))){
-					if(checkIsInt(recipe_item_amount.getText(), Msg.getMsg("real-survival-maker.label.item-amount", false)))return;
-					putItem(recipe_slot.getSelectedItem().toString(),Msg.getMsg("real-survival-maker.key-word.original-item", false)+":"+getMinecraftItem(minecraft_item).name()+";"+Msg.getMsg("real-survival-maker.key-word.amount", false)+":"+recipe_item_amount.getText());
+				else if(item_type.getSelectedItem().toString().equalsIgnoreCase(I18n.tr("GUIKeyWordoriginal-item"))){
+					if(checkIsInt(recipe_item_amount.getText(), I18n.tr("guiLabelitem-amount")))return;
+					putItem(recipe_slot.getSelectedItem().toString(),I18n.tr("GUIKeyWordoriginal-item")+":"+getMinecraftItem(minecraft_item).name()+";"+I18n.tr("GUIKeyWordamount")+":"+recipe_item_amount.getText());
 				}else{
 					DefaultMutableTreeNode note = (DefaultMutableTreeNode) item_tree.getLastSelectedPathComponent();
 					if(note == null || note.getChildCount()>0){
-						JOptionPane.showMessageDialog(window, Msg.getMsg("real-survival-maker.error-message.no-selected-item", false));
+						JOptionPane.showMessageDialog(window, I18n.tr("guiMsgno-selected-item"));
 						return;
 					}
-					if(checkIsInt(recipe_item_amount.getText(), Msg.getMsg("real-survival-maker.label.item-amount", false)))return;
+					if(checkIsInt(recipe_item_amount.getText(), I18n.tr("guiLabelitem-amount")))return;
 					String name = "";
 					for(Object temp:item_tree.getSelectionPath().getPath())
 						name+=temp.toString()+"/";
 					name = name.substring(0, name.length()-1).replace("items/", "");
-					putItem(recipe_slot.getSelectedItem().toString(),Msg.getMsg("real-survival-maker.key-word.diy-item", false)+":"+name+";"+Msg.getMsg("real-survival-maker.key-word.amount", false)+":"+recipe_item_amount.getText());
+					putItem(recipe_slot.getSelectedItem().toString(),I18n.tr("GUIKeyWorddiy-item")+":"+name+";"+I18n.tr("GUIKeyWordamount")+":"+recipe_item_amount.getText());
 				}
 				setItemToEditor(recipe_m_item, recipe_p_item);
 			}
@@ -475,15 +475,15 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				String name;
 				int time,saveTime;
 				double temMax,temMin;
-				if(checkIsNull(recipe_name.getText(), Msg.getMsg("real-survival-maker.label.recipe-name", false)))return;
-				if(checkIsInt(recipe_need_time.getText(), Msg.getMsg("real-survival-maker.label.need-time", false)))return;
+				if(checkIsNull(recipe_name.getText(), I18n.tr("guiLabelrecipe-name")))return;
+				if(checkIsInt(recipe_need_time.getText(), I18n.tr("guiLabelneed-time")))return;
 				name = recipe_name.getText();
 				time = Integer.parseInt(recipe_need_time.getText());
 				Inventory inv;
 				if(ws.getType()==WorkbenchType.FURNACE){
-					if(checkIsInt(recipe_furnace_save_time.getText(), Msg.getMsg("real-survival-maker.label.save-time", false)))return;
-					if(checkIsDouble(recipe_furnace_max_tem.getText(), Msg.getMsg("real-survival-maker.label.max-temperature", false)))return;
-					if(checkIsDouble(recipe_furnace_min_tem.getText(), Msg.getMsg("real-survival-maker.label.min-temperature", false)))return;		
+					if(checkIsInt(recipe_furnace_save_time.getText(), I18n.tr("guiLabelsave-time")))return;
+					if(checkIsDouble(recipe_furnace_max_tem.getText(), I18n.tr("guiLabelmax-temperature")))return;
+					if(checkIsDouble(recipe_furnace_min_tem.getText(), I18n.tr("guiLabelmin-temperature")))return;		
 					saveTime = Integer.parseInt(recipe_furnace_save_time.getText());
 					temMax = Double.parseDouble(recipe_furnace_max_tem.getText());
 					temMin = Double.parseDouble(recipe_furnace_min_tem.getText());
@@ -493,13 +493,13 @@ public class RealSurvivalRecipeMaker extends JFrame{
 						if(m.get(i)==null)continue;
 						Item ri = m.get(i);
 						String data[] = ri.itemName.split(":");
-						if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.original-item", false)))
+						if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWordoriginal-item")))
 							{
 							ItemStack item = new ItemStack(Material.getMaterial(data[1]));
 							item.setAmount(ri.amount);
 							inv.setItem(Furnace.mSlot.get(i), item);
 							}
-						else if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.diy-item", false))) {
+						else if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWorddiy-item"))) {
 							ItemStack item = RSItem.loadItem(data[1]).getItem();
 							item.setAmount(ri.amount);
 							inv.setItem(Furnace.mSlot.get(i), item);
@@ -511,12 +511,12 @@ public class RealSurvivalRecipeMaker extends JFrame{
 						if(p.get(i)==null)continue;
 						Item ri = p.get(i);
 						String data[] = ri.itemName.split(":");
-						if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.original-item", false))){
+						if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWordoriginal-item"))){
 							ItemStack item = new ItemStack(Material.getMaterial(data[1]));
 							item.setAmount(ri.amount);
 							inv.setItem(Furnace.pSlot.get(i), item);
 						}
-						else if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.diy-item", false))) {
+						else if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWorddiy-item"))) {
 							ItemStack item = RSItem.loadItem(data[1]).getItem();
 							item.setAmount(ri.amount);
 							inv.setItem(Furnace.pSlot.get(i), item);
@@ -531,12 +531,12 @@ public class RealSurvivalRecipeMaker extends JFrame{
 						if(m.get(i)==null)continue;
 						Item ri = m.get(i);
 						String data[] = ri.itemName.split(":");
-						if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.original-item", false))){
+						if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWordoriginal-item"))){
 							ItemStack item = new ItemStack(Material.getMaterial(data[1]));
 							item.setAmount(ri.amount);
 							inv.setItem(Workbench.materials.get(i), item);
 						}
-						else if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.diy-item", false))) {
+						else if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWorddiy-item"))) {
 							ItemStack item = RSItem.loadItem(data[1]).getItem();
 							item.setAmount(ri.amount);
 							inv.setItem(Workbench.materials.get(i), item);
@@ -548,12 +548,12 @@ public class RealSurvivalRecipeMaker extends JFrame{
 						if(p.get(i)==null)continue;
 						Item ri = p.get(i);
 						String data[] = ri.itemName.split(":");
-						if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.original-item", false))){
+						if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWordoriginal-item"))){
 							ItemStack item = new ItemStack(Material.getMaterial(data[1]));
 							item.setAmount(ri.amount);
 							inv.setItem(Workbench.products.get(i), item);
 						}
-						else if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.diy-item", false))) {
+						else if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWorddiy-item"))) {
 							ItemStack item = RSItem.loadItem(data[1]).getItem();
 							item.setAmount(ri.amount);
 							inv.setItem(Workbench.products.get(i), item);
@@ -601,7 +601,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 	
 	private boolean checkIsNull(String str,String msgId){
 		if(str==null || str.replace(" ", "").equals("")){
-			JOptionPane.showMessageDialog(window, msgId+Msg.getMsg("real-survival-maker.error-message.can-not-be-null", false));
+			JOptionPane.showMessageDialog(window, msgId+I18n.tr("guiMsgcan-not-be-null"));
 			return true;
 		}
 		return false;
@@ -612,12 +612,12 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		try{
 			int i = Integer.parseInt(str);
 			if(i<=0){
-				JOptionPane.showMessageDialog(window, msgId+Msg.getMsg("real-survival-maker.error-message.not-int-2", false));
+				JOptionPane.showMessageDialog(window, msgId+I18n.tr("guiMsgnot-int-2"));
 				return true;
 			}
 			return false;
 		}catch (Exception e) {
-			JOptionPane.showMessageDialog(window, msgId+Msg.getMsg("real-survival-maker.error-message.not-int", false));
+			JOptionPane.showMessageDialog(window, msgId+I18n.tr("guiMsgnot-int"));
 			return true;
 		}
 	}
@@ -627,19 +627,19 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		try{
 			Double i = Double.parseDouble(str);
 			if(i<=0){
-				JOptionPane.showMessageDialog(window, msgId+Msg.getMsg("real-survival-maker.error-message.not-int-2", false));
+				JOptionPane.showMessageDialog(window, msgId+I18n.tr("guiMsgnot-int-2"));
 				return true;
 			}
 			return false;
 		}catch (Exception e) {
-			JOptionPane.showMessageDialog(window, msgId+Msg.getMsg("real-survival-maker.error-message.not-int", false));
+			JOptionPane.showMessageDialog(window, msgId+I18n.tr("guiMsgnot-int"));
 			return true;
 		}
 	}
 	
 	private void putItem(String slot,String item){
 		String data[] = slot.split(":");
-		if(data[0].equalsIgnoreCase(Msg.getMsg("real-survival-maker.key-word.materials", false))){
+		if(data[0].equalsIgnoreCase(I18n.tr("GUIKeyWordmaterials"))){
 			if(item==null) m.replace(Integer.parseInt(data[1])-1, null);
 			else m.replace(Integer.parseInt(data[1])-1, new Item(item.split(";")[0], Integer.parseInt(item.split(";")[1].split(":")[1])));
 		}else{
@@ -651,10 +651,10 @@ public class RealSurvivalRecipeMaker extends JFrame{
 	private void setItemToEditor(JTextArea m,JTextArea p){
 		String mText = "",pText="";
 		for(Item str:this.m.values())
-			if(str==null)mText+=Msg.getMsg("real-survival-maker.key-word.nothing", false)+"\n";
+			if(str==null)mText+=I18n.tr("GUIKeyWordnothing")+"\n";
 			else mText+=str.toString()+"\n";
 		for(Item str:this.p.values())
-			if(str==null)pText+=Msg.getMsg("real-survival-maker.key-word.nothing", false)+"\n";
+			if(str==null)pText+=I18n.tr("GUIKeyWordnothing")+"\n";
 			else pText+=str.toString()+"\n";
 		m.setText(mText);
 		p.setText(pText);

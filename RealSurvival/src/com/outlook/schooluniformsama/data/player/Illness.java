@@ -2,7 +2,6 @@ package com.outlook.schooluniformsama.data.player;
 
 import org.bukkit.entity.Player;
 
-import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
@@ -72,12 +71,12 @@ public class Illness {
 		recovery+=afterFix;
 		if(--duratio<=0){
 			duratio=0;
-			Msg.sendRandomTitleToPlayer(p, "efficacy-over", new String[]{"%sick%"}, new String[]{name}, Data.enablePrefixInTitle);
+			Msg.send(p, "messages.illness.efficacy-over",name);
 			isTakeMedicine=false;
 		}
 		
 		if(recovery>=100){
-			Msg.sendRandomTitleToPlayer(p, "recovery-sick", new String[]{"%sick%"}, new String[]{name}, Data.enablePrefixInTitle);
+			Msg.send(p, "messages.illness.recovery-sick",name);
 			return true;
 		}
 		return false;

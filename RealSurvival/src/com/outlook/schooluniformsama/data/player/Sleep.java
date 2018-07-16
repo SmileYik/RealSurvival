@@ -1,7 +1,5 @@
 package com.outlook.schooluniformsama.data.player;
 
-import org.bukkit.Location;
-
 import com.outlook.schooluniformsama.data.Data;
 
 public class Sleep {
@@ -10,7 +8,6 @@ public class Sleep {
 	private double sleepMax;
 	private double other;
 	private boolean hasSleep;
-	private Location sleepLocation;
 	public Sleep(double sleep,double sleepMax,boolean hasSleep) {
 		super();
 		this.sleep = sleep;
@@ -50,9 +47,8 @@ public class Sleep {
 		return hasSleep;
 	}
 
-	public void setHasSleep(boolean hasSleep,Location sleepLocation) {
+	public void setHasSleep(boolean hasSleep) {
 		this.hasSleep = hasSleep;
-		this.sleepLocation = sleepLocation;
 	}
 
 	public double getSleep() {
@@ -62,11 +58,4 @@ public class Sleep {
 	public double getSleepMax() {
 		return sleepMax+other;
 	}
-
-	public Location getSleepLocation() {
-		return sleepLocation;
-	}
-	
-	
-	
 }

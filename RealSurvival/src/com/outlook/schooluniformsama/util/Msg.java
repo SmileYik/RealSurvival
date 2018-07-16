@@ -6,28 +6,123 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.List;
 
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.nms.NBTPlayer;
 
 public class Msg {
-	private static YamlConfiguration msg;
-	/**
-	 * You must run this method when the plugin is loaded.
-	 */
-	public static void init(){
-		msg=YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/messages.yml"));
+	private static Msg msg;
+	private String playerState1="",playerState2="";
+	private String prefix;
+	private final HashMap<String, String[]> defualt;
+	
+	public Msg(RealSurvival plugin){
+		checkMessagesYml(plugin);
+		
+		HashMap<String, String[]> defualt = new HashMap<>();
+		YamlConfiguration config = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/messages.yml"));
+		for(String key:config.getKeys(true)){
+			if(key.equals("player-state-1")) {
+				List<String> msgs = config.getStringList(key);
+				String[] msgsString = msgs.toArray(new String[msgs.size()]);
+				for(String str:msgsString) playerState1 += str+"\n";
+				playerState1 = playerState1.substring(0, playerState1.length()-2);
+			}else if(key.equals("player-state-2")){
+				List<String> msgs = config.getStringList(key);
+				String[] msgsString = msgs.toArray(new String[msgs.size()]);
+				for(String str:msgsString) playerState2 += str+"\n";
+				playerState2 = playerState2.substring(0, playerState2.length()-2);
+			}else if(key.equals("prefix")){
+				prefix = config.getString(key);
+			}else{
+				List<String> msgs = config.getStringList(key);
+				defualt.put(key, msgs.toArray(new String[msgs.size()]));
+			}
+		}
+		this.defualt = defualt;
+		msg = this;
 	}
 	
+	private String getMessages(String key){
+		String[] msgs = defualt.get(key);
+		return msgs[(int)(Math.random()*msgs.length)];
+	}
+	
+	public static String getPlayerState1(Object ...objects ){
+		return MessageFormat.format(msg.playerState1,objects);
+	}
+	public static String getPlayerState2(Object ...objects ){
+		return MessageFormat.format(msg.playerState2,objects);
+	}
 	public static String getPrefix(){
-		return msg.getString("prefix");
+		return msg.prefix;
 	}
 	
-	public static void writerYml(String name){
+	public static String tr(String key,Object ... objs){
+		return MessageFormat.format(msg.getMessages(key), objs);
+	}
+	
+	public static String tr(String key){
+		return msg.getMessages(key);
+	}
+	
+	public static String trp(String key,Object ... objs){
+		return msg.prefix+MessageFormat.format(msg.getMessages(key), objs);
+	}
+	
+	public static String trp(String key){
+		return msg.prefix+msg.getMessages(key);
+	}
+	
+	public static void send(Player p,String key){
+		if(Data.enablePrefixInTitle)sendP(p,key);
+		else sendNP(p,key);
+	}
+	
+	public static void send(Player p,String key,Object ... objs){
+		if(Data.enablePrefixInTitle)sendP(p,key,objs);
+		else sendNP(p,key,objs);
+	}
+	
+	public static void sendNP(Player p,String key){
+		if(!NBTPlayer.sendActionBar(p, tr(key))){
+			p.sendMessage(tr(key));
+		}
+	}
+	
+	public static void sendNP(Player p,String key,Object ... objs){
+		if(!NBTPlayer.sendActionBar(p, tr(key,objs))){
+			p.sendMessage(tr(key,objs));
+		}
+	}
+	
+	public static void sendP(Player p,String key){
+		if(!NBTPlayer.sendActionBar(p, msg.prefix+tr(key))){
+			p.sendMessage(msg.prefix+tr(key));
+		}
+	}
+	
+	public static void sendP(Player p,String key,Object ... objs){
+		if(!NBTPlayer.sendActionBar(p, msg.prefix+tr(key,objs))){
+			p.sendMessage(msg.prefix+tr(key,objs));
+		}
+	}
+	
+	private void checkMessagesYml(RealSurvival rs){
+		if(!new File(rs.getDataFolder()+File.separator+"messages.yml").exists()){
+			writerYml("messages_"+rs.getConfig().getString("language"));
+		}else if(YamlConfiguration.loadConfiguration(new File(rs.getDataFolder()+File.separator+"messages.yml")).getString("language",null)==null || !YamlConfiguration.loadConfiguration(new File(rs.getDataFolder()+File.separator+"messages.yml")).getString("language",null).equalsIgnoreCase(rs.getConfig().getString("language"))){
+			writerYml("messages_"+rs.getConfig().getString("language"));
+		}
+	}
+	
+	private void writerYml(String name){
 		InputStream is=null;
 		OutputStream os=null;
 		try {
@@ -42,198 +137,21 @@ public class Msg {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			if(is!=null)
 				try {
 					is.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			if(os!=null)
 				try {
 					os.close();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
 		
 	}
-	
-	/**
-	 * Get a message from messages.yml. you can let some variable change to what string you want.
-	 * The variable and value are string array. You must let the variable and value at the same index, 
-	 * for example: a message's id is "hello" and the message is "Hello %player%! now is %time%" -> 
-	 * getRandomMsg(hello,new String[]{"%player%","%time%"},new String[]{"School_Uniform","14:36"},false);
-	 * so you will get a string that is "Hello School_Uniform! now is 14:36"
-	 * @param id
-	 * @param variable
-	 * @param value
-	 * @param addPrefix
-	 * @return
-	 */
-	public static String getRandomMsg(String id,String[] variable ,String[] value,boolean addPrefix){
-		List<String> list = msg.getStringList("list."+id);
-		String msg = list.get((int)Util.randomNum(0, list.size()-1));
-		for(int i=0;i<variable.length;i++)
-			msg=msg.replace(variable[i], value[i]);
-		if(addPrefix)
-			return getPrefix()+msg;
-		return msg;
-	}
-	
-	public static String getRandomMsg(String id,boolean addPrefix){
-		List<String> list = msg.getStringList("list."+id);
-		String msg = list.get((int)Util.randomNum(0, list.size()-1));
-		if(addPrefix)
-			return getPrefix()+msg;
-		return msg;
-	}
-	
-	public static String getMsg(String id,String[] variable ,String[] value,boolean addPrefix){
-		String m=msg.getString("line."+id);
-		for(int i=0;i<variable.length;i++)
-			m=m.replace(variable[i], value[i]);
-		if(addPrefix)
-			return getPrefix()+m;
-		return m;
-	}
-	
-	public static String getMsg(String id,boolean addPrefix){
-		String m=msg.getString("line."+id);
-		if(addPrefix)
-			return getPrefix()+m;
-		return m;
-	}
-	
-	public static String getRandomMsgArray(String id,String[] variable ,String[] value,boolean addPrefix){
-		String lines="";
-		for(String temp:msg.getStringList(id)){
-			for(int i=0;i<variable.length;i++)
-				temp=temp.replace(variable[i], value[i]);
-			lines+=temp+"\n";
-		}
-		if(addPrefix)
-			return getPrefix()+lines.substring(0, lines.length()-2);
-		return lines.substring(0, lines.length()-2);
-	}
-
-	public static void sendRandomArrayToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getRandomMsgArray(id, variable, value, addPrefix));
-	}
-	
-	public static void sendRandomTitleToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		String msg=getRandomMsg(id, variable, value, false);
-		if(Data.tmapi!=null){
-			if(addPrefix)
-				Data.tmapi.sendTitles(p,getPrefix(),msg,10,30,10 );
-			else
-				Data.tmapi.sendTitles(p," ",msg,10,30,10 );
-		}else{
-			if(addPrefix)
-				p.sendMessage(getPrefix()+msg);
-			else
-				p.sendMessage(msg);
-		}
-	}
-	
-	public static void sendRandomTitleToPlayer(Player p, String id,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		String msg = getRandomMsg(id, false);
-		if(Data.tmapi!=null){
-			if(addPrefix)
-				Data.tmapi.sendTitles(p,getPrefix(),msg,10,30,10 );
-			else
-				Data.tmapi.sendTitles(p," ",msg,10,30,10 );
-		}else{
-			if(addPrefix)
-				p.sendMessage(getPrefix()+msg);
-			else
-				p.sendMessage(msg);
-		}
-	}
-	
-	public static void sendTitleToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		String msg = getMsg(id, variable, value, false);
-		if(Data.tmapi!=null){
-			if(addPrefix)
-				Data.tmapi.sendTitles(p,getPrefix(),msg,10,30,10 );
-			else
-				Data.tmapi.sendTitles(p," ",msg,10,30,10 );
-		}else{
-			if(addPrefix)
-				p.sendMessage(getPrefix()+msg);
-			else
-				p.sendMessage(msg);
-		}
-	}
-	
-	public static boolean sendTitleToPlayer(Player p, String id,boolean addPrefix){
-		if(!p.isOnline() || id==null)return false;
-		String msg = getMsg(id, false);
-		if(Data.tmapi!=null){
-			if(addPrefix)
-				Data.tmapi.sendTitles(p,getPrefix(),msg,10,30,10 );
-			else
-				Data.tmapi.sendTitles(p," ",msg,10,30,10 );
-		}else{
-			if(addPrefix)
-				p.sendMessage(getPrefix()+msg);
-			else
-				p.sendMessage(msg);
-		}
-		return true;
-	}
-	
-	public static void sendRandomMsgToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-			p.sendMessage(getRandomMsg(id, variable, value, addPrefix));
-	}
-	
-	public static void sendRandomMsgToPlayer(Player p, String id,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getRandomMsg(id, addPrefix));
-	}
-	
-	public static void sendRandomMsgToPlayer(String playerName, String id,String[] variable , String[] value,boolean addPrefix){
-		Player p = Bukkit.getPlayer(playerName);
-		if(!p.isOnline() || id==null)return;
-		String msg = getRandomMsg(id, variable, value, addPrefix);
-		p.sendMessage(msg);
-	}
-	
-	public static void sendRandomMsgToPlayer(String playerName, String id,boolean addPrefix){
-		Player p = Bukkit.getPlayer(playerName);
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getRandomMsg(id, addPrefix));
-	}
-	
-	public static void sendMsgToPlayer(Player p, String id,String[] variable , String[] value,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getMsg(id, variable, value, addPrefix));
-	}
-	
-	public static void sendMsgToPlayer(Player p, String id,boolean addPrefix){
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getMsg(id, addPrefix));
-	}
-	
-	public static void sendMsgToPlayer(String playerName, String id,String[] variable , String[] value,boolean addPrefix){
-		Player p = Bukkit.getPlayer(playerName);
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getMsg(id, variable, value, addPrefix));
-	}
-	
-	public static void sendMsgToPlayer(String playerName, String id,boolean addPrefix){
-		Player p = Bukkit.getPlayer(playerName);
-		if(!p.isOnline() || id==null)return;
-		p.sendMessage(getMsg(id,  addPrefix));
-	}
-	
 }

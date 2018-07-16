@@ -12,7 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.outlook.schooluniformsama.command.Commands;
@@ -37,7 +36,6 @@ import com.outlook.schooluniformsama.event.DamageEvent;
 import com.outlook.schooluniformsama.event.EnergyEvent;
 import com.outlook.schooluniformsama.event.FractureEvent;
 import com.outlook.schooluniformsama.event.SitEvent;
-import com.outlook.schooluniformsama.event.SleepDuringTheDay;
 import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.event.ThirstEvent;
 import com.outlook.schooluniformsama.event.basic.*;
@@ -47,8 +45,8 @@ import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_7;
 import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.UseItemEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.converter.Converter;
-import com.outlook.schooluniformsama.nms.bed.*;
-import com.outlook.schooluniformsama.nms.item.*;
+import com.outlook.schooluniformsama.nms.*;
+import com.outlook.schooluniformsama.nms.NBTItem;
 import com.outlook.schooluniformsama.papi.Papi;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.task.EffectTask;
@@ -68,19 +66,17 @@ import com.outlook.schooluniformsama.util.bstats.Metrics_1_8_UP;
 import com.outlook.schooluniformsama.util.bstats.Metrics;
 import com.outlook.schooluniformsama.util.bstats.Metrics_1_7;
 
-import io.puharesource.mc.titlemanager.api.v2.TitleManagerAPI;
-
 public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
 	private Object cmds;
 	private CommandsType cmdsType;
-	public static Plugin plugin;
 	
 	@Override
 	public void onEnable() {
-		plugin = this;
+		new I18n(this,"zh");
 		firstLoad();
-		getNMS();
+		NBTPlayer.init();
+		NBTItem.init();
 		loadConfig();
 		registerListeners();
 		if(Data.versionData[0]<=7)addPlayers_LOW_VERSION(); else addPlayers();
@@ -113,58 +109,16 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 				try {
 					Update u= Update.getUpdate("update");
 					if(u.hasUpdate()){
-						getLogger().info(ChatColor.translateAlternateColorCodes('§',Msg.getMsg("HasNewVersion", new String[]{"%now-version%","%version%"},new String[]{Update.now_version_show,u.getVersion_show()},false))+" "
-								+(u.isReplace_config()?Msg.getMsg("WillDeleteConfig", false):"")+" "
-								+(u.isReplace_message()?Msg.getMsg("WillDeleteMessages", false):""));
+						getLogger().info(ChatColor.translateAlternateColorCodes('§',I18n.tr("cmd12",Update.now_version_show,u.getVersion_show()))+" "
+								+(u.isReplace_config()?I18n.tr("cmd13"):"")+" "
+								+(u.isReplace_message()?I18n.tr("cmd14"):""));
 						getLogger().info(ChatColor.translateAlternateColorCodes('§',u.getUpdate_info()));
 					}
 				} catch (Exception e) {
-					getLogger().info(Msg.getMsg("CheckUpdateFailed", false));
+					getLogger().info(I18n.tr("cmd9"));
 				}
 			}
 		}, 20L);
-	}
-	
-	private void getNMS(){
-		switch (getVersion()) {
-		case "v1_11_R1":
-			Data.bnms=new BED_1_11_R1();
-			Data.nbtitem=new Item_1_11_R1();
-			break;
-		case "v1_12_R1":
-			Data.bnms=new BED_1_12_R1();
-			Data.nbtitem=new Item_1_12_R1();
-			break;
-		case "v1_10_R1":
-			Data.bnms=new BED_1_10_R1();
-			Data.nbtitem=new Item_1_10_R1();
-			break;
-		case "v1_9_R1":
-			Data.bnms=new BED_1_9_R1();
-			Data.nbtitem=new Item_1_9_R1();
-			break;
-		case "v1_9_R2":
-			Data.bnms=new BED_1_9_R2();
-			Data.nbtitem=new Item_1_9_R2();
-			break;
-		case "v1_8_R1":
-			Data.bnms=new BED_1_8_R1();
-			Data.nbtitem=new Item_1_8_R1();
-			break;
-		case "v1_8_R2":
-			Data.bnms=new BED_1_8_R2();
-			Data.nbtitem=new Item_1_8_R2();
-			break;
-		case "v1_8_R3":
-			Data.bnms=new BED_1_8_R3();
-			Data.nbtitem=new Item_1_8_R3();
-			break;
-		case "v1_7_R4":
-			Data.bnms=new BED_1_7_R4();
-			Data.nbtitem=new Item_1_7_R4();
-		default:
-			break;
-		}
 	}
 	
 	@Override
@@ -174,9 +128,9 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			if(args.length==0 ||  args[0].equalsIgnoreCase("help")){
 				String help = "HELP";
 				if(args.length<=1)
-					sender.sendMessage(Msg.getMsg("Help1", true));
+					sender.sendMessage(I18n.trp("cmd7"));
 				else{
-					sender.sendMessage(Msg.getMsg("Help2", new String[]{"%type%"}, new String[]{args[1]}, true));
+					sender.sendMessage(I18n.trp("cmd8",args[1]));
 					help = args[1].toLowerCase();
 				}
 				for(Method method:cmdsType.getClazz().getDeclaredMethods()){
@@ -194,8 +148,8 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 					}
 					if(cmd.args()[0]!="")
 						for(String temp:cmd.args())
-							arg+=temp+" ";
-					String text = "&c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+Msg.getMsg(cmd.des(),false);
+							arg+=I18n.tr(temp)+" ";
+					String text = "&c&l/rs &3&l"+cmd.cmd()+" &3"+arg+"&f- &b&l"+I18n.tr(cmd.des());
 					while(text.contains("  ")){
 						text=text.replace("  ", " ");
 					}
@@ -216,18 +170,18 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 					if(i==-1)continue;
 				}
 				if( !(cmd.permissions()=="" || sender.hasPermission(cmd.permissions()))){
-					sender.sendMessage(Msg.getMsg("NoPermissions", true));
+					sender.sendMessage(I18n.trp("cmd1"));
 					return true;
 				}
 				if(!(sender instanceof Player)&&cmd.needPlayer()){
-					sender.sendMessage(Msg.getMsg("IsNotPlayer", true));
+					sender.sendMessage(I18n.trp("cmd3"));
 					return true;
 				}	
 				//((Player)sender).openInventory(FeatureGUI.openRecipeViewer());
 				try {method.invoke(cmds, (sender instanceof Player)?(Player)sender:sender,args);}catch (Exception e) { e.printStackTrace();}
 				return true;
 			}
-			sender.sendMessage(Msg.getMsg("CommandNotFind", true));
+			sender.sendMessage(I18n.trp("cmd2"));
 			return true;
 		}
 		return false;
@@ -251,14 +205,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			saveDefaultConfig();
 		try{reloadConfig();}catch (Exception e){}
 		
-		
-		if(!new File(getDataFolder()+File.separator+"messages.yml").exists()){
-			Msg.writerYml(getConfig().getString("language"));
-		}else if(YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"messages.yml")).getString("language",null)==null || !YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"messages.yml")).getString("language",null).equalsIgnoreCase(getConfig().getString("language"))){
-			Msg.writerYml(getConfig().getString("language"));
-		}
-		Msg.init();
-		
+		new Msg(this);
 		
 		if(!new File(getDataFolder()+File.separator+"timer.yml").exists())
 			try {new File(getDataFolder()+File.separator+"timer.yml").createNewFile();}catch (IOException e1) {}
@@ -398,30 +345,14 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		}
 		for(String strainer:getConfig().getStringList("strainer"))
 			Data.strainer.put(strainer.split(":")[0], Integer.parseInt(strainer.split(":")[1]));
-		
-		
-/*		File path=new File(this.getDataFolder()+File.separator+"recipe/workbench/");
-		for(File sf:path.listFiles()){
-			if(!sf.isFile())continue;
-			String fileName=sf.getName();
-			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
-				Data.workbenchRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
-		}
-		path=new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"furnace/");
-		for(File sf:path.listFiles()){
-			if(!sf.isFile())continue;
-			String fileName=sf.getName();
-			if(!fileName.substring(fileName.lastIndexOf(".")).equalsIgnoreCase(".yml"))continue;
-				Data.furnaceRecipe.add(fileName.substring(0,fileName.lastIndexOf(".")));
-		}*/
-		
+
 		loadRecipes(Data.furnaceRecipe, new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"furnace/"),"");
 		loadRecipes(Data.workbenchRecipe, new File(this.getDataFolder()+File.separator+"recipe"+File.separator+"workbench/"),"");
 		
 		if(!new Items().createWater())
-			getLogger().info(Msg.getMsg("WriterWaterFailed", false));
+			getLogger().info(I18n.tr("water11"));
+		
 		new RandomDayManager(this);
-		//Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new RandomDayTask(), 24000-this.getServer().getWorld(Data.worlds.get(0)).getTime(), 24000);
 		
 		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(getDataFolder()+File.separator+"timer.yml"));
 		for(String key:timer.getKeys(false)){
@@ -489,9 +420,8 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SaveConfigTask(), 20L, 600*20L);
 		
 		if(Data.switchs[2]){
-			getServer().getPluginManager().registerEvents(new SleepEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);
-			if(getConfig().getBoolean("state.sleep.sleep-during-the-day"))getServer().getPluginManager().registerEvents(new SleepDuringTheDay(), this);
+			getServer().getPluginManager().registerEvents(new SleepEvent(getConfig().getBoolean("state.sleep.sleep-during-the-day")), this);
 		}
 		if(Data.switchs[3]){
 			if(Data.versionData[0]<=7) getServer().getPluginManager().registerEvents(new ThirstEvent_1_7(), this);
@@ -521,11 +451,6 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
 			new Papi(this).hook();
 			getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI !");
-		}
-		//TitleManager
-		if(Bukkit.getPluginManager().isPluginEnabled("TitleManager")){
-			Data.tmapi = (TitleManagerAPI) Bukkit.getServer().getPluginManager().getPlugin("TitleManager");
-			getLogger().info("§9[RealSurvival] Successful loading TitleManager! ");
 		}
 		//Chairs
 		if(Bukkit.getPluginManager().isPluginEnabled("Chairs")){

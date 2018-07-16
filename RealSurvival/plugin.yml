@@ -3,7 +3,7 @@ main: com.outlook.schooluniformsama.RealSurvival
 version: 0.2.9
 description: Let Minecraft be more real
 author: School_Uniform
-softdepend: [PlaceholderAPI,TitleManager,Chairs]
+softdepend: [PlaceholderAPI,Chairs]
 commands:
   rs:
     description: get Realsurvival's help

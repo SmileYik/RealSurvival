@@ -15,7 +15,7 @@ public class SitEvent implements Listener{
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		//pd.changeEffect(EffectType.SLEEP, -Data.sleep[4]*0.7);
-		pd.getSleep().setHasSleep(true,e.getSitLocation());
+		pd.getSleep().setHasSleep(true);
 		e.setCancelled(false);
 		return;
 	}
@@ -25,7 +25,7 @@ public class SitEvent implements Listener{
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		//pd.changeEffect(EffectType.SLEEP, Data.sleep[4]*0.7);
-		pd.getSleep().setHasSleep(false,null);
+		pd.getSleep().setHasSleep(false);
 		return;
 	}
 }

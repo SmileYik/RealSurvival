@@ -7,11 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
 import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
 import com.outlook.schooluniformsama.task.TemperatureTask;
-import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util; 
 
 public class Furnace{
@@ -35,21 +35,21 @@ public class Furnace{
 	
 	public static Inventory createRecipeViewerGUI(FurnaceRecipe recipe){
 		if(recipe == null) return null;
-		Inventory inv = Bukkit.createInventory(null,54 , Msg.getMsg("recipe-viewer.title", false));
+		Inventory inv = Bukkit.createInventory(null,54 , I18n.tr("recipe1"));
 		for(int i=0;i<54;i++)
 			if(!mSlot.contains(i)&&!pSlot.contains(i)&&!tSlot.contains(i)&&!passSlot.contains(i))
 				inv.setItem(i, Items.createPItem((short)15, " "));
 		for(int i:passSlot)
-			inv.setItem(i, Items.createPItem((short)0, Msg.getMsg("recipe-viewer.furnace-passslot", new String[]{"%time1%","%time2%"},new String[]{Util.RDP(recipe.getNeedTime(), 2),Util.RDP(recipe.getSaveTime(), 2)},false)));
+			inv.setItem(i, Items.createPItem((short)0, I18n.tr("recipe3", Util.RDP(recipe.getNeedTime(), 2),Util.RDP(recipe.getSaveTime(), 2))));
 		for(int i:tSlot)
-			inv.setItem(i, Items.createPItem((short)0, Msg.getMsg("recipe-viewer.furnace-temslot", new String[]{"%tem1%","%tem2%"},new String[]{Util.RDP(recipe.getMinTemperature(), 2),Util.RDP(recipe.getMaxTemperature(), 2)},false)));
-		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("recipe-viewer.ok", false)));
+			inv.setItem(i, Items.createPItem((short)0, I18n.tr("recipe4",Util.RDP(recipe.getMinTemperature(), 2),Util.RDP(recipe.getMaxTemperature(), 2))));
+		inv.setItem(49, Items.createPItem((short) 14, I18n.tr("recipe6")));
 		return recipe.setInv(inv);
 	}
 	
 	public static Inventory createFurnaceGUI(String title){
 		Inventory inv=createDefGUI(title+" §f- F");
-		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("FurnaceStart", false)));
+		inv.setItem(49, Items.createPItem((short) 14, I18n.tr("furnace1")));
 		return inv;
 	}
 	
@@ -60,7 +60,7 @@ public class Furnace{
 	
 	public static Inventory furnaceMakerGUI(String title){
 		Inventory inv=createDefGUI(title+" §f- F"+"*");
-		inv.setItem(49, Items.createPItem((short) 14, Msg.getMsg("SaveRecipe", false)));
+		inv.setItem(49, Items.createPItem((short) 14, I18n.tr("furnace11")));
 		return inv;
 	}
 	
@@ -68,16 +68,15 @@ public class Furnace{
 		ItemStack temp;
 		if(ft.isBad()){
 			for(int i:passSlot)
-				inv.setItem(i,  Items.createPItem((short)12, Msg.getMsg("FurnaceFailed", false)));
-			inv.setItem(49,   Items.createPItem((short)5, Msg.getMsg("WorkbenchProgress2", false)));
+				inv.setItem(i,  Items.createPItem((short)12, I18n.tr("furnace6")));
+			inv.setItem(49,   Items.createPItem((short)5, I18n.tr("furnace12")));
 			return inv;
 		}
 		
 		double nowTemperature =TemperatureTask.getBaseTemperature(ft.getLocation(),true);
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
-			temp= Items.createPItem((short)1, Msg.getMsg("FurnaceWorkProgress+", new String[]{"%temperature%","%minTemperature%"},
-					new String[]{Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)},false));
+			temp= Items.createPItem((short)1, I18n.tr("furnace7",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
 			if(pass>0)
 				inv.setItem(43,temp );
 			if(pass>0.25)
@@ -87,8 +86,7 @@ public class Furnace{
 			if(pass>0.75)
 				inv.setItem(16,temp);
 		}else{
-			temp= Items.createPItem((short)3, Msg.getMsg("FurnaceWorkProgress-", new String[]{"%temperature%","%minTemperature%"},
-					new String[]{Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)},false));
+			temp= Items.createPItem((short)3, I18n.tr("furnace8",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
 			if(pass>0)
 				inv.setItem(43,temp );
 			if(pass>0.25)
@@ -100,8 +98,7 @@ public class Furnace{
 		}
 		//Time
 		pass=ft.getTime()/(double)ft.getNeedTime();
-		temp=Items.createPItem((short)5, Msg.getMsg("FurnaceTimeProgress", new String[]{"%timeProgress%","%time%"},
-				new String[]{Util.RDP(pass*100,2),(ft.getNeedTime()-ft.getTime())+""},false));
+		temp=Items.createPItem((short)5, I18n.tr("furnace9",Util.RDP(pass*100,2),(ft.getNeedTime()-ft.getTime())));
 		if(pass>=0)
 			inv.setItem(37, temp );
 		if(pass>=0.5)
@@ -110,13 +107,12 @@ public class Furnace{
 			inv.setItem(19,  temp);
 		if(pass>=1){
 			inv.setItem(10,   temp);
-			inv.setItem(49,   Items.createPItem((short)5, Msg.getMsg("WorkbenchProgress2", false)));
+			inv.setItem(49,   Items.createPItem((short)5, I18n.tr("furnace12")));
 		}
 		//SaveTime
 		if(ft.getTime()>ft.getNeedTime()){
 			pass=ft.getTime()/(double)(ft.getNeedTime()+ft.getSaveTime());
-			temp=Items.createPItem((short)12, Msg.getMsg("FuranceSaveProgress", new String[]{"%time%"},
-					new String[]{(ft.getNeedTime()+ft.getSaveTime()-ft.getTime())+""},false));
+			temp=Items.createPItem((short)12, I18n.tr("furnace10",ft.getNeedTime()+ft.getSaveTime()-ft.getTime()));
 			if(pass>=0)
 				inv.setItem(37,  temp);
 			if(pass>=0.5)

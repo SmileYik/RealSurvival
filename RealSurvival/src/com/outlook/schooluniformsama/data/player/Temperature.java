@@ -24,7 +24,7 @@ public class Temperature {
 		if(oldTemperature>=(Data.temperature[5])&&temperature<(Data.temperature[5]))
 			return "cold";
 		else if(oldTemperature<=(Data.temperature[6])&&temperature>(Data.temperature[6]))
-			return  "fever";
+			return  "hot";
 		return null;
 	}
 	

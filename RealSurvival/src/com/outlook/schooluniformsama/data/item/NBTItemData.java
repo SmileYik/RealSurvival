@@ -10,6 +10,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.nms.NBTItem;
 import com.outlook.schooluniformsama.util.HashMap;
 
 public class NBTItemData {
@@ -43,12 +44,12 @@ public class NBTItemData {
 	}
 	
 	public static boolean isNBTItem(ItemStack is){
-		if(Data.nbtitem.getNBTValue(is, "RealSurvival")==null)return false;
+		if(NBTItem.getNBTValue(is, "RealSurvival")==null)return false;
 		return true;
 	}
 	
 	public static NBTItemData load(ItemStack is){
-		String fileName = Data.nbtitem.getNBTValue(is, "RealSurvival");
+		String fileName = NBTItem.getNBTValue(is, "RealSurvival");
 		if(fileName==null)return null;
 		return load(fileName);
 	}

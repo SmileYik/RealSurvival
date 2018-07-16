@@ -9,6 +9,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.util.HashMap;
@@ -143,49 +144,39 @@ public class PlayerData {
 		if(stateData==null)createStateData();
 		else if(!isCoolDown)createStateData();
 		getPlayer().sendMessage(stateData);
-		if(isCoolDown)Msg.sendMsgToPlayer(getPlayer(), "state-command-cooldown", true);
+		if(isCoolDown)getPlayer().sendMessage(I18n.trp("cmd23"));
 	}
 	
 	private void createStateData(){
-		String body;
 		String illnessData="";
 		if(isIllness()){
-			body=Msg.getMsg("body1", false);
 			for(Illness i:illness.values()){
 				illnessData+=i.getName()+":\n";
-				illnessData+="  "+Msg.getMsg("recovery", new String[]{"%recovery%"},new String[]{Util.RDP(i.getRecovery(),2)},false)+"\n";
+				illnessData+="  "+I18n.tr("state8",Util.RDP(i.getRecovery(),2))+"\n";
 				if(i.isTakeMedicine()){
-					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("yes1", false)},false)+"\n";
-					illnessData+="  "+Msg.getMsg("medicine-efficacy", new String[]{"%me%"},new String[]{Util.RDP(i.getMedicineEfficacy(),2)},false)+"\n";
-					illnessData+="  "+Msg.getMsg("duratio", new String[]{"%time%"},new String[]{i.getDuratio()+""},false)+"\n";
+					illnessData+="  "+I18n.tr("state5",I18n.tr("state3"))+"\n";
+					illnessData+="  "+I18n.tr("state7",Util.RDP(i.getMedicineEfficacy(),2))+"\n";
+					illnessData+="  "+I18n.tr("state6",i.getDuratio())+"\n";
 				}else{
-					illnessData+="  "+Msg.getMsg("is-take-medicine", new String[]{"%b1%"},new String[]{Msg.getMsg("not1", false)},false)+"\n";
+					illnessData+="  "+I18n.tr("state5",I18n.tr("state4"))+"\n";
 				}
 			}
 			illnessData=illnessData.substring(0, illnessData.length()-1);
+			
+			stateData = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state1"),
+					Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
+					Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
+					Util.RDP(temperature.getTemperature(), 2),
+					Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
+					Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2)) + "\n" + Msg.getPlayerState2(illnessData);
+		}else{
+			stateData = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state2"),
+					Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
+					Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
+					Util.RDP(temperature.getTemperature(), 2),
+					Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
+					Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2));
 		}
-		else{
-			body=Msg.getMsg("body2", false);
-		}
-		
-		stateData = Msg.getRandomMsgArray("player-data",
-				new String[]{
-						"%body%",
-						"%Player%",
-						"%thirst%","%thirst-max%","%thirst-now%",
-						"%sleep%","%sleep-max%","%sleep-now%",
-						"%energy%","%energy-max%","%energy-now%",
-						"%temperature%",
-						"%weight%","%weight-max%","%weight-now%",
-						"%illnesses%"}, 
-				new String[]{
-						body,Bukkit.getPlayer(uuid).getName(),
-						Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
-						Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
-						Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
-						Util.RDP(temperature.getTemperature(), 2),
-						Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2),
-						illnessData}, false);
 		
 	}
 	
@@ -224,7 +215,7 @@ public class PlayerData {
 					if(afterFix<0) afterFix = 0;
 				}
 				energy.change(afterFix);
-				if(energy.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), energy.getInfo() , Data.enablePrefixInTitle);
+				if(energy.getInfo()!=null)Msg.send(getPlayer(), "messages.energy."+energy.getInfo());
 				//EffectTask.addEffectStatic(energy.getState(), getPlayer(), this);
 				break;
 			case SLEEP:
@@ -238,7 +229,7 @@ public class PlayerData {
 					if(afterFix<0) afterFix = 0;
 				}
 				sleep.change(afterFix);
-				if(sleep.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), sleep.getInfo() , Data.enablePrefixInTitle);
+				if(sleep.getInfo()!=null)Msg.send(getPlayer(),"messages.sleep."+ sleep.getInfo());
 				//EffectTask.addEffectStatic(sleep.getState(), getPlayer(), this);
 				break;
 			case THIRST:
@@ -252,7 +243,7 @@ public class PlayerData {
 					if(afterFix<0) afterFix = 0;
 				}
 				thirst.change(afterFix);
-				if(thirst.getInfo()!=null)Msg.sendTitleToPlayer(getPlayer(), thirst.getInfo() , Data.enablePrefixInTitle);
+				if(thirst.getInfo()!=null)Msg.send(getPlayer(),"messages.thirst."+ thirst.getInfo());
 				//EffectTask.addEffectStatic(thirst.getState(), getPlayer(), this);
 				break;
 			case WEIGHT:
@@ -260,7 +251,7 @@ public class PlayerData {
 					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.WEIGHT);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					String info = weight.setWeight(afterFix);
-					if(info!=null)Msg.sendRandomTitleToPlayer(getPlayer(), info , Data.enablePrefixInTitle);
+					if(info!=null)Msg.send(getPlayer(), "messages.weight."+info );
 					//EffectTask.addEffectStatic(weight.isOverWeight(), getPlayer(), this);
 					break;
 				}
@@ -269,7 +260,7 @@ public class PlayerData {
 					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.TEMPERATURE);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					String info = temperature.change(afterFix);
-					if(info!=null)Msg.sendTitleToPlayer(getPlayer(), info , Data.enablePrefixInTitle);
+					if(info!=null)Msg.send(getPlayer(), "messages.temperature."+info);
 					break;				
 				}
 			

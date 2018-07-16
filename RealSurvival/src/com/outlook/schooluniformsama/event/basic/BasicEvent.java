@@ -46,10 +46,9 @@ public class BasicEvent implements Listener{
 	}
 	//Player Join End
 	
-	//Player Death
 	@EventHandler
-	public void onDeath(org.bukkit.event.entity.PlayerDeathEvent e){
-		Player p = e.getEntity();
+	public void onRespawn(PlayerRespawnEvent e){
+		Player p = e.getPlayer();
 		if(!Data.playerData.containsKey(p.getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
 		if(Data.switchs[1]){
@@ -60,16 +59,11 @@ public class BasicEvent implements Listener{
 			if(Data.deathData[4]==1)
 				pd.getIllness().clear();
 		}
-	}
-	//Player Death End
-	@EventHandler
-	public void onRespawn(PlayerRespawnEvent e){
-		if(!Data.worlds.contains(e.getPlayer().getWorld().getName())){
-			PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
-			if(pd==null)return;
+		if(!Data.worlds.contains(p.getWorld().getName())){
 			pd.save();
 			Data.playerData.remove(pd.getUuid());
 			return;
-		}else Data.addPlayer(e.getPlayer());
+		}
+		
 	}
 }

@@ -10,9 +10,9 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.RSItem;
-import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -60,7 +60,6 @@ public class RealSurvivalItemMaker extends JFrame{
 	private DefaultMutableTreeNode getItemsDir(File items){
 		DefaultMutableTreeNode dtm = new DefaultMutableTreeNode(items.getName());
 		if(!items.exists()){
-			items.mkdirs();
 			return dtm;
 		}
 		for(File item:items.listFiles()){
@@ -98,12 +97,12 @@ public class RealSurvivalItemMaker extends JFrame{
 		this.getContentPane().add(scrollPane);
 		
 		JTree tree = new JTree();
-		tree.setToolTipText(Msg.getMsg("real-survival-maker.tool-tip-text.tree", false));
+		tree.setToolTipText(I18n.tr("guiToolTiptree"));
 		tree.setShowsRootHandles(true);
 		tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/items"))));
 		scrollPane.setViewportView(tree);
 		
-		JButton create_new_item = new JButton(Msg.getMsg("real-survival-maker.button.create", false));
+		JButton create_new_item = new JButton(I18n.tr("guiButtoncreate"));
 		create_new_item.setBounds(10, 358, 131, 23);
 		this.getContentPane().add(create_new_item);
 		
@@ -113,7 +112,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		create_new_item_panel.setLayout(null);
 		create_new_item_panel.setVisible(false);
 		
-		JLabel lblNewLabel = new JLabel(Msg.getMsg("real-survival-maker.label.item-name", false)+": ");
+		JLabel lblNewLabel = new JLabel(I18n.tr("guiLabelitem-name")+": ");
 		lblNewLabel.setBounds(22, 10, 54, 15);
 		create_new_item_panel.add(lblNewLabel);
 		
@@ -122,7 +121,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		create_new_item_panel.add(item_name);
 		item_name.setColumns(10);
 		
-		JLabel label = new JLabel(Msg.getMsg("real-survival-maker.label.item-type", false)+": ");
+		JLabel label = new JLabel(I18n.tr("guiLabelitem-type")+": ");
 		label.setBounds(180, 10, 54, 15);
 		create_new_item_panel.add(label);
 		
@@ -132,7 +131,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		item_type.setBounds(236, 7, 78, 21);
 		create_new_item_panel.add(item_type);
 		
-		JLabel label_1 = new JLabel(Msg.getMsg("real-survival-maker.label.item-label", false)+": ");
+		JLabel label_1 = new JLabel(I18n.tr("guiLabelitem-label")+": ");
 		label_1.setBounds(10, 39, 54, 15);
 		create_new_item_panel.add(label_1);
 		
@@ -141,7 +140,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		item_label.setBounds(70, 36, 100, 21);
 		create_new_item_panel.add(item_label);
 		
-		JLabel label_2 = new JLabel(Msg.getMsg("real-survival-maker.label.item-label-data", false)+": ");
+		JLabel label_2 = new JLabel(I18n.tr("guiLabelitem-label-data")+": ");
 		label_2.setBounds(180, 39, 54, 15);
 		create_new_item_panel.add(label_2);
 		
@@ -150,7 +149,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		create_new_item_panel.add(item_label_data);
 		item_label_data.setColumns(10);
 		
-		JButton add_label = new JButton(Msg.getMsg("real-survival-maker.button.add-label", false));
+		JButton add_label = new JButton(I18n.tr("guiButtonadd-label"));
 		add_label.setBounds(397, 35, 100, 23);
 		create_new_item_panel.add(add_label);
 		
@@ -162,7 +161,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		lore_editer.setEditable(false);
 		scrollPane_1.setViewportView(lore_editer);
 		
-		JButton save_item = new JButton(Msg.getMsg("real-survival-maker.button.save", false));
+		JButton save_item = new JButton(I18n.tr("guiButtonsave"));
 		save_item.setBounds(397, 338, 100, 23);
 		create_new_item_panel.add(save_item);
 		
@@ -170,11 +169,11 @@ public class RealSurvivalItemMaker extends JFrame{
 		file_name.setBounds(401, 10, 96, 15);
 		create_new_item_panel.add(file_name);
 		
-		JRadioButton edit_check = new JRadioButton(Msg.getMsg("real-survival-maker.radio-button.edit", false));
+		JRadioButton edit_check = new JRadioButton(I18n.tr("guiButtonedit"));
 		edit_check.setBounds(220, 338, 73, 23);
 		create_new_item_panel.add(edit_check);
 		
-		JButton closeWindow = new JButton(Msg.getMsg("real-survival-maker.button.close", false));
+		JButton closeWindow = new JButton(I18n.tr("guiButtonclose"));
 		closeWindow.setBounds(293, 338, 100, 23);
 		create_new_item_panel.add(closeWindow);
 		
@@ -251,10 +250,10 @@ public class RealSurvivalItemMaker extends JFrame{
 					if(note.getChildCount()<=0)
 						name = name.substring(0, name.length()-1);
 				}
-				name = JOptionPane.showInputDialog(window, Msg.getMsg("real-survival-maker.input-dialog.create", false),name);
+				name = JOptionPane.showInputDialog(window, I18n.tr("guiInputDialogcreate"),name);
 				if(name==null||name.replace(" ", "").equals(""))return;
 				if(new File(Data.DATAFOLDER+"/items/"+name+".yml").exists()){
-					JOptionPane.showMessageDialog(window, Msg.getMsg("real-survival-maker.error-message.item-exists", false));
+					JOptionPane.showMessageDialog(window, I18n.tr("guiMsgitem-exists"));
 					return;
 				}
 				file_name.setText(name);
@@ -269,7 +268,7 @@ public class RealSurvivalItemMaker extends JFrame{
 					lore_editer.setText(lore_editer.getText()+item_label_data.getText()+"\n");
 				}else{
 					if(item_label_data.getText()==null || item_label_data.getText().replace(" ", "").equals("")){
-						JOptionPane.showMessageDialog(window,  Msg.getMsg("real-survival-maker.error-message.item-label-data", false));
+						JOptionPane.showMessageDialog(window,  I18n.tr("guiMsgitem-label-data"));
 						return;
 					}
 					lore_editer.setText(lore_editer.getText()+((String)item_label.getSelectedItem())+Data.split+item_label_data.getText()+"\n");
@@ -280,7 +279,7 @@ public class RealSurvivalItemMaker extends JFrame{
 		save_item.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				if(item_name.getText() == null || item_name.getText().replace(" ", "").equals("")){
-					JOptionPane.showMessageDialog(window,  Msg.getMsg("real-survival-maker.error-message.item-name", false));
+					JOptionPane.showMessageDialog(window,  I18n.tr("guiMsgitem-name"));
 					return;
 				}
 				

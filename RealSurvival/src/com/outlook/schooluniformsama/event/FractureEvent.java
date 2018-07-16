@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.Msg;
@@ -24,35 +25,35 @@ public class FractureEvent implements Listener{
 			//Severe
 			if(fall>=Data.fracture[2]){
 				if(pd.addIllness("Severe",Data.fracture[3],"Slight")){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
+					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}
 			}
 			//Slight
 			if(fall>=Data.fracture[0]){
-				if(pd.getIllness().containsKey(Msg.getMsg("Severe", false))){
+				if(pd.getIllness().containsKey(I18n.tr("state9"))){
 					if(pd.addIllness("Severe",Data.fracture[1],"Slight")){
-						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
+						Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 						return;
 					}
 				}else if(pd.addIllness("Slight",Data.fracture[1],null)){
-						Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, Data.enablePrefixInTitle);
+					Msg.send(p, "messages.illness.fracture",I18n.tr("state10"));
 						return;
 				}
 			}
 		}else if(e.getCause()==DamageCause.FALLING_BLOCK&&e.getDamage()>=Data.fracture[6]){
 			
-			if(pd.getIllness().containsKey(Msg.getMsg("Severe", false))){
+			if(pd.getIllness().containsKey(I18n.tr("state9"))){
 				if(pd.addIllness("Severe",Data.fracture[4],"Slight")){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
+					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}
-			}else if(pd.addIllness(Msg.getMsg("Slight", false),Data.fracture[4],null)){
+			}else if(pd.addIllness(I18n.tr("state10"),Data.fracture[4],null)){
 				if(pd.addIllness("Severe",Data.fracture[5],"Slight")){
-					Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Severe", false)}, Data.enablePrefixInTitle);
+					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}
-				Msg.sendRandomTitleToPlayer(p, "Fracture", new String[]{"%sick%"}, new String[]{Msg.getMsg("Slight", false)}, Data.enablePrefixInTitle);
+				Msg.send(p, "messages.illness.fracture",I18n.tr("state10"));
 				return;
 			}
 		}

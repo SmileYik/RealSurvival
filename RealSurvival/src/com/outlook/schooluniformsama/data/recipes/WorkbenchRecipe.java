@@ -68,9 +68,9 @@ public class WorkbenchRecipe extends Recipe{
 		recipe.set(saveName+".shape", shape);
 		recipe.set(saveName+".tableType", tableType);
 		for(Character c:materials.keySet())
-			recipe.set(saveName+".material."+c,new RSItem(materials.get(c)).getSaveItem() );
+			recipe.set(saveName+".material."+c,RSItem.loadItem(materials.get(c)).getSaveItem() );
 		for(int i=0;i<4;i++)
-			recipe.set(saveName+".product."+i, new RSItem(product[i]).getSaveItem());
+			recipe.set(saveName+".product."+i, RSItem.loadItem(product[i]).getSaveItem());
 		try {recipe.save(f);} catch (IOException e) {return false;}
 		return true;
 	}
@@ -97,11 +97,11 @@ public class WorkbenchRecipe extends Recipe{
 			 for(char temp:s.toCharArray())
 				 if(temp!=' '&&temp!=c){
 					 c=temp;
-					 materials.put(c, new RSItem(recipe.getItemStack(saveName+".material."+c)).getItem());
+					 materials.put(c, RSItem.loadItem(recipe.getItemStack(saveName+".material."+c)).getItem());
 				 }
 		 ItemStack[] product=new ItemStack[4];
 		 for(int i=0;i<4;i++)
-			 product[i]=new RSItem(recipe.getItemStack(saveName+".product."+i)).getItem();
+			 product[i]=RSItem.loadItem(recipe.getItemStack(saveName+".product."+i)).getItem();
 		 return new WorkbenchRecipe(name,  recipe.getInt(saveName+".needTime"), recipe.getStringList(saveName+".shape"), materials, product,recipe.getString(saveName+".tableType"));
 	}
 	
@@ -211,5 +211,17 @@ public class WorkbenchRecipe extends Recipe{
 
 	public void setProduct(ItemStack[] product) {
 		this.product = product;
+	}
+	
+	public String getPermission(){
+/*		if(name.contains("/"))saveName=name.substring(name.lastIndexOf("/")+1);
+		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
+		else saveName = name;*/
+		if(name.contains("/"))
+			return "RealSurvival.Recipe.Workbench."+name.replace("/", ".");
+		else if(name.contains("\\"))
+			return "RealSurvival.Recipe.Workbench."+name.replace("\\", ".");
+		else
+			return "RealSurvival.Recipe.Workbench."+name;
 	}
 }

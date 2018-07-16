@@ -9,9 +9,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.nms.NBTItem;
 import com.outlook.schooluniformsama.util.HashMap;
-import com.outlook.schooluniformsama.util.Msg;
 
 public class Items{
 	private static YamlConfiguration water ;
@@ -44,65 +45,65 @@ public class Items{
 		ItemStack is=new ItemStack(Material.POTION);
 		ItemMeta im=is.getItemMeta();
 		
-		im.setDisplayName(Msg.getMsg("Seawater", false));
+		im.setDisplayName(I18n.tr("water1"));
 		is.setItemMeta(im);
 		new NBTItemData(-20, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("Seawater");
-		data.set("Seawater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "Seawater") );
+		data.set("Seawater",NBTItem.setNBT(is.clone(), "RealSurvival", "Seawater") );
 		
-		im.setDisplayName(Msg.getMsg("IceSeawater", false));
+		im.setDisplayName(I18n.tr("water2"));
 		is.setItemMeta(im);
 		new NBTItemData(-20, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), -0.5, ItemLoreData.badCode()).save("IceSeawater");
-		data.set("IceSeawater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "IceSeawater") );
+		data.set("IceSeawater",NBTItem.setNBT(is.clone(), "RealSurvival", "IceSeawater") );
 		
-		im.setDisplayName(Msg.getMsg("SwampWater", false));
+		im.setDisplayName(I18n.tr("water3"));
 		is.setItemMeta(im);
 		new NBTItemData(5, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("SwampWater");
-		data.set("SwampWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "SwampWater") );
+		data.set("SwampWater",NBTItem.setNBT(is.clone(), "RealSurvival", "SwampWater") );
 		
-		im.setDisplayName(Msg.getMsg("LakeWater", false));
+		im.setDisplayName(I18n.tr("water4"));
 		is.setItemMeta(im);
 		new NBTItemData(15, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("LakeWater");
-		data.set("LakeWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "LakeWater") );
+		data.set("LakeWater",NBTItem.setNBT(is.clone(), "RealSurvival", "LakeWater") );
 		
-		im.setDisplayName(Msg.getMsg("IceLakeWater", false));
+		im.setDisplayName(I18n.tr("water5"));
 		is.setItemMeta(im);
 		new NBTItemData(15, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("IceLakeWater");
-		data.set("IceLakeWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "IceLakeWater") );
+		data.set("IceLakeWater",NBTItem.setNBT(is.clone(), "RealSurvival", "IceLakeWater") );
 		
-		im.setDisplayName(Msg.getMsg("HotLakeWater", false));
+		im.setDisplayName(I18n.tr("water6"));
 		is.setItemMeta(im);
 		new NBTItemData(15, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("HotLakeWater");
-		data.set("HotLakeWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "HotLakeWater") );
+		data.set("HotLakeWater",NBTItem.setNBT(is.clone(), "RealSurvival", "HotLakeWater") );
 		
-		im.setDisplayName(Msg.getMsg("Freshwater", false));
+		im.setDisplayName(I18n.tr("water7"));
 		is.setItemMeta(im);
 		new NBTItemData(30, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("Freshwater");
-		data.set("Freshwater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "Freshwater") );
+		data.set("Freshwater",NBTItem.setNBT(is.clone(), "RealSurvival", "Freshwater") );
 		
-		im.setDisplayName(Msg.getMsg("HotWater", false));
+		im.setDisplayName(I18n.tr("water8"));
 		is.setItemMeta(im);
 		new NBTItemData(30, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("HotWater");
-		data.set("HotWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "HotWater") );
+		data.set("HotWater",NBTItem.setNBT(is.clone(), "RealSurvival", "HotWater") );
 		
-		im.setDisplayName(Msg.getMsg("IceWater", false));
+		im.setDisplayName(I18n.tr("water9"));
 		is.setItemMeta(im);
 		new NBTItemData(30, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("IceWater");
-		data.set("IceWater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "IceWater") );
+		data.set("IceWater",NBTItem.setNBT(is.clone(), "RealSurvival", "IceWater") );
 		
-		im.setDisplayName(Msg.getMsg("Rainwater", false));
+		im.setDisplayName(I18n.tr("water10"));
 		is.setItemMeta(im);
 		new NBTItemData(23, ItemLoreData.badCode(), ItemLoreData.badCode(), 2, new HashMap<>(), new LinkedList<>(), 
 				ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode(), ItemLoreData.badCode()).save("Rainwater");
-		data.set("Rainwater",Data.nbtitem.addNBT(is.clone(), "RealSurvival", "Rainwater") );
+		data.set("Rainwater",NBTItem.setNBT(is.clone(), "RealSurvival", "Rainwater") );
 		
 		try {
 			data.save(waterFile);
