@@ -1,4 +1,4 @@
-language: zh_CN
+language: en
 #Enable prefix in title
 enable-prefix-in-title: false
 #state command cooldown, unit trick(20 trick = 1 s)

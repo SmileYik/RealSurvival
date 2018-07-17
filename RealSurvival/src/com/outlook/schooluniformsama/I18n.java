@@ -11,13 +11,14 @@ public class I18n{
 	
 	private static I18n i18n;
 	private final ResourceBundle defual;
-	private ResourceBundle custum;
+	private ResourceBundle custum,local;
 /*	private Locale defualLanguage =  Locale.CHINESE;
 	private Locale currentLocale = Locale.getDefault();
 	private Locale custom*/
 	
 	public I18n(RealSurvival plugin,String language){
 		defual = ResourceBundle.getBundle("lang/messages", Locale.CHINESE);
+		local = ResourceBundle.getBundle("lang/messages", Locale.getDefault());
 		try{
 			custum = ResourceBundle.getBundle("lang/messages", new Locale(language));
 		}catch (Exception e) {
@@ -32,7 +33,11 @@ public class I18n{
 		try {
 			return custum.getString(key);
 		} catch (Exception e) {
-			return defual.getString(key);
+			try {
+				return local.getString(key);
+			} catch (Exception e2) {
+				return defual.getString(key);				
+			}
 		}
 	}
 	

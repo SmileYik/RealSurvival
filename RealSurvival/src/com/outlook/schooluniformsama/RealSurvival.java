@@ -73,7 +73,6 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
 	@Override
 	public void onEnable() {
-		new I18n(this,"zh");
 		firstLoad();
 		NBTPlayer.init();
 		NBTItem.init();
@@ -205,6 +204,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			saveDefaultConfig();
 		try{reloadConfig();}catch (Exception e){}
 		
+		new I18n(this,getConfig().getString("language"));
 		new Msg(this);
 		
 		if(!new File(getDataFolder()+File.separator+"timer.yml").exists())
