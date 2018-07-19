@@ -2,9 +2,11 @@
   
 ## Translation RealSurvival | 翻译RealSurvival  
   
-** 翻译RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/) **  
-** Translation RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/) **  
-** Thank you for your help! **  
+**翻译RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/)**  
+  
+**Translation RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/)**  
+  
+**Thank you for your help!**  
   
 ## Download | 下载  
   
@@ -17,10 +19,12 @@
   
 ## Downat | 捐助  
   
-### WeChat | 微信  
-<img src="https://i.loli.net/2018/05/12/5af6f5f0dbc06.png" width="400" height="450" />
-### Alipay | 支付宝  
-<img src="https://i.loli.net/2018/05/12/5af6f5f0dbb5b.png" width="400" height="450" />
 ### PayPal  
-PayPal: [Link](https://www.paypal.me/SchoolUniform)
-
+PayPal: [Link](https://www.paypal.me/SchoolUniform)  
+  
+### WeChat | 微信  
+<img src="https://i.loli.net/2018/05/12/5af6f5f0dbc06.png" width="400" height="450" />  
+  
+### Alipay | 支付宝  
+<img src="https://i.loli.net/2018/05/12/5af6f5f0dbb5b.png" width="400" height="450" />  
+ 
