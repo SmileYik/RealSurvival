@@ -70,7 +70,7 @@ public class WorkbenchRecipe extends Recipe{
 		for(Character c:materials.keySet())
 			recipe.set(saveName+".material."+c,RSItem.loadItem(materials.get(c)).getSaveItem() );
 		for(int i=0;i<4;i++)
-			recipe.set(saveName+".product."+i, RSItem.loadItem(product[i]).getSaveItem());
+				recipe.set(saveName+".product."+i, RSItem.loadItem(product[i]).getSaveItem());
 		try {recipe.save(f);} catch (IOException e) {return false;}
 		return true;
 	}

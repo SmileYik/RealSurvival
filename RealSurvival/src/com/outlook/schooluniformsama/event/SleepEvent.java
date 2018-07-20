@@ -56,6 +56,10 @@ public class SleepEvent implements Listener{
 			NBTPlayer.leaveBed(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
+		}else if(p.isSleeping()){
+			NBTPlayer.leaveBed(p);
+			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
+			e.setCancelled(true);
 		}
 	  }
 	
@@ -71,9 +75,15 @@ public class SleepEvent implements Listener{
 			e.setCancelled(true);
 			return;
 		}
-		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());
-		if(e.getPlayer().isSleeping())
-			Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
 		e.setCancelled(true);
+		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());	
+		Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
+/*		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->{
+			if(e.getPlayer().isSleeping())
+				Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
+			else 
+				NBTPlayer.leaveBed(e.getPlayer());
+		}, 10);*/
+
 	  }
 }

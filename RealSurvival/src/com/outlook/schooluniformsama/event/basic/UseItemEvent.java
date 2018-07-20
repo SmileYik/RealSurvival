@@ -107,8 +107,9 @@ public class UseItemEvent implements Listener {
 			String temp = book.getPage(1);
 			if(temp==null||temp.length()<=0)return;
 			String text[] = temp.replace("§0", "").split("\n");
-			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[Recipe]")))return;
-			if(FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]))e.setCancelled(true);
+			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[RS_Recipe]")))return;
+			e.setCancelled(true);
+			FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]);
 			return;
 		}
 	}

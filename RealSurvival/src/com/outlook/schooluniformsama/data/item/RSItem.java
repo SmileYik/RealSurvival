@@ -44,7 +44,7 @@ public class RSItem {
 			is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name.substring(name.lastIndexOf("\\")+1),null);
 		else 
 			is = YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml")).getItemStack(name,null);
-		if(is==null)return null;
+		if(is==null)return new RSItem(null);
 		if(!is.hasItemMeta() || !is.getItemMeta().hasLore())return new RSItem(is);
 		ItemMeta im=is.getItemMeta();
 		List<String> temp = im.getLore();
@@ -68,7 +68,7 @@ public class RSItem {
 			is = YamlConfiguration.loadConfiguration(new File(path+name+".yml")).getItemStack(name.substring(name.lastIndexOf("\\")+1),null);
 		else 
 			is = YamlConfiguration.loadConfiguration(new File(path+name+".yml")).getItemStack(name,null);
-		if(is==null)return null;
+		if(is==null)return new RSItem(null);
 		if(!is.hasItemMeta() || !is.getItemMeta().hasLore())return new RSItem(is);
 		ItemMeta im=is.getItemMeta();
 		List<String> temp = im.getLore();
@@ -85,7 +85,7 @@ public class RSItem {
 	}
 	
 	public static RSItem loadItem(ItemStack is){
-		if(is==null)return null;
+		if(is==null)return new RSItem(null);
 		if(!is.hasItemMeta() || !is.getItemMeta().hasLore())return new RSItem(is);
 		ItemMeta im=is.getItemMeta();
 		List<String> temp = im.getLore();
@@ -108,6 +108,7 @@ public class RSItem {
 	 * 1 Successed
 	 */
 	public int save(){
+		if(item == null) return -1;
 		if(new File(Data.DATAFOLDER+"/items/"+getName()+".yml").exists())
 			return 0;
 		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+getName()+".yml"));
@@ -138,6 +139,7 @@ public class RSItem {
 	}
 	
 	public int save(String name){
+		if(item == null) return -1;
 		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(Data.DATAFOLDER+"/items/"+name+".yml"));
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
@@ -166,6 +168,7 @@ public class RSItem {
 	}
 	
 	public int save(String path,String name){
+		if(item == null) return -1;
 		YamlConfiguration itemData=YamlConfiguration.loadConfiguration(new File(path+name+".yml"));
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
@@ -194,6 +197,7 @@ public class RSItem {
 	}
 	
 	public String getName(){
+		if(item == null) return "Unknown";
 		String name;
 		if(!item.hasItemMeta() || !item.getItemMeta().hasDisplayName())
 			name=item.getType().name();
@@ -206,6 +210,7 @@ public class RSItem {
 	}
 
 	public ItemStack getSaveItem() {
+		if(item == null) return null;
 		ItemStack item=this.item.clone();
 		ItemMeta im=item.getItemMeta();
 		List<String> temp = im.hasLore()?im.getLore():new LinkedList<>();

@@ -120,7 +120,7 @@ public class NBTPlayer {
 						}
 						l.getBlock().setType(m);
 					}
-				}, 2);			
+				}, 1);			
 			}
 			
 		} catch (Exception e) {

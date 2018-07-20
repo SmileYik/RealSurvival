@@ -35,12 +35,15 @@ public class FeatureGUI{
 	}
 	
 	public static boolean openRecipeViewer(Player p,String type,String recipeName){
-		//String nextSlot = Msg.getMsg("recipe-viewer.next-slot", false);
-		//String previousSlot = Msg.getMsg("recipe-viewer.previous-slot", false); 
-		if(!Data.workbenchs.containsKey(type))return false;
+		WorkbenchType type2;
+		try {
+			type2 = WorkbenchType.valueOf(type);
+		} catch (Exception e) {
+			if(!Data.workbenchs.containsKey(type))return false;
+			type2 = Data.workbenchs.get(type).getType();
+		}
 		Inventory inv = null;
 		Recipe recipe = null;
-		WorkbenchType type2 = Data.workbenchs.get(type).getType();
 		switch (type2) {
 		case FURNACE:
 			recipe = FurnaceRecipe.load(recipeName);
