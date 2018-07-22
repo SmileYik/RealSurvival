@@ -11,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.RealSurvival;
+import com.outlook.schooluniformsama.data.Data;
 
 public class NBTPlayer {
 	private static String version = RealSurvival.getVersion();
@@ -69,7 +70,7 @@ public class NBTPlayer {
 			
 			ChatComponentTextConstructor = ChatComponentText.getConstructor(String.class);
 			
-			if(version.equals("v1_12_R1")){
+			if(Data.versionData[0]>=12){
 				ChatMessageType = Class.forName("net.minecraft.server."+version+".ChatMessageType");
 				chatMessageTypeMethod = ChatMessageType.getMethod("a",Byte.TYPE);
 				PacketPlayOutChatConstructor = PacketPlayOutChat.getConstructor(IChatBaseComponent,ChatMessageType);
@@ -150,7 +151,7 @@ public class NBTPlayer {
 			Object playerConnection = con.get(player);
 			Object ppoc;
 
-			if(version.equals("v1_12_R1"))
+			if(Data.versionData[0]>=12)
 				ppoc = PacketPlayOutChatConstructor.newInstance(ChatComponentTextConstructor.newInstance(msg),chatMessageTypeMethod.invoke(ChatMessageType, (byte)2));
 			else ppoc = PacketPlayOutChatConstructor.newInstance(ChatComponentTextConstructor.newInstance(msg),(byte)2);
 			sendPacket.invoke(playerConnection, ppoc);

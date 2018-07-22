@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -24,7 +25,6 @@ import com.outlook.schooluniformsama.data.effect.Food;
 import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.item.Items;
-import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
@@ -86,8 +86,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
 	@Override
 	public void onDisable() {
-		for(PlayerData pd : Data.playerData.values())
-			pd.save();
+		Data.saveAllPlayerData();
 		SaveConfigTask.saveWorkbench();
 	}
 	
@@ -168,7 +167,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 					for(String cc:cmd.childCmds())if(!args[i++].equalsIgnoreCase(cc)){i=-1; break;}
 					if(i==-1)continue;
 				}
-				if( !(cmd.permissions()=="" || sender.hasPermission(cmd.permissions()))){
+				if(!cmd.permissions().isEmpty()&&!sender.hasPermission(cmd.permissions())){
 					sender.sendMessage(I18n.trp("cmd1"));
 					return true;
 				}
@@ -226,7 +225,12 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		
 		new Converter().check();
 		
-		Data.worlds=getConfig().getStringList("worlds");
+		LinkedList<String> worlds = new LinkedList<>();
+		for(String world:getConfig().getStringList("worlds")){
+			worlds.add(world.toLowerCase());
+		}
+		Data.worlds=worlds;
+		
 		Data.enablePrefixInTitle = getConfig().getBoolean("enable-prefix-in-title");
 		Data.stateCD = getConfig().getLong("state-cd");
 		

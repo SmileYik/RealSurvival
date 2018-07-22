@@ -1,5 +1,6 @@
 package com.outlook.schooluniformsama.event.basic;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -7,12 +8,14 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
 public class BasicEvent implements Listener{
+	private Plugin plugin = Bukkit.getPluginManager().getPlugin("RealSurvival");
 	//Player Join
 	
 	@EventHandler
@@ -23,34 +26,31 @@ public class BasicEvent implements Listener{
 	
 	@EventHandler
 	public void quit(PlayerQuitEvent e){
-		if(e.getPlayer().hasMetadata("NPC"))return;
-		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
-		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
-		pd.save();
-		Data.playerData.remove(pd.getUuid());
+		if(!Data.enableInPlayer(e.getPlayer().getUniqueId()))return;
+		Data.removePlayer(e.getPlayer().getUniqueId());
 		return;
 	}
 	
 	@EventHandler
 	public void teleport(PlayerTeleportEvent e){
-		if(e.getPlayer().hasMetadata("NPC"))return;
-		if(!Data.worlds.contains(e.getTo().getWorld().getName())){
-			PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
-			if(pd==null)return;
-			pd.save();
-			Data.playerData.remove(pd.getUuid());
-			return;
+		Player p = e.getPlayer();
+		if(Data.enableInPlayer(e.getPlayer().getUniqueId())){
+			if(!Data.enableInWorld(e.getTo().getWorld().getName())){
+				Data.removePlayer(e.getPlayer().getUniqueId());
+			}
+		}else{
+			if(Data.enableInWorld(e.getTo().getWorld().getName())){
+				plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->Data.addPlayer(p), 1);
+			}
 		}
-		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))
-			Data.addPlayer(e.getPlayer());
 	}
 	//Player Join End
 	
 	@EventHandler
 	public void onRespawn(PlayerRespawnEvent e){
 		Player p = e.getPlayer();
-		if(!Data.playerData.containsKey(p.getUniqueId()))return;
-		PlayerData pd = Data.playerData.get(p.getUniqueId());
+		if(!Data.enableInPlayer(p.getUniqueId()))return;
+		PlayerData pd = Data.getPlayerData(p.getUniqueId());
 		if(Data.switchs[1]){
 			pd.change(EffectType.SLEEP, Data.deathData[0]);
 			pd.change(EffectType.THIRST, Data.deathData[1]);
@@ -59,11 +59,12 @@ public class BasicEvent implements Listener{
 			if(Data.deathData[4]==1)
 				pd.getIllness().clear();
 		}
-		if(!Data.worlds.contains(p.getWorld().getName())){
-			pd.save();
-			Data.playerData.remove(pd.getUuid());
-			return;
-		}
+		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->{
+			if(!Data.enableInWorld(e.getRespawnLocation().getWorld().getName())){
+				Data.removePlayer(pd.getUuid());
+				return;
+			}			
+		}, 1);
 		
 	}
 }

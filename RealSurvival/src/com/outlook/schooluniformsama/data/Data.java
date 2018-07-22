@@ -101,8 +101,32 @@ public class Data {
 	}
 	
 	public static void addPlayer(Player p){
-		if(Data.worlds.contains(p.getWorld().getName())&&!p.hasMetadata("NPC"))
+		if(enableInWorld(p.getWorld().getName())&&!p.hasMetadata("NPC")&&!enableInPlayer(p.getUniqueId()))
 			addPlayer(p.getUniqueId(), PlayerData.load(p.getUniqueId()));
+	}
+	
+	public static boolean enableInWorld(String worldName){
+		return worlds.contains(worldName.toLowerCase());
+	}
+	
+	public static boolean enableInPlayer(UUID uuid){
+		return playerData.containsKey(uuid);
+	}
+	
+	public static PlayerData getPlayerData(UUID uuid){
+		if(enableInPlayer(uuid))return playerData.get(uuid);
+		return null;
+	}
+	
+	public static void removePlayer(UUID uuid){
+		if(!enableInPlayer(uuid))return;
+		playerData.get(uuid).save();
+		playerData.remove(uuid);
+	}
+	
+	public static void saveAllPlayerData(){
+		for(PlayerData pd : Data.playerData.values())
+			pd.save();
 	}
 	
 	public static void addPlayer(UUID uuid,PlayerData pd){

@@ -245,7 +245,9 @@ public class RandomDayManager {
 	}
 	
 	public static double[] getTodayData(String worldName){
-		return randomDay.get(worldName).getTodayData();
+		worldName=worldName.toLowerCase();
+		if(randomDay.containsKey(worldName)) return randomDay.get(worldName).getTodayData();
+		return new double[]{0,0,0,0,0};
 	}
 	
 }

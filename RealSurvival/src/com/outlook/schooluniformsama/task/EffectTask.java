@@ -53,14 +53,14 @@ public class EffectTask implements Runnable{
 			Player p = RealSurvival.getPlayer(pd.getUuid());
 			if(p==null || pd==null || p.isDead())return;
 			
-			addEffect(pd.getSleep().getState(),p,pd);
-			addEffect(pd.getTemperature().errorTemperature(), p,pd);
-			addEffect(pd.getEnergy().getState(), p,pd);
-			addEffect(pd.getThirst().getState(), p,pd);
-			addEffect(pd.getWeight().isOverWeight(), p,pd);
-			
-			for(String illness:pd.getIllness().keySet())
-				addEffect(illness, p, pd);
+			if(Data.switchs[2])addEffect(pd.getSleep().getState(),p,pd);
+			if(Data.switchs[3])addEffect(pd.getThirst().getState(), p,pd);
+			if(Data.switchs[4])addEffect(pd.getEnergy().getState(), p,pd);
+			if(Data.switchs[7])addEffect(pd.getWeight().isOverWeight(), p,pd);
+			if(Data.switchs[8])addEffect(pd.getTemperature().errorTemperature(), p,pd);
+			if(Data.switchs[6])
+				for(String illness:pd.getIllness().keySet())
+					addEffect(illness, p, pd);
 		}
 	}
 	

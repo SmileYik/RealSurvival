@@ -19,7 +19,7 @@ public interface ReaLSurvivalAPI {
 	 * @return
 	 */
 	public default boolean checkPlayerData(Player p){
-		return Data.playerData.containsKey(p.getUniqueId());
+		return Data.enableInPlayer(p.getUniqueId());
 	}
 	
 	/**
@@ -32,19 +32,19 @@ public interface ReaLSurvivalAPI {
 		if(!checkPlayerData(p))return;
 		switch (type) {
 		case ENERGY:
-			Data.playerData.get(p.getUniqueId()).getEnergy().change(number);
+			Data.getPlayerData(p.getUniqueId()).getEnergy().change(number);
 			break;
 		case SLEEP:
-			Data.playerData.get(p.getUniqueId()).getSleep().change(number);
+			Data.getPlayerData(p.getUniqueId()).getSleep().change(number);
 			break;
 		case TEMPERATURE:
-			Data.playerData.get(p.getUniqueId()).getTemperature().change(number);
+			Data.getPlayerData(p.getUniqueId()).getTemperature().change(number);
 			break;
 		case THIRST:
-			Data.playerData.get(p.getUniqueId()).getThirst().change(number);
+			Data.getPlayerData(p.getUniqueId()).getThirst().change(number);
 			break;
 		case WEIGHT:
-			Data.playerData.get(p.getUniqueId()).getWeight().setWeight(number);
+			Data.getPlayerData(p.getUniqueId()).getWeight().setWeight(number);
 			break;
 		default:
 			break;
@@ -61,19 +61,19 @@ public interface ReaLSurvivalAPI {
 		if(!checkPlayerData(p))return -1;
 		switch (type) {
 		case ENERGY:
-			Data.playerData.get(p.getUniqueId()).getEnergy().getEnergy();
+			Data.getPlayerData(p.getUniqueId()).getEnergy().getEnergy();
 			break;
 		case SLEEP:
-			Data.playerData.get(p.getUniqueId()).getSleep().getSleep();
+			Data.getPlayerData(p.getUniqueId()).getSleep().getSleep();
 			break;
 		case TEMPERATURE:
-			Data.playerData.get(p.getUniqueId()).getTemperature().getTemperature();
+			Data.getPlayerData(p.getUniqueId()).getTemperature().getTemperature();
 			break;
 		case THIRST:
-			Data.playerData.get(p.getUniqueId()).getThirst().getThirst();
+			Data.getPlayerData(p.getUniqueId()).getThirst().getThirst();
 			break;
 		case WEIGHT:
-			Data.playerData.get(p.getUniqueId()).getWeight().getWeight();
+			Data.getPlayerData(p.getUniqueId()).getWeight().getWeight();
 			break;
 		default:
 			break;
@@ -88,7 +88,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default Set<String> getPlayerIllness(Player p){
 		if(!checkPlayerData(p))return new HashSet<>();
-		return Data.playerData.get(p.getUniqueId()).getIllness().keySet();
+		return Data.getPlayerData(p.getUniqueId()).getIllness().keySet();
 	}
 	
 	/**
@@ -98,7 +98,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void addIllness(Player p,String name){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).addIllness(name, 100, null);
+		Data.getPlayerData(p.getUniqueId()).addIllness(name, 100, null);
 	}
 	
 	/**
@@ -108,7 +108,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void removeIllness(Player p,String name){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).getIllness().remove(name);
+		Data.getPlayerData(p.getUniqueId()).getIllness().remove(name);
 	}
 	
 	/**
@@ -117,7 +117,7 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void removeAllIllness(Player p){
 		if(!checkPlayerData(p))return;
-		Data.playerData.get(p.getUniqueId()).getIllness().clear();
+		Data.getPlayerData(p.getUniqueId()).getIllness().clear();
 	}
 	
 	/**
@@ -127,9 +127,9 @@ public interface ReaLSurvivalAPI {
 	 */
 	public default void setPlayerUnlimited(Player p,boolean bool){
 		PlayerData pd;
-		if(Data.playerData.containsKey(p.getUniqueId())){
-			pd = Data.playerData.get(p.getUniqueId());
-			Data.playerData.remove(p.getUniqueId());
+		if(Data.enableInPlayer(p.getUniqueId())){
+			pd = Data.getPlayerData(p.getUniqueId());
+			Data.removePlayer(p.getUniqueId());
 		}else{
 			pd = PlayerData.load(p.getUniqueId());
 		}
