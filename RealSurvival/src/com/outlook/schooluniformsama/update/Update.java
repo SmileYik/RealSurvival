@@ -18,8 +18,8 @@ import com.outlook.schooluniformsama.data.Data;
 public class Update {
 	//https://raw.githubusercontent.com/SchoolUniform/RealSurvival/master/update/update.properties
 	//https://raw.githubusercontent.com/SchoolUniform/RealSurvival/master/update/old/[version].properties
-	public final static long now_version = 210;
-	public final static String now_version_show="0.3.2";
+	public final static long now_version = 211;
+	public final static String now_version_show="0.3.3";
 	private long version;
 	private String download;
 	private String version_show;
@@ -31,7 +31,7 @@ public class Update {
 		Properties prop = new Properties();
 		Update ud=new Update();
         try {
-			InputStream in = new URL("https://raw.githubusercontent.com/SchoolUniform/RealSurvival/master/update/"+url+".properties").openStream();
+			InputStream in = new URL("https://raw.githubusercontent.com/SchoolUniform/RealSurvivalWeb/master/update/"+url+".properties").openStream();
 			prop.load(new BufferedReader(new InputStreamReader(in,"utf8")));
 			ud.version=Long.parseLong(prop.getProperty("version"));
 			ud.update_info=prop.getProperty("update-info");

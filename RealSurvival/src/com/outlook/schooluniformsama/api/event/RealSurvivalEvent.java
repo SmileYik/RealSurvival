@@ -13,11 +13,15 @@ public class RealSurvivalEvent extends Event{
 		super();
 		this.player = player;
 	}
-
+     
 	public boolean isCancelled() {
         return cancelled;
     }
  
+	/**
+	 * Cancel the event
+	 * @param cancel
+	 */
     public void setCancelled(boolean cancel) {
         cancelled = cancel;
     }

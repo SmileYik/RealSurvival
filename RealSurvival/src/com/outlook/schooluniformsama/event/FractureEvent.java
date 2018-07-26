@@ -24,7 +24,7 @@ public class FractureEvent implements Listener{
 			int fall=(int) e.getDamage();
 			//Severe
 			if(fall>=Data.fracture[2]){
-				if(pd.addIllness("Severe",Data.fracture[3],"Slight")){
+				if(pd.addIllness(Data.fractureString[1],Data.fracture[3],Data.fractureString[0])){
 					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}
@@ -32,11 +32,11 @@ public class FractureEvent implements Listener{
 			//Slight
 			if(fall>=Data.fracture[0]){
 				if(pd.getIllness().containsKey(I18n.tr("state9"))){
-					if(pd.addIllness("Severe",Data.fracture[1],"Slight")){
+					if(pd.addIllness(Data.fractureString[1],Data.fracture[1],Data.fractureString[0])){
 						Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 						return;
 					}
-				}else if(pd.addIllness("Slight",Data.fracture[1],null)){
+				}else if(pd.addIllness(Data.fractureString[0],Data.fracture[1],null)){
 					Msg.send(p, "messages.illness.fracture",I18n.tr("state10"));
 						return;
 				}
@@ -44,12 +44,12 @@ public class FractureEvent implements Listener{
 		}else if(e.getCause()==DamageCause.FALLING_BLOCK&&e.getDamage()>=Data.fracture[6]){
 			
 			if(pd.getIllness().containsKey(I18n.tr("state9"))){
-				if(pd.addIllness("Severe",Data.fracture[4],"Slight")){
+				if(pd.addIllness(Data.fractureString[1],Data.fracture[4],Data.fractureString[0])){
 					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}
 			}else if(pd.addIllness(I18n.tr("state10"),Data.fracture[4],null)){
-				if(pd.addIllness("Severe",Data.fracture[5],"Slight")){
+				if(pd.addIllness(Data.fractureString[1],Data.fracture[5],Data.fractureString[0])){
 					Msg.send(p, "messages.illness.fracture",I18n.tr("state9"));
 					return;
 				}

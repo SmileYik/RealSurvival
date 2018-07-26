@@ -7,13 +7,7 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.*;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.HashMap;
-/*
- * #SPEED(速度提升),SLOW(缓慢),FAST_DIGGING（急迫）,SLOW_DIGGING(挖掘疲劳),INCREASE_DAMAGE(伤害提升)
-# HEAL(瞬间治疗),HARM(瞬间伤害),JUMP(跳跃提升),CONFUSION(反胃),REGENERATION（生命恢复）
-# DAMAGE_RESISTANCE（抗性）,FIRE_RESISTANCE(防火),WATER_BREATHING（水下呼吸）,INVISIBILITY（隐身）
-# BLINDNESS(失明)，NIGHT_VISION（夜视）,HUNGER（饥饿），WEAKNESS（虚弱）,POISON（中毒）
-# WITHER（凋零）,HEALTH_BOOST（生命提升）,ABSORPTION(伤害吸收),SATURATION(饱和)
- */
+
 /*
  * TPYE = SLEEP,THIRST,TEMPERATURE,ENERGY,WEIGHT,IMMUNE
  * TYPE,(-)LEVEL,TIME

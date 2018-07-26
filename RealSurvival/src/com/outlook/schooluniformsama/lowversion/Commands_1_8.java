@@ -241,7 +241,7 @@ public class Commands_1_8 {
 	
 	@Command(cmd = "cr",childCmds="view",args={"cmdCRTableType","cmdCRName"},des = "cdes28",type = "workbench",permissions = "RealSurvival.Admin", argsLenght = 4, hasChildCmds = true)
 	public void openRecipeViewer(Player p, String args[]){
-		Inventory inv = FeatureGUI.openRecipeViewer(args[1], args[2]);
+		Inventory inv = FeatureGUI.openRecipeViewer(args[2], args[3]);
 		if(inv==null){
 			p.sendMessage(I18n.trp("recipe2"));
 			return;
@@ -567,7 +567,7 @@ public class Commands_1_8 {
 	public void statePlayer(Player p, String args[]){
 		Player temp = plugin.getServer().getPlayer(args[1]);
 		if(temp.isOnline()){
-			Data.playerData.get(temp.getUniqueId()).sendData(false);
+			p.sendMessage(Data.playerData.get(temp.getUniqueId()).sendData());
 		}else{
 			p.sendMessage(I18n.trp("cmd25",temp.getName()));
 		}

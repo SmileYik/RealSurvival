@@ -20,7 +20,6 @@ public class Furnace{
 	public static final List<Integer> tSlot=Arrays.asList(16,25,34,43);
 	public static final List<Integer> passSlot=Arrays.asList(10,19,28,37);
 	
-	//创建默认的界面
 	private static Inventory createDefGUI(String title){
 		Inventory inv = Bukkit.createInventory(null,54 , title);
 		for(int i=0;i<54;i++)
@@ -77,7 +76,7 @@ public class Furnace{
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
 			temp= Items.createPItem((short)1, I18n.tr("furnace7",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
-			if(pass>0)
+			if(pass<=0.25)
 				inv.setItem(43,temp );
 			if(pass>0.25)
 				inv.setItem(34,temp);
@@ -87,7 +86,7 @@ public class Furnace{
 				inv.setItem(16,temp);
 		}else{
 			temp= Items.createPItem((short)3, I18n.tr("furnace8",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
-			if(pass>0)
+			if(pass<=0.25)
 				inv.setItem(43,temp );
 			if(pass>0.25)
 				inv.setItem(34,temp);

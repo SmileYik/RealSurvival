@@ -246,8 +246,16 @@ public class RandomDayManager {
 	
 	public static double[] getTodayData(String worldName){
 		worldName=worldName.toLowerCase();
-		if(randomDay.containsKey(worldName)) return randomDay.get(worldName).getTodayData();
+		if(randomDay.containsKey(worldName)) 
+			return randomDay.get(worldName).getTodayData();
 		return new double[]{0,0,0,0,0};
+	}
+	
+	public static Season getSeason(String worldName){
+		worldName=worldName.toLowerCase();
+		if(randomDay.containsKey(worldName)) 
+			return randomDay.get(worldName).getSeason();
+		return null;
 	}
 	
 }

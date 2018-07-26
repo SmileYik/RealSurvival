@@ -141,13 +141,17 @@ public class PlayerData {
 	}
 	
 	public void sendData(boolean isCoolDown){
-		if(stateData==null)createStateData();
-		else if(!isCoolDown)createStateData();
+		if(stateData==null)createStateData(true);
+		else if(!isCoolDown)createStateData(true);
 		getPlayer().sendMessage(stateData);
 		if(isCoolDown)getPlayer().sendMessage(I18n.trp("cmd23"));
 	}
 	
-	private void createStateData(){
+	public String sendData(){
+		return createStateData(false);
+	}
+	
+	private String createStateData(boolean isSave){
 		String illnessData="";
 		if(isIllness()){
 			for(Illness i:illness.values()){
@@ -162,20 +166,23 @@ public class PlayerData {
 				}
 			}
 			illnessData=illnessData.substring(0, illnessData.length()-1);
-			
-			stateData = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state1"),
+			String temp = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state1"),
 					Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
 					Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
 					Util.RDP(temperature.getTemperature(), 2),
 					Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
 					Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2)) + "\n" + Msg.getPlayerState2(illnessData);
+			if(isSave)stateData = temp;	
+			return temp;
 		}else{
-			stateData = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state2"),
-					Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
-					Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
-					Util.RDP(temperature.getTemperature(), 2),
-					Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
-					Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2));
+			String temp = Msg.getPlayerState1(getPlayer().getName(),I18n.tr("state2"),
+						Util.RDP(sleep.getSleep()/sleep.getSleepMax() *100, 2),Util.RDP(sleep.getSleepMax(), 2),Util.RDP(sleep.getSleep(), 2),
+						Util.RDP(thirst.getThirst()/thirst.getThirstMax() *100, 2),Util.RDP(thirst.getThirstMax(), 2),Util.RDP(thirst.getThirst(), 2),
+						Util.RDP(temperature.getTemperature(), 2),
+						Util.RDP(energy.getEnergy()/energy.getEnergyMax() *100, 2),Util.RDP(energy.getEnergyMax(), 2),Util.RDP(energy.getEnergy(), 2),
+						Util.RDP(weight.getWeight()/weight.getWeightMax() *100 , 2),Util.RDP(weight.getWeightMax(), 2),Util.RDP(weight.getWeight(), 2));
+			if(isSave)stateData = temp;			
+			return temp;
 		}
 		
 	}

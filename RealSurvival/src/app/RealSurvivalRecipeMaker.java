@@ -420,7 +420,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 					return;
 				}
 				if(workbench_type.getSelectedItem() == null){
-					JOptionPane.showMessageDialog(window, "请选择一个工作台类型!");
+					JOptionPane.showMessageDialog(window, "Please!");
 					return;
 				}
 				//clean
@@ -477,13 +477,19 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				double temMax,temMin;
 				if(checkIsNull(recipe_name.getText(), I18n.tr("guiLabelrecipe-name")))return;
 				if(checkIsInt(recipe_need_time.getText(), I18n.tr("guiLabelneed-time")))return;
+				boolean isNull=true;
+				for(Item temp:m.values())if(temp!=null&&temp.itemName!=null)isNull = false;
+				if(!isNull)return;
+				isNull = true;
+				for(Item temp:p.values())if(temp!=null&&temp.itemName!=null)isNull = false;
+				if(!isNull)return;
 				name = recipe_name.getText();
 				time = Integer.parseInt(recipe_need_time.getText());
 				Inventory inv;
 				if(ws.getType()==WorkbenchType.FURNACE){
 					if(checkIsInt(recipe_furnace_save_time.getText(), I18n.tr("guiLabelsave-time")))return;
 					if(checkIsDouble(recipe_furnace_max_tem.getText(), I18n.tr("guiLabelmax-temperature")))return;
-					if(checkIsDouble(recipe_furnace_min_tem.getText(), I18n.tr("guiLabelmin-temperature")))return;		
+					if(checkIsDouble(recipe_furnace_min_tem.getText(), I18n.tr("guiLabelmin-temperature")))return;	
 					saveTime = Integer.parseInt(recipe_furnace_save_time.getText());
 					temMax = Double.parseDouble(recipe_furnace_max_tem.getText());
 					temMin = Double.parseDouble(recipe_furnace_min_tem.getText());

@@ -53,9 +53,11 @@ state:
   fracture:
     enable: true
     slight:
+      name: Slight
       high: 3
       chance: 20
     severe:
+      name: Severe
       high: 6
       chance: 80
     damage: 2

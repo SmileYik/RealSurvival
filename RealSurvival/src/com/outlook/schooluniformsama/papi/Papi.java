@@ -21,7 +21,7 @@ public class Papi extends EZPlaceholderHook {
 	public String onPlaceholderRequest(Player p, String arg) {
 		if (p == null) {return "";}
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
-		if(pd==null)return null;
+		if(pd==null)return I18n.tr("state11");
 		
 		if(time>=1000){
 			time=0;
@@ -39,11 +39,11 @@ public class Papi extends EZPlaceholderHook {
 		
 		if(arg.equalsIgnoreCase("temperature")){
 			if(pd.getTemperature().getTemperature()>pd.getTemperature().getOldTemperature())
-				return _2f(pd.getTemperature().getTemperature())+"℃ §c§l↑§f";
+				return _2f(pd.getTemperature().getTemperature())+"\u2103 §c§l↑§f";
 			else if(pd.getTemperature().getTemperature()<pd.getTemperature().getOldTemperature())
-				return _2f(pd.getTemperature().getTemperature())+"℃ §3§l↓§f";
+				return _2f(pd.getTemperature().getTemperature())+"\u2103 §3§l↓§f";
 			else if(pd.getTemperature().getTemperature()==pd.getTemperature().getOldTemperature())
-				return _2f(pd.getTemperature().getTemperature())+"℃ §f§l-§f";
+				return _2f(pd.getTemperature().getTemperature())+"\u2103 §f§l-§f";
 		}
 		
 		if(arg.equalsIgnoreCase("illness")){

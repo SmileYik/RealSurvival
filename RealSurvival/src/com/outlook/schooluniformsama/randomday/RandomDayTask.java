@@ -101,6 +101,19 @@ public class RandomDayTask implements Runnable{
 	public double[] getTodayData() {
 		return todayData;
 	}
+	
+	public Season getSeason(){
+		int today =  (int) (todayData[0] % (spring[0]+summer[0]+autumn[0]+winter[0]));
+		if(today<spring[0])
+			return Season.Spring;
+		else if (today < summer[0])
+			return Season.Summer;
+		else if (today < autumn[0])
+			return Season.Autumn;
+		else if (today < winter[0])
+			return Season.Winter;
+		else return null;
+	}
 
 	public double[] getTomorrowData() {
 		return tomorrowData;

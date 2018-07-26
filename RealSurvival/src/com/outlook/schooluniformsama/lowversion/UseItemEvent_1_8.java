@@ -69,6 +69,22 @@ public class UseItemEvent_1_8 implements Listener {
 	@SuppressWarnings("deprecation")
 	@EventHandler
 	public void useItem(PlayerInteractEvent e){
+		
+		if(e.getItem()!=null && e.getItem().getType()==Material.WRITTEN_BOOK){
+			if(e.getItem().getItemMeta() instanceof BookMeta){
+				BookMeta book = (BookMeta) e.getItem().getItemMeta();
+				if(!book.hasTitle())return;
+				if(!book.hasPages() || book.getPageCount()!=1)return;
+				String temp = book.getPage(1);
+				if(temp==null||temp.length()<=0)return;
+				String text[] = temp.replace("§0", "").split("\n");
+				if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[RS_Recipe]")))return;
+				e.setCancelled(true);
+				FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]);
+				return;
+			}
+		}
+		
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		if(pd==null)return;
 		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR))return;
@@ -88,19 +104,6 @@ public class UseItemEvent_1_8 implements Listener {
 				FeatureGUI.openRecipeViewer(e.getPlayer(),id.getWorkbenchType(), id.getRecipeName());
 				return;
 			}
-		}
-		
-		if(e.getItem().getItemMeta() instanceof BookMeta){
-			BookMeta book = (BookMeta) e.getItem().getItemMeta();
-			if(!book.hasTitle())return;
-			if(!book.hasPages() || book.getPageCount()!=1)return;
-			String temp = book.getPage(1);
-			if(temp==null||temp.length()<=0)return;
-			String text[] = temp.replace("§0", "").split("\n");
-			if(text.length!=3 || !(text[0].equalsIgnoreCase("[RSR]") || text[0].equalsIgnoreCase("[RS_Recipe]")))return;
-			e.setCancelled(true);
-			FeatureGUI.openRecipeViewer(e.getPlayer(), text[1], text[2]);
-			return;
 		}
 	}
 	

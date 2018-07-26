@@ -77,6 +77,8 @@ public class ItemLoreData {
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.thirst[0], Double.parseDouble(temp.split("--")[1])*Data.thirst[0])/100D;
 						else if(key.equalsIgnoreCase("energy"))
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.energy[0], Double.parseDouble(temp.split("--")[1])*Data.energy[0])/100D;
+						else if(key.equalsIgnoreCase("drugeffect"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
 						else
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))/100D;
 					}else{
@@ -86,6 +88,8 @@ public class ItemLoreData {
 							return Double.parseDouble(temp)*Data.thirst[0]/100D;
 						else if(key.equalsIgnoreCase("energy"))
 							return Double.parseDouble(temp)*Data.energy[0]/100D;
+						else if(key.equalsIgnoreCase("drugeffect"))
+							return Double.parseDouble(temp);
 						else
 							return Double.parseDouble(temp)/100D;
 					}

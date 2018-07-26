@@ -7,9 +7,6 @@ import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 public class Illness {
-	/**
-	 * 记录着一个病种的名字,该病的恢复状态,玩家是否吃了药,药效多少,药效持续时间又是多少
-	 */
 	private String name;
 	private double recovery;
 	private double medicineEfficacy;
@@ -36,12 +33,14 @@ public class Illness {
 	public void eatMedicine(double medicineEfficacy, long duratio ){
 		this.isTakeMedicine=true;
 		this.duratio+=duratio;
-		this.medicineEfficacy=(this.medicineEfficacy+medicineEfficacy)*0.5;
+		if(this.medicineEfficacy==0)
+			this.medicineEfficacy=(this.medicineEfficacy+medicineEfficacy)*0.5;
+		else this.medicineEfficacy=medicineEfficacy;
 	}
 	
 	public void change(){
 		if(recovery>0){
-			recovery-=medicineEfficacy*Util.randomNum(0.2, 0.8);
+			recovery-=medicineEfficacy*Util.randomNum(0.1, 0.8);
 			if(recovery<0)
 				recovery=0;			
 		}
