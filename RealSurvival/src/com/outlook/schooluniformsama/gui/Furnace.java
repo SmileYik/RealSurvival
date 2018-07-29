@@ -76,8 +76,7 @@ public class Furnace{
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
 			temp= Items.createPItem((short)1, I18n.tr("furnace7",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
-			if(pass<=0.25)
-				inv.setItem(43,temp );
+			inv.setItem(43,temp);
 			if(pass>0.25)
 				inv.setItem(34,temp);
 			if(pass>0.5)
@@ -86,9 +85,8 @@ public class Furnace{
 				inv.setItem(16,temp);
 		}else{
 			temp= Items.createPItem((short)3, I18n.tr("furnace8",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));
-			if(pass<=0.25)
-				inv.setItem(43,temp );
-			if(pass>0.25)
+			inv.setItem(43,temp );
+			if(pass>=0.25)
 				inv.setItem(34,temp);
 			if(pass>0.5)
 				inv.setItem(25,temp);

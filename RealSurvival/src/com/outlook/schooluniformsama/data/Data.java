@@ -208,6 +208,8 @@ public class Data {
 					Data.itemData.put(items.split(":")[0], ItemData.createData(0,Double.parseDouble(items.split(":")[1])));
 		}
 		
+		new RandomDayManager(plugin);
+		
 		Data.split=plugin.getConfig().getString("label.split");
 		for(String label:plugin.getConfig().getStringList("label.labels"))
 			Data.label.put(label.split(":")[0].toLowerCase(), label.split(":")[1]);
@@ -249,8 +251,6 @@ public class Data {
 		
 		if(!new Items().createWater())
 			plugin.getLogger().info(I18n.tr("water11"));
-		
-		new RandomDayManager(plugin);
 		
 		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder()+File.separator+"timer.yml"));
 		for(String key:timer.getKeys(false)){

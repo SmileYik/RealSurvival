@@ -12,6 +12,7 @@ public class Illness {
 	private double medicineEfficacy;
 	private long duratio;
 	private boolean isTakeMedicine;
+	private int buffTimer = 0;
 	
 	public Illness(String name, double recovery, double medicineEfficacy, long duratio, boolean isTakeMedicine) {
 		super();
@@ -33,9 +34,14 @@ public class Illness {
 	public void eatMedicine(double medicineEfficacy, long duratio ){
 		this.isTakeMedicine=true;
 		this.duratio+=duratio;
-		if(this.medicineEfficacy==0)
+		if(!isTakeMedicine)
+			this.medicineEfficacy = medicineEfficacy;
+		else if(this.medicineEfficacy==0)
+			this.medicineEfficacy = medicineEfficacy;
+		else if(this.medicineEfficacy == medicineEfficacy)
+			return;
+		else
 			this.medicineEfficacy=(this.medicineEfficacy+medicineEfficacy)*0.5;
-		else this.medicineEfficacy=medicineEfficacy;
 	}
 	
 	public void change(){
@@ -78,6 +84,15 @@ public class Illness {
 			Msg.send(p, "messages.illness.recovery-sick",name);
 			return true;
 		}
+		return false;
+	}
+	
+	public boolean isAddBuff(){
+		if(!isTakeMedicine)return true;
+		buffTimer++;
+		if(buffTimer<10)return false;
+		else if(buffTimer<15)return true;
+		buffTimer=0;
 		return false;
 	}
 

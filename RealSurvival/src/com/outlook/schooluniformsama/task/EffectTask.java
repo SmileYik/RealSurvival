@@ -1,10 +1,13 @@
 package com.outlook.schooluniformsama.task;
 
+import java.util.Map;
+
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.effect.*;
+import com.outlook.schooluniformsama.data.player.Illness;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.HashMap;
 
@@ -53,8 +56,8 @@ public class EffectTask implements Runnable{
 			if(Data.switchs[7])addEffect(pd.getWeight().isOverWeight(), p,pd);
 			if(Data.switchs[8])addEffect(pd.getTemperature().errorTemperature(), p,pd);
 			if(Data.switchs[6])
-				for(String illness:pd.getIllness().keySet())
-					addEffect(illness, p, pd);
+				for(Map.Entry<String, Illness> entry : pd.getIllness().entrySet())
+					if(entry.getValue().isAddBuff()) addEffect(entry.getKey(), p, pd);
 		}
 	}
 	

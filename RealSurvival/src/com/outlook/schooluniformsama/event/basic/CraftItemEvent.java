@@ -57,16 +57,16 @@ public class CraftItemEvent implements Listener{
 			return;
 		Player p=(Player) e.getWhoClicked();
 		
-		if(!Data.playerData.containsKey(p.getUniqueId()))
-			return;
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
-		
 		if(e.getInventory().getTitle().equalsIgnoreCase(I18n.tr("recipe1"))){
 			e.setCancelled(true);
 			p.closeInventory();
 			if(e.getRawSlot() == 49)return;
 			p.openInventory(e.getInventory());
 		}
+		
+		if(!Data.playerData.containsKey(p.getUniqueId()))
+			return;
 		
 		if(e.getInventory().getTitle().contains(" §f- W*")){
 			if(e.getRawSlot()<54&&!Workbench.materials.contains(e.getRawSlot())&&!Workbench.products.contains(e.getRawSlot())&&e.getRawSlot()!=49){

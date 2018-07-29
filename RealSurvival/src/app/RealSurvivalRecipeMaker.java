@@ -479,10 +479,10 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				if(checkIsInt(recipe_need_time.getText(), I18n.tr("guiLabelneed-time")))return;
 				boolean isNull=true;
 				for(Item temp:m.values())if(temp!=null&&temp.itemName!=null)isNull = false;
-				if(!isNull)return;
+				if(isNull)return;
 				isNull = true;
 				for(Item temp:p.values())if(temp!=null&&temp.itemName!=null)isNull = false;
-				if(!isNull)return;
+				if(isNull)return;
 				name = recipe_name.getText();
 				time = Integer.parseInt(recipe_need_time.getText());
 				Inventory inv;

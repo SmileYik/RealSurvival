@@ -59,12 +59,14 @@ public class BasicEvent implements Listener{
 			if(Data.deathData[4]==1)
 				pd.getIllness().clear();
 		}
+		if(!p.isSleeping())pd.getSleep().setHasSleep(false);
 		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->{
 			if(!Data.enableInWorld(e.getRespawnLocation().getWorld().getName())){
 				Data.removePlayer(pd.getUuid());
 				return;
 			}			
 		}, 1);
+		
 		
 	}
 }
