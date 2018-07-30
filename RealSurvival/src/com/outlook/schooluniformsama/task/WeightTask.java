@@ -26,7 +26,7 @@ public class WeightTask implements Runnable{
 					else if(Data.itemData.containsKey(is.getType().name()))
 						weight+=Data.itemData.get(is.getType().name()).getWeight()*is.getAmount();
 				}else if(is.hasItemMeta()&&is.getItemMeta().hasLore()){
-					double temp=ItemLoreData.getLore("Weight", is.getItemMeta().getLore(), false);
+					double temp=ItemLoreData.getLore("Weight", is.getItemMeta().getLore());
 					if(temp!=ItemLoreData.badCode())
 						weight+=temp*is.getAmount();
 					else if(Data.itemData.containsKey(is.getType().name()))

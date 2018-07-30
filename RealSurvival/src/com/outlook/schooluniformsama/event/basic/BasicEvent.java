@@ -55,8 +55,7 @@ public class BasicEvent implements Listener{
 			pd.change(EffectType.SLEEP, Data.deathData[0]);
 			pd.change(EffectType.THIRST, Data.deathData[1]);
 			pd.change(EffectType.ENERGY, Data.deathData[2]);
-			pd.change(EffectType.TEMPERATURE, Data.deathData[3]);
-			if(Data.deathData[4]==1)
+			if(Data.deathData[3]==1)
 				pd.getIllness().clear();
 		}
 		if(!p.isSleeping())pd.getSleep().setHasSleep(false);

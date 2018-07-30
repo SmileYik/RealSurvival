@@ -450,7 +450,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			Inventory down = ((Hopper)e.getClickedBlock().getState()).getInventory();
 			ItemStack strainer = down.getItem(2);
 			if(strainer == null || !strainer.hasItemMeta() || !strainer.getItemMeta().hasLore()){e.getPlayer().sendMessage(I18n.trp("raniwater4")); return ;}
-			double data = ItemLoreData.getLore("Strainer", strainer.getItemMeta().getLore(), false);
+			double data = ItemLoreData.getLore("Strainer", strainer.getItemMeta().getLore());
 			if(data<=0){e.getPlayer().sendMessage(I18n.trp("raniwater4"));return ;}
 			Object allData[] = {null,null,false,null};
 			for(ItemStack water : up.getContents()){

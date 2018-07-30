@@ -1,6 +1,8 @@
 package com.outlook.schooluniformsama.data;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -8,6 +10,7 @@ import java.util.UUID;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.google.common.io.Files;
 import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.effect.Effect;
@@ -142,7 +145,6 @@ public class Data {
 					plugin.getConfig().getDouble("death.sleep"),
 					plugin.getConfig().getDouble("death.thirst"),
 					plugin.getConfig().getDouble("death.energy"),
-					plugin.getConfig().getDouble("death.temperature"),
 					plugin.getConfig().getBoolean("death.illness")?1:2};
 		
 		if(Data.switchs[2])
@@ -252,31 +254,43 @@ public class Data {
 		if(!new Items().createWater())
 			plugin.getLogger().info(I18n.tr("water11"));
 		
-		YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder()+File.separator+"timer.yml"));
-		for(String key:timer.getKeys(false)){
-			if(key.equals("list"))continue;
-			Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
-					timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
-			switch(tt.getType()){
-				case FURNACE:
-					FurnaceTimer ft = tt.toFurnaceTimer();
-					FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
-					ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean(key+".isBad",false),timer.getInt(key+".time"));
-					ft.start(fr, TemperatureTask.getBaseTemperature(tt.getLocation(),true));
-					Data.timer.put(key, ft);
-					break;
-				case WORKBENCH:
-					WorkbenchTimer wt = tt.toWorkbenchTimer();
-					wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
-					Data.timer.put(key, wt);
-					break;
-			case RAINWATER_COLLECTOR:
-				RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
-				rct.start(timer.getInt(key+".time"));
-				Data.timer.put(key, rct);
-				break;
+		plugin.getServer().getScheduler().runTaskLater(plugin, ()->{
+			try{
+				YamlConfiguration timer = YamlConfiguration.loadConfiguration(new File(plugin.getDataFolder()+File.separator+"timer.yml"));
+				for(String key:timer.getKeys(false)){
+					if(key.equals("list"))continue;
+					Timer tt = new Timer(timer.getString(key+".workbenchName"),timer.getString(key+".playerName"), WorkbenchType.valueOf(timer.getString(key+".type")), 
+							timer.getString(key+".worldName"), timer.getInt(key+".x"),  timer.getInt(key+".y"),  timer.getInt(key+".z"));
+					switch(tt.getType()){
+					case FURNACE:
+						FurnaceTimer ft = tt.toFurnaceTimer();
+						FurnaceRecipe fr = FurnaceRecipe.load(timer.getString(key+".recipeName"));
+						ft.loadData(timer.getDouble(key+".extra"), timer.getBoolean(key+".isBad",false),timer.getInt(key+".time"));
+						ft.start(fr, TemperatureTask.getBaseTemperature(tt.getLocation(),true));
+						Data.timer.put(key, ft);
+						break;
+					case WORKBENCH:
+						WorkbenchTimer wt = tt.toWorkbenchTimer();
+						wt.continueStart(WorkbenchRecipe.load(timer.getString(key+".recipeName")),timer.getInt(key+".time"));
+						Data.timer.put(key, wt);
+						break;
+					case RAINWATER_COLLECTOR:
+						RainwaterCollectorTimer rct = tt.toRainwaterCollectorTimer();
+						rct.start(timer.getInt(key+".time"));
+						Data.timer.put(key, rct);
+						break;
+					}
+				}
+			}catch(Exception e){
+				File timer = new File(plugin.getDataFolder()+File.separator+"timer.yml."+new Date().getTime());
+				plugin.getLogger().severe("[RealSurvival] Load workbench's data failed! Backuping workbench's data!");
+				try {
+					Files.copy(new File(plugin.getDataFolder()+File.separator+"timer.yml"), timer);
+				} catch (IOException e1) {
+					plugin.getLogger().severe("[RealSurvival] Backuping workbench's data failed!");
+				}
 			}
-		}
+		}, 20);
 		
 	}
 	
@@ -307,7 +321,7 @@ public class Data {
 	
 	public static void addPlayer(Player p){
 		if(enableInWorld(p.getWorld().getName())&&!p.hasMetadata("NPC")&&!enableInPlayer(p.getUniqueId()))
-			addPlayer(p.getUniqueId(), PlayerData.load(p.getUniqueId()));
+			addPlayer(p.getUniqueId(), PlayerData.load(p.getUniqueId()),p.isSleeping());
 	}
 	
 	public static boolean enableInWorld(String worldName){
@@ -334,8 +348,9 @@ public class Data {
 			pd.save();
 	}
 	
-	public static void addPlayer(UUID uuid,PlayerData pd){
+	public static void addPlayer(UUID uuid,PlayerData pd,boolean sleeping){
 		if(pd.isUnlimited())return;
+		if(!sleeping)pd.getSleep().setHasSleep(false);		
 		Data.playerData.put(uuid, pd);
 	}
 }
