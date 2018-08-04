@@ -2,17 +2,17 @@ package com.outlook.schooluniformsama.data.player;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.I18n;
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
+import com.outlook.schooluniformsama.data.effect.EffectData;
 import com.outlook.schooluniformsama.task.EffectTask;
-import com.outlook.schooluniformsama.util.HashMap;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
@@ -140,6 +140,10 @@ public class PlayerData {
 				data.getBoolean("unlimited",false));
 	}
 	
+	public static boolean isNewPlayer(UUID uuid) {
+		return !new File(Data.DATAFOLDER+"/playerdata/"+uuid.toString()+".yml").exists();
+	}
+	
 	public void sendData(boolean isCoolDown){
 		if(stateData==null)createStateData(true);
 		else if(!isCoolDown)createStateData(true);
@@ -208,16 +212,34 @@ public class PlayerData {
 		}
 	}
 	
+	public Double getEffectMax(EffectType effect){
+		switch(effect){
+		case ENERGY:
+			return energy.getEnergyMax();
+		case SLEEP:
+			return sleep.getSleepMax();
+		case THIRST:
+			return thirst.getThirstMax();
+		case WEIGHT:
+			return weight.getWeightMax();
+		case TEMPERATURE:
+			break;
+		default:
+			break;
+		}
+		return -1D;
+	}
+	
 	public void change(EffectType type, double num){
 		double afterFix = num;
 		switch(type){
 			case ENERGY:
 				if(num<0){
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_L);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_L);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix>0) afterFix = 0;
 				}else{
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_P);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.ENERGY_P);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix<0) afterFix = 0;
 				}
@@ -227,11 +249,11 @@ public class PlayerData {
 				break;
 			case SLEEP:
 				if(num<0){
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_L);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_L);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix>0) afterFix = 0;
 				}else{
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_P);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.SLEEP_P);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix<0) afterFix = 0;
 				}
@@ -241,11 +263,11 @@ public class PlayerData {
 				break;
 			case THIRST:
 				if(num<0){
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_L);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_L);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix>0) afterFix = 0;
 				}else{
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_P);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.THIRST_P);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					if(afterFix<0) afterFix = 0;
 				}
@@ -255,7 +277,7 @@ public class PlayerData {
 				break;
 			case WEIGHT:
 				{
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.WEIGHT);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.WEIGHT);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					String info = weight.setWeight(afterFix);
 					if(info!=null)Msg.send(getPlayer(), "messages.weight."+info );
@@ -264,7 +286,7 @@ public class PlayerData {
 				}
 			case TEMPERATURE:
 				{
-					EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.TEMPERATURE);
+					EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.TEMPERATURE);
 					if(ed!=null) afterFix += ed.isPercentage()?num*ed.getAmplifier():ed.getAmplifier();
 					String info = temperature.change(afterFix);
 					if(info!=null)Msg.send(getPlayer(), "messages.temperature."+info);
@@ -289,7 +311,7 @@ public class PlayerData {
 	
 	public boolean addIllness(String name,double chance,String remove){
 		double afterFix = chance;
-		EffectTask.EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.IMMUNE);
+		EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.IMMUNE);
 		if(ed!=null) afterFix += ed.isPercentage()?chance*ed.getAmplifier():ed.getAmplifier();	
 		if(Math.random()*100<afterFix){
 			if(name.equalsIgnoreCase("Slight") && illness.containsKey("Severe"))
@@ -359,6 +381,10 @@ public class PlayerData {
 	
 	public boolean isUnlimited(){
 		return unlimited;
+	}
+	
+	public void setWorld() {
+		this.world = getPlayer().getWorld().getName();
 	}
 	
 	public void setUnlimited(boolean bool){

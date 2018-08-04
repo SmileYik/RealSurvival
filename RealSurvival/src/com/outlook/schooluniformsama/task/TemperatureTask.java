@@ -7,9 +7,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
 import com.outlook.schooluniformsama.RealSurvival;
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.util.Util;

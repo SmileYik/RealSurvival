@@ -1,8 +1,9 @@
 package com.outlook.schooluniformsama.data;
 
+import java.util.HashMap;
+
 import com.outlook.schooluniformsama.data.recipes.Recipe;
 import com.outlook.schooluniformsama.data.timer.Timer;
-import com.outlook.schooluniformsama.util.HashMap;
 
 public class TempData {
 	public static HashMap<String,Recipe> createRecipeTemp =new HashMap<>();

@@ -5,9 +5,10 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import com.outlook.schooluniformsama.RealSurvival;
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
+import com.outlook.schooluniformsama.event.SleepEvent;
 import com.outlook.schooluniformsama.nms.NBTPlayer;
 import com.outlook.schooluniformsama.util.Util;
 
@@ -31,7 +32,8 @@ public class SleepTask implements Runnable{
 			}else{
 				pd.change(EffectType.SLEEP, -Util.randomNum(Data.sleep[3]*0.9, Data.sleep[3]*1.1));
 				//TODO 
-				if(pd.getSleep().getSleep()<=1){
+				
+				if(SleepEvent.sleepDuringDay && pd.getSleep().getSleep()<=1){
 					Location l = p.getLocation();
 					NBTPlayer.sleep(p, l);
 					Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(p, l.getBlock()));

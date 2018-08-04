@@ -6,6 +6,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.HashMap;
 import java.util.function.BiConsumer;
 
 import org.bukkit.Bukkit;
@@ -15,7 +16,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
-import com.outlook.schooluniformsama.util.HashMap;
 import com.outlook.schooluniformsama.util.Msg;
 
 public class RandomDayManager {

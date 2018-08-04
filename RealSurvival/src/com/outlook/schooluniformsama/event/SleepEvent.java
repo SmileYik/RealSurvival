@@ -4,8 +4,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
@@ -19,9 +21,9 @@ import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
 public class SleepEvent implements Listener{
-	private boolean sleepDuringDay;
+	public static boolean sleepDuringDay;
 	public SleepEvent(boolean sleepDuringDay) {
-		this.sleepDuringDay=sleepDuringDay;
+		SleepEvent.sleepDuringDay=sleepDuringDay;
 	}
 	
 	@EventHandler
@@ -29,7 +31,6 @@ public class SleepEvent implements Listener{
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		pd.getSleep().setHasSleep(true);
-		e.getPlayer().sendMessage(I18n.tr("sleep1"));
 		return;
 	}
 	
@@ -41,8 +42,9 @@ public class SleepEvent implements Listener{
 		return;
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.LOWEST)
 	public void levelSleep(AsyncPlayerChatEvent e){
+		if(!sleepDuringDay)return;
 		Player p = e.getPlayer();
 		if(!Data.playerData.containsKey(p.getUniqueId()))return;
 		if(!e.getMessage().equalsIgnoreCase("leave"))return;
@@ -63,6 +65,15 @@ public class SleepEvent implements Listener{
 		}
 	  }
 	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void beHitWhenSleeping(EntityDamageEvent e) {
+		if(!sleepDuringDay)return;
+		if(!(e.getEntity() instanceof Player))return;
+		Player p = (Player)e.getEntity();
+		if(!Data.enableInPlayer(p.getUniqueId()))return;
+		if(p.isSleeping() || Data.getPlayerData(p.getUniqueId()).getSleep().isHasSleep())
+			NBTPlayer.leaveBed(p);
+	}
 	
 	@EventHandler
 	  public void wantSleep(PlayerInteractEvent e){
@@ -76,14 +87,8 @@ public class SleepEvent implements Listener{
 			return;
 		}
 		e.setCancelled(true);
-		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());	
+		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());
+		e.getPlayer().sendMessage(I18n.tr("sleep1"));
 		Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
-/*		plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->{
-			if(e.getPlayer().isSleeping())
-				Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
-			else 
-				NBTPlayer.leaveBed(e.getPlayer());
-		}, 10);*/
-
 	  }
 }

@@ -19,12 +19,12 @@ import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
 import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
-import com.outlook.schooluniformsama.util.HashMap;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
 import javax.swing.JPanel;

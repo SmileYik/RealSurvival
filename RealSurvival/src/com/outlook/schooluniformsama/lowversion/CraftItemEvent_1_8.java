@@ -39,7 +39,6 @@ import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
 import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
 import com.outlook.schooluniformsama.data.timer.Timer;
 import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
-import com.outlook.schooluniformsama.event.basic.UseItemEvent;
 import com.outlook.schooluniformsama.gui.FeatureGUI;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
@@ -440,7 +439,7 @@ public class CraftItemEvent_1_8 implements Listener{
 			if(!rct.getPlayerName().equalsIgnoreCase(e.getPlayer().getName())){e.getPlayer().sendMessage(I18n.trp("rainwater2")); return ;}
 			
 			if(rct.hasWater()==null){
-				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
+				e.getPlayer().setItemInHand(UseItemEvent_1_8.sub(e.getPlayer().getInventory().getItemInHand()));
 				rct.removeWater(1);
 				givePlayerItem(e.getPlayer(), Items.getWater("Rainwater"));
 			}else e.getPlayer().sendMessage(I18n.trp("raniwater3"));
@@ -494,7 +493,7 @@ public class CraftItemEvent_1_8 implements Listener{
 					strainer.setItemMeta(im);
 					down.setItem(2,strainer);
 				}
-				e.getPlayer().setItemInHand(UseItemEvent.sub(e.getPlayer().getInventory().getItemInHand()));
+				e.getPlayer().setItemInHand(UseItemEvent_1_8.sub(e.getPlayer().getInventory().getItemInHand()));
 				if(((String)allData[3]).contains("Ice")) givePlayerItem(e.getPlayer(), Items.getWater("IceWater"));
 				else if(((String)allData[3]).contains("Hot")) givePlayerItem(e.getPlayer(), Items.getWater("HotWater"));
 				else givePlayerItem(e.getPlayer(), Items.getWater("Freshwater"));

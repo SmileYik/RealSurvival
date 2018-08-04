@@ -3,8 +3,8 @@ package com.outlook.schooluniformsama.task;
 import org.bukkit.entity.Player;
 
 import com.outlook.schooluniformsama.RealSurvival;
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.util.Util;
 

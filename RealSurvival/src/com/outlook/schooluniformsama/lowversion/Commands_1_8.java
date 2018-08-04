@@ -566,7 +566,7 @@ public class Commands_1_8 {
 	@Command(cmd = "states",args={"cmdStatePlayerName"},des = "cdes5",type = "state",permissions = "RealSurvival.Admin", argsLenght = 2, hasChildCmds = false)
 	public void statePlayer(Player p, String args[]){
 		Player temp = plugin.getServer().getPlayer(args[1]);
-		if(temp.isOnline()){
+		if(temp.isOnline()&&Data.enableInPlayer(temp.getUniqueId())){
 			p.sendMessage(Data.playerData.get(temp.getUniqueId()).sendData());
 		}else{
 			p.sendMessage(I18n.trp("cmd25",temp.getName()));

@@ -9,7 +9,7 @@ public class RealSurvivalEvent extends Event{
     private Player player;
     private boolean cancelled;
 
-     RealSurvivalEvent(Player player) {
+     protected RealSurvivalEvent(Player player) {
 		super();
 		this.player = player;
 	}

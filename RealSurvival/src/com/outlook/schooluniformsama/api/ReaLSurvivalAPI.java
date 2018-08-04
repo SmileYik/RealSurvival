@@ -7,8 +7,8 @@ import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;

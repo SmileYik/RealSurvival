@@ -2,6 +2,7 @@ package com.outlook.schooluniformsama.data.player;
 
 import org.bukkit.entity.Player;
 
+import com.outlook.schooluniformsama.data.effect.EffectData;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
@@ -64,11 +65,11 @@ public class Illness {
 		double afterFix = medicineEfficacy;
 		
 		if(medicineEfficacy<0){
-			EffectTask.EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
+			EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
 			if(ed!=null) afterFix += ed.isPercentage()?medicineEfficacy*ed.getAmplifier():ed.getAmplifier();
 			if(afterFix>0) afterFix = 0;
 		}else{
-			EffectTask.EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
+			EffectData ed = EffectTask.getEffect(p, com.outlook.schooluniformsama.data.effect.EffectType.CURESPEED);
 			if(ed!=null) afterFix += ed.isPercentage()?medicineEfficacy*ed.getAmplifier():ed.getAmplifier();
 			if(afterFix<0) afterFix = 0;
 		}

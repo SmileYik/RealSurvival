@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.player;
+package com.outlook.schooluniformsama.api.data;
 
 public enum EffectType {
 	SLEEP("SLEEP"),THIRST("THIRST"),WEIGHT("WEIGHT"),TEMPERATURE("TEMPERATURE"),ENERGY("ENERGY");

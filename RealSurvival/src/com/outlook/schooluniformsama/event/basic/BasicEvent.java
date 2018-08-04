@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.plugin.Plugin;
 
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
 public class BasicEvent implements Listener{
@@ -34,10 +34,11 @@ public class BasicEvent implements Listener{
 	@EventHandler
 	public void teleport(PlayerTeleportEvent e){
 		Player p = e.getPlayer();
+		
 		if(Data.enableInPlayer(e.getPlayer().getUniqueId())){
 			if(!Data.enableInWorld(e.getTo().getWorld().getName())){
 				Data.removePlayer(e.getPlayer().getUniqueId());
-			}
+			}else Data.getPlayerData(p.getUniqueId()).setWorld();
 		}else{
 			if(Data.enableInWorld(e.getTo().getWorld().getName())){
 				plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, ()->Data.addPlayer(p), 1);
@@ -51,6 +52,7 @@ public class BasicEvent implements Listener{
 		Player p = e.getPlayer();
 		if(!Data.enableInPlayer(p.getUniqueId()))return;
 		PlayerData pd = Data.getPlayerData(p.getUniqueId());
+		pd.setWorld();
 		if(Data.switchs[1]){
 			pd.change(EffectType.SLEEP, Data.deathData[0]);
 			pd.change(EffectType.THIRST, Data.deathData[1]);

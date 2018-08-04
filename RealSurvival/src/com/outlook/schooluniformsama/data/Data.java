@@ -2,7 +2,9 @@ package com.outlook.schooluniformsama.data;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -29,8 +31,6 @@ import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.lowversion.converter.Converter;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.task.TemperatureTask;
-import com.outlook.schooluniformsama.util.ArrayList;
-import com.outlook.schooluniformsama.util.HashMap;
 
 public class Data {
 	
@@ -339,7 +339,9 @@ public class Data {
 	
 	public static void removePlayer(UUID uuid){
 		if(!enableInPlayer(uuid))return;
-		playerData.get(uuid).save();
+		PlayerData pd = playerData.get(uuid);
+		pd.setWorld();
+		pd.save();
 		playerData.remove(uuid);
 	}
 	
@@ -350,7 +352,8 @@ public class Data {
 	
 	public static void addPlayer(UUID uuid,PlayerData pd,boolean sleeping){
 		if(pd.isUnlimited())return;
-		if(!sleeping)pd.getSleep().setHasSleep(false);		
+		if(!sleeping)pd.getSleep().setHasSleep(false);
+		pd.setWorld();
 		Data.playerData.put(uuid, pd);
 	}
 }

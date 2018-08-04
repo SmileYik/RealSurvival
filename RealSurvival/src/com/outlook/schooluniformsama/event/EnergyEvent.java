@@ -1,15 +1,16 @@
 package com.outlook.schooluniformsama.event;
 
 
+import java.util.HashMap;
+
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.player.EffectType;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.util.HashMap;
 
 public class EnergyEvent implements Listener {
 	

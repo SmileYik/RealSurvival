@@ -2,8 +2,7 @@ package com.outlook.schooluniformsama.data.item;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,7 +10,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.nms.NBTItem;
-import com.outlook.schooluniformsama.util.HashMap;
 
 public class NBTItemData {
 	private double thirst;
