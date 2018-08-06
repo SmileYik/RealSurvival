@@ -144,6 +144,7 @@
       - "Strainer:Strainer"
       - "WorkbenchType:Workbench Type"
       - "RecipeName:Recipe Name"
+      - "effect:Effect"
         
   #You'd better to watch my video to modify this
   #workbenchs-type format:
