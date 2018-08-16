@@ -29,7 +29,10 @@ public class PlayerData {
 	private HashMap<String,Illness> illness;
 	private boolean unlimited = false;
 	private String stateData;
-
+	
+	private int illnessIndex = -1;
+	private int refreshIllnessIndex = 1000;
+	
 	/**
 	 * Create a new player data
 	 * @param uuid
@@ -314,8 +317,8 @@ public class PlayerData {
 		EffectData ed = EffectTask.getEffect(getPlayer(), com.outlook.schooluniformsama.data.effect.EffectType.IMMUNE);
 		if(ed!=null) afterFix += ed.isPercentage()?chance*ed.getAmplifier():ed.getAmplifier();	
 		if(Math.random()*100<afterFix){
-			if(name.equalsIgnoreCase("Slight") && illness.containsKey("Severe"))
-				name = "Severe";
+			if(name.equalsIgnoreCase(Data.fractureString[0]) && illness.containsKey(Data.fractureString[1]))
+				name = Data.fractureString[1];
 			if(illness.containsKey(name))
 				illness.remove(name);
 			if(remove!=null)
@@ -389,5 +392,20 @@ public class PlayerData {
 	
 	public void setUnlimited(boolean bool){
 		unlimited = bool;
+	}
+	
+	public int getIllnessIndex(){
+		while(illnessIndex>=-1&&illnessIndex>=illness.size()) illnessIndex--;
+		return illnessIndex;
+	}
+	
+	public void updateIllnessIndex(){
+		if(refreshIllnessIndex>600){
+			refreshIllnessIndex = 0;
+			if(isIllness())
+				illnessIndex=(int) (Math.random()*illness.size());
+			else 
+				illnessIndex=-1;			
+		}else refreshIllnessIndex++;
 	}
 }

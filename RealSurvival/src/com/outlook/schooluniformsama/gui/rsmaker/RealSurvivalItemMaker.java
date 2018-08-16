@@ -1,4 +1,4 @@
-package app;
+package com.outlook.schooluniformsama.gui.rsmaker;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;

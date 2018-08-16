@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.randomday;
+package com.outlook.schooluniformsama.api;
 
 public enum Season {
 	Spring,

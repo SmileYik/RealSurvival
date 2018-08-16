@@ -30,8 +30,7 @@ public class SleepTask implements Runnable{
 				else
 					pd.change(EffectType.SLEEP, Util.randomNum(Data.sleep[4]*0.8, Data.sleep[4]));
 			}else{
-				pd.change(EffectType.SLEEP, -Util.randomNum(Data.sleep[3]*0.9, Data.sleep[3]*1.1));
-				//TODO 
+				pd.change(EffectType.SLEEP, -Util.randomNum(Data.sleep[3]*0.9, Data.sleep[3]*1.1));	
 				
 				if(SleepEvent.sleepDuringDay && pd.getSleep().getSleep()<=1){
 					Location l = p.getLocation();

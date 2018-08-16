@@ -11,6 +11,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.outlook.schooluniformsama.I18n;
@@ -64,6 +65,17 @@ public class SleepEvent implements Listener{
 			e.setCancelled(true);
 		}
 	  }
+	
+	@EventHandler(priority = EventPriority.LOWEST)
+	public void onSleep(PlayerCommandPreprocessEvent e){
+		if(!sleepDuringDay)return;
+		Player p = e.getPlayer();
+		if(!Data.playerData.containsKey(p.getUniqueId()))return;
+		PlayerData pd = Data.playerData.get(p.getUniqueId());
+		if(pd.getSleep().isHasSleep()){
+			e.setCancelled(true);
+		}
+	}
 	
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void beHitWhenSleeping(EntityDamageEvent e) {

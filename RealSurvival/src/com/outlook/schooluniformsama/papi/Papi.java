@@ -10,8 +10,6 @@ import com.outlook.schooluniformsama.data.player.PlayerData;
 import me.clip.placeholderapi.external.EZPlaceholderHook;
 
 public class Papi extends EZPlaceholderHook {
-	private int index=0;
-	private int time=1000;
 	
 	public Papi(RealSurvival Data) {
 		super(Data, "rs");
@@ -23,13 +21,8 @@ public class Papi extends EZPlaceholderHook {
 		PlayerData pd = Data.playerData.get(p.getUniqueId());
 		if(pd==null)return I18n.tr("state11");
 		
-		if(time>=1000){
-			time=0;
-			if(pd.isIllness())
-				index=(int) (Math.random()*pd.getIllness().size());
-			else 
-				index=-1;
-		}else time++;
+		pd.updateIllnessIndex();
+		int index = pd.getIllnessIndex();
 		
 		if(arg.equalsIgnoreCase("sleep"))
 			return _2f(pd.getSleep().getSleep()/pd.getSleep().getSleepMax()*100)+"%";
@@ -47,8 +40,8 @@ public class Papi extends EZPlaceholderHook {
 		}
 		
 		if(arg.equalsIgnoreCase("illness")){
-			while(index>=0&&index>=pd.getIllness().size())
-				index--;
+			//System.out.println(index);
+			while(index>=-1&&index>=pd.getIllness().size()) index--;
 			if(index<0)
 				return I18n.tr("state2");
 			else

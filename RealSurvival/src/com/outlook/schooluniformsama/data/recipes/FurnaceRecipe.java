@@ -287,9 +287,9 @@ public class FurnaceRecipe extends Recipe{
 		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
 		else saveName = name;*/
 		if(name.contains("/"))
-			return "RealSurvival.Recipe.Furnace."+name.replace("/", ".");
+			return "RealSurvival.Recipe.Furnace."+name.replace("/", ".").replace("..", ".");
 		else if(name.contains("\\"))
-			return "RealSurvival.Recipe.Furnace."+name.replace("\\", ".");
+			return "RealSurvival.Recipe.Furnace."+name.replace("\\", ".").replace("..", ".");
 		else
 			return "RealSurvival.Recipe.Furnace."+name;
 	}

@@ -65,7 +65,7 @@ public class ItemLoreData {
 		tabel=Data.label.get(tabel.toLowerCase());
 		for(String line:lore){
 			line=Util.removeColor(line);
-			if(line.contains(tabel))
+			if(line.contains(tabel)&&line.contains(Data.split)&&line.indexOf(tabel)<line.indexOf(Data.split))
 				return Util.removeColor(line.split(Data.split)[1].replace(" ", ""));
 		}
 		return null;
@@ -76,7 +76,7 @@ public class ItemLoreData {
 		
 		for(String line:lore){
 			line=Util.removeColor(line);
-			if(line.contains(tabel)){
+			if(line.contains(tabel)&&line.contains(Data.split)&&line.indexOf(tabel)<line.indexOf(Data.split)){
 				String temp=line.replaceAll("[^0-9.+-]", "");
 				if(line.contains("%")){
 					if(line.contains("--")){
@@ -89,6 +89,8 @@ public class ItemLoreData {
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0])*Data.energy[0], Double.parseDouble(temp.split("--")[1])*Data.energy[0])/100D;
 						else if(key.equalsIgnoreCase("drugeffect"))
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
+						else if(key.equalsIgnoreCase("illnessprobability"))
+							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]));
 						else
 							return Util.randomNum(Double.parseDouble(temp.split("--")[0]), Double.parseDouble(temp.split("--")[1]))/100D;
 					}else{
@@ -99,6 +101,8 @@ public class ItemLoreData {
 						else if(key.equalsIgnoreCase("energy"))
 							return Double.parseDouble(temp)*Data.energy[0]/100D;
 						else if(key.equalsIgnoreCase("drugeffect"))
+							return Double.parseDouble(temp);
+						else if(key.equalsIgnoreCase("illnessprobability"))
 							return Double.parseDouble(temp);
 						else
 							return Double.parseDouble(temp)/100D;

@@ -218,9 +218,9 @@ public class WorkbenchRecipe extends Recipe{
 		else if(name.contains("\\"))saveName=name.substring(name.lastIndexOf("\\")+1);
 		else saveName = name;*/
 		if(name.contains("/"))
-			return "RealSurvival.Recipe.Workbench."+name.replace("/", ".");
+			return "RealSurvival.Recipe.Workbench."+name.replace("/", ".").replace("..", ".");
 		else if(name.contains("\\"))
-			return "RealSurvival.Recipe.Workbench."+name.replace("\\", ".");
+			return "RealSurvival.Recipe.Workbench."+name.replace("\\", ".").replace("..", ".");
 		else
 			return "RealSurvival.Recipe.Workbench."+name;
 	}

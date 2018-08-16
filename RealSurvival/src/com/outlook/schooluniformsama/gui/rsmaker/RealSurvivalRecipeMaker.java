@@ -1,4 +1,4 @@
-package app;
+package com.outlook.schooluniformsama.gui.rsmaker;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -24,6 +24,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
 import javax.swing.JCheckBox;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
@@ -43,6 +45,7 @@ import java.awt.Insets;
 import javax.swing.JTextArea;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import javax.swing.ImageIcon;
 
 public class RealSurvivalRecipeMaker extends JFrame{
 	
@@ -141,7 +144,7 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		this.setTitle("RealSurvivalRecipeMaker");
 		//window.setBounds(100, 100, 675, 416);
 		//this.setBounds(100, 100, 155, 416);
-		this.setBounds(100, 100, 500, 453);
+		this.setBounds(100, 100, 500, 672);
 		this.getContentPane().setLayout(null);
 		
 		JButton create_new_item = new JButton(I18n.tr("guiButtoncreate"));
@@ -344,6 +347,338 @@ public class RealSurvivalRecipeMaker extends JFrame{
 		recipe_item_amount.setBounds(91, 263, 84, 21);
 		setting.add(recipe_item_amount);
 		
+		JPanel pane_workbench = new JPanel();
+		pane_workbench.setBounds(74, 422, 319, 214);
+		//pane_workbench.setBounds(999, 999, 100, 100);
+		getContentPane().add(pane_workbench);
+		pane_workbench.setLayout(null);
+		pane_workbench.setVisible(false);
+		
+		JLabel solt_w_m_4 = new JLabel("");
+		solt_w_m_4.setBounds(143, 45, 30, 30);
+		pane_workbench.add(solt_w_m_4);
+		
+		JLabel solt_w_m_10 = new JLabel("");
+		solt_w_m_10.setBounds(71, 117, 30, 30);
+		pane_workbench.add(solt_w_m_10);
+		
+		JLabel solt_w_m_15 = new JLabel("");
+		solt_w_m_15.setBounds(106, 153, 30, 30);
+		pane_workbench.add(solt_w_m_15);
+		
+		JLabel solt_w_p_1 = new JLabel("");
+		solt_w_p_1.setBounds(214, 80, 30, 30);
+		pane_workbench.add(solt_w_p_1);
+		
+		JLabel solt_w_p_4 = new JLabel("");
+		solt_w_p_4.setBounds(252, 117, 30, 30);
+		pane_workbench.add(solt_w_p_4);
+		
+		JLabel solt_w_m_12 = new JLabel("");
+		solt_w_m_12.setBounds(143, 117, 30, 30);
+		pane_workbench.add(solt_w_m_12);
+		
+		JLabel solt_w_p_3 = new JLabel("");
+		solt_w_p_3.setBounds(214, 117, 30, 30);
+		pane_workbench.add(solt_w_p_3);
+		
+		JLabel solt_w_m_3 = new JLabel("");
+		solt_w_m_3.setBounds(106, 45, 30, 30);
+		pane_workbench.add(solt_w_m_3);
+		
+		JLabel solt_w_m_8 = new JLabel("");
+		solt_w_m_8.setBounds(143, 80, 30, 30);
+		pane_workbench.add(solt_w_m_8);
+		
+		JLabel solt_w_m_13 = new JLabel("");
+		solt_w_m_13.setBounds(35, 153, 30, 30);
+		pane_workbench.add(solt_w_m_13);
+		
+		JLabel solt_w_m_11 = new JLabel("");
+		solt_w_m_11.setBounds(106, 117, 30, 30);
+		pane_workbench.add(solt_w_m_11);
+		
+		JLabel solt_w_m_2 = new JLabel("");
+		solt_w_m_2.setBounds(71, 45, 30, 30);
+		pane_workbench.add(solt_w_m_2);
+		
+		JLabel solt_w_m_7 = new JLabel("");
+		solt_w_m_7.setBounds(106, 80, 30, 30);
+		pane_workbench.add(solt_w_m_7);
+		
+		JLabel solt_w_m_9 = new JLabel("");
+		solt_w_m_9.setBounds(35, 117, 30, 30);
+		pane_workbench.add(solt_w_m_9);
+		
+		JLabel solt_w_m_6 = new JLabel("");
+		solt_w_m_6.setBounds(71, 80, 30, 30);
+		pane_workbench.add(solt_w_m_6);
+		
+		JLabel solt_w_p_2 = new JLabel("");
+		solt_w_p_2.setBounds(252, 80, 30, 30);
+		pane_workbench.add(solt_w_p_2);
+		
+		JLabel solt_w_m_14 = new JLabel("");
+		solt_w_m_14.setBounds(71, 153, 30, 30);
+		pane_workbench.add(solt_w_m_14);
+		
+		JLabel solt_w_m_5 = new JLabel("");
+		solt_w_m_5.setBounds(35, 80, 30, 30);
+		pane_workbench.add(solt_w_m_5);
+		
+		JLabel solt_w_m_16 = new JLabel("");
+		solt_w_m_16.setBounds(143, 153, 30, 30);
+		pane_workbench.add(solt_w_m_16);
+		
+		JLabel solt_w_m_1 = new JLabel("");
+		solt_w_m_1.setBounds(35, 45, 30, 30);
+		pane_workbench.add(solt_w_m_1);
+		
+		JLabel icon_w = new JLabel("New label");
+		icon_w.setBounds(-4, 5, 326, 215);
+		java.awt.Image img = null;
+		try {
+			img = javax.imageio.ImageIO.read(RealSurvivalItemMaker.class.getResourceAsStream("/resources/rsmaker/workbench.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		icon_w.setIcon(new ImageIcon(img));
+		pane_workbench.add(icon_w);
+		
+		JPanel panel_furnace = new JPanel();
+		panel_furnace.setBounds(74, 422, 319, 214);
+		getContentPane().add(panel_furnace);
+		panel_furnace.setLayout(null);
+		panel_furnace.setVisible(false);
+		
+		JLabel solt_f_p_1 = new JLabel("");
+		solt_f_p_1.setBounds(109, 147, 30, 30);
+		panel_furnace.add(solt_f_p_1);
+		
+		JLabel solt_f_m_5 = new JLabel("");
+		solt_f_m_5.setBounds(147, 76, 30, 30);
+		panel_furnace.add(solt_f_m_5);
+		
+		JLabel solt_f_m_6 = new JLabel("");
+		solt_f_m_6.setBounds(182, 76, 30, 30);
+		panel_furnace.add(solt_f_m_6);
+		
+		JLabel solt_f_m_4 = new JLabel("");
+		solt_f_m_4.setBounds(109, 76, 30, 30);
+		panel_furnace.add(solt_f_m_4);
+		
+		JLabel solt_f_p_3 = new JLabel("");
+		solt_f_p_3.setBounds(182, 147, 30, 30);
+		panel_furnace.add(solt_f_p_3);
+		
+		JLabel solt_f_m_1 = new JLabel("");
+		solt_f_m_1.setBounds(109, 40, 30, 30);
+		panel_furnace.add(solt_f_m_1);
+		
+		JLabel solt_f_m_3 = new JLabel("");
+		solt_f_m_3.setBounds(182, 40, 30, 30);
+		panel_furnace.add(solt_f_m_3);
+		
+		JLabel solt_f_p_2 = new JLabel("");
+		solt_f_p_2.setBounds(147, 147, 30, 30);
+		panel_furnace.add(solt_f_p_2);
+		
+		JLabel solt_f_m_2 = new JLabel("");
+		solt_f_m_2.setBounds(147, 40, 30, 30);
+		panel_furnace.add(solt_f_m_2);
+		
+		JLabel label_32 = new JLabel("New label");
+		try {
+			img = javax.imageio.ImageIO.read(RealSurvivalItemMaker.class.getResourceAsStream("/resources/rsmaker/furnace.png"));
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		label_32.setIcon(new ImageIcon(img));
+		label_32.setBounds(0, 0, 326, 215);
+		panel_furnace.add(label_32);
+		
+		{
+			solt_f_m_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(0);
+				}
+			});
+			solt_f_m_2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(1);
+				}
+			});
+			solt_f_m_3.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(2);
+				}
+			});
+			solt_f_m_4.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(3);
+				}
+			});
+			solt_f_m_5.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(4);
+				}
+			});
+			solt_f_m_6.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(5);
+				}
+			});
+			solt_f_p_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(6);
+				}
+			});
+			solt_f_p_2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(7);
+				}
+			});
+			solt_f_p_3.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(8);
+				}
+			});
+		}
+		
+		{
+			solt_w_m_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(0);
+				}
+			});
+			solt_w_m_2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(1);
+				}
+			});
+			solt_w_m_3.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(2);
+				}
+			});
+			solt_w_m_4.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(3);
+				}
+			});
+			solt_w_m_5.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(4);
+				}
+			});
+			solt_w_m_6.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(5);
+				}
+			});
+			solt_w_m_7.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(6);
+				}
+			});
+			solt_w_m_8.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(7);
+				}
+			});
+			solt_w_m_9.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(8);
+				}
+			});
+			solt_w_m_10.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(9);
+				}
+			});
+			solt_w_m_11.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(10);
+				}
+			});
+			solt_w_m_12.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(11);
+				}
+			});
+			solt_w_m_13.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(12);
+				}
+			});
+			solt_w_m_14.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(13);
+				}
+			});
+			solt_w_m_15.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(14);
+				}
+			});
+			solt_w_m_16.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(15);
+				}
+			});
+			solt_w_p_1.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(16);
+				}
+			});
+			solt_w_p_2.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(17);
+				}
+			});
+			solt_w_p_3.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(18);
+				}
+			});
+			solt_w_p_4.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent arg0) {
+					recipe_slot.setSelectedIndex(19);
+				}
+			});
+		}
+		
 		recipe_p_edit.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				recipe_p_item.setEditable(recipe_p_edit.isSelected());
@@ -441,6 +776,13 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				if(ws.getType()==WorkbenchType.FURNACE)recipe_furnace_panel.setVisible(true);
 				setting.setVisible(true);
 				setItemToEditor(recipe_m_item, recipe_p_item);
+				if(ws.getType() == WorkbenchType.FURNACE){
+					pane_workbench.setVisible(false);
+					panel_furnace.setVisible(true);
+				}else{
+					pane_workbench.setVisible(true);
+					panel_furnace.setVisible(false);
+				}
 			}
 		});
 		
@@ -573,6 +915,8 @@ public class RealSurvivalRecipeMaker extends JFrame{
 				scrollPane_1.setViewportView(item_tree);
 				item_tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/items"))));
 				recipe_tree.setModel(new DefaultTreeModel(getItemsDir(new File(Data.DATAFOLDER+"/recipe"))));
+				pane_workbench.setVisible(false);
+				panel_furnace.setVisible(false);
 			}
 		});
 		

@@ -83,7 +83,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	}
 	
 	private void checkUp(){
-		Bukkit.getServer().getScheduler().runTaskLater(this, new Runnable() {
+		Bukkit.getServer().getScheduler().runTaskLaterAsynchronously(this, new Runnable() {
 			@Override
 			public void run() {
 				try {
@@ -228,7 +228,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new EffectTask(this), 20L, 20L);
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new WorkbenchTask(), 20L, 20L);
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SaveConfigTask(), 20L, 600*20L);
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SaveConfigTask(), 60*20L, 600*20L);
 		
 		if(Data.switchs[2]){
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);

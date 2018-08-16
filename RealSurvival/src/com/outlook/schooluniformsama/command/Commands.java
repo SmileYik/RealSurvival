@@ -23,12 +23,11 @@ import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.data.recipes.*;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
 import com.outlook.schooluniformsama.gui.*;
+import com.outlook.schooluniformsama.gui.rsmaker.RealSurvivalMaker;
 import com.outlook.schooluniformsama.nms.NBTItem;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
-
-import app.RealSurvivalMaker;
 
 import org.bukkit.*;
 import org.bukkit.command.CommandSender;

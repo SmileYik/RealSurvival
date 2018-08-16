@@ -2,50 +2,52 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/plugins/Chairs.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/plugins/PlaceholderAPI.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/plugins/Chairs.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/plugins/PlaceholderAPI.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/plugins/TitleManager-2.0.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.12.2.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.12.2.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.3-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.4-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.5-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.6-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.7-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.8-R0.1-SNAPSHOT-latest.jar"/>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.9.2-R0.1-SNAPSHOT-latest.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.3-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.4-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.5-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.6-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.7-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8.8-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.8-R0.1-SNAPSHOT-latest.jar"/>
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.9.2-R0.1-SNAPSHOT-latest.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.9.4-R0.1-SNAPSHOT-latest.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.9-R0.1-SNAPSHOT-latest.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.9-R0.1-SNAPSHOT-latest.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.10.2-R0.1-SNAPSHOT-latest.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.11.2.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.11.2.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/media/school_uniform/A274CA8774CA5E23/Java/libs/Minecraft/Servers/servers/spigot-1.7.10-SNAPSHOT-b1657.jar">
+	<classpathentry kind="lib" path="E:/School_Uniform/WorkSpace/Java/libs/Minecraft/Servers/servers/spigot-1.7.10-SNAPSHOT-b1657.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="file:/E:/School_Uniform/WorkSpace/Java/MC%20Server/docs_offline/"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="miglayout15-swing.jar" sourcepath="miglayout-src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

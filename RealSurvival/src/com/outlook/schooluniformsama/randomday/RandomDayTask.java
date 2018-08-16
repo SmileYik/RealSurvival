@@ -1,6 +1,8 @@
 package com.outlook.schooluniformsama.randomday;
 
 import org.bukkit.Bukkit;
+
+import com.outlook.schooluniformsama.api.Season;
 import com.outlook.schooluniformsama.util.Util;
 
 public class RandomDayTask implements Runnable{

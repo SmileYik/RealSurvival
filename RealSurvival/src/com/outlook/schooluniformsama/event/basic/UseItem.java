@@ -48,9 +48,9 @@ public class UseItem {
 			pd.getPlayer().setFoodLevel(pd.getPlayer().getFoodLevel()+(int)id.getHungery());
 			isUsed=true;
 		}
-		if(id.getEffectName()!=null) {
+		if(id.getEffectName()!=null && Data.illnessEffects.containsKey(id.getEffectName())) {
 			for(Effect effect:Data.illnessEffects.get(id.getEffectName()))
-			EffectTask.addEffect(pd.getPlayer(), effect);
+				EffectTask.addEffect(pd.getPlayer(), effect);
 			isUsed=true;
 		}
 		return isUsed;

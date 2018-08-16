@@ -505,6 +505,7 @@ public class CraftItemEvent_1_8 implements Listener{
 		do{
 			if(p.hasPermission(childPermission))return true;
 			if(childPermission.equalsIgnoreCase("RealSurvival.Recipe.Workbench.*")||childPermission.equalsIgnoreCase("RealSurvival.Recipe.Furnace.*"))break;
+			childPermission = childPermission.substring(0,childPermission.lastIndexOf("."));
 			childPermission = childPermission.substring(0,childPermission.lastIndexOf(".")+1)+"*";
 		}while(true);
 		return false;
