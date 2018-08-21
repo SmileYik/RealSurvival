@@ -113,10 +113,7 @@ public class UseItemEvent implements Listener {
 	}
 	
 	public static ItemStack sub(ItemStack is){
-		if(is.getAmount()>1)
-			is.setAmount(is.getAmount()-1);
-		else
-			is=null;
+		is.setAmount(is.getAmount()-1);
 		return is;
 	}
 }

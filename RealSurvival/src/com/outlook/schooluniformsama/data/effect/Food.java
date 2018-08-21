@@ -9,17 +9,16 @@ public class Food {
 	@Override
 	public String toString() {
 		return "Food [sleep=" + sleep + ", thirst=" + thirst + ", energy=" + energy
-				+ ", temperature=" + temperature + ", illness=" + illness + ", hasIllness=" + hasIllness + "]";
+				+", illness=" + illness + ", hasIllness=" + hasIllness + "]";
 	}
 
 	private double sleep;
 	private double thirst;
 	private double energy;
-	private double temperature;
 	private HashMap<String, Double> illness = new HashMap<>();
 	private boolean hasIllness=false;
 	
-	public Food( String sleep, String thirst, String energy, double temperature,
+	public Food( String sleep, String thirst, String energy,
 			List<String> illness, boolean hasIllness) {
 		super();
 		
@@ -37,8 +36,6 @@ public class Food {
 			this.energy=Double.parseDouble(energy.replaceAll("%", ""))/100.0*Data.energy[0];
 		else
 			this.energy=Double.parseDouble(energy);
-		
-		this.temperature = temperature;
 		if(hasIllness)
 			for(String name:illness)
 				this.illness.put(name.split(":")[0], Double.parseDouble(name.split(":")[1].replaceAll("%", "")));
@@ -67,14 +64,6 @@ public class Food {
 
 	public void setEnergy(double energy) {
 		this.energy = energy;
-	}
-
-	public double getTemperature() {
-		return temperature;
-	}
-
-	public void setTemperature(double temperature) {
-		this.temperature = temperature;
 	}
 
 	public HashMap<String, Double> getIllness() {

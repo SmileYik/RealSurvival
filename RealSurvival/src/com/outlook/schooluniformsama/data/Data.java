@@ -92,7 +92,7 @@ public class Data {
 	 */
 	public static HashMap<String, ItemData> itemData=new HashMap<>();
 	/**
-	 * long,width,high,heat-source-fix,distance-effect cold fever
+	 * long,width,high,heat-source-fix,distance-effect cold fever extraTemperature
 	 */
 	public static double[] temperature;
 	public static String split;
@@ -202,7 +202,8 @@ public class Data {
 					plugin.getConfig().getDouble("state.temperature.heat-source-fix"),
 					plugin.getConfig().getDouble("state.temperature.distance-effect"),
 					plugin.getConfig().getDouble("state.temperature.cold"),
-					plugin.getConfig().getDouble("state.temperature.fever")};
+					plugin.getConfig().getDouble("state.temperature.fever"),
+					plugin.getConfig().getDouble("extra-temperature-distance",1)};
 			for(String items:plugin.getConfig().getStringList("state.temperature.heat-source"))
 				if(Data.itemData.containsKey(items.split(":")[0]))
 					Data.itemData.get(items.split(":")[0]).setHeat(Double.parseDouble(items.split(":")[1]));
@@ -231,12 +232,11 @@ public class Data {
 		
 		for(String food:plugin.getConfig().getStringList("effect.food-effects.foods")){
 			Data.foodEffect.put(food,new Food(
-					plugin.getConfig().getString("effect.food-effects.effects."+food+".sleep"),
-					plugin.getConfig().getString("effect.food-effects.effects."+food+".thirst"),
-					plugin.getConfig().getString("effect.food-effects.effects."+food+".energy"),
-					plugin.getConfig().getDouble("effect.food-effects.effects."+food+".temperature"),
+					plugin.getConfig().getString("effect.food-effects.effects."+food+".sleep","0"),
+					plugin.getConfig().getString("effect.food-effects.effects."+food+".thirst","0"),
+					plugin.getConfig().getString("effect.food-effects.effects."+food+".energy","0"),
 					plugin.getConfig().getStringList("effect.food-effects.effects."+food+".illnesses"),
-					plugin.getConfig().getBoolean("effect.food-effects.effects."+food+".has-illness")));
+					plugin.getConfig().getBoolean("effect.food-effects.effects."+food+".has-illness",false)));
 		}
 		for(String mob:plugin.getConfig().getStringList("effect.mob-effects"))
 			Data.mobEffect.put(mob.split(":")[0], new Mob(mob.split(":")[0], mob.split(":")[1]));
@@ -355,5 +355,9 @@ public class Data {
 		if(!sleeping)pd.getSleep().setHasSleep(false);
 		pd.setWorld();
 		Data.playerData.put(uuid, pd);
+	}
+	
+	public static boolean isContainsTimer(String id){
+		return timer.containsKey(id);
 	}
 }

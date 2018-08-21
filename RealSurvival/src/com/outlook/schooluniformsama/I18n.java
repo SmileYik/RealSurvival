@@ -36,7 +36,11 @@ public class I18n{
 			try {
 				return local.getString(key);
 			} catch (Exception e2) {
-				return defual.getString(key);				
+				try {
+					return defual.getString(key);									
+				} catch (Exception e3) {
+					return "Missing Key: "+key+". Please Notification op.";
+				}
 			}
 		}
 	}

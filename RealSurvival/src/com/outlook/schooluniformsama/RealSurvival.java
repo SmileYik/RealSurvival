@@ -43,6 +43,7 @@ import com.outlook.schooluniformsama.task.WeightTask;
 import com.outlook.schooluniformsama.task.WorkbenchTask;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
+import com.outlook.schooluniformsama.util.Util;
 import com.outlook.schooluniformsama.util.bstats.Metrics_1_8_UP;
 
 import com.outlook.schooluniformsama.util.bstats.Metrics;
@@ -61,13 +62,14 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		Data.init(this);
 		registerListeners();
 		if(Data.versionData[0]<=7)addPlayers_LOW_VERSION(); else addPlayers();
-		setupMetrics();
+		if(getConfig().getBoolean("enable-bStats",true))setupMetrics();
+		if(getConfig().getBoolean("check-update",true))checkUp();
 		getLogger().info("[RealSurvival] Successful loading");
-		checkUp();
 	}
 	
 	@Override
 	public void onDisable() {
+		SleepEvent.getUpPlayer();
 		Data.saveAllPlayerData();
 		SaveConfigTask.saveWorkbench();
 	}
@@ -89,10 +91,8 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 				try {
 					Update u= Update.getUpdate("update");
 					if(u.hasUpdate()){
-						getLogger().info(ChatColor.translateAlternateColorCodes('§',I18n.tr("cmd12",Update.now_version_show,u.getVersion_show()))+" "
-								+(u.isReplace_config()?I18n.tr("cmd13"):"")+" "
-								+(u.isReplace_message()?I18n.tr("cmd14"):""));
-						getLogger().info(ChatColor.translateAlternateColorCodes('§',u.getUpdate_info()));
+						getLogger().info(Util.removeColor(I18n.tr("cmd12",Update.now_version_show,u.getVersion_show())+" "+(u.isReplace_config()?I18n.tr("cmd13"):"")+" "+(u.isReplace_message()?I18n.tr("cmd14"):"")));
+						getLogger().info(Util.removeColor(u.getUpdate_info()));
 					}
 				} catch (Exception e) {
 					getLogger().info(I18n.tr("cmd9"));

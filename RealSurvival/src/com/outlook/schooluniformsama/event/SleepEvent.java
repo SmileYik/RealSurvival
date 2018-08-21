@@ -1,5 +1,7 @@
 package com.outlook.schooluniformsama.event;
 
+import java.util.LinkedList;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,6 +25,9 @@ import com.outlook.schooluniformsama.util.Util;
 
 public class SleepEvent implements Listener{
 	public static boolean sleepDuringDay;
+	private static LinkedList<String> sleep = new LinkedList<>();
+	
+	
 	public SleepEvent(boolean sleepDuringDay) {
 		SleepEvent.sleepDuringDay=sleepDuringDay;
 	}
@@ -32,6 +37,7 @@ public class SleepEvent implements Listener{
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		pd.getSleep().setHasSleep(true);
+		sleep.add(e.getPlayer().getName());
 		return;
 	}
 	
@@ -40,6 +46,7 @@ public class SleepEvent implements Listener{
 		if(!Data.playerData.containsKey(e.getPlayer().getUniqueId()))return;
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		pd.getSleep().setHasSleep(false);
+		sleep.remove(e.getPlayer().getName());
 		return;
 	}
 	
@@ -59,10 +66,17 @@ public class SleepEvent implements Listener{
 			NBTPlayer.leaveBed(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
+			sleep.remove(e.getPlayer().getName());
 		}else if(p.isSleeping()){
 			NBTPlayer.leaveBed(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
+			sleep.remove(e.getPlayer().getName());
+		}else if(sleep.contains(p.getName())){
+			NBTPlayer.leaveBed(p);
+			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
+			e.setCancelled(true);
+			sleep.remove(e.getPlayer().getName());
 		}
 	  }
 	
@@ -99,8 +113,19 @@ public class SleepEvent implements Listener{
 			return;
 		}
 		e.setCancelled(true);
+		if(sleep.contains(e.getPlayer().getName()))return;
 		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());
+		sleep.add(e.getPlayer().getName());
 		e.getPlayer().sendMessage(I18n.tr("sleep1"));
 		Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
 	  }
+	
+	public static void getUpPlayer(){
+		for(String name:sleep){
+			Player p = Bukkit.getServer().getPlayer(name);
+			NBTPlayer.leaveBed(p);
+			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
+		}
+		sleep.clear();
+	}
 }

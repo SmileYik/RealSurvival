@@ -72,7 +72,7 @@ public class Furnace{
 			return inv;
 		}
 		
-		double nowTemperature =TemperatureTask.getBaseTemperature(ft.getLocation(),true);
+		double nowTemperature =TemperatureTask.getBaseTemperature(ft.getLocation(),true)+ft.getExtraTemperature();
 		double pass=(ft.getExtraTemperature()+nowTemperature)/ft.getMinTemperature();
 		if(ft.getMinTemperature()>0){
 			temp= Items.createPItem((short)1, I18n.tr("furnace7",Util.RDP(nowTemperature,2),Util.RDP( ft.getMinTemperature(),2)));

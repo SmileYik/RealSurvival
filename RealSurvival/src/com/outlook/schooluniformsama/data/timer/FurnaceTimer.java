@@ -60,7 +60,7 @@ public class FurnaceTimer extends Timer{
 			if(extraTemperature<0)
 				extraTemperature=0;
 			else if(extraTemperature>0)
-				extraTemperature--;
+				extraTemperature-=Data.temperature[7];
 			
 			if(nowTemperature+extraTemperature>maxTemperature)
 				isBad=true;
@@ -76,7 +76,7 @@ public class FurnaceTimer extends Timer{
 			if(extraTemperature>0)
 				extraTemperature=0;
 			else if(extraTemperature<0)
-				extraTemperature++;
+				extraTemperature+=Data.temperature[7];
 			
 			if(nowTemperature+extraTemperature>maxTemperature)
 				isBad=true;
@@ -88,6 +88,10 @@ public class FurnaceTimer extends Timer{
 				this.time++;
 			else return;
 		}
+	}
+	
+	public void addExtraTemperature(double temperature){
+		this.extraTemperature += temperature;
 	}
 
 	public double getMinTemperature() {

@@ -248,6 +248,16 @@ public class Commands_1_8 {
 		p.openInventory(inv);
 	}
 	
+	@Command(cmd = "cr",childCmds="view",args={"cmdCRTableType"},des = "commandDesViewWorkbench",type = "workbench",permissions = "RealSurvival.Admin", argsLenght = 3, hasChildCmds = true)
+	public void openWorkbenchViewer(Player p, String args[]){
+		Inventory inv = FeatureGUI.threeViewDrawing(args[2]);
+		if(inv==null){
+			p.sendMessage(I18n.trp("recipeMissingWorkbench"));
+			return;
+		}
+		p.openInventory(inv);
+	}
+	
 	//TODO Item
 	private String getLongText(String args[],int begin,boolean hasColor){
 		String text="";

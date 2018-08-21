@@ -1,4 +1,8 @@
   language: en
+  
+  check-update: true
+  enable-bStats: true
+  
   #Enable prefix in title
   enable-prefix-in-title: false
   #state command cooldown, unit trick(20 trick = 1 s)
@@ -102,6 +106,8 @@
       heat-source-fix: 100.0
       #Temperature dissipation rate
       distance-effect: 0.25
+      #
+      extra-temperature-distance: 2.5
       #Player will feel cold when temperature is "cold"
       cold: 20
       #Player will feel hot when temperature is "hot"

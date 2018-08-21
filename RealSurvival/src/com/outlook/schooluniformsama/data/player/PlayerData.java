@@ -387,7 +387,11 @@ public class PlayerData {
 	}
 	
 	public void setWorld() {
-		this.world = getPlayer().getWorld().getName();
+		try {
+			this.world = getPlayer().getWorld().getName();
+		} catch (Exception e) {
+			this.world = Data.worlds.get(0);
+		}
 	}
 	
 	public void setUnlimited(boolean bool){

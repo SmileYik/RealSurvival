@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+
+import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
@@ -35,6 +37,7 @@ public class SleepTask implements Runnable{
 				if(SleepEvent.sleepDuringDay && pd.getSleep().getSleep()<=1){
 					Location l = p.getLocation();
 					NBTPlayer.sleep(p, l);
+					p.sendMessage(I18n.tr("sleep1"));
 					Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(p, l.getBlock()));
 				}
 			}
