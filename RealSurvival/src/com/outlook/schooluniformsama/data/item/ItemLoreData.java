@@ -40,6 +40,17 @@ public class ItemLoreData {
 		this.effectName = effectName;
 	}
 	
+	public static boolean isRealSurvivalItem(ItemStack is){
+		if(NBTItemData.isNBTItem(is))return true;
+		if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())return false;
+		String sb = "";
+		for(String line : is.getItemMeta().getLore())
+			sb+=line;
+		for(String line : Data.label.values())
+			if(sb.contains(line))return true;
+		return false;
+	}
+	
 	public static ItemLoreData getItemLoreData(ItemStack is){
 		if(is==null || !is.hasItemMeta() || !is.getItemMeta().hasLore())return null;
 		List<String> lore=is.clone().getItemMeta().getLore();

@@ -43,7 +43,6 @@ public class NBTPlayer {
 		try {
 			
 			CraftPlayer = Class.forName("org.bukkit.craftbukkit."+version+".entity.CraftPlayer");
-			BlockPosition = Class.forName("net.minecraft.server."+version+".BlockPosition");
 			PacketPlayOutAnimation = Class.forName("net.minecraft.server."+version+".PacketPlayOutAnimation");
 			PacketPlayOutBed = Class.forName("net.minecraft.server."+version+".PacketPlayOutBed");
 			PlayerConnection = Class.forName("net.minecraft.server."+version+".PlayerConnection");
@@ -52,7 +51,6 @@ public class NBTPlayer {
 			EntityHuman = Class.forName("net.minecraft.server."+version+".EntityHuman");
 			
 			PacketPlayOutAnimationConstructor = PacketPlayOutAnimation.getConstructor(Entity,int.class);
-			BlockPositionConstructor = BlockPosition.getConstructor(int.class,int.class,int.class);
 			
 			getHandle = CraftPlayer.getMethod("getHandle");
 			sendPacket = PlayerConnection.getMethod("sendPacket", Packet);
@@ -60,8 +58,11 @@ public class NBTPlayer {
 			
 			if(version.equals("v1_7_R4"))
 				PacketPlayOutBedConstructor = PacketPlayOutBed.getConstructor(EntityHuman,int.class,int.class,int.class);
-			else
+			else{
+				BlockPosition = Class.forName("net.minecraft.server."+version+".BlockPosition");
+				BlockPositionConstructor = BlockPosition.getConstructor(int.class,int.class,int.class);
 				PacketPlayOutBedConstructor = PacketPlayOutBed.getConstructor(EntityHuman,BlockPosition);
+			}
 			
 			if(version.equals("v1_7_R4"))return;
 			IChatBaseComponent = Class.forName("net.minecraft.server."+version+".IChatBaseComponent");

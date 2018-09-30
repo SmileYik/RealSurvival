@@ -97,8 +97,12 @@ public class SleepEvent implements Listener{
 		if(!(e.getEntity() instanceof Player))return;
 		Player p = (Player)e.getEntity();
 		if(!Data.enableInPlayer(p.getUniqueId()))return;
-		if(p.isSleeping() || Data.getPlayerData(p.getUniqueId()).getSleep().isHasSleep())
+		if(p.isSleeping() || Data.getPlayerData(p.getUniqueId()).getSleep().isHasSleep()){
 			NBTPlayer.leaveBed(p);
+			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
+			e.setCancelled(true);
+			sleep.remove(p.getName());
+		}
 	}
 	
 	@EventHandler

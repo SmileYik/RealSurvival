@@ -62,13 +62,13 @@ public class CraftItemEvent implements Listener{
 		Player p=(Player) e.getWhoClicked();
 		
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
-		if(e.isShiftClick()){
-			e.setCancelled(true);
-			return;
-		}
 		if(e.getInventory().getTitle().equalsIgnoreCase(I18n.tr("recipe1"))){
 			
 			if(e.getRawSlot() == 49){
+				if(e.isShiftClick()){
+					e.setCancelled(true);
+					return;
+				}
 				e.setCancelled(true);
 				p.closeInventory();
 				if(e.isRightClick()){

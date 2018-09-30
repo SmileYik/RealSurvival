@@ -28,9 +28,8 @@ public class UseItemEvent implements Listener {
 	public void playerEatFood(PlayerItemConsumeEvent e){
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		if(pd==null) {
-			if(NBTItemData.isNBTItem(e.getItem())) e.setCancelled(true);
+			if(ItemLoreData.isRealSurvivalItem(e.getItem()))e.setCancelled(true);
 			else if(Data.foodEffect.containsKey(e.getItem().getType().name()))e.setCancelled(true);
-			else if(ItemLoreData.getItemLoreData(e.getItem())!=null)e.setCancelled(true);
 			return;
 		}
 		
@@ -77,8 +76,7 @@ public class UseItemEvent implements Listener {
 		}
 		PlayerData pd = Data.playerData.get(e.getPlayer().getUniqueId());
 		if(pd==null) {
-			if(NBTItemData.isNBTItem(e.getItem())) e.setCancelled(true);
-			else if(ItemLoreData.getItemLoreData(e.getItem())!=null)e.setCancelled(true);
+			if(ItemLoreData.isRealSurvivalItem(e.getItem()))e.setCancelled(true);
 			return;
 		}
 		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR))return;
