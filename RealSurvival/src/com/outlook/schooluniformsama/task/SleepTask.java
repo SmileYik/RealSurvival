@@ -11,7 +11,6 @@ import com.outlook.schooluniformsama.api.data.EffectType;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 import com.outlook.schooluniformsama.event.SleepEvent;
-import com.outlook.schooluniformsama.nms.NBTPlayer;
 import com.outlook.schooluniformsama.util.Util;
 
 public class SleepTask implements Runnable{
@@ -36,7 +35,7 @@ public class SleepTask implements Runnable{
 				
 				if(SleepEvent.sleepDuringDay && pd.getSleep().getSleep()<=1){
 					Location l = p.getLocation();
-					NBTPlayer.sleep(p, l);
+					Data.bed.sleep(p, l);
 					p.sendMessage(I18n.tr("sleep1"));
 					Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(p, l.getBlock()));
 				}

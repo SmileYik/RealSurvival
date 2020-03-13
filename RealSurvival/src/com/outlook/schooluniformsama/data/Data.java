@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import com.outlook.schooluniformsama.nms.bed.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
@@ -36,6 +37,7 @@ public class Data {
 	
 	public static String DATAFOLDER;
 	public static List<String> worlds;
+	public static BedNMS bed;
 	/**
 	 * randomData &nbsp; 
 	 * deathData &nbsp; 
@@ -115,12 +117,22 @@ public class Data {
 	
 	public static void init(RealSurvival plugin){
 		new Converter().check();
-		
+
+		setupNMS();
+
 		LinkedList<String> worlds = new LinkedList<>();
 		for(String world:plugin.getConfig().getStringList("worlds")){
-			worlds.add(world.toLowerCase());
+			if(plugin.getServer().getWorld(world) != null) {
+				worlds.add(world);
+			}else {
+				plugin.getLogger().warning("World: "+world+" is not exist.");
+			}
 		}
 		Data.worlds=worlds;
+		
+		if(worlds.isEmpty()) {
+			plugin.getLogger().warning("RealSurvival will not work. Because no enable world.");
+		}
 		
 		Data.enablePrefixInTitle = plugin.getConfig().getBoolean("enable-prefix-in-title");
 		Data.stateCD = plugin.getConfig().getLong("state-cd");
@@ -293,7 +305,48 @@ public class Data {
 		}, 20);
 		
 	}
-	
+
+	private static void setupNMS(){
+		switch(versionData[0]){
+			case 7:
+				bed = new BED_1_7_R4();
+				break;
+			case 8:
+				switch (versionData[1]) {
+				case 1:
+					bed = new BED_1_8_R1();
+					break;
+				case 3:
+					bed = new BED_1_8_R3();
+					break;
+				default:
+					break;
+				}
+				break;
+			case 9:
+				switch (versionData[1]) {
+				case 1:
+					bed = new BED_1_9_R1();
+					break;
+				case 2:
+					bed = new BED_1_9_R2();
+					break;
+				default:
+					break;
+				}
+				break;
+			case 10:
+				bed = new BED_1_10_R1();
+				break;
+			case 11:
+				bed = new BED_1_11_R1();
+				break;
+			case 12:
+				bed = new BED_1_12_R1();
+				break;
+		}
+	}
+
 	private static void loadRecipes(ArrayList<String> recipe,File path,String recipeName){
 		for(File sf:path.listFiles()){
 			if(sf.isFile()){

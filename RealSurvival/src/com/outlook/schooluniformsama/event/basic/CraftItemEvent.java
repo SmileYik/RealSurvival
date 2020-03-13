@@ -62,7 +62,7 @@ public class CraftItemEvent implements Listener{
 		Player p=(Player) e.getWhoClicked();
 		
 		if(e.getSlotType()==SlotType.OUTSIDE)return;
-		if(e.getInventory().getTitle().equalsIgnoreCase(I18n.tr("recipe1"))){
+		if(e.getView().getTitle().equalsIgnoreCase(I18n.tr("recipe1"))){
 			
 			if(e.getRawSlot() == 49){
 				if(e.isShiftClick()){
@@ -87,7 +87,7 @@ public class CraftItemEvent implements Listener{
 		if(!Data.playerData.containsKey(p.getUniqueId()))
 			return;
 		
-		if(e.getInventory().getTitle().contains(" §f- W*")){
+		if(e.getView().getTitle().contains(" §f- W*")){
 			if(e.getRawSlot()<54&&!Workbench.materials.contains(e.getRawSlot())&&!Workbench.products.contains(e.getRawSlot())&&e.getRawSlot()!=49){
 				e.setCancelled(true);
 				return;
@@ -124,7 +124,7 @@ public class CraftItemEvent implements Listener{
 				return;
 			}
 			return;
-		}else if(e.getInventory().getTitle().contains(" §f- W§3§l*")){
+		}else if(e.getView().getTitle().contains(" §f- W§3§l*")){
 			e.setCancelled(true);
 			
 			WorkbenchTimer wt=(WorkbenchTimer) Data.timer.get(TempData.openingWorkbench.get(p.getName()));
@@ -158,7 +158,7 @@ public class CraftItemEvent implements Listener{
 				p.openInventory(Workbench.checkPass(e.getInventory(), wt));
 				return;
 			}
-		}else if(e.getInventory().getTitle().contains(" §f- W")){
+		}else if(e.getView().getTitle().contains(" §f- W")){
 			if((!Workbench.materials.contains(e.getRawSlot())&&e.getRawSlot()<54)&&e.getRawSlot()!=49){
 				e.setCancelled(true);
 				p.closeInventory();
@@ -222,7 +222,7 @@ public class CraftItemEvent implements Listener{
 			}
 			clickOKLock.remove(p.getName());
 			return;
-		}else if(e.getInventory().getTitle().contains(" §f- F§3§l*")){
+		}else if(e.getView().getTitle().contains(" §f- F§3§l*")){
 			e.setCancelled(true);
 			FurnaceTimer ft=(FurnaceTimer) Data.timer.get(TempData.openingWorkbench.get(p.getName()));
 			if(e.getRawSlot()==49){
@@ -263,7 +263,7 @@ public class CraftItemEvent implements Listener{
 				clickOKLock.remove(p.getName());
 				return;
 			}
-		}else if(e.getInventory().getTitle().contains(" §f- F*")){
+		}else if(e.getView().getTitle().contains(" §f- F*")){
 			if(e.getRawSlot()<54&&!Furnace.mSlot.contains(e.getRawSlot())&&!Furnace.pSlot.contains(e.getRawSlot())&&e.getRawSlot()!=49){
 				e.setCancelled(true);
 				return;
@@ -296,7 +296,7 @@ public class CraftItemEvent implements Listener{
 					return;
 				}
 			}
-		}else if(e.getInventory().getTitle().contains(" §f- F")){
+		}else if(e.getView().getTitle().contains(" §f- F")){
 			if(e.getRawSlot()<54&&!Furnace.mSlot.contains(e.getRawSlot())&&e.getRawSlot()!=4&&e.getRawSlot()!=49){
 				e.setCancelled(true);
 				p.closeInventory();
@@ -345,7 +345,7 @@ public class CraftItemEvent implements Listener{
 			}
 			clickOKLock.remove(p.getName());
 			return;
-		}else if(e.getInventory().getTitle().equals(I18n.tr("rainwater1"))){
+		}else if(e.getView().getTitle().equals(I18n.tr("rainwater1"))){
 			RainwaterCollectorTimer rct = (RainwaterCollectorTimer)Data.timer.get(TempData.openingWorkbench.get(p.getName()));
 			if(e.getRawSlot()<27){
 				e.setCancelled(true);
@@ -357,12 +357,12 @@ public class CraftItemEvent implements Listener{
 	
 	@EventHandler
 	public void closeCraftTables(InventoryCloseEvent e){
-		if(e.getInventory().getTitle().contains("*"))return;
-		if(e.getInventory().getTitle().contains(" §f- W")){
+		if(e.getView().getTitle().contains("*"))return;
+		if(e.getView().getTitle().contains(" §f- W")){
 			for(int i:Workbench.materials)
 				if(e.getInventory().getItem(i)!=null)
 					givePlayerItem((Player)e.getPlayer(),e.getInventory().getItem(i));
-		}else if(e.getInventory().getTitle().contains(" §f- F")){
+		}else if(e.getView().getTitle().contains(" §f- F")){
 			for(int i:Furnace.mSlot)
 				if(e.getInventory().getItem(i)!=null)
 					givePlayerItem((Player)e.getPlayer(),e.getInventory().getItem(i));

@@ -1,4 +1,4 @@
-  language: en
+  language: zh
   
   check-update: true
   enable-bStats: true
@@ -234,8 +234,8 @@
       - SleepMin:SLOW,130,1;WEAKNESS,130,3
       - SleepMax:
       - Weight:SLOW,300,3
-      - Fever:THIRST_L,60,150%,10;CONFUSION,130,3
-      - Cold:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+      - Fever:
+      - Cold:
       - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
       - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
       - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3

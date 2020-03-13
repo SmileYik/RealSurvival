@@ -24,7 +24,7 @@ public class ThirstEvent implements Listener{
 		if(!(e.getAction()==Action.RIGHT_CLICK_BLOCK||e.getAction()==Action.RIGHT_CLICK_AIR)
 				||e.getMaterial()!=Material.GLASS_BOTTLE)return;
 		if((Data.versionData[0] > 9 || (Data.versionData[0] == 9 && Data.versionData[1] ==1)))
-			if(!e.getHand().equals(EquipmentSlot.HAND))return;
+			if(e.getHand()!=EquipmentSlot.HAND)return;
 		Block block=e.getPlayer().getWorld().getBlockAt(e.getPlayer().getTargetBlock((Set<Material>)null, 6).getLocation()); 
 		if(!(block.getType()==Material.WATER||block.getType()==Material.STATIONARY_WATER))return;
 		e.setCancelled(true);

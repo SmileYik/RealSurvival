@@ -38,7 +38,7 @@ public interface ReaLSurvivalAPI {
 	 * @param number
 	 * @param type 
 	 */
-	public default void changePlayerData(Player p,double number,EffectType type){
+	public default void changePlayerData(Player p, double number, EffectType type){
 		if(!checkPlayerData(p))return;
 		switch (type) {
 		case ENERGY:
@@ -69,7 +69,7 @@ public interface ReaLSurvivalAPI {
 	 * @return -1 or a double.  <p>
 	 * -1 means failed.
 	 */
-	public default double getPlayerData(Player p,EffectType type){
+	public default double getPlayerData(Player p, EffectType type){
 		if(!checkPlayerData(p))return -1;
 		switch (type) {
 		case ENERGY:
@@ -110,7 +110,7 @@ public interface ReaLSurvivalAPI {
 	 * @param p
 	 * @param name
 	 */
-	public default void addIllness(Player p,String name){
+	public default void addIllness(Player p, String name){
 		if(!checkPlayerData(p))return;
 		Data.getPlayerData(p.getUniqueId()).addIllness(name, 100, null);
 	}
@@ -121,7 +121,7 @@ public interface ReaLSurvivalAPI {
 	 * @param p
 	 * @param name
 	 */
-	public default void removeIllness(Player p,String name){
+	public default void removeIllness(Player p, String name){
 		if(!checkPlayerData(p))return;
 		Data.getPlayerData(p.getUniqueId()).getIllness().remove(name);
 	}
@@ -142,7 +142,7 @@ public interface ReaLSurvivalAPI {
 	 * @param p
 	 * @param bool - true is freezing player's data
 	 */
-	public default void setPlayerUnlimited(Player p,boolean bool){
+	public default void setPlayerUnlimited(Player p, boolean bool){
 		PlayerData pd;
 		if(Data.enableInPlayer(p.getUniqueId())){
 			pd = Data.getPlayerData(p.getUniqueId());

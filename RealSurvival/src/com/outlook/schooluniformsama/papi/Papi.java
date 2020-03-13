@@ -7,12 +7,13 @@ import com.outlook.schooluniformsama.RealSurvival;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
 
-import me.clip.placeholderapi.external.EZPlaceholderHook;
+import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 
-public class Papi extends EZPlaceholderHook {
-	
-	public Papi(RealSurvival Data) {
-		super(Data, "rs");
+public class Papi extends PlaceholderExpansion  {
+	private  RealSurvival rs;
+
+	public Papi(RealSurvival data) {
+		rs = data;
 	}
 
 	@Override
@@ -81,5 +82,20 @@ public class Papi extends EZPlaceholderHook {
 	
 	private String _2f(double d){
 		return String.format("%.2f", d);
+	}
+
+	@Override
+	public String getIdentifier() {
+		return "rs";
+	}
+
+	@Override
+	public String getAuthor() {
+		return "miSkYle";
+	}
+
+	@Override
+	public String getVersion() {
+		return rs.getDescription().getVersion();
 	}
 }

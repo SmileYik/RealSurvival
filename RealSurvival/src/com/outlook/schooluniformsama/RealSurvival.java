@@ -29,8 +29,8 @@ import com.outlook.schooluniformsama.lowversion.CraftItemEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_7;
 import com.outlook.schooluniformsama.lowversion.ThirstEvent_1_8;
 import com.outlook.schooluniformsama.lowversion.UseItemEvent_1_8;
-import com.outlook.schooluniformsama.nms.*;
 import com.outlook.schooluniformsama.nms.NBTItem;
+import com.outlook.schooluniformsama.nms.NBTPlayer;
 import com.outlook.schooluniformsama.papi.Papi;
 import com.outlook.schooluniformsama.task.EffectTask;
 import com.outlook.schooluniformsama.task.EnergyTask;
@@ -44,10 +44,7 @@ import com.outlook.schooluniformsama.task.WorkbenchTask;
 import com.outlook.schooluniformsama.update.Update;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
-import com.outlook.schooluniformsama.util.bstats.Metrics_1_8_UP;
-
 import com.outlook.schooluniformsama.util.bstats.Metrics;
-import com.outlook.schooluniformsama.util.bstats.Metrics_1_7;
 
 public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	
@@ -77,7 +74,8 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	public static String getVersion(){
 		String version;
         try {
-            version = Bukkit.getServer().getClass().getPackage().getName().replace(".",  ",").split(",")[3];
+            version = Bukkit.getServer().getClass().getPackage().getName()
+            		.replace(".",  ",").split(",")[3];
         } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
             return null;
         }
@@ -191,7 +189,13 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		if(!new File(getDataFolder()+File.separator+"timer.yml").exists())
 			try {new File(getDataFolder()+File.separator+"timer.yml").createNewFile();}catch (IOException e1) {}
 		
-		Data.versionData = new int[]{Integer.parseInt(RealSurvival.getVersion().split("_")[1]),Integer.parseInt(RealSurvival.getVersion().split("_")[1].replace("R", ""))};
+		Data.versionData = new int[]{
+				Integer.parseInt(RealSurvival.getVersion().split("_")[1]),
+				Integer.parseInt(RealSurvival.getVersion().split("_")[1].replace("R", ""))
+				};
+		if(Data.versionData[0]>12) {
+			this.getLogger().info("检测到RealSurvival在 1.13 或更高版本的服务端上运行, 可能无法使用工作台功能.");
+		}
 		if(Data.versionData[0]>8){
 			cmds = new Commands(this);
 			cmdsType = CommandsType.Commands_1_9_UP;
@@ -232,12 +236,20 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		
 		if(Data.switchs[2]){
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new SleepTask(), 20L, 1*20L);
-			getServer().getPluginManager().registerEvents(new SleepEvent(getConfig().getBoolean("state.sleep.sleep-during-the-day")), this);
+			boolean bool = getConfig().getBoolean("state.sleep.sleep-during-the-day");
+			if(Data.bed == null) {
+				getLogger().info("sleep-during-the-day 选项仅适于服务端 1.12 版本及以下版本, 故选项自动关闭.");
+				bool = false;
+			}
+			getServer().getPluginManager().registerEvents(new SleepEvent(bool), this);
 		}
 		if(Data.switchs[3]){
-			if(Data.versionData[0]<=7) getServer().getPluginManager().registerEvents(new ThirstEvent_1_7(), this);
-			else if(Data.versionData[0]<=8) getServer().getPluginManager().registerEvents(new ThirstEvent_1_8(), this);
-			else getServer().getPluginManager().registerEvents(new ThirstEvent(), this);
+			if(Data.versionData[0]<=7) 
+				getServer().getPluginManager().registerEvents(new ThirstEvent_1_7(), this);
+			else if(Data.versionData[0]<=8) 
+				getServer().getPluginManager().registerEvents(new ThirstEvent_1_8(), this);
+			else 
+				getServer().getPluginManager().registerEvents(new ThirstEvent(), this);
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(this, new ThirstTask(), 20L, 1*20L);
 		}
 		if(Data.switchs[4]){
@@ -260,9 +272,11 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 		
 		//PlaceholderAPI
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
-			new Papi(this).hook();
-			getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI !");
+			if(new Papi(this).register()){
+				getLogger().info("§9[RealSurvival] Successful loading PlaceholderAPI !");
+			}
 		}
+		
 		//Chairs
 		if(Bukkit.getPluginManager().isPluginEnabled("Chairs")){
 			getServer().getPluginManager().registerEvents(new SitEvent(), this);
@@ -275,13 +289,7 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 	}
 	
 	private void setupMetrics(){
-		@SuppressWarnings("unused")
-		Metrics metrics;
-		if(Data.versionData[0]<=7){
-			 metrics = new Metrics_1_7(this);
-		}else{
-			 metrics = new Metrics_1_8_UP(this);
-		}
+		new Metrics(this,1974);
 	}
 	
 }

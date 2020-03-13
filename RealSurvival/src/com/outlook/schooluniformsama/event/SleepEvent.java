@@ -19,7 +19,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.nms.NBTPlayer;
 import com.outlook.schooluniformsama.util.Msg;
 import com.outlook.schooluniformsama.util.Util;
 
@@ -63,17 +62,17 @@ public class SleepEvent implements Listener{
 				e.setCancelled(true);
 				return;
 			}
-			NBTPlayer.leaveBed(p);
+			Data.bed.level(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
 			sleep.remove(e.getPlayer().getName());
 		}else if(p.isSleeping()){
-			NBTPlayer.leaveBed(p);
+			Data.bed.level(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
 			sleep.remove(e.getPlayer().getName());
 		}else if(sleep.contains(p.getName())){
-			NBTPlayer.leaveBed(p);
+			Data.bed.level(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
 			sleep.remove(e.getPlayer().getName());
@@ -98,7 +97,7 @@ public class SleepEvent implements Listener{
 		Player p = (Player)e.getEntity();
 		if(!Data.enableInPlayer(p.getUniqueId()))return;
 		if(p.isSleeping() || Data.getPlayerData(p.getUniqueId()).getSleep().isHasSleep()){
-			NBTPlayer.leaveBed(p);
+			Data.bed.level(p);
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 			e.setCancelled(true);
 			sleep.remove(p.getName());
@@ -118,7 +117,7 @@ public class SleepEvent implements Listener{
 		}
 		e.setCancelled(true);
 		if(sleep.contains(e.getPlayer().getName()))return;
-		NBTPlayer.sleep(e.getPlayer(), e.getClickedBlock().getLocation());
+		Data.bed.sleep(e.getPlayer(), e.getClickedBlock().getLocation());
 		sleep.add(e.getPlayer().getName());
 		e.getPlayer().sendMessage(I18n.tr("sleep1"));
 		Bukkit.getPluginManager().callEvent(new PlayerBedEnterEvent(e.getPlayer(), e.getClickedBlock()));
@@ -127,7 +126,7 @@ public class SleepEvent implements Listener{
 	public static void getUpPlayer(){
 		for(String name:sleep){
 			Player p = Bukkit.getServer().getPlayer(name);
-			NBTPlayer.leaveBed(p);
+			Data.bed.sleep(p,p.getLocation());
 			Bukkit.getPluginManager().callEvent(new PlayerBedLeaveEvent(p, p.getLocation().getBlock()));
 		}
 		sleep.clear();
