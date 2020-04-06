@@ -378,7 +378,7 @@ public class Data {
 	}
 	
 	public static boolean enableInWorld(String worldName){
-		return worlds.contains(worldName.toLowerCase());
+		return worlds.contains(worldName);
 	}
 	
 	public static boolean enableInPlayer(UUID uuid){
