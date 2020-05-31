@@ -8,8 +8,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
-import com.outlook.schooluniformsama.data.timer.Timer;
+import com.outlook.schooluniformsama.data.recipe.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.Timer;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;
 
 public class SaveConfigTask implements Runnable{

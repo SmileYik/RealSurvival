@@ -3,7 +3,7 @@ package com.outlook.schooluniformsama.api.event;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
 /**
 * start when player made over a item. <p>
 * \u5f53\u73a9\u5bb6\u6536\u8d27\u7269\u54c1\u7684\u65f6\u5019\u89e6\u53d1\u8be5\u4e8b\u4ef6

@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -179,9 +182,20 @@ public class RealSurvival extends JavaPlugin implements ReaLSurvivalAPI{
 			new File(getDataFolder()+File.separator+"recipe/furnace").mkdirs();
 		if(!new File(getDataFolder()+File.separator+"recipe/workbench").exists())
 			new File(getDataFolder()+File.separator+"recipe/workbench").mkdirs();
-		if(!new File(getDataFolder()+File.separator+"config.yml").exists())
+		if(!new File(getDataFolder()+File.separator+"config.yml").exists()) {
 			saveDefaultConfig();
-		try{reloadConfig();}catch (Exception e){}
+			try{reloadConfig();}catch (Exception e){}
+			List<String> worlds = new LinkedList<String>();
+			for(World world : getServer().getWorlds()) {
+				worlds.add(world.getName());
+			}
+			getConfig().set("worlds", worlds);
+			try {
+				getConfig().save(new File(getDataFolder()+File.separator+"config.yml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		new I18n(this,getConfig().getString("language"));
 		new Msg(this);

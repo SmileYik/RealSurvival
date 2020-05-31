@@ -3,7 +3,7 @@ package com.outlook.schooluniformsama.api.event;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
 
 /**
  * When player start make a item by furnace <p>

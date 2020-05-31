@@ -16,6 +16,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -36,13 +37,17 @@ import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.item.ItemLoreData;
 import com.outlook.schooluniformsama.data.item.Items;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
-import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
-import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
-import com.outlook.schooluniformsama.data.timer.Timer;
-import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.holder.ForgeHolder;
+import com.outlook.schooluniformsama.data.recipe.holder.ForgeState;
+import com.outlook.schooluniformsama.data.recipe.holder.FurnaceHolder;
+import com.outlook.schooluniformsama.data.recipe.holder.WorkbenchHolder;
+import com.outlook.schooluniformsama.data.recipe.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.RainwaterCollectorTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.Timer;
+import com.outlook.schooluniformsama.data.recipe.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.gui.FeatureGUI;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
@@ -55,7 +60,62 @@ public class CraftItemEvent implements Listener{
 	private LinkedList<String> clickOKLock = new LinkedList<>();
 	
 	@EventHandler(priority = EventPriority.LOWEST)
-	public void openCarftTable(InventoryClickEvent e){
+	public void openCarftTable(final InventoryClickEvent e){
+		if(!(e.getWhoClicked() instanceof Player))return;
+		if(e.getView().getTopInventory().getHolder()==null ||
+				!(e.getView().getTopInventory().getHolder() instanceof ForgeHolder)) return;
+		if(e.getSlotType() == SlotType.OUTSIDE)return;
+		if(e.getClick() == ClickType.WINDOW_BORDER_LEFT ||
+                e.getClick() == ClickType.WINDOW_BORDER_RIGHT) return;
+		Player p = (Player)e.getWhoClicked();
+		if(e.getView().getTopInventory().getHolder() instanceof WorkbenchHolder) {
+			WorkbenchHolder holder = (WorkbenchHolder) e.getView().getTopInventory().getHolder();
+			if(holder.getState() == ForgeState.Admin_Create) {
+				
+			}else if(holder.getState() == ForgeState.None) {
+				
+			}else if(holder.getState() == ForgeState.Forging) {
+				e.setCancelled(true);
+				WorkbenchTimer timer = (WorkbenchTimer)Data.timer.get(holder.getWorldKey());
+				if(e.getClick() != ClickType.LEFT) {
+					e.setCancelled(true);
+					p.updateInventory();
+					return;
+				}else if(e.getRawSlot() == 49) {
+					if(timer.isOver()) {
+						
+					}else {
+						e.setCancelled(true);
+						p.updateInventory();
+						p.sendMessage(I18n.trp());
+						return;
+					}
+				}
+				
+			}
+		}else if(e.getView().getTopInventory().getHolder() instanceof FurnaceHolder) {
+			
+		}
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		
 		if(e.getWhoClicked() instanceof Player == false)
 			return;
@@ -385,47 +445,6 @@ public class CraftItemEvent implements Listener{
 			openRainwaterCollector(p, block);
 			return;
 		}
-		
-		for(Map.Entry<String,WorkbenchShape> entry:Data.workbenchs.entrySet()){
-			if(block.getType().name().equalsIgnoreCase(entry.getValue().getMain()) && compare(block,BlockFace.UP,entry.getValue().getUp()) && compare(block,BlockFace.DOWN,entry.getValue().getDown())){
-				if((compare(block,BlockFace.NORTH,entry.getValue().getLeft())&&compare(block,BlockFace.SOUTH,entry.getValue().getRight())&&compare(block,BlockFace.EAST,entry.getValue().getBehind())&&compare(block,BlockFace.WEST,entry.getValue().getFront())) || 
-						(compare(block,BlockFace.NORTH,entry.getValue().getBehind())&&compare(block,BlockFace.SOUTH,entry.getValue().getFront())&&compare(block,BlockFace.EAST,entry.getValue().getRight())&&compare(block,BlockFace.WEST,entry.getValue().getLeft())) || 
-						(compare(block,BlockFace.NORTH,entry.getValue().getRight())&&compare(block,BlockFace.SOUTH,entry.getValue().getLeft())&&compare(block,BlockFace.EAST,entry.getValue().getFront())&&compare(block,BlockFace.WEST,entry.getValue().getBehind())) || 
-						(compare(block,BlockFace.NORTH,entry.getValue().getFront())&&compare(block,BlockFace.SOUTH,entry.getValue().getBehind())&&compare(block,BlockFace.EAST,entry.getValue().getLeft())&&compare(block,BlockFace.WEST,entry.getValue().getRight()))){
-					if(p.isSneaking()){
-						if(e.getItem()==null && Data.timer.containsKey(Util.getWorkbenchID(block))){
-							Timer t = Data.timer.get(Util.getWorkbenchID(block));
-							if(entry.getValue().getType()==WorkbenchType.WORKBENCH){
-								if(t.isOver())
-									p.sendMessage(I18n.trp("workbench13"));
-								else
-									p.sendMessage(I18n.trp("workbench12", Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
-							}else if(entry.getValue().getType()==WorkbenchType.FURNACE){
-								FurnaceTimer ft = (FurnaceTimer) t;
-								if(ft.isBad())
-									p.sendMessage(I18n.trp("furnace16"));
-								else if(ft.isOver())
-									p.sendMessage(I18n.trp("furnace15"));
-								else if(ft.getLastTemperature()<ft.getMinTemperature())
-									p.sendMessage(I18n.trp("furnace13",Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
-								else p.sendMessage(I18n.trp("furnace14",Util.RDP(t.getTime()/(double)t.getNeedTime()*100,2),t.getNeedTime()-t.getTime()));
-							}
-							return;
-						}
-						return;
-					}
-					e.setCancelled(true);
-					if(entry.getValue().getType()==WorkbenchType.WORKBENCH){
-						openWorkbenchGUI(p, block,entry.getKey());
-						break;
-					}
-					else if(entry.getValue().getType()==WorkbenchType.FURNACE){
-						openFurnaceGUI(p, block,entry.getKey());
-						break;
-					}
-				}
-			}
-		}
 	}
 	
 	@EventHandler
@@ -580,40 +599,6 @@ public class CraftItemEvent implements Listener{
 			Data.timer.put(Util.getWorkbenchID(b), rct);
 			p.openInventory(FeatureGUI.openRainwaterCollector((RainwaterCollectorTimer) Data.timer.get(Util.getWorkbenchID(b))));
 		}
-	}
-	
-	private void openFurnaceGUI(Player p,Block b,String ws){
-		if(Data.timer.containsKey(Util.getWorkbenchID(b))){
-			if(Data.timer.get(Util.getWorkbenchID(b)).getPlayerName().equals(p.getName())){
-				TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
-				p.openInventory(Furnace.openFurnaceGUI((FurnaceTimer) Data.timer.get(Util.getWorkbenchID(b))));
-			}else p.sendMessage(I18n.trp("workbench1",Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()));
-		}else{			
-			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.FURNACE, 
-					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
-			TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
-			p.openInventory(Furnace.createFurnaceGUI(Data.workbenchs.get(ws).getTitle()));
-		}
-	}
-	
-	private void openWorkbenchGUI(Player p,Block b,String ws){
-		if(Data.timer.containsKey(Util.getWorkbenchID(b))){
-			if(Data.timer.get(Util.getWorkbenchID(b)).getPlayerName().equals(p.getName())){
-				TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
-				p.openInventory(Workbench.openWorkbenchGUI((WorkbenchTimer) Data.timer.get(Util.getWorkbenchID(b))));
-			}else p.sendMessage(I18n.trp("workbench1",Data.timer.get(Util.getWorkbenchID(b)).getPlayerName()));
-		}else{			
-			TempData.createTimerTemp.put(p.getName(), new Timer(ws,p.getName(), WorkbenchType.WORKBENCH, 
-					b.getWorld().getName(), b.getX(), b.getY(), b.getZ()));
-			TempData.openingWorkbench.put(p.getName(), Util.getWorkbenchID(b));
-			p.openInventory(Workbench.createWorkbenchGUI(Data.workbenchs.get(ws).getTitle()));
-		}
-	}
-	
-	private boolean compare(Block b,BlockFace face,String name){
-		if(name==null || name.equalsIgnoreCase("null"))
-			return true;
-		return b.getRelative(face).getType().name().equalsIgnoreCase(name);
 	}
 
 	private boolean hasPermission(Player p,String childPermission){

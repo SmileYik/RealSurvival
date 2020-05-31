@@ -1,0 +1,211 @@
+state1=§e生病
+state2=§2正常
+state3=是
+state4=否
+state5=是否服药\:{0}
+state6=药效时间\: {0} 秒
+state7=药物效果\: 每次恢复 {0}%
+state8=恢复程度\: {0}%
+state9=严重骨折
+state10=骨折
+state11=冻结中...
+
+rainwater1=§2§l雨水收集器
+rainwater2=§c§l这里面的雨水不是你的!
+raniwater3=§c这里面没有足够的雨水...
+raniwater4=§c§l没有发现可以用的净化器!
+raniwater5=§c§l没有找到可以净化的东西!
+
+water1=§b§l海水
+water2=§2§l冰海水
+water3=§7§l沼泽水
+water4=§2§l湖水
+water5=§2§l冰湖水
+water6=§c§l热湖水
+water7=§2§l淡水
+water8=§c§l热水
+water9=§2§l冰水
+water10=§c§l雨水
+water11=§c§l初始化水的种类失败!
+
+sleep1=§b如果要起床,请在聊天窗口输入 \"§c§lleave§b\" 即可起床!
+sleep2=你累倒了!
+sleep3=§b床离你太远了!走进一点试试!
+sleep4=§c你太累了,还不能起来!
+
+workebench1=§c这个工作台正在被§b§l {0} §c使用着!
+workbench2=§4制作物品的时候弹出了个错误!
+workbench3=§4创建配方失败!
+workbench4=§b创建配方成功!
+workbench5=§4修改配方失败!
+workbench6=§b修改配方成功!
+workbench7=§b§l>§c§l开始§b§l<
+workbench8=§4现在还不可以拿走...
+workbench9=§b已完成: {0}%
+workbench10=§b物品已经制作完成!
+workbench11=§b保存
+workbench12=§b进度: §3{0}%§b, 还有 §c{1} §b秒完成.
+workbench13=§2§l已经完成了!
+workbenchPermissionMake=我还不会这个.
+
+furnace1=§b§l>§c§l开始§b§l<
+furnace2=§c制作失败了!
+furnace3=§e需要大于: {0}℃
+furnace4=§e需要小于: {0}℃
+furnace5=§b需要时间: {0} 秒
+furnace6=§4制作过程中,失败了..你什么都没有得到,,,
+furnace7=§e温度: §e§l{0}§e℃ | 需要大于: §e§l{1}℃ §e才可以进行锻造!
+furnace8=§e温度: §e§l{0}§e℃ | 需要小于: §e§l{1}℃ §e才可以进行锻造!
+furnace9=§b制造进度: {0}% | 剩余{1}秒制造完成
+furnace10=§7离烧坏时间还剩{0}秒
+furnace11=§b保存
+furnace12=§e制作完成!
+furnace13=§b进度: §3{0}%§b, 还有 §c{1} §b秒完成. §c§l温度貌似不够啊.
+furnace14=§b进度: §3{0}%§b, 还有 §c{1} §b秒完成. 温度刚刚好.
+furnace15=§2§l已经完成啦~
+furnace16=§7§l烧成灰了.
+
+recipe1=§b配方查看器
+recipe2=§c没有找到这个配方
+recipe3=§b制造时间: {0} 秒 | 保存时间: {1}秒
+recipe4=§b需要温度: {0}℃ | 最大温度: {1}℃
+recipe5=§b制造时间: {0}秒
+recipe6=§b关闭 §3§l| §a查看工作台
+recipeWorkbenchViewClose=§b关闭
+recipeMissingWorkbench=§c没找到 §3§l{0} §c的摆放方式
+
+cdes1=查看帮助
+cdes2=查看自身状态
+cdes3=搜索指令
+cdes4=查看物品操作的指令
+cdes5=查看某个玩家的状态
+cdes6=查看工作台操作的指令
+cdes7=创建一个新的熔炉配方
+cdes8=创建一个新的工作台配方
+cdes9=重新设定一个熔炉配方
+cdes10=更新本插件(请做好备份)
+cdes11=检查更新
+cdes12=查看当前版本的更新内容
+cdes13=保存物品到本地
+cdes14=取读本地物品
+cdes15=删除本地物品
+cdes16=设定物品属性值
+cdes17=设定指定行的Lore
+cdes18=增加一行Lore
+cdes19=设定NBT
+cdes20=设定名字
+cdes21=移除一行Lore
+cdes22=移除所有Lore
+cdes23=冻结属性
+cdes24=重载RealSurvival
+cdes25=将手中的物品设定为水
+cdes26=得到一种水
+cdes27=获取水的种类
+cdes28=查看配方
+cdes29=查看与升级有关的指令
+cdes30=在控制台打开RealSurvivalMaker
+commandDesViewWorkbench=插件工作台的三视图
+
+cmdArgsSHelp=[关键字]
+cmdCRName=[配方名]
+cmdCRTableType=[工作台类型]
+cmdCRNeedTime=[制造时间]
+cmdCRBadTime=[保存时间]
+cmdCRMinTem=[最小温度]
+cmdCRMaxTem=[最大温度]
+cmdItemFileName=[文件名]
+cmdItemName=[名字]
+cmdItemLore=[描述]
+cmdItemWaterName=[水的类型]
+cmdItemNBTFileName=[NBT物品文件名]
+cmdItemNBTKey=[NBT键]
+cmdItemNBTValue=[NBT值]
+cmdItemLine=[行]
+cmdStatePlayerName=[玩家名]
+cmdStateChoose=[§4§ltrue §3| §4§lfalse§3](这2个中选一个)
+
+cmd1=§c§l你没有权利这样做!
+cmd2=§b这个指令不存在,请使用§c§l/rs help§b查看帮助!
+cmd3=§c这个指令只能玩家使用!
+cmd4=§c第§c§l{0}§c个参数应该为小数哦!
+cmd5=§c第§c§l{0}§c个参数应该为整数哦!
+cmd6=§c§l指令错误!
+cmd7=§b以下是本插件的帮助信息: 
+cmd8=§b以下是关于§c§l{0}§b的指令: 
+cmd9=§c检查更新失败!
+cmd10=§b这个版本是最新的版本!
+cmd11=§b最新版本: §b§l{0} §b已经下载完成,重新载入RealSurvival以启用它!
+cmd12=§b当前版本: §b§l{0}§b, 有最新版本: §b§l{1}§l ,输入§c§l/rs update§b进行更新,§c§l更新前请先备份好数据!
+cmd13=§c§l将会删除config.yml文件
+cmd14=§c§l将会删除messages.yml文件
+cmd15=§c物品删除失败!
+cmd16=§c物品保存失败!
+cmd17=§c§l{0}§c 这个配方已经存在了!
+cmd18=§c§l{0}§c 这个配方不存在!
+cmd19=§c§l这个物品名在本地中已存在!
+cmd20=§c在本地中没有找到这个物品!
+cmd21=§c你手中是空的!
+cmd22=§b物品保存成功, 保存至本地文件: §c§l{0}.yml
+cmd23=§b目前显示的为上一次检测的数据, 需要过一段时间后才能刷新您的数据!
+cmd24=§b您的属性已经被冻结了!
+cmd25=§b§l{0} §b目前不在线上
+
+guiButtoncreate=创建
+guiButtonadd-label=添加标签
+guiButtonsave=保存
+guiButtonclose=关闭
+guiButtonrefresh=刷新
+guiButtonadd-item=添加物品
+guiButtonedit=编辑
+
+guiLabelitem-name=物品名
+guiLabelitem-type=物品类型
+guiLabelitem-label=物品标签
+guiLabelitem-label-data=标签数据
+guiLabelmaterials-editor=材料区
+guiLabelproducts-editor=生成物区
+guiLabelrecipe-name=配方名
+guiLabelworkbench-type=工作台类型
+guiLabelneed-time=制造时间
+guiLabelsave-time=保存时间
+guiLabelmin-temperature=最小温度
+guiLabelmax-temperature=最大温度
+guiLabeloriginal-item=原版物品
+guiLabelitem-type=物品类型
+guiLabelitem-slot=物品位置
+guiLabelitem-amount=物品数量
+
+guiMsgitem-label-data=请输入一个对应的标签数据
+guiMsgitem-name=请输入物品名字
+guiMsgitem-exists=这个物品已经存在了
+guiMsgrecipe-in-doing=你正在编辑一个配方!
+guiMsgnot-int=不是一个数字|
+guiMsgnot-int-2=不是一个有效的数字!
+guiMsgcan-not-be-null=不能为空!
+guiMsgno-selected-item=请在左边列表里选择一个自定义物品!
+
+guiToolTiptree=双击一个节点可以进行编辑!
+
+guiInputDialogcreate=请输入文件名
+
+GUIKeyWordoriginal-item=原版物品
+GUIKeyWorddiy-item=自定义物品
+GUIKeyWordnothing=无
+GUIKeyWordmaterials=材料槽
+GUIKeyWordproducts=生成物槽
+GUIKeyWordamount=数量
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

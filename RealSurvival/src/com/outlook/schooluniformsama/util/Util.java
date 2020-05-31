@@ -4,7 +4,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 
-import com.outlook.schooluniformsama.data.timer.Timer;
+import com.outlook.schooluniformsama.data.recipe.timer.Timer;
 
 
 public class Util{

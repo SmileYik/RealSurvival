@@ -22,7 +22,7 @@ import com.outlook.schooluniformsama.data.TempData;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.item.RSItem;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.data.recipes.*;
+import com.outlook.schooluniformsama.data.recipe.*;
 import com.outlook.schooluniformsama.event.basic.CraftItemEvent;
 import com.outlook.schooluniformsama.gui.*;
 import com.outlook.schooluniformsama.gui.rsmaker.RealSurvivalMaker;

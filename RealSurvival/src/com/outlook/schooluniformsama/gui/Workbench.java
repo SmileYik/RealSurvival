@@ -10,8 +10,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.item.Items;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
-import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipe.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.util.Util;
 
 public class Workbench {

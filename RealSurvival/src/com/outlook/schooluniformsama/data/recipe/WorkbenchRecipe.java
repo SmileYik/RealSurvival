@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.recipes;
+package com.outlook.schooluniformsama.data.recipe;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +14,8 @@ import org.bukkit.inventory.ItemStack;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.item.RSItem;
-import com.outlook.schooluniformsama.data.recipes.Recipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.Recipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
 import com.outlook.schooluniformsama.gui.Workbench;
 
 public class WorkbenchRecipe extends Recipe{

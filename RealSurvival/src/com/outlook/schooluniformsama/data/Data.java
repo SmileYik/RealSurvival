@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.outlook.schooluniformsama.nms.bed.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -22,13 +23,13 @@ import com.outlook.schooluniformsama.data.effect.Mob;
 import com.outlook.schooluniformsama.data.item.ItemData;
 import com.outlook.schooluniformsama.data.item.Items;
 import com.outlook.schooluniformsama.data.player.PlayerData;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
-import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
-import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
-import com.outlook.schooluniformsama.data.timer.Timer;
-import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.RainwaterCollectorTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.Timer;
+import com.outlook.schooluniformsama.data.recipe.timer.WorkbenchTimer;
 import com.outlook.schooluniformsama.lowversion.converter.Converter;
 import com.outlook.schooluniformsama.randomday.RandomDayManager;
 import com.outlook.schooluniformsama.task.TemperatureTask;
@@ -99,13 +100,13 @@ public class Data {
 	public static double[] temperature;
 	public static String split;
 	public static HashMap<String, String> label=new HashMap<>();
-	public static HashMap<String,WorkbenchShape> workbenchs=new HashMap<>();
+
 	public static HashMap<String,Food> foodEffect=new HashMap<>();
 	public static HashMap<String, Mob> mobEffect=new HashMap<>();
-	public static HashMap<String,ArrayList<Effect>> illnessEffects=new HashMap<>();
+	public static ConcurrentHashMap<String,ArrayList<Effect>> illnessEffects=new ConcurrentHashMap<>();
 	
-	public static HashMap<UUID, PlayerData> playerData= new HashMap<>();
-	public static HashMap<String, Timer> timer = new HashMap<>();
+	public static ConcurrentHashMap<UUID, PlayerData> playerData= new ConcurrentHashMap<>();
+	public static ConcurrentHashMap<String, Timer> timer = new ConcurrentHashMap<>();
 	public static ArrayList<String>workbenchRecipe=new ArrayList<>();
 	public static ArrayList<String>furnaceRecipe=new ArrayList<>();
 	
@@ -231,15 +232,7 @@ public class Data {
 
 		for(String workbench:plugin.getConfig().getStringList("workbenchs.workbenchs-type")){
 			String name=workbench.split(":")[0],type=workbench.split(":")[1];
-			Data.workbenchs.put(name, new WorkbenchShape(WorkbenchType.valueOf(type), name, 
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".title"),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".main-block"),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".left-block",null),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".right-block",null),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".up-block",null),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".down-block",null),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".front-block",null),
-							plugin.getConfig().getString("workbenchs.workbenchs."+name+".behind-block",null)));
+			//TODO 
 		}
 		
 		for(String food:plugin.getConfig().getStringList("effect.food-effects.foods")){
@@ -361,7 +354,7 @@ public class Data {
 		worlds.clear();
 		itemData.clear();
 		label.clear();
-		workbenchs.clear();
+//TODO
 		foodEffect.clear();
 		mobEffect.clear();
 		illnessEffects.clear();

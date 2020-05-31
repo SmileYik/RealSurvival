@@ -1,10 +1,10 @@
 package com.outlook.schooluniformsama.task;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
-import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
-import com.outlook.schooluniformsama.data.timer.Timer;
-import com.outlook.schooluniformsama.data.timer.WorkbenchTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.RainwaterCollectorTimer;
+import com.outlook.schooluniformsama.data.recipe.timer.Timer;
+import com.outlook.schooluniformsama.data.recipe.timer.WorkbenchTimer;
 
 public class WorkbenchTask implements Runnable{
 	@Override

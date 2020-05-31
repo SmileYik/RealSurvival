@@ -14,9 +14,9 @@ import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.item.RSItem;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
 

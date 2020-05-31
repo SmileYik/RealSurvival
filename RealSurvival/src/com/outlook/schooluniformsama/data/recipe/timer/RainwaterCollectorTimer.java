@@ -1,10 +1,10 @@
-package com.outlook.schooluniformsama.data.timer;
+package com.outlook.schooluniformsama.data.recipe.timer;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
 import com.outlook.schooluniformsama.util.Util;
 
 public class RainwaterCollectorTimer extends Timer{

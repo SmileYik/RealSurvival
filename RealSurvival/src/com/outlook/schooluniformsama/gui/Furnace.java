@@ -9,8 +9,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.I18n;
 import com.outlook.schooluniformsama.data.item.Items;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
-import com.outlook.schooluniformsama.data.timer.FurnaceTimer;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.timer.FurnaceTimer;
 import com.outlook.schooluniformsama.task.TemperatureTask;
 import com.outlook.schooluniformsama.util.Util; 
 

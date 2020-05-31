@@ -3,8 +3,8 @@ package com.outlook.schooluniformsama.api.event;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-import com.outlook.schooluniformsama.data.recipes.Recipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.Recipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
 
 /**
  * When player open a Recipe Viewer <p>

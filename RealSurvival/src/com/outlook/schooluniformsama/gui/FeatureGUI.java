@@ -15,11 +15,11 @@ import com.outlook.schooluniformsama.data.Data;
 import com.outlook.schooluniformsama.data.TempData;
 import com.outlook.schooluniformsama.data.WorkbenchShape;
 import com.outlook.schooluniformsama.data.item.Items;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
-import com.outlook.schooluniformsama.data.recipes.Recipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchType;
-import com.outlook.schooluniformsama.data.timer.RainwaterCollectorTimer;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.Recipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
+import com.outlook.schooluniformsama.data.recipe.WorkbenchType;
+import com.outlook.schooluniformsama.data.recipe.timer.RainwaterCollectorTimer;
 
 public class FeatureGUI{
 	public static List<Integer> waterList=Arrays.asList(26,20,23,19,24,25,18,22,21,15,17,14,10,9,11,13,12,16,5,4,8,0,1,3,2,6,7);

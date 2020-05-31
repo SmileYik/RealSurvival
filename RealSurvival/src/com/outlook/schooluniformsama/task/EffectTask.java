@@ -1,6 +1,7 @@
 package com.outlook.schooluniformsama.task;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
 
@@ -18,7 +19,7 @@ public class EffectTask implements Runnable{
 	
 	private static RealSurvival plugin;
 	private static HashMap<String,HashMap<EffectType,EffectData>> playerEffect = new HashMap<>();
-	private static HashMap<EffectData,Integer> manager = new HashMap<>();
+	private static ConcurrentHashMap<EffectData,Integer> manager = new ConcurrentHashMap<>();
 	
 	
 	public EffectTask(RealSurvival p){

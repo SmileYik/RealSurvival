@@ -16,7 +16,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.outlook.schooluniformsama.data.Data;
-import com.outlook.schooluniformsama.data.recipes.FurnaceRecipe;
+import com.outlook.schooluniformsama.data.recipe.FurnaceRecipe;
 import com.outlook.schooluniformsama.gui.Furnace;
 import com.outlook.schooluniformsama.gui.Workbench;
 
@@ -93,8 +93,8 @@ public class Converter {
 				log.add(getLogHead()+"Find the target file: \""+wrFile+"\"");
 				log.add(getLogHead()+"Start converting recipe: \""+wrFile+"\"");
 				Inventory inv = wr.setInv(Workbench.createWorkbenchGUI("Converter"));
-				com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe newWR = new com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe(wr.getName(), (int) wr.getBuiltTime(),null);
-				if(com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe.createRecipe(inv, newWR)){
+				com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe newWR = new com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe(wr.getName(), (int) wr.getBuiltTime(),null);
+				if(com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe.createRecipe(inv, newWR)){
 					File newRecipe = new File(Data.DATAFOLDER+File.separator+"recipe"+File.separator+"workbench"+File.separator+newWR.getName()+".yml");
 					log.add(getLogHead()+"Conversion successful!!: \""+moveRecipe(newRecipe, "workbench")+"\"");
 					su++;

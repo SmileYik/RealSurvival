@@ -2,7 +2,8 @@ package com.outlook.schooluniformsama.api.event;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import com.outlook.schooluniformsama.data.recipes.WorkbenchRecipe;
+
+import com.outlook.schooluniformsama.data.recipe.WorkbenchRecipe;
 
 /**
  * when player make a item done by a workbench <p>

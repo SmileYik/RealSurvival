@@ -77,7 +77,7 @@ public class Papi extends PlaceholderExpansion  {
 						new String[pd.getIllness().size()])[index]).getRecovery())+"%";
 		}
 		
-		return null;
+		return "";
 	}
 	
 	private String _2f(double d){

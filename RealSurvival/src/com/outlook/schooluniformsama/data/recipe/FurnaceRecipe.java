@@ -1,4 +1,4 @@
-package com.outlook.schooluniformsama.data.recipes;
+package com.outlook.schooluniformsama.data.recipe;
 
 import java.io.File;
 import java.io.IOException;
