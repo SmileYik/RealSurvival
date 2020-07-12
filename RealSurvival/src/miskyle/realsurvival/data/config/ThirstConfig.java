@@ -15,7 +15,8 @@ public class ThirstConfig {
 		
 	}
 	
-	public ThirstConfig(boolean enable, double maxValue, double decreaseValue, HashMap<String, String> effectData) {
+	public ThirstConfig(boolean enable, double maxValue, 
+			double decreaseValue, HashMap<String, String> effectData) {
 		super();
 		this.enable = enable;
 		this.maxValue = maxValue;

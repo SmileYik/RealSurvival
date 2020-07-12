@@ -13,6 +13,11 @@ public class RSEntry <R,S>{
 		this.left = left;
 	}
 	
+	public void set(R left,S right) {
+		this.left = left;
+		this.right = right;
+	}
+	
 	public void setRight(S right) {
 		this.right = right;
 	}
@@ -24,4 +29,5 @@ public class RSEntry <R,S>{
 	public S getRight() {
 		return right;
 	}
+	
 }

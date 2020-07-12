@@ -62,6 +62,16 @@ status:
   temperature: 
     enable: true
 
+label:
+  split: ":"
+  labels:
+    - "sleep:Sleep"
+    - "thirst:Thirst"
+    - "weight:Weight"
+    - "hunger:Hunger"
+    - "energy:Energy"
+    - "health:Health"
+    
 
   #Enable prefix in title
   enable-prefix-in-title: false

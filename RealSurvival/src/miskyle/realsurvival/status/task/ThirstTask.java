@@ -18,6 +18,7 @@ public class ThirstTask implements Runnable{
 								&& values.getRight()<=entry.getLeft()
 								&& values.getRight()>entry.getRight()) {
 							//TODO 给玩家发消息及赋予玩家属性
+							
 							break;
 						}
 					}

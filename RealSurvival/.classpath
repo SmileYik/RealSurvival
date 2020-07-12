@@ -7,9 +7,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spigot 1.12.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/AllSpigot"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.14.4.jar"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.15.2.jar"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.13.2.jar"/>
 	<classpathentry kind="lib" path="F:/workspace/libs/MMCPT.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
