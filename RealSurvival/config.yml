@@ -1,8 +1,68 @@
-  language: zh
+language: zh
   
-  check-update: true
-  enable-bStats: true
+check-update: true
+enable-bStats: true
   
+mysql:
+  enable: false
+  host: localhost
+  port: 3306
+  database: database
+  username: root
+  password: 123456
+ 
+enable-worlds:
+  - world
+  - world_nether
+  - world_the_end
+
+status-command-cooldown: 600
+
+status:
+  sleep:
+    enable: true
+    sleep-in-day: true
+    max: 100
+    sub: 0.05
+    add: 0.1
+    effect: 0-25;80-100
+    effect-data:
+      - "0-25: buff1;buff2"
+      - "80-100: buff1;buff2"
+  thirst:
+    enable: true
+    max: 100
+    sub: 0.01
+    effect: 0-25;80-100
+    effect-data:
+      0-25: buff1;buff2
+      80-100: buff1;buff2
+  energy:
+    enable: true
+    max: 100
+    add: 2
+    sneaking: 1
+    sprinting: 5
+    jumping: 5
+    swimming: 3
+    effect: 0-25;80-100
+    effect-data:
+      0-25: buff1;buff2
+      80-100: buff1;buff2
+    break-block:
+      BlockType:ToolLevel,DecreaseValue
+  weight:
+    enable: true
+    max: 100
+    effect: effect1;...;effectN
+    item: 
+      - TORCH:0.1
+  illness:
+    enable: true
+  temperature: 
+    enable: true
+
+
   #Enable prefix in title
   enable-prefix-in-title: false
   #state command cooldown, unit trick(20 trick = 1 s)

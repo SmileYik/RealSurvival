@@ -1,0 +1,5 @@
+log.info.enable-world=在{0}世界中启用RealSurvival
+log.info.mysql=启用MySQL: {0}
+
+log.warning.missing-world=服务器中不存在名叫{0}的世界!
+log.warning.enable-world-empty=RealSurvival未在任何世界中启用!
