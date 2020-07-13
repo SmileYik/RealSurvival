@@ -6,7 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 
+import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 
 public class ThirstEvent implements Listener{
@@ -27,6 +29,10 @@ public class ThirstEvent implements Listener{
 		
 		e.getItem().setAmount(e.getItem().getAmount()-1);
 		String biome = block.getBiome().name().toUpperCase();
+		ItemStack item = 
+				ConfigManager.getThirstConfig().getWater(biome).getItem();
+		for(ItemStack is : e.getPlayer().getInventory().addItem(item).values())
+			e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), is);
 	}
 	
 }

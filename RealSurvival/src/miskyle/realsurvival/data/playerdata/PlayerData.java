@@ -1,6 +1,7 @@
 package miskyle.realsurvival.data.playerdata;
 
 import java.io.File;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -38,7 +39,10 @@ public class PlayerData {
 		PlayerDataThirst 	thirst = new PlayerDataThirst();
 		PlayerDataEnergy 	energy = new PlayerDataEnergy();
 		PlayerDataWeight weight = new PlayerDataWeight();
-		List<String> 			extraValue = null;
+		List<String> 			extraSleepValue = null;
+		List<String> 			extraThirstValue = null;
+		List<String> 			extraEnergyValue = null;
+		List<String> 			extraWeightValue = null;
 		if(ConfigManager.isEnableMySql() && MySQLManager.connect()) {
 			//Use MySQL
 			try {
@@ -50,14 +54,20 @@ public class PlayerData {
 					thirst.setValue(rs.getDouble("Thirst"));
 					energy.setValue(rs.getDouble("Energy"));
 					weight.setValue(rs.getDouble("Weighr"));
-					extraValue = Arrays.asList(rs.getString("ExtraValue").split(";"));
+					extraSleepValue = Arrays.asList(rs.getString("ExtraSleepValue").split(";"));
+					extraThirstValue = Arrays.asList(rs.getString("ExtraThirstValue").split(";"));
+					extraEnergyValue = Arrays.asList(rs.getString("ExtraEnergyValue").split(";"));
+					extraWeightValue = Arrays.asList(rs.getString("ExtraWeightValue").split(";"));
 				}else {
 					//Create New Player Data
 					sleep.setValue(ConfigManager.getSleepConfig().getMaxValue());
 					thirst.setValue(ConfigManager.getThirstConfig().getMaxValue());
 					energy.setValue(ConfigManager.getEnergyConfig().getMaxValue());
 					weight.setValue(0);
-					extraValue = new ArrayList<String>();
+					extraSleepValue = new ArrayList<String>();
+					extraThirstValue = new ArrayList<String>();
+					extraEnergyValue = new ArrayList<String>();
+					extraWeightValue = new ArrayList<String>();
 				}
 				rs.close();
 				MySQLManager.disconnect();
@@ -76,36 +86,115 @@ public class PlayerData {
 				thirst.setValue(data.getDouble("thirst"));
 				energy.setValue(data.getDouble("energy"));
 				weight.setValue(data.getDouble("weight"));
-				extraValue = data.getStringList("extraValue");
+				extraSleepValue = data.getStringList("extra-sleep");
+				extraThirstValue = data.getStringList("extra-thirst");
+				extraEnergyValue = data.getStringList("extra-energy");
+				extraWeightValue = data.getStringList("extra-weight");
 			}else {
 				//Create New Player Data
 				sleep.setValue(ConfigManager.getSleepConfig().getMaxValue());
 				thirst.setValue(ConfigManager.getThirstConfig().getMaxValue());
 				energy.setValue(ConfigManager.getEnergyConfig().getMaxValue());
 				weight.setValue(0);
-				extraValue = new ArrayList<String>();
+				extraSleepValue = new ArrayList<String>();
+				extraThirstValue = new ArrayList<String>();
+				extraEnergyValue = new ArrayList<String>();
+				extraWeightValue = new ArrayList<String>();
 			}
 		}
 		
-		for(String line : extraValue) {
-			String[] temp = line.split(",");
-			if(MCPT.plugin.getServer().getPluginManager().isPluginEnabled(temp[0])) {
-				double sleepTemp = Double.parseDouble(temp[1]);
-				double thirstTemp = Double.parseDouble(temp[2]);
-				double energyTemp = Double.parseDouble(temp[3]);
-				double weightTemp = Double.parseDouble(temp[4]);
-				if(sleepTemp!=0) sleep.setExtraMaxValue(temp[0], sleepTemp);
-				if(thirstTemp!=0) thirst.setExtraMaxValue(temp[0], thirstTemp);
-				if(energyTemp!=0) energy.setExtraMaxValue(temp[0], energyTemp);
-				if(weightTemp!=0) weight.setExtraMaxValue(temp[0], weightTemp);
-			}
-		}
+		initExtraValue(weight, extraWeightValue);
+		initExtraValue(energy, extraEnergyValue);
+		initExtraValue(thirst, extraThirstValue);
+		initExtraValue(sleep, extraSleepValue);
 		
 		return new PlayerData(name, sleep, thirst, energy, weight);
 	}
 	
+	private static void initExtraValue(PlayerDataStatus status,List<String> extraValue) {
+		extraValue.forEach(line->{
+			String[] temp = line.split(":");
+			if(MCPT.plugin.getServer().getPluginManager().isPluginEnabled(temp[0])) {
+				status.setExtraMaxValue(temp[0], Double.parseDouble(temp[1]));
+			}
+		});
+	}
+	private static List<String> getExtraValueList(PlayerDataStatus status) {
+		List<String> temp = new ArrayList<String>();
+		status.getExtraMaxValue().forEach((s,d)->{
+			temp.add(s+":"+d);
+		});
+		return temp;
+	}
+	
+	private static String getExtraValueString(PlayerDataStatus status) {
+		StringBuilder sb = new StringBuilder();
+		status.getExtraMaxValue().forEach((s,d)->{
+			sb.append(s+":"+d);
+			sb.append(";");
+		});
+		return sb.substring(0, sb.length()-1);
+	}
+	
 	public void save() {
-		
+		if(ConfigManager.isEnableMySql() && MySQLManager.connect()) {
+			ResultSet rs;
+			String extraSleepString = getExtraValueString(sleep);
+			String extraThirstString = getExtraValueString(thirst);
+			String extraEnergyString = getExtraValueString(energy);
+			String extraWeightString = getExtraValueString(weight);
+			
+			try {
+				rs = MySQLManager.execute(
+						"SELECT * FROM RealSurvival WHERE Name='"+playerName.toLowerCase()+"'")
+						.executeQuery();
+				if(rs.next()) {
+					String sql = "UPDATA RealSurvival SET "
+							+"Sleep = '"+sleep.getValue()+"',"
+							+"Thirst = '"+thirst.getValue()+"',"
+							+"Energy = '"+energy.getValue()+"',"
+							+"Weight = '"+weight.getValue()+"',"
+							+"ExtraSleepValue = '"+extraThirstString+"',"
+							+"ExtraSleepValue = '"+extraThirstString+"',"
+							+"ExtraSleepValue = '"+extraThirstString+"',"
+							+"ExtraSleepValue = '"+extraThirstString+"'"
+							+" WHERE Name = '"+playerName.toLowerCase()+"'";
+					MySQLManager.execute(sql);
+				}else {
+					String sql = "INSERT INTO RealSurvival VALUES ('"
+								+playerName.toLowerCase()+"','"
+								+sleep.getValue()+"','"
+								+thirst.getValue()+"','"
+								+energy.getValue()+"','"
+								+weight.getValue()+"','"
+								+extraSleepString+"','"
+								+extraThirstString+"','"
+								+extraEnergyString+"','"
+								+extraWeightString+"')";
+					MySQLManager.execute(sql);
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}else {
+			File file = new File(
+					MCPT.plugin.getDataFolder()+"/playerdata/"+playerName.toLowerCase()+".yml");
+			YamlConfiguration data = 
+					YamlConfiguration.loadConfiguration(file);
+			data.set("sleep", sleep.getValue());
+			data.set("thirst", thirst.getValue());
+			data.set("weight", weight.getValue());
+			data.set("energy", energy.getValue());
+			data.set("extra-sleep", getExtraValueList(sleep));
+			data.set("extra-thirst", getExtraValueList(thirst));
+			data.set("extra-weight", getExtraValueList(weight));
+			data.set("extra-energy", getExtraValueList(energy));
+			try {
+				data.save(file);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	public String getPlayerName() {

@@ -17,6 +17,9 @@ import miskyle.realsurvival.data.config.EnergyConfig;
 import miskyle.realsurvival.data.config.SleepConfig;
 import miskyle.realsurvival.data.config.ThirstConfig;
 import miskyle.realsurvival.data.config.WeightConfig;
+import miskyle.realsurvival.status.listener.ThirstEvent;
+import miskyle.realsurvival.status.task.ThirstTask;
+import miskyle.realsurvival.status.task.WeightTask;
 
 public class ConfigManager {
 	private static ConfigManager cm;
@@ -46,11 +49,17 @@ public class ConfigManager {
 		loadNormalConfig();
 		loadStatusConfig();
 		
-		
+		registerStatus();
 	}
 	
 	private void registerStatus() {
-		
+		if(thirstc.isEnable()) {
+			plugin.getServer().getPluginManager().registerEvents(new ThirstEvent(), plugin);
+			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
+		}
+		if(weightc.isEnable()) {
+			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new WeightTask(), 20L, 20L);
+		}
 	}
 	
 	/**
@@ -102,7 +111,10 @@ public class ConfigManager {
 								"Thirst DOUBLE,\r\n" + 
 								"Energy DOUBLE,\r\n" + 
 								"Weight DOUBLE,\r\n" + 
-								"ExtraValue TEXT\r\n" + 
+								"ExtraSleepValue TEXT\r\n" + 
+								"ExtraThirstValue TEXT\r\n" + 
+								"ExtraEnergyValue TEXT\r\n" + 
+								"ExtraWeightValue TEXT\r\n" + 
 								")default charset=utf8;").close();;
 					}
 				} catch (SQLException e) {
@@ -161,7 +173,7 @@ public class ConfigManager {
 		weightc = new WeightConfig();
 		weightc.setEnable(c.getBoolean("status.weight.enable",true));
 		weightc.setMaxValue(c.getDouble("status.weight.max"));
-		weightc.setEffectString(c.getString("status.weight.effect"));
+		weightc.setEffects(c.getString("status.weight.effect"));
 		HashMap<String, Double> itemWeight = new HashMap<String, Double>();
 		for(String line:c.getStringList("status.weight.item")) {
 			String[] temp = line.split(":");

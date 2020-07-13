@@ -13,7 +13,6 @@ import com.github.miskyle.mcpt.mysql.MySQLManager;
 import com.sun.org.apache.xpath.internal.functions.FunctionDef1Arg;
 
 import miskyle.realsurvival.data.effect.RSEffect;
-import miskyle.realsurvival.effect.RSEffectHealthDamage;
 import miskyle.realsurvival.util.RSClassLoader;
 
 public class TTest {
@@ -22,7 +21,6 @@ public class TTest {
 		try {
 			RSClassLoader loader = new RSClassLoader("E:\\Users\\MiSkYle\\Documents\\GitHub\\RealSurvival\\RealSurvival\\bin\\");
 			for(Class<?> c : loader.loadAllClass(RSEffect.class).values()) {
-				System.out.println(c);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

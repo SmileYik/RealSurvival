@@ -28,7 +28,7 @@ public class ItemManager {
 		labels = new HashMap<String, String>();
 		for(String line : MCPT.plugin.getConfig().getStringList("label.labels")) {
 			String[] temp = line.split(":");
-			labels.put(temp[0].toUpperCase(), temp[1].toUpperCase());
+			labels.put(temp[0], temp[1]);
 		}
 		nbtItemData = new HashMap<String, RSItemData>();
 		loadNBTItem(new File(MCPT.plugin.getDataFolder()+"/nbtitem/"));
@@ -53,7 +53,7 @@ public class ItemManager {
 	 */
 	public static RSItemData loadItemData(String fileName) {
 		return loadItemData(
-				new File(MCPT.plugin.getDataFolder()+"/nbtitem"+fileName+".yml"));
+				new File(MCPT.plugin.getDataFolder()+"/nbtitem/"+fileName.toLowerCase()+".yml"));
 	}
 	
 	public static RSItemData loadItemData(File file) {
@@ -92,7 +92,7 @@ public class ItemManager {
 		
 		RSItemData rsItem = new RSItemData();
 		item.getItemMeta().getLore().forEach(s->{
-			String ss = Utils.removeColor(s).toUpperCase();
+			String ss = Utils.removeColor(s);
 			im.labels.forEach((k,v)->{
 				if(ss.contains(v)) {
 					String temp = ss.replaceAll("[^0-9+-/]", "");
@@ -120,13 +120,13 @@ public class ItemManager {
 				return im.nbtItemData.get(name).getValue(status);
 		}
 		double value = 0;
-		String key = im.labels.get(status.toUpperCase());
+		String key = im.labels.get(status);
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
 			
 			//TODO 返回原版物品对应数据
 		}
 		for(String s : item.getItemMeta().getLore()) {
-			String ss = Utils.removeColor(s).toUpperCase();
+			String ss = Utils.removeColor(s);
 			if(ss.contains(key)) {
 				String temp = ss.replaceAll("[^0-9+-/]", "");
 				if(temp.contains("/")) {
@@ -149,13 +149,13 @@ public class ItemManager {
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name).getValue(status);
 		}
-		String key = im.labels.get(status.toUpperCase());
+		String key = im.labels.get(status);
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
 			
 			//TODO 返回原版物品对应数据
 		}
 		for(String s : item.getItemMeta().getLore()) {
-			String ss = Utils.removeColor(s).toUpperCase();
+			String ss = Utils.removeColor(s);
 			if(ss.contains(key)) {
 				String temp = ss.replaceAll("[^0-9+-/]", "");
 				if(temp.contains("/")) {
@@ -174,5 +174,11 @@ public class ItemManager {
 	private double random(double a,double b) {
 		return Math.abs(a-b)*Math.random()+Math.min(a, b);
 	}
+
+	public static HashMap<String, String> getLabels() {
+		return im.labels;
+	}
+	
+	
 
 }

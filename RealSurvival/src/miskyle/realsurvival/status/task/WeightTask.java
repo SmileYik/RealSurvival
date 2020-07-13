@@ -6,6 +6,8 @@ import org.bukkit.inventory.ItemStack;
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.Msg;
+import miskyle.realsurvival.data.ConfigManager;
+import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.util.RSEntry;
@@ -24,7 +26,9 @@ public class WeightTask implements Runnable{
 					RSEntry<Double, Double> v = pd.getWeight().setValue(weight);
 					if(v.getLeft()<=pd.getWeight().getMaxValue()
 							&&v.getRight()>pd.getWeight().getMaxValue()) {
-						//TODO 给效果
+						ConfigManager.getWeightConfig().getEffects().forEach(effect->{
+							EffectManager.effectPlayer(p, effect);
+						});
 						PlayerManager.bar.sendActionBar(p, Msg.tr("messages.weight-over"));
 					}
 				});
