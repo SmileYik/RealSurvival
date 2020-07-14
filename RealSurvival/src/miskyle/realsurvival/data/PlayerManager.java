@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.nms.actionbar.NMSActionBar;
+import com.github.miskyle.mcpt.nms.sleep.NMSSleep;
 import com.github.miskyle.mcpt.nms.title.NMSTitle;
 
 import miskyle.realsurvival.data.playerdata.PlayerData;
@@ -14,14 +15,16 @@ import miskyle.realsurvival.data.playerdata.PlayerData;
 public class PlayerManager {
 	public static NMSTitle title;
 	public static NMSActionBar bar;
+	public static NMSSleep sleep;
 	
 	private static ConcurrentHashMap<String, PlayerData> playerDatas 
 									= new ConcurrentHashMap<String, PlayerData>();
 	private static ArrayList<String> freezingPlayer = new ArrayList<String>();
 	
 	public static void init() {
-		title = NMSTitle.getTitle(MCPT.plugin.getServer().getBukkitVersion());
-		bar = NMSActionBar.getActionBar(MCPT.plugin.getServer().getBukkitVersion());
+		title = NMSTitle.getTitle(MCPT.plugin.getServer().getVersion());
+		bar = NMSActionBar.getActionBar(MCPT.plugin.getServer().getVersion());
+		sleep = NMSSleep.getNMSSleep(MCPT.plugin.getServer().getVersion());
 	}
 	
 	public static void addPlayer(Player p) {
@@ -66,6 +69,10 @@ public class PlayerManager {
 	
 	public static boolean isActive(String playerName) {
 		return playerDatas.contains(playerName);
+	}
+	
+	public static PlayerData getPlayerData(String playerName) {
+		return playerDatas.get(playerName);
 	}
 	
 }

@@ -24,6 +24,8 @@ public class WeightTask implements Runnable{
 						weight += ItemManager.getStatusValueOnly("WEIGHT", item);
 					}
 					RSEntry<Double, Double> v = pd.getWeight().setValue(weight);
+					double max = pd.getWeight().getMaxValue();
+					v.set(v.getLeft()*100/max, v.getRight()*100/max);
 					if(v.getLeft()<=pd.getWeight().getMaxValue()
 							&&v.getRight()>pd.getWeight().getMaxValue()) {
 						ConfigManager.getWeightConfig().getEffects().forEach(effect->{

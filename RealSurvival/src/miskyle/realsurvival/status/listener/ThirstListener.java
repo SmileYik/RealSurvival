@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 
-public class ThirstEvent implements Listener{
+public class ThirstListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerGetWater(final PlayerInteractEvent e) {

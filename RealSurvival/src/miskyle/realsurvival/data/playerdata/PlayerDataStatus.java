@@ -5,9 +5,9 @@ import java.util.HashMap;
 import miskyle.realsurvival.util.RSEntry;
 
 public class PlayerDataStatus {
-	private double value;
+	protected double value;
 	
-	private HashMap<String,Double> extraMaxValue = new HashMap<String, Double>();
+	protected HashMap<String,Double> extraMaxValue = new HashMap<String, Double>();
 	
 	public PlayerDataStatus() {
 		
@@ -25,6 +25,8 @@ public class PlayerDataStatus {
 	public RSEntry<Double, Double> modify(double value){
 		double oldValue = this.value;
 		this.value+=value;
+		if(value<0)
+			value = 0;
 		return new RSEntry<Double, Double>(oldValue,this.value);
 	}
 	

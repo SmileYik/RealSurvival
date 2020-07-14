@@ -15,7 +15,7 @@ public class RealSurvival extends JavaPlugin{
 		MCPT.plugin = this;
 		new ConfigManager(this);
 		new Msg(this);
-		new PlayerManager();
+		PlayerManager.init();
 		new EffectManager();
 		new ItemManager();
 	}

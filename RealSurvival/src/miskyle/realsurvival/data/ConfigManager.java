@@ -17,7 +17,13 @@ import miskyle.realsurvival.data.config.EnergyConfig;
 import miskyle.realsurvival.data.config.SleepConfig;
 import miskyle.realsurvival.data.config.ThirstConfig;
 import miskyle.realsurvival.data.config.WeightConfig;
-import miskyle.realsurvival.status.listener.ThirstEvent;
+import miskyle.realsurvival.status.listener.EnergyListener;
+import miskyle.realsurvival.status.listener.SleepListener;
+import miskyle.realsurvival.status.listener.ThirstListener;
+import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
+import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
+import miskyle.realsurvival.status.task.EnergyTask;
+import miskyle.realsurvival.status.task.SleepTask;
 import miskyle.realsurvival.status.task.ThirstTask;
 import miskyle.realsurvival.status.task.WeightTask;
 
@@ -30,6 +36,7 @@ public class ConfigManager {
 	private List<String> worlds;
 	private int statusCmdCD;
 	private boolean enableMySQL = false;
+	private int bukkitVersion;
 	
 	private SleepConfig  sleepc;
 	private ThirstConfig thirstc;
@@ -40,6 +47,8 @@ public class ConfigManager {
 		cm = this;
 		this.plugin = plugin;
 		c = plugin.getConfig();
+		bukkitVersion = 
+				Integer.parseInt(plugin.getServer().getVersion().split("_")[1]);
 		
 		new I18N(c.getString("language"));
 		
@@ -54,11 +63,25 @@ public class ConfigManager {
 	
 	private void registerStatus() {
 		if(thirstc.isEnable()) {
-			plugin.getServer().getPluginManager().registerEvents(new ThirstEvent(), plugin);
+			plugin.getServer().getPluginManager().registerEvents(new ThirstListener(), plugin);
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
 		}
 		if(weightc.isEnable()) {
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new WeightTask(), 20L, 20L);
+		}
+		if(energyc.isEnable()) {
+			plugin.getServer().getPluginManager().registerEvents(new EnergyListener(), plugin);
+			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EnergyTask(), 20L, 20L);
+		}
+		if(sleepc.isEnable()) {
+			plugin.getServer().getPluginManager().registerEvents(new SleepListener(), plugin);
+			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SleepTask(), 20L, 20L);
+			if(sleepc.isSleepInDay()) {
+				if(bukkitVersion>=14)
+					plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer2(), plugin);
+				else
+					plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer1(), plugin);
+			}
 		}
 	}
 	
@@ -227,4 +250,10 @@ public class ConfigManager {
 	public static boolean isEnableMySql() {
 		return cm.enableMySQL;
 	}
+
+	public static int getBukkitVersion() {
+		return cm.bukkitVersion;
+	}
+	
+	
 }

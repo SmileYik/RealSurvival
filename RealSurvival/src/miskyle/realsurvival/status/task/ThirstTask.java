@@ -18,6 +18,8 @@ public class ThirstTask implements Runnable{
 				PlayerManager.getActivePlayers().mappingCount(), pd->{
 					RSEntry<Double, Double> values=
 							pd.getThirst().modify(ConfigManager.getThirstConfig().getDecreaseValue());
+					double max = pd.getThirst().getMaxValue();
+					values.set(values.getLeft()*100/max, values.getRight()*100/max);
 					Player p = MCPT.plugin.getServer().getPlayer(pd.getPlayerName());
 					for(RSEntry<Double, Double> entry : ConfigManager.getThirstConfig().getEffectData().keySet()) {
 						//代表属性值由高到低减少
