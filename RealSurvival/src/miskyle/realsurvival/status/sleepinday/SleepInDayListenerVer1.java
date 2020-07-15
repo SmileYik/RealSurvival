@@ -4,7 +4,7 @@ import java.util.LinkedList;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -23,6 +23,8 @@ import miskyle.realsurvival.data.PlayerManager;
 
 /**
  * 玩家在白天睡觉, 适配版本为1.7.10到1.13
+ * 需要到相应的API下编译后替换Jar包内同名
+ * 文件
  * @author MiSkYle
  * @version 1.0.0
  */
@@ -39,10 +41,9 @@ public class SleepInDayListenerVer1 implements Listener{
 		if(e.isCancelled())return;
 		if(!ConfigManager.getSleepConfig().isSleepInDay()) return;
 		if(!PlayerManager.isActive(e.getPlayer().getName()))return;
-		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK 
-				||e.getClickedBlock().getType() != Material.BED_BLOCK) return;
-		if(e.getPlayer().getWorld().getTime()>=13000 
-				||e.getPlayer().getWorld().getTime()<1000)return;
+		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK ) return;
+		if(!e.getClickedBlock().getType().name().contains("BED_BLOCK"))return;
+		if(e.getPlayer().getWorld().getTime()>=13000)return;
 		//床太远了
 		if(e.getClickedBlock().getLocation().distanceSquared(e.getPlayer().getLocation())>3) {
 			PlayerManager.bar.sendActionBar(e.getPlayer(), I18N.tr("sleep-in-day.too-far"));
@@ -72,6 +73,7 @@ public class SleepInDayListenerVer1 implements Listener{
 	public void wakeUp(final AsyncPlayerChatEvent e) {
 		if(sleepPlayer.contains(e.getPlayer().getName())) {
 			if(e.getMessage().equalsIgnoreCase(WAKE_UP)) {
+				e.setCancelled(true);
 				wakeUp(e.getPlayer());
 			}
 		}
@@ -84,7 +86,8 @@ public class SleepInDayListenerVer1 implements Listener{
 	@EventHandler(priority = EventPriority.LOWEST)
 	public void damageDuringSleeping(final EntityDamageEvent e) {
 		if(!e.isCancelled()
-				&&sleepPlayer.contains(e.getEntity().getName())) {
+				&& e.getEntityType() == EntityType.PLAYER
+				&&sleepPlayer.contains(((Player)e.getEntity()).getName())) {
 			wakeUp((Player) e.getEntity());
 		}
 	}

@@ -1,5 +1,12 @@
 package miskyle.realsurvival.data.item;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.github.miskyle.mcpt.MCPT;
+
 import miskyle.realsurvival.util.RSEntry;
 
 public class RSItemData {
@@ -9,6 +16,11 @@ public class RSItemData {
 	private RSEntry<Double, Double> energy;
 	private RSEntry<Double, Double> hunger;
 	private RSEntry<Double, Double> health;
+	private boolean maxSleep = false;
+	private boolean maxThirst = false;
+	private boolean maxEnergy = false;
+	private boolean maxHunger = false;
+	private boolean maxHealth = false;
 	private double weight;
 	
 	
@@ -86,6 +98,55 @@ public class RSItemData {
 		}
 	}
 	
+	public void save(String fileName) {
+		save(new File(MCPT.plugin.getDataFolder()+"nbtitem")+"/"+fileName+".yml");
+	}
+	
+	public void save(File file) {
+		if(file.exists())return;
+		file.getParentFile().mkdirs();
+		YamlConfiguration data = 
+				YamlConfiguration.loadConfiguration(file);
+		if(sleep!=null 
+				&&sleep.getLeft()!=0
+				&&sleep.getRight()!=0) {
+			data.set("sleep", sleep.getLeft()+"/"+sleep.getRight());
+			data.set("sleep-max", maxSleep);
+		}
+		if(thirst!=null 
+				&&thirst.getLeft()!=0
+				&&thirst.getRight()!=0) {
+			data.set("thirst", thirst.getLeft()+"/"+thirst.getRight());
+			data.set("thirst-max", maxThirst);
+		}
+		if(energy!=null 
+				&&energy.getLeft()!=0
+				&&energy.getRight()!=0) {
+			data.set("energy", energy.getLeft()+"/"+energy.getRight());
+			data.set("energy-max", maxEnergy);
+		}
+		if(hunger!=null 
+				&&hunger.getLeft()!=0
+				&&hunger.getRight()!=0) {
+			data.set("hunger", hunger.getLeft()+"/"+hunger.getRight());
+			data.set("hunger-max", maxHunger);
+		}
+		if(health!=null 
+				&&health.getLeft()!=0
+				&&health.getRight()!=0) {
+			data.set("health", health.getLeft()+"/"+health.getRight());
+			data.set("health-max", maxHealth);
+		}
+		if(weight!=0) {
+			data.set("weight", weight);
+		}
+		try {
+			data.save(file);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void setStatusValue(String status,String[] values) {
 		setStatusValue(status, 
 				Double.parseDouble(values[0]), Double.parseDouble(values[1]));
@@ -146,7 +207,7 @@ public class RSItemData {
 	 * @return
 	 */
 	public boolean isValidSleep() {
-		return sleep!=null;
+		return sleep!=null && (sleep.getLeft()!=0 || sleep.getRight()!=0) ;
 	}
 	public void setSleep(RSEntry<Double, Double> sleep) {
 		this.sleep = sleep;
@@ -162,7 +223,7 @@ public class RSItemData {
 		return random(thirst.getLeft(),thirst.getRight());
 	}
 	public boolean isValidThirst() {
-		return thirst!=null;
+		return thirst!=null && (thirst.getLeft()!=0 || thirst.getRight()!=0) ;
 	}
 	public void setThirst(RSEntry<Double, Double> thirst) {
 		this.thirst = thirst;
@@ -178,7 +239,7 @@ public class RSItemData {
 		return random(energy.getLeft(), energy.getRight());
 	}
 	public boolean isValidEnergy() {
-		return energy!=null;
+		return energy!=null && (energy.getLeft()!=0 || energy.getRight()!=0) ;
 	}
 	public void setEnergy(RSEntry<Double, Double> energy) {
 		this.energy = energy;
@@ -194,7 +255,7 @@ public class RSItemData {
 		return random(hunger.getLeft(), hunger.getRight());
 	}
 	public boolean isValidHunger() {
-		return hunger!=null;
+		return hunger!=null && (hunger.getLeft()!=0 || hunger.getRight()!=0) ;
 	}
 	public void setHunger(RSEntry<Double, Double> hunger) {
 		this.hunger = hunger;
@@ -210,7 +271,7 @@ public class RSItemData {
 		return random(health.getLeft(),health.getRight());
 	}
 	public boolean isValidHealth() {
-		return health!=null;
+		return health!=null && (health.getLeft()!=0 || health.getRight()!=0) ;
 	}
 	public void setHealth(RSEntry<Double, Double> health) {
 		this.health = health;
@@ -246,7 +307,47 @@ public class RSItemData {
 			return 0;
 		}
 	}
-	
+
+	public boolean isMaxSleep() {
+		return maxSleep;
+	}
+
+	public void setMaxSleep(boolean maxSleep) {
+		this.maxSleep = maxSleep;
+	}
+
+	public boolean isMaxThirst() {
+		return maxThirst;
+	}
+
+	public void setMaxThirst(boolean maxThirst) {
+		this.maxThirst = maxThirst;
+	}
+
+	public boolean isMaxEnergy() {
+		return maxEnergy;
+	}
+
+	public void setMaxEnergy(boolean maxEnergy) {
+		this.maxEnergy = maxEnergy;
+	}
+
+	public boolean isMaxHunger() {
+		return maxHunger;
+	}
+
+	public void setMaxHunger(boolean maxHunger) {
+		this.maxHunger = maxHunger;
+	}
+
+	public boolean isMaxHealth() {
+		return maxHealth;
+	}
+
+	public void setMaxHealth(boolean maxHealth) {
+		this.maxHealth = maxHealth;
+	}
+
 	private double random(double a,double b) {
 		return Math.abs(a-b)*Math.random()+Math.min(a, b);
 	}

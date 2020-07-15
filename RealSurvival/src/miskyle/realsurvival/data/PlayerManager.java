@@ -5,11 +5,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.entity.Player;
 
-import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.nms.actionbar.NMSActionBar;
 import com.github.miskyle.mcpt.nms.sleep.NMSSleep;
 import com.github.miskyle.mcpt.nms.title.NMSTitle;
 
+import miskyle.realsurvival.RealSurvival;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 
 public class PlayerManager {
@@ -22,13 +22,14 @@ public class PlayerManager {
 	private static ArrayList<String> freezingPlayer = new ArrayList<String>();
 	
 	public static void init() {
-		title = NMSTitle.getTitle(MCPT.plugin.getServer().getVersion());
-		bar = NMSActionBar.getActionBar(MCPT.plugin.getServer().getVersion());
-		sleep = NMSSleep.getNMSSleep(MCPT.plugin.getServer().getVersion());
+		String version = RealSurvival.getVersion();
+		title = NMSTitle.getTitle(version);
+		bar = NMSActionBar.getActionBar(version);
+		sleep = NMSSleep.getNMSSleep(version);
 	}
 	
 	public static void addPlayer(Player p) {
-		if(playerDatas.contains(p.getName())) {
+		if(playerDatas.containsKey(p.getName())) {
 			if(!ConfigManager.enableInWorld(p.getWorld().getName())) {
 				playerDatas.remove(p.getName());
 			}
@@ -37,13 +38,14 @@ public class PlayerManager {
 						&&!freezingPlayer.contains(p.getName())
 						&&ConfigManager.enableInWorld(p.getWorld().getName())) {
 			PlayerData pd = PlayerData.getPlayerData(p.getName());
+			System.out.println(pd);
 			if(pd!=null) playerDatas.put(p.getName(), pd);
 		}
 		
 	}
 	
 	public static void removePlayer(String playerName) {
-		if(playerDatas.contains(playerName)) 
+		if(playerDatas.containsKey(playerName)) 
 			playerDatas.remove(playerName).save();
 	}
 	
@@ -68,7 +70,7 @@ public class PlayerManager {
 	}
 	
 	public static boolean isActive(String playerName) {
-		return playerDatas.contains(playerName);
+		return playerDatas.containsKey(playerName);
 	}
 	
 	public static PlayerData getPlayerData(String playerName) {

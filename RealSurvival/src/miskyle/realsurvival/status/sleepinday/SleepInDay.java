@@ -11,8 +11,10 @@ public class SleepInDay {
 		if(ConfigManager.getSleepConfig().isEnable()
 				&&ConfigManager.getSleepConfig().isSleepInDay()) {
 			if(ConfigManager.getBukkitVersion()>=14) {
+				SleepInDayListenerVer3.sleep(p, loc);
+			}else if(ConfigManager.getBukkitVersion()==13){
 				SleepInDayListenerVer2.sleep(p, loc);
-			}else {
+			}else {				
 				SleepInDayListenerVer1.sleep(p, loc);
 			}
 		}
@@ -22,8 +24,10 @@ public class SleepInDay {
 		if(ConfigManager.getSleepConfig().isEnable()
 				&&ConfigManager.getSleepConfig().isSleepInDay()) {
 			if(ConfigManager.getBukkitVersion()>=14) {
+				SleepInDayListenerVer3.wakeUp(p);
+			}else if(ConfigManager.getBukkitVersion()==13){
 				SleepInDayListenerVer2.wakeUp(p);
-			}else {
+			}else {				
 				SleepInDayListenerVer1.wakeUp(p);
 			}
 		}

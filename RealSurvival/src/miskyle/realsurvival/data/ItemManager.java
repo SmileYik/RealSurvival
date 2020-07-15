@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.nms.nbtitem.NBTItem;
 
+import miskyle.realsurvival.RealSurvival;
 import miskyle.realsurvival.data.item.RSItemData;
 import miskyle.realsurvival.util.Utils;
 
@@ -23,7 +24,7 @@ public class ItemManager {
 	
 	public ItemManager() {
 		im = this;
-		nbtItem = NBTItem.getNBTItem(MCPT.plugin.getServer().getBukkitVersion());
+		nbtItem = NBTItem.getNBTItem(RealSurvival.getVersion());
 		//split = MCPT.plugin.getConfig().getString("label.split",":");
 		labels = new HashMap<String, String>();
 		for(String line : MCPT.plugin.getConfig().getStringList("label.labels")) {
@@ -62,16 +63,26 @@ public class ItemManager {
 		}
 		YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
 		RSItemData item = new RSItemData();
-		if(data.contains("sleep"))
+		if(data.contains("sleep")) {
 			item.setSleep(data.getString("sleep").split("/"));
-		if(data.contains("thirst"))
-			item.setSleep(data.getString("thirst").split("/"));
-		if(data.contains("energy"))
-			item.setSleep(data.getString("energy").split("/"));
-		if(data.contains("hunger"))
-			item.setSleep(data.getString("hunger").split("/"));
-		if(data.contains("health"))
-			item.setSleep(data.getString("health").split("/"));
+			item.setMaxSleep(data.getBoolean("sleep-max",false));
+		}
+		if(data.contains("thirst")) {
+			item.setThirst(data.getString("thirst").split("/"));
+			item.setMaxThirst(data.getBoolean("thirst-max",false));
+		}
+		if(data.contains("energy")) {
+			item.setEnergy(data.getString("energy").split("/"));
+			item.setMaxEnergy(data.getBoolean("energy-max",false));
+		}
+		if(data.contains("hunger")) {
+			item.setHunger(data.getString("hunger").split("/"));
+			item.setMaxHunger(data.getBoolean("hunger-max",false));
+		}
+		if(data.contains("health")) {
+			item.setHealth(data.getString("health").split("/"));
+			item.setMaxHealth(data.getBoolean("health-max"));
+		}
 		if(data.contains("weight"))
 			item.setWeight(data.getDouble("weight"));
 		return item;
@@ -79,8 +90,8 @@ public class ItemManager {
 	
 	public static RSItemData loadItemData(ItemStack item) {
 		if(item==null)return null;
-		if(im.nbtItem.contantsNBT(item, "RSNBT")) {
-			String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		if(name!=null) {
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name);
 		}
@@ -95,7 +106,26 @@ public class ItemManager {
 			String ss = Utils.removeColor(s);
 			im.labels.forEach((k,v)->{
 				if(ss.contains(v)) {
-					String temp = ss.replaceAll("[^0-9+-/]", "");
+					String temp = ss.replaceAll("[^0-9+-/%]", "");
+					if(temp.contains("%")) {
+						switch (k.toUpperCase()) {
+							case "SLEEP":
+								rsItem.setMaxSleep(true);
+								break;
+							case "THIRST":
+								rsItem.setMaxThirst(true);
+								break;
+							case "ENERGY":
+								rsItem.setMaxEnergy(true);
+								break;
+							case "HEALTH":
+								rsItem.setMaxHealth(true);
+								break;
+							case "HUNGER":
+								rsItem.setMaxHunger(true);
+								break;
+						}
+					}
 					if(temp.contains("/")) {
 						//范围类型
 						String[] temp2 = temp.split("/");
@@ -114,8 +144,8 @@ public class ItemManager {
 	
 	public static double getStatusValue(String status,ItemStack item) {
 		if(item==null)return 0;
-		if(im.nbtItem.contantsNBT(item, "RSNBT")) {
-			String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		if(name!=null) {
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name).getValue(status);
 		}
@@ -144,8 +174,8 @@ public class ItemManager {
 	
 	public static double getStatusValueOnly(String status,ItemStack item) {
 		if(item==null)return 0;
-		if(im.nbtItem.contantsNBT(item, "RSNBT")) {
-			String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		if(name!=null) {
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name).getValue(status);
 		}
@@ -179,6 +209,8 @@ public class ItemManager {
 		return im.labels;
 	}
 	
-	
+	public static NBTItem getNBT() {
+		return im.nbtItem;
+	}
 
 }

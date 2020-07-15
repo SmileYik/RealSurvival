@@ -3,9 +3,14 @@ log.info.mysql=启用MySQL: {0}
 
 log.warning.missing-world=服务器中不存在名叫{0}的世界!
 log.warning.enable-world-empty=RealSurvival未在任何世界中启用!
+log.warning.no-suit-sleep-in-day=适配SleepInDay功能失败,自动关闭此功能!
 
 
 
 sleep-in-day.too-far=床离你太远了
 sleep-in-day.sleep-ver1=如果要起床,请在聊天框输入"wake up"
 sleep-in-day.sleep-ver2=如果要起床,请随意走动
+
+status.freezing=属性冻结中...
+status.thirst.water.unknown-biome=水
+status.thirst.water.unknown-biome.des=喝这个来解渴吧.

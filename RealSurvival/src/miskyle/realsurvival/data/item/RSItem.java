@@ -17,7 +17,7 @@ import miskyle.realsurvival.data.ItemManager;
 public class RSItem {
 	private ItemStack item;
 	
-	private RSItem(ItemStack item) {
+	public RSItem(ItemStack item) {
 		this.item = item;
 		this.item.setAmount(1);
 	}
@@ -52,11 +52,12 @@ public class RSItem {
 	
 	public boolean save(String fileName) {
 		if(fileName==null || fileName.isEmpty()) return false;
-		return save(new File(MCPT.plugin.getDataFolder()+"/item/"+fileName+".yml"));
+		return save(new File(MCPT.plugin.getDataFolder()+"/item/"+fileName.toLowerCase()+".yml"));
 	}
 	
 	private boolean save(File file) {
 		if(file == null || file.exists()) return false;
+		file.getParentFile().mkdirs();
 		YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
 		data.set("item", getSaveItem());
 		try {

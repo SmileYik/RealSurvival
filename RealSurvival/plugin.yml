@@ -1,8 +1,9 @@
 name: RealSurvival
-main: com.outlook.schooluniformsama.RealSurvival
-version: 0.3.8
+main: miskyle.realsurvival.RealSurvival
+version: 0.4.0
 description: Let Minecraft be more real
 author: School_Uniform
+api-version: 1.13
 softdepend: [PlaceholderAPI,Chairs]
 commands:
   rs:

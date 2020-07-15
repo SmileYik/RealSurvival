@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.Plugin;
 
@@ -17,11 +18,15 @@ import miskyle.realsurvival.data.config.EnergyConfig;
 import miskyle.realsurvival.data.config.SleepConfig;
 import miskyle.realsurvival.data.config.ThirstConfig;
 import miskyle.realsurvival.data.config.WeightConfig;
+import miskyle.realsurvival.listener.JoinOrLeaveListener;
+import miskyle.realsurvival.listener.UseItemListener;
+import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
 import miskyle.realsurvival.status.listener.SleepListener;
 import miskyle.realsurvival.status.listener.ThirstListener;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
+import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer3;
 import miskyle.realsurvival.status.task.EnergyTask;
 import miskyle.realsurvival.status.task.SleepTask;
 import miskyle.realsurvival.status.task.ThirstTask;
@@ -48,17 +53,24 @@ public class ConfigManager {
 		this.plugin = plugin;
 		c = plugin.getConfig();
 		bukkitVersion = 
-				Integer.parseInt(plugin.getServer().getVersion().split("_")[1]);
+				Integer.parseInt(plugin.getServer().getBukkitVersion().split("-")[0].replace(".", ",").split(",")[1]);
 		
 		new I18N(c.getString("language"));
 		
 		setupMySQL();
 		setupbStats();
+		setupPAPI();
 		
 		loadNormalConfig();
 		loadStatusConfig();
 		
 		registerStatus();
+		registerListener();
+	}
+	
+	private void registerListener() {
+		plugin.getServer().getPluginManager().registerEvents(new JoinOrLeaveListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new UseItemListener(), plugin);
 	}
 	
 	private void registerStatus() {
@@ -77,10 +89,25 @@ public class ConfigManager {
 			plugin.getServer().getPluginManager().registerEvents(new SleepListener(), plugin);
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SleepTask(), 20L, 20L);
 			if(sleepc.isSleepInDay()) {
-				if(bukkitVersion>=14)
-					plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer2(), plugin);
-				else
-					plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer1(), plugin);
+				if(PlayerManager.sleep == null) {
+					plugin.getLogger().warning(I18N.tr("log.warning.no-suit-sleep-in-day"));
+					sleepc.setSleepInDay(false);
+				}else {
+					if(bukkitVersion>=14)
+						plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer3(), plugin);
+					else if(bukkitVersion==13)
+						plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer2(), plugin);
+					else
+						plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer1(), plugin);
+				}
+			}
+		}
+	}
+	
+	private void setupPAPI() {
+		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")){
+			if(new Papi(plugin).register()){
+				plugin.getLogger().info("Successful loading PlaceholderAPI !");
 			}
 		}
 	}
@@ -89,7 +116,7 @@ public class ConfigManager {
 	 * 启用bStats统计数据
 	 */
 	private void setupbStats() {
-		new Metrics(plugin,0000);
+		new Metrics(plugin,1974);
 	}
 	
 	/**
@@ -186,7 +213,7 @@ public class ConfigManager {
 		HashMap<EnergyBreakBlockData,Double> actionDecrease = 
 									new HashMap<EnergyBreakBlockData, Double>();
 		for(String line:c.getStringList("status.energy.break-block")) {
-			String[] temp = line.split(":");
+			String[] temp = line.split(",");
 			EnergyBreakBlockData ebbd = new EnergyBreakBlockData(temp[0], temp[1]);
 			actionDecrease.put(ebbd, Double.parseDouble(temp[2]));
 		}

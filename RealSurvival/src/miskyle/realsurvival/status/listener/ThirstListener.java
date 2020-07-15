@@ -22,9 +22,7 @@ public class ThirstListener implements Listener{
 			return;
 		
 		Block block=e.getPlayer().getTargetBlock(null, 6); 
-		if(!(block.getType()==Material.WATER
-				||block.getType()==Material.STATIONARY_WATER))
-			return;
+		if(!(block.getType().name().contains("WATER"))) return;
 		e.setCancelled(true);
 		
 		e.getItem().setAmount(e.getItem().getAmount()-1);

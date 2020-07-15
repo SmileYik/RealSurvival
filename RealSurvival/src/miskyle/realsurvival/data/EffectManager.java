@@ -19,6 +19,7 @@ public class EffectManager {
 	private HashMap<String, Class<?>> clazzes;
 	
 	public EffectManager() {
+		em = this;
 		RSClassLoader loader = new RSClassLoader(
 				MCPT.plugin.getDataFolder()+"/effect/");
 		clazzes = loader.loadAllClass(RSEffect.class);
@@ -28,20 +29,22 @@ public class EffectManager {
 	
 	public static void effectPlayer(Player player,
 			String effectName,int duration,int effectLevel,boolean immediate) {
-		if(em.clazzes.containsKey(effectName)) {
-			try {
-				Class<?> clazz = em.clazzes.get(effectName);
-				Object o = clazz.getConstructor(int.class,int.class,boolean.class)
-						.newInstance(duration,effectLevel,immediate);
-				clazz.getMethod("effect", Player.class).invoke(o,player);
-			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException 
-					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-				e.printStackTrace();
-			} 
-			
-		}else if(PotionEffectType.getByName(effectName)!=null) {
-			new MinecraftPotionEffect(effectName, duration, effectLevel).effect(player);
-		}
+		MCPT.plugin.getServer().getScheduler().runTaskLater(MCPT.plugin, ()->{
+			if(em.clazzes.containsKey(effectName)) {
+				try {
+					Class<?> clazz = em.clazzes.get(effectName);
+					Object o = clazz.getConstructor(int.class,int.class,boolean.class)
+							.newInstance(duration,effectLevel,immediate);
+					clazz.getMethod("effect", Player.class).invoke(o,player);
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException 
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					e.printStackTrace();
+				} 
+				
+			}else if(PotionEffectType.getByName(effectName)!=null) {
+				new MinecraftPotionEffect(effectName, duration, effectLevel).effect(player);
+			}			
+		}, 0L);
 	}
 	
 	public static void effectPlayer(Player player,EffectData effect) {

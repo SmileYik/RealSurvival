@@ -1,6 +1,11 @@
 sleep: -10/10
+sleep-max: true
 thirst: -10/10
+thirst-max: true
 energy: -10/10
+energy-max: false
 hunger: -10/10
+hunger-max: true
 health: -10/10
+health-max: false
 weight: 1
