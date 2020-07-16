@@ -13,32 +13,36 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.mysql.MySQLManager;
 
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 
-public class PlayerData {
+public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
 	private String playerName;
 	
 	private PlayerDataSleep 		sleep;
 	private PlayerDataThirst 		thirst;
 	private PlayerDataEnergy 	energy;
 	private PlayerDataWeight 	weight;
+	private PlayerDataEffect    	effect;
 	
 	private String status;
 	
 	public PlayerData(String playerName,PlayerDataSleep sleep,
-			PlayerDataThirst thirst,PlayerDataEnergy energy,PlayerDataWeight weight) {
+			PlayerDataThirst thirst,PlayerDataEnergy energy,PlayerDataWeight weight,PlayerDataEffect effect) {
 		this.playerName = playerName;
 		this.sleep = sleep;
 		this.thirst = thirst;
 		this.energy = energy;
 		this.weight = weight;
+		this.effect = effect;
 	}
 	
 	public static PlayerData getPlayerData(String name) {
-		PlayerDataSleep 	sleep = new PlayerDataSleep();
-		PlayerDataThirst 	thirst = new PlayerDataThirst();
-		PlayerDataEnergy 	energy = new PlayerDataEnergy();
-		PlayerDataWeight weight = new PlayerDataWeight();
+		PlayerDataSleep 	sleep 		= new PlayerDataSleep();
+		PlayerDataThirst 	thirst 		= new PlayerDataThirst();
+		PlayerDataEnergy 	energy		= new PlayerDataEnergy();
+		PlayerDataWeight weight 	= new PlayerDataWeight();
+		PlayerDataEffect 	effect 		= new PlayerDataEffect();
 		List<String> 			extraSleepValue = null;
 		List<String> 			extraThirstValue = null;
 		List<String> 			extraEnergyValue = null;
@@ -54,6 +58,7 @@ public class PlayerData {
 					thirst.setValue(rs.getDouble("Thirst"));
 					energy.setValue(rs.getDouble("Energy"));
 					weight.setValue(rs.getDouble("Weighr"));
+					effect.setEffect(rs.getString("Effect"));
 					extraSleepValue = Arrays.asList(rs.getString("ExtraSleepValue").split(";"));
 					extraThirstValue = Arrays.asList(rs.getString("ExtraThirstValue").split(";"));
 					extraEnergyValue = Arrays.asList(rs.getString("ExtraEnergyValue").split(";"));
@@ -86,6 +91,7 @@ public class PlayerData {
 				thirst.setValue(data.getDouble("thirst"));
 				energy.setValue(data.getDouble("energy"));
 				weight.setValue(data.getDouble("weight"));
+				effect.setEffect(data.getString("effect",null));
 				extraSleepValue = data.getStringList("extra-sleep");
 				extraThirstValue = data.getStringList("extra-thirst");
 				extraEnergyValue = data.getStringList("extra-energy");
@@ -108,7 +114,7 @@ public class PlayerData {
 		initExtraValue(thirst, extraThirstValue);
 		initExtraValue(sleep, extraSleepValue);
 		
-		return new PlayerData(name, sleep, thirst, energy, weight);
+		return new PlayerData(name, sleep, thirst, energy, weight,effect);
 	}
 	
 	private static void initExtraValue(PlayerDataStatus status,List<String> extraValue) {
@@ -143,7 +149,7 @@ public class PlayerData {
 			String extraThirstString = getExtraValueString(thirst);
 			String extraEnergyString = getExtraValueString(energy);
 			String extraWeightString = getExtraValueString(weight);
-			
+			String effectString = effect.toString();
 			try {
 				rs = MySQLManager.execute(
 						"SELECT * FROM RealSurvival WHERE Name='"+playerName.toLowerCase()+"'")
@@ -157,7 +163,8 @@ public class PlayerData {
 							+"ExtraSleepValue = '"+extraThirstString+"',"
 							+"ExtraSleepValue = '"+extraThirstString+"',"
 							+"ExtraSleepValue = '"+extraThirstString+"',"
-							+"ExtraSleepValue = '"+extraThirstString+"'"
+							+"ExtraSleepValue = '"+extraThirstString+"',"
+							+"Effect = '"+effectString+"'"
 							+" WHERE Name = '"+playerName.toLowerCase()+"'";
 					MySQLManager.execute(sql);
 				}else {
@@ -170,7 +177,8 @@ public class PlayerData {
 								+extraSleepString+"','"
 								+extraThirstString+"','"
 								+extraEnergyString+"','"
-								+extraWeightString+"')";
+								+extraWeightString+"','"
+								+effectString+"')";
 					MySQLManager.execute(sql);
 				}
 			} catch (SQLException e) {
@@ -189,6 +197,7 @@ public class PlayerData {
 			data.set("extra-thirst", getExtraValueList(thirst));
 			data.set("extra-weight", getExtraValueList(weight));
 			data.set("extra-energy", getExtraValueList(energy));
+			data.set("effects", effect.toString());
 			try {
 				data.save(file);
 			} catch (IOException e) {
@@ -225,7 +234,115 @@ public class PlayerData {
 	public String toString() {
 		return "PlayerData [playerName=" + playerName + "]";
 	}
+
+	public PlayerDataEffect getEffect() {
+		return effect;
+	}
+
+	@Override
+	public void modify(StatusType type, double value) {
+		switch (type) {
+		case ENERGY:
+			energy.modify(value);
+			break;
+		case SLEEP:
+			sleep.modify(value);
+			break;
+		case THIRST:
+			thirst.modify(value);
+			break;
+		case WEIGHT:
+			weight.modify(value);
+			break;
+		default:
+			break;
+		}
+	}
 	
-	
-	
+	@Override
+	public void modifyWithEffect(StatusType type, double value) {
+		switch (type) {
+		case ENERGY:
+			energy.modify(value,effect.getValue(type));
+			break;
+		case SLEEP:
+			sleep.modify(value,effect.getValue(type));
+			break;
+		case THIRST:
+			thirst.modify(value,effect.getValue(type));
+			break;
+		case WEIGHT:
+			weight.modify(value,effect.getValue(type));
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public double getStatusValue(StatusType type) {
+		switch (type) {
+		case ENERGY:
+			energy.getValue();
+			break;
+		case SLEEP:
+			sleep.getValue();
+			break;
+		case THIRST:
+			thirst.getValue();
+			break;
+		case WEIGHT:
+			weight.getValue();
+			break;
+		default:
+			break;
+		}
+		return 0;
+	}
+
+	@Override
+	public double getStatusMaxValue(StatusType type) {
+		switch (type) {
+		case ENERGY:
+			energy.getMaxValue();
+			break;
+		case SLEEP:
+			sleep.getMaxValue();
+			break;
+		case THIRST:
+			thirst.getMaxValue();
+			break;
+		case WEIGHT:
+			weight.getMaxValue();
+			break;
+		default:
+			break;
+		}
+		return 0;
+	}
+
+	@Override
+	public void setStatus(StatusType type, double value) {
+		switch (type) {
+		case ENERGY:
+			energy.setValue(value);
+			break;
+		case SLEEP:
+			sleep.setValue(value);
+			break;
+		case THIRST:
+			thirst.setValue(value);
+			break;
+		case WEIGHT:
+			weight.setValue(value);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public void addEffect(StatusType type, String pluginName, double value, int duration) {
+		effect.addEffect(type, pluginName, value, duration);
+	}
 }

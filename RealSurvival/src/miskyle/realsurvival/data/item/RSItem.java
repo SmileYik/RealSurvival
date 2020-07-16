@@ -23,7 +23,7 @@ public class RSItem {
 	}
 	
 	public static RSItem load(String fileName) {
-		return load(new File(MCPT.plugin.getDataFolder()+"/item/"+fileName+".yml"));
+		return load(new File(MCPT.plugin.getDataFolder()+"/item/"+fileName.toLowerCase()+".yml"));
 	}
 	
 	private static RSItem load(File file) {
@@ -41,8 +41,8 @@ public class RSItem {
 					lore.add(line.replace("${"+entry.getKey()+"}", entry.getValue()));
 					break;
 				}
-				lore.add(line);
 			}
+			lore.add(line);
 		});
 		ItemMeta im = item.getItemMeta();
 		im.setLore(lore);
@@ -80,8 +80,8 @@ public class RSItem {
 					lore.add(line.replace(entry.getValue(), "${"+entry.getKey()+"}"));
 					break;
 				}
-				lore.add(line);
 			}
+			lore.add(line);
 		});
 		ItemStack is = item.clone();
 		ItemMeta im = is.getItemMeta();

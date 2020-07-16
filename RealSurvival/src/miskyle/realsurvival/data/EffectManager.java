@@ -1,6 +1,7 @@
 package miskyle.realsurvival.data;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.HashMap;
 
 import org.bukkit.entity.Player;
@@ -8,46 +9,82 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.github.miskyle.mcpt.MCPT;
 
+import miskyle.realsurvival.api.effect.RSEffect;
 import miskyle.realsurvival.data.effect.EffectData;
 import miskyle.realsurvival.data.effect.MinecraftPotionEffect;
-import miskyle.realsurvival.data.effect.RSEffect;
 import miskyle.realsurvival.util.RSClassLoader;
 
 public class EffectManager {
 	private static EffectManager em;
+	private Method methondEffect; 
 	
-	private HashMap<String, Class<?>> clazzes;
+	private HashMap<String, Object> effects;
 	
 	public EffectManager() {
 		em = this;
-		RSClassLoader loader = new RSClassLoader(
-				MCPT.plugin.getDataFolder()+"/effect/");
-		clazzes = loader.loadAllClass(RSEffect.class);
+		setupRSEffect();
+	}
+	
+	public void setupRSEffect() {
+		effects = new HashMap<String, Object>();
+		try {
+			methondEffect = RSEffect.class.getMethod("effect", Player.class,int.class,int.class);
+		} catch (NoSuchMethodException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		new RSClassLoader(MCPT.plugin.getDataFolder()+"/effect/")
+		.loadAllClass(RSEffect.class).forEach((k,v)->{
+			try {
+				Object effect = v.getConstructor(String.class).newInstance(k);
+				effects.put(k, effect);
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+		
+		MCPT.plugin.getLogger().info("Load RSEffect: "+effects.size());
 	}
 	
 	
 	
-	public static void effectPlayer(Player player,
-			String effectName,int duration,int effectLevel,boolean immediate) {
-		MCPT.plugin.getServer().getScheduler().runTaskLater(MCPT.plugin, ()->{
-			if(em.clazzes.containsKey(effectName)) {
+	public static void effectPlayer(Player player,String effectName,int duration,int effectLevel) {
+			if(em.effects.containsKey(effectName)) {
 				try {
-					Class<?> clazz = em.clazzes.get(effectName);
-					Object o = clazz.getConstructor(int.class,int.class,boolean.class)
-							.newInstance(duration,effectLevel,immediate);
-					clazz.getMethod("effect", Player.class).invoke(o,player);
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException 
-						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					em.methondEffect.invoke(em.effects.get(effectName), player,effectLevel,duration);
+				} catch (IllegalAccessException | IllegalArgumentException 
+						| InvocationTargetException | SecurityException e) {
 					e.printStackTrace();
 				} 
 				
 			}else if(PotionEffectType.getByName(effectName)!=null) {
-				new MinecraftPotionEffect(effectName, duration, effectLevel).effect(player);
+				MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, ()->{
+					new MinecraftPotionEffect(effectName).effect(player,duration, effectLevel);
+				});
 			}			
-		}, 0L);
 	}
 	
 	public static void effectPlayer(Player player,EffectData effect) {
-		effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel(), effect.isImmediate());
+		effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel());
 	}
 }

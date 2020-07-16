@@ -20,6 +20,20 @@ public class PlayerDataStatus {
 	/**
 	 * 修改属性值,若为加则数值为正/若为减则数值为负
 	 * @param value
+	 * @param effect
+	 * @return 属性的原始值(左)及新值(右)
+	 */
+	public RSEntry<Double, Double> modify(double value,double effect){
+		double oldValue = this.value;
+		this.value+=value;
+		if(value<0)
+			value = 0;
+		return new RSEntry<Double, Double>(oldValue,this.value);
+	}
+	
+	/**
+	 * 修改属性值,若为加则数值为正/若为减则数值为负
+	 * @param value
 	 * @return 属性的原始值(左)及新值(右)
 	 */
 	public RSEntry<Double, Double> modify(double value){

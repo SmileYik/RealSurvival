@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.Msg;
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.PlayerManager;
@@ -17,7 +18,7 @@ public class ThirstTask implements Runnable{
 		PlayerManager.getActivePlayers().forEachValue(
 				PlayerManager.getActivePlayers().mappingCount(), pd->{
 					RSEntry<Double, Double> values=
-							pd.getThirst().modify(ConfigManager.getThirstConfig().getDecreaseValue());
+							pd.getThirst().modify(-ConfigManager.getThirstConfig().getDecreaseValue(),pd.getEffect().getValue(StatusType.THIRST));
 					double max = pd.getThirst().getMaxValue();
 					values.set(values.getLeft()*100/max, values.getRight()*100/max);
 					Player p = MCPT.plugin.getServer().getPlayer(pd.getPlayerName());
@@ -28,7 +29,7 @@ public class ThirstTask implements Runnable{
 								&& values.getRight()<=entry.getLeft()
 								&& values.getRight()>entry.getRight()) {
 							PlayerManager.bar.sendActionBar(
-									p, Msg.tr("message.thirst."+entry.getLeft()+"-"+entry.getRight()));
+									p, Msg.tr("messages.thirst."+entry.getLeft()+"-"+entry.getRight()));
 						}
 						
 						if(values.getRight()>=Math.min(entry.getLeft(), entry.getRight())

@@ -2,6 +2,7 @@ package miskyle.realsurvival.data.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import miskyle.realsurvival.data.effect.EffectData;
 import miskyle.realsurvival.data.item.RSItem;
@@ -17,7 +18,7 @@ public class ThirstConfig {
 	private HashMap<String, String> biomeWater;
 	
 	public ThirstConfig() {
-		
+		biomeWater = new HashMap<String, String>();
 	}
 	
 	public ThirstConfig(boolean enable, double maxValue, double decreaseValue, 
@@ -86,7 +87,14 @@ public class ThirstConfig {
 		if(biomeWater.containsKey(biome))
 			return RSItem.load("/water/"+biomeWater.get(biome));
 		else
-			return RSItem.load("/water/"+biomeWater.get("UNKNOWN"));
+			return RSItem.load("/water/unknown");
+	}
+	
+	public void setWater(List<String> oriList) {
+		oriList.forEach(s->{
+			String[] temp = s.split(":");
+			biomeWater.put(temp[0].toUpperCase(), temp[1]);
+		});
 	}
 	
 	

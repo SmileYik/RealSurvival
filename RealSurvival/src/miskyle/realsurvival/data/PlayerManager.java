@@ -38,7 +38,6 @@ public class PlayerManager {
 						&&!freezingPlayer.contains(p.getName())
 						&&ConfigManager.enableInWorld(p.getWorld().getName())) {
 			PlayerData pd = PlayerData.getPlayerData(p.getName());
-			System.out.println(pd);
 			if(pd!=null) playerDatas.put(p.getName(), pd);
 		}
 		

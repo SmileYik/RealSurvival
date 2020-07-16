@@ -19,14 +19,22 @@ public class RSClassLoader extends ClassLoader{
 	 * @param path
 	 */
 	public RSClassLoader(String path) {
-		this(new File(path));
+		this(new File(path),RSClassLoader.class.getClassLoader());
 	}
 	
 	/**
 	 * 根据路径导入一个或多个类文件信息
 	 * @param path
 	 */
-	public RSClassLoader(File path) {
+	public RSClassLoader(String path,ClassLoader parent) {
+		this(new File(path),parent);
+	}
+	/**
+	 * 根据路径导入一个或多个类文件信息
+	 * @param path
+	 */
+	public RSClassLoader(File path,ClassLoader parent) {
+		super(parent);
 		ROOT_PATH = path.getAbsolutePath();
 		classPath = new HashMap<String, String>();
 		loadClassPath(path);
@@ -50,7 +58,7 @@ public class RSClassLoader extends ClassLoader{
 	private void loadClass(File file) {
 		String fullPath = file.getAbsolutePath().substring(0,file.getAbsolutePath().lastIndexOf("."));
 		String packageName = fullPath.substring(ROOT_PATH.length()+1).replaceAll("[/\\\\]", ".");
-		classPath.put(packageName, fullPath);
+		classPath.put(packageName, file.getAbsolutePath());
 	}
 	
 	/**
@@ -116,4 +124,14 @@ public class RSClassLoader extends ClassLoader{
 		});
 		return classes;
 	}
+
+	public String getROOT_PATH() {
+		return ROOT_PATH;
+	}
+
+	public HashMap<String, String> getClassPath() {
+		return classPath;
+	}
+	
+	
 }

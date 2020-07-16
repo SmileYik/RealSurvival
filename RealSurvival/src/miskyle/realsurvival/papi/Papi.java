@@ -19,10 +19,9 @@ public class Papi extends PlaceholderExpansion  {
 	@Override
 	public String onPlaceholderRequest(Player p, String arg) {
 		if (p == null) {return "";}
-		if(PlayerManager.isActive(p))
+		if(!PlayerManager.isActive(p))
 			return I18N.tr("status.freezing");
 		PlayerData pd = PlayerManager.getPlayerData(p.getName());
-		
 		
 		if(arg.equalsIgnoreCase("sleep"))
 			return _2f(pd.getSleep().getValue()/pd.getSleep().getMaxValue()*100)+"%";

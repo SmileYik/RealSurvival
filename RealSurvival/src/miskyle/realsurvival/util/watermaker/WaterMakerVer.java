@@ -22,8 +22,8 @@ public class WaterMakerVer {
 				I18N.tr("status.thirst.water.unknown-biome.des").split(";")));
 		item.setItemMeta(im);
 		data.setStatusValue("THIRST", 10, 20);
-		data.save("water/unkonwn");
-		ItemStack is = ItemManager.getNBT().setNBT(item, "RSNBT", "water/unkonwn");
-		new RSItem(is).save("water/unkonwn");
+		data.save("water/unknown");
+		ItemStack is = ItemManager.getNBT().setNBT(item, "RSNBT", "water/unknown");
+		new RSItem(is).save("water/unknown");
 	}
 }

@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.Msg;
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.PlayerManager;
@@ -19,9 +20,9 @@ public class SleepTask implements Runnable{
 				PlayerManager.getActivePlayers().mappingCount(), pd->{
 					RSEntry<Double, Double> values;
 					if(pd.getSleep().isSleep()) {
-						values = pd.getSleep().modify(ConfigManager.getSleepConfig().getIncreaseValue());
+						values = pd.getSleep().modify(ConfigManager.getSleepConfig().getIncreaseValue(),pd.getEffect().getValue(StatusType.SLEEP));
 					}else {
-						values = pd.getSleep().modify(-ConfigManager.getSleepConfig().getDecreaseValue());
+						values = pd.getSleep().modify(-ConfigManager.getSleepConfig().getDecreaseValue(),pd.getEffect().getValue(StatusType.SLEEP));
 					}
 					double max = pd.getSleep().getMaxValue();
 					values.setRight(values.getRight()/max*100);
@@ -30,7 +31,9 @@ public class SleepTask implements Runnable{
 					sendMessage(p, values);
 					attachEffect(p, pd.getSleep().getValue()*100/max);
 					if(pd.getSleep().getValue()<=0) {
-						SleepInDay.sleep(p, p.getLocation());
+						MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, ()->{
+							SleepInDay.sleep(p, p.getLocation());							
+						});
 					}
 		});
 		
@@ -43,13 +46,13 @@ public class SleepTask implements Runnable{
 					&& values.getRight()>entry.getLeft()
 					&& values.getRight()<=entry.getRight()) {
 				PlayerManager.bar.sendActionBar(
-						p, Msg.tr("message.sleep."+entry.getLeft()+"-"+entry.getRight()));
+						p, Msg.tr("messages.sleep."+entry.getLeft()+"-"+entry.getRight()));
 				break;
 			}else if(values.getLeft()>entry.getLeft()
 					&& values.getRight()<=entry.getLeft()
 					&& values.getRight()>=entry.getRight()) {
 				PlayerManager.bar.sendActionBar(
-						p, Msg.tr("message.sleep."+entry.getLeft()+"-"+entry.getRight()));
+						p, Msg.tr("messages.sleep."+entry.getLeft()+"-"+entry.getRight()));
 				break;
 			}
 		}

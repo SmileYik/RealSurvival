@@ -34,4 +34,13 @@ public class PlayerDataWeight extends PlayerDataStatus{
 			super.value = max;
 		return new RSEntry<Double, Double>(oldValue,this.value);
 	}
+	
+	public RSEntry<Double, Double> setValue(double value,double effect) {
+		return super.setValue(value*(effect+1));
+	}
+	
+	@Override
+	public RSEntry<Double, Double> setValue(double value) {
+		return super.setValue(value);
+	}
 }

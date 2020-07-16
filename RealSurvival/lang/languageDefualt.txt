@@ -5,7 +5,26 @@ log.warning.missing-world=服务器中不存在名叫{0}的世界!
 log.warning.enable-world-empty=RealSurvival未在任何世界中启用!
 log.warning.no-suit-sleep-in-day=适配SleepInDay功能失败,自动关闭此功能!
 
+cmd.warning.need-player=这个指令需要玩家才能使用!
+cmd.warning.wrong-command=您输入的指令好像错了呢!
+cmd.error.item.nothin-in-hand=你手上什么都没有!
+cmd.error.item.not-number=你输入的不是数字!
 
+cmd.args.item.add-lore.input-any=描述
+cmd.args.item.add-lore.line=序列(数字)
+cmd.args.item.remove-lore-2.line=序列(数字)
+cmd.args.item.replace-lore.line=序列(数字)
+cmd.args.item.replace-lore.input-any=描述
+cmd.args.item.set-name.name=名字
+
+cmd.des.item.add-lore=增加一行lore
+cmd.des.item.add-lore-2=在指定序列中增加lore
+cmd.des.item.remove-lore-1=移除末尾行的lore
+cmd.des.item.remove-lore-2=移除指定序列的lore
+cmd.des.item.clear-lore=清除所有Lore
+cmd.des.item.replace-lore=取代指定行Lore
+cmd.des.item.set-name=设定物品名字
+cmd.des.item.remove-name=删除物品名字
 
 sleep-in-day.too-far=床离你太远了
 sleep-in-day.sleep-ver1=如果要起床,请在聊天框输入"wake up"

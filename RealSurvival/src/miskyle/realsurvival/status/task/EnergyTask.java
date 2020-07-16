@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.Msg;
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.PlayerManager;
@@ -21,14 +22,14 @@ public class EnergyTask implements Runnable{
 					if(ConfigManager.getEnergyConfig().getDecreaseSneaking()!=0
 							&& p.isSneaking()) {
 						values = pd.getEnergy().modify(
-								-ConfigManager.getEnergyConfig().getDecreaseSneaking());
+								-ConfigManager.getEnergyConfig().getDecreaseSneaking(),pd.getEffect().getValue(StatusType.ENERGY));
 					}else if(ConfigManager.getEnergyConfig().getDecreaseSprinting()!=0
 							&&p.isSprinting()) {
 						values = pd.getEnergy().modify(
-								-ConfigManager.getEnergyConfig().getDecreaseSprinting());
+								-ConfigManager.getEnergyConfig().getDecreaseSprinting(),pd.getEffect().getValue(StatusType.ENERGY));
 					}else {
 						values = pd.getEnergy().modify(
-								ConfigManager.getEnergyConfig().getIncreaseValue());
+								+ConfigManager.getEnergyConfig().getIncreaseValue(),pd.getEffect().getValue(StatusType.ENERGY));
 					}
 					double max = pd.getEnergy().getMaxValue();
 					values.set(values.getLeft()*100/max, values.getRight()*100/max);
@@ -44,13 +45,13 @@ public class EnergyTask implements Runnable{
 					&& values.getRight()>entry.getLeft()
 					&& values.getRight()<=entry.getRight()) {
 				PlayerManager.bar.sendActionBar(
-						p, Msg.tr("message.energy."+entry.getLeft()+"-"+entry.getRight()));
+						p, Msg.tr("messages.energy."+entry.getLeft()+"-"+entry.getRight()));
 				break;
 			}else if(values.getLeft()>entry.getLeft()
 					&& values.getRight()<=entry.getLeft()
 					&& values.getRight()>=entry.getRight()) {
 				PlayerManager.bar.sendActionBar(
-						p, Msg.tr("message.energy."+entry.getLeft()+"-"+entry.getRight()));
+						p, Msg.tr("messages.energy."+entry.getLeft()+"-"+entry.getRight()));
 				break;
 			}
 		}

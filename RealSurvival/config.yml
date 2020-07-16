@@ -26,15 +26,17 @@ status:
     sub: 0.05
     add: 0.1
     effect-data:
-      - "0-25:SPEED,1,1,true;HEAL,1,1,true"
-      - "80-100:SPEED,1,1,true;HEAL,1,1,true"
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+      - "90-100:SPEED,1,5,true;HEAL,1,5,true"
   thirst:
     enable: true
     max: 100
     sub: 0.01
     effect-data:
-      - "0-25:SPEED,1,1,true;HEAL,1,1,true"
-      - "80-100:SPEED,1,1,true;HEAL,1,1,true"
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+      - "80-100:SPEED,1,5,true;HEAL,1,5,true"
+    water:
+      - "BIOME:WATER1"
   energy:
     enable: true
     max: 100
@@ -44,14 +46,13 @@ status:
     jumping: 5
     swimming: 3
     effect-data:
-      - "0-25:SPEED,1,1,true;HEAL,1,1,true"
-      - "80-100:SPEED,1,1,true;HEAL,1,1,true"
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
     break-block:
       - "SAND,0,1"
   weight:
     enable: true
     max: 100
-    effect: "SPEED,1,1,true;HEAL,1,1,true"
+    effect: "SPEED,1,5,true;HEAL,1,5,true"
     item: 
       - TORCH:0.1
   illness:

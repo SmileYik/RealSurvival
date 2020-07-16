@@ -17,7 +17,7 @@ public class ItemManager {
 	private static ItemManager im;
 	private NBTItem nbtItem;
 	
-	//private String split;
+	private String split;
 	private HashMap<String, String> labels;
 	
 	private HashMap<String, RSItemData> nbtItemData;
@@ -25,23 +25,27 @@ public class ItemManager {
 	public ItemManager() {
 		im = this;
 		nbtItem = NBTItem.getNBTItem(RealSurvival.getVersion());
-		//split = MCPT.plugin.getConfig().getString("label.split",":");
+		split = MCPT.plugin.getConfig().getString("label.split",":");
 		labels = new HashMap<String, String>();
 		for(String line : MCPT.plugin.getConfig().getStringList("label.labels")) {
 			String[] temp = line.split(":");
 			labels.put(temp[0], temp[1]);
 		}
 		nbtItemData = new HashMap<String, RSItemData>();
-		loadNBTItem(new File(MCPT.plugin.getDataFolder()+"/nbtitem/"));
+		loadNBTItem(new File(MCPT.plugin.getDataFolder()+"/nbtitem/"),
+				new File(MCPT.plugin.getDataFolder()+"/nbtitem/").getAbsolutePath());
 		
 	}
 	
-	private void loadNBTItem(File path) {
+	private void loadNBTItem(File path,String root) {
 		for(File f : path.listFiles()) {
 			if(f.isDirectory()) {
-				loadNBTItem(f);				
+				loadNBTItem(f,root);				
 			}else {
-				String name = f.getName().toLowerCase().replace(".yml", "");
+				String name = f.getAbsolutePath().replace(root, "").toLowerCase().replace(".yml", "").replace("\\", "/");
+				while(name.charAt(0) == '/')
+					name = name.substring(1);
+				
 				nbtItemData.put(name, loadItemData(f));
 			}
 		}
@@ -90,8 +94,9 @@ public class ItemManager {
 	
 	public static RSItemData loadItemData(ItemStack item) {
 		if(item==null)return null;
-		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT");
 		if(name!=null) {
+			name = name.toLowerCase();
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name);
 		}
@@ -99,13 +104,14 @@ public class ItemManager {
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
 			
 			//TODO 返回原版物品对应数据
+			return new RSItemData();
 		}
 		
 		RSItemData rsItem = new RSItemData();
 		item.getItemMeta().getLore().forEach(s->{
 			String ss = Utils.removeColor(s);
 			im.labels.forEach((k,v)->{
-				if(ss.contains(v)) {
+				if(ss.contains(v) && ss.contains(im.split)) {
 					String temp = ss.replaceAll("[^0-9+-/%]", "");
 					if(temp.contains("%")) {
 						switch (k.toUpperCase()) {
@@ -144,8 +150,9 @@ public class ItemManager {
 	
 	public static double getStatusValue(String status,ItemStack item) {
 		if(item==null)return 0;
-		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT");
 		if(name!=null) {
+			name = name.toLowerCase();
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name).getValue(status);
 		}
@@ -157,7 +164,7 @@ public class ItemManager {
 		}
 		for(String s : item.getItemMeta().getLore()) {
 			String ss = Utils.removeColor(s);
-			if(ss.contains(key)) {
+			if(ss.contains(key) && ss.contains(im.split)) {
 				String temp = ss.replaceAll("[^0-9+-/]", "");
 				if(temp.contains("/")) {
 					//范围类型
@@ -174,8 +181,9 @@ public class ItemManager {
 	
 	public static double getStatusValueOnly(String status,ItemStack item) {
 		if(item==null)return 0;
-		String name = im.nbtItem.getString(item, "RSNBT").toLowerCase();
+		String name = im.nbtItem.getString(item, "RSNBT");
 		if(name!=null) {
+			name = name.toLowerCase();
 			if(im.nbtItemData.containsKey(name))
 				return im.nbtItemData.get(name).getValue(status);
 		}
@@ -183,10 +191,11 @@ public class ItemManager {
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
 			
 			//TODO 返回原版物品对应数据
+			return 0;
 		}
 		for(String s : item.getItemMeta().getLore()) {
 			String ss = Utils.removeColor(s);
-			if(ss.contains(key)) {
+			if(ss.contains(key) && ss.contains(im.split)) {
 				String temp = ss.replaceAll("[^0-9+-/]", "");
 				if(temp.contains("/")) {
 					//范围类型

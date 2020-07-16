@@ -29,5 +29,12 @@ public class RSEntry <R,S>{
 	public S getRight() {
 		return right;
 	}
+
+	@Override
+	public String toString() {
+		return "RSEntry [left=" + left + ", right=" + right + "]";
+	}
+	
+	
 	
 }

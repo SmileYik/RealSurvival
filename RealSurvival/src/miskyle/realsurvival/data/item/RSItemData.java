@@ -99,7 +99,7 @@ public class RSItemData {
 	}
 	
 	public void save(String fileName) {
-		save(new File(MCPT.plugin.getDataFolder()+"nbtitem")+"/"+fileName+".yml");
+		save(new File(MCPT.plugin.getDataFolder()+"/nbtitem/"+fileName+".yml"));
 	}
 	
 	public void save(File file) {
@@ -207,7 +207,7 @@ public class RSItemData {
 	 * @return
 	 */
 	public boolean isValidSleep() {
-		return sleep!=null && (sleep.getLeft()!=0 || sleep.getRight()!=0) ;
+		return sleep!=null && !(sleep.getLeft()==0 && sleep.getRight()==0) ;
 	}
 	public void setSleep(RSEntry<Double, Double> sleep) {
 		this.sleep = sleep;
@@ -223,7 +223,7 @@ public class RSItemData {
 		return random(thirst.getLeft(),thirst.getRight());
 	}
 	public boolean isValidThirst() {
-		return thirst!=null && (thirst.getLeft()!=0 || thirst.getRight()!=0) ;
+		return thirst!=null && !(thirst.getLeft()==0 && thirst.getRight()==0) ;
 	}
 	public void setThirst(RSEntry<Double, Double> thirst) {
 		this.thirst = thirst;
@@ -239,7 +239,7 @@ public class RSItemData {
 		return random(energy.getLeft(), energy.getRight());
 	}
 	public boolean isValidEnergy() {
-		return energy!=null && (energy.getLeft()!=0 || energy.getRight()!=0) ;
+		return energy!=null && !(energy.getLeft()==0 && energy.getRight()==0) ;
 	}
 	public void setEnergy(RSEntry<Double, Double> energy) {
 		this.energy = energy;
@@ -255,7 +255,7 @@ public class RSItemData {
 		return random(hunger.getLeft(), hunger.getRight());
 	}
 	public boolean isValidHunger() {
-		return hunger!=null && (hunger.getLeft()!=0 || hunger.getRight()!=0) ;
+		return hunger!=null && !(hunger.getLeft()==0 && hunger.getRight()==0) ;
 	}
 	public void setHunger(RSEntry<Double, Double> hunger) {
 		this.hunger = hunger;
@@ -271,7 +271,7 @@ public class RSItemData {
 		return random(health.getLeft(),health.getRight());
 	}
 	public boolean isValidHealth() {
-		return health!=null && (health.getLeft()!=0 || health.getRight()!=0) ;
+		return health!=null && !(health.getLeft()==0 && health.getRight()==0) ;
 	}
 	public void setHealth(RSEntry<Double, Double> health) {
 		this.health = health;
@@ -287,7 +287,7 @@ public class RSItemData {
 		this.weight = weight;
 	}
 	public boolean isTool() {
-		return true;
+		return false;
 	}
 	public double getValue(String status) {
 		switch (status.toUpperCase()) {
@@ -351,5 +351,14 @@ public class RSItemData {
 	private double random(double a,double b) {
 		return Math.abs(a-b)*Math.random()+Math.min(a, b);
 	}
+
+	@Override
+	public String toString() {
+		return "RSItemData [sleep=" + sleep + ", thirst=" + thirst + ", energy=" + energy + ", hunger=" + hunger
+				+ ", health=" + health + ", maxSleep=" + maxSleep + ", maxThirst=" + maxThirst + ", maxEnergy="
+				+ maxEnergy + ", maxHunger=" + maxHunger + ", maxHealth=" + maxHealth + ", weight=" + weight + "]";
+	}
+	
+	
 	
 }

@@ -4,22 +4,20 @@ public class EffectData {
 	private String name;
 	private int duration;
 	private int effecLevel;
-	private boolean immediate;
 	public EffectData() {
 		
 	}
-	public EffectData(String name, int duration, int effecLevel, boolean immediate) {
+	public EffectData(String name, int duration, int effecLevel) {
 		super();
 		this.name = name;
 		this.duration = duration;
 		this.effecLevel = effecLevel;
-		this.immediate = immediate;
 	}
 	public static EffectData loadFromString(String s) {
 		String[] temp = s.split(",");
 		return new EffectData(
 				temp[0], Integer.parseInt(temp[1]), 
-				Integer.parseInt(temp[2]), Boolean.parseBoolean(temp[3]));
+				Integer.parseInt(temp[2]));
 	}
 	public String getName() {
 		return name;
@@ -39,12 +37,4 @@ public class EffectData {
 	public void setEffecLevel(int effecLevel) {
 		this.effecLevel = effecLevel;
 	}
-	public boolean isImmediate() {
-		return immediate;
-	}
-	public void setImmediate(boolean immediate) {
-		this.immediate = immediate;
-	}
-	
-	
 }

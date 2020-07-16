@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.playerdata.PlayerData;
@@ -29,7 +30,8 @@ public class EnergyListener implements Listener{
 					e.setCancelled(true);
 				}else {
 					EnergyTask.sendMessage(e.getPlayer(), 
-							pd.getEnergy().modify(-ConfigManager.getEnergyConfig().getDecreaseSwimming()));
+							pd.getEnergy().modify(
+									-ConfigManager.getEnergyConfig().getDecreaseSwimming(),pd.getEffect().getValue(StatusType.ENERGY)));
 				}
 			}
 		}else if(ConfigManager.getEnergyConfig().getDecreaseJumping()!=0
@@ -40,7 +42,8 @@ public class EnergyListener implements Listener{
 				e.getPlayer().teleport(jumpCheck.get(e.getPlayer().getName()));
 			}else {
 				EnergyTask.sendMessage(e.getPlayer(), 
-						pd.getEnergy().modify(-ConfigManager.getEnergyConfig().getDecreaseJumping()));
+						pd.getEnergy().modify(
+								-ConfigManager.getEnergyConfig().getDecreaseJumping(),pd.getEffect().getValue(StatusType.ENERGY)));
 			}
 			jumpCheck.remove(e.getPlayer().getName());
 		}

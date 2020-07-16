@@ -1,5 +1,6 @@
 package miskyle.realsurvival.data;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,10 +28,12 @@ import miskyle.realsurvival.status.listener.ThirstListener;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer3;
+import miskyle.realsurvival.status.task.EffectTask;
 import miskyle.realsurvival.status.task.EnergyTask;
 import miskyle.realsurvival.status.task.SleepTask;
 import miskyle.realsurvival.status.task.ThirstTask;
 import miskyle.realsurvival.status.task.WeightTask;
+import miskyle.realsurvival.util.watermaker.WaterMakerVer;
 
 public class ConfigManager {
 	private static ConfigManager cm;
@@ -65,16 +68,24 @@ public class ConfigManager {
 		loadStatusConfig();
 		
 		registerStatus();
+		registerTask();
 		registerListener();
 	}
 	
+	private void registerTask() {
+		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
+	}
+	
 	private void registerListener() {
+		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
 		plugin.getServer().getPluginManager().registerEvents(new JoinOrLeaveListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new UseItemListener(), plugin);
 	}
 	
 	private void registerStatus() {
 		if(thirstc.isEnable()) {
+			if(!new File(plugin.getDataFolder()+"/item/water/unknown.yml").exists())
+				WaterMakerVer.makeUnknownWater();
 			plugin.getServer().getPluginManager().registerEvents(new ThirstListener(), plugin);
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
 		}
@@ -165,6 +176,7 @@ public class ConfigManager {
 								"ExtraThirstValue TEXT\r\n" + 
 								"ExtraEnergyValue TEXT\r\n" + 
 								"ExtraWeightValue TEXT\r\n" + 
+								"Effect TEXT\r\n" + 
 								")default charset=utf8;").close();;
 					}
 				} catch (SQLException e) {
@@ -199,6 +211,7 @@ public class ConfigManager {
 		thirstc.setMaxValue(c.getDouble("status.thirst.max"));
 		thirstc.setDecreaseValue(c.getDouble("status.thirst.sub"));
 		thirstc.setEffectData(getStatusEffectData("status.thirst.effect-data"));
+		thirstc.setWater(c.getStringList("status.thirst.water"));
 		
 		//Energy Config Load
 		energyc = new EnergyConfig();
