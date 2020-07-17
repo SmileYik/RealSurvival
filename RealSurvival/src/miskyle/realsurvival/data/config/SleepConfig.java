@@ -18,27 +18,6 @@ public class SleepConfig {
 	public SleepConfig() {
 		
 	}
-	
-	public SleepConfig(boolean enable, boolean sleepInDay, double maxValue, double decreaseValue, double increaseValue,
-			HashMap<String, String> effectData) {
-		super();
-		this.enable = enable;
-		this.sleepInDay = sleepInDay;
-		this.maxValue = maxValue;
-		this.decreaseValue = decreaseValue;
-		this.increaseValue = increaseValue;
-		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
-		effectData.forEach((s1,s2)->{
-			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
-		});
-	}
 	public boolean isEnable() {
 		return enable;
 	}
@@ -77,13 +56,19 @@ public class SleepConfig {
 		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
 		effectData.forEach((s1,s2)->{
 			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
+			if(s2.equalsIgnoreCase("null")) {
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), new ArrayList<EffectData>());			
+			}else {
+				String[] temp2 = s2.split(";");
+				ArrayList<EffectData> list = new ArrayList<>();
+				for(String s:temp2)
+					list.add(EffectData.loadFromString(s));
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);				
+			}
 		});
 	}
 	

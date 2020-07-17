@@ -88,6 +88,8 @@ public class PlayerDataSleep extends PlayerDataStatus{
 		this.sleep = sleep;
 	}
 	
-	
+	public double getProportionValue() {
+		return getValue()/getMaxValue();
+	}
 	
 }

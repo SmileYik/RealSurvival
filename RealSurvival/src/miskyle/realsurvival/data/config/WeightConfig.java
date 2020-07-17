@@ -15,17 +15,7 @@ public class WeightConfig {
 	public WeightConfig() {
 		
 	}
-
-	public WeightConfig(boolean enable, double maxValue, String effectString, HashMap<String, Double> itemWeight) {
-		super();
-		this.enable = enable;
-		this.maxValue = maxValue;
-		this.itemWeight = itemWeight;
-		effects = new ArrayList<EffectData>();
-		for(String s:effectString.split(";"))
-			effects.add(EffectData.loadFromString(s));
-	}
-
+	
 	public boolean isEnable() {
 		return enable;
 	}
@@ -48,6 +38,7 @@ public class WeightConfig {
 
 	public void setEffects(String effectString) {
 		effects = new ArrayList<EffectData>();
+		if(effectString.equalsIgnoreCase("null"))return;
 		for(String s:effectString.split(";"))
 			effects.add(EffectData.loadFromString(s));
 	}

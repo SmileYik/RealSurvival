@@ -6,12 +6,14 @@ author: School_Uniform
 api-version: 1.13
 softdepend: [PlaceholderAPI,Chairs]
 commands:
-  rsi:
-    description: get Realsurvival's help
+  RealSurvivalItem:
+    description: get RealsurvivalItem's help
     usage: /<command> help
+    aliases: [rsi,rsitem,realsurvivali]
   RealSurvival:
     description: get Realsurvival's help
     usage: /<command> help
+    aliases: [rs]
 permissions: 
   RealSurvival.Admin.Item:
     description: Use Admin Commands

@@ -1,8 +1,17 @@
+#设定插件语言(目前只有zh)
 language: zh
-  
+#是否让插件检查更新(假的)
 check-update: true
+#是否启用bStats统计数据
 enable-bStats: true
-  
+
+#mysql有关设置
+#enable为是否启用
+#host mysql的主机(ip)
+#port mysql的端口
+#database 数据库名
+#username 用户名
+#password 密码
 mysql:
   enable: false
   host: localhost
@@ -10,17 +19,45 @@ mysql:
   database: database
   username: root
   password: 123456
- 
+
+#启用RealSurvival的世界
+#将世界名(大小写敏感)按照相应格式添加
 enable-worlds:
   - world
   - world_nether
   - world_the_end
 
+#普通玩家使用/realsurvival status获取状态时
+#获取的状态多久更新一次(单位,游戏刻)
 status-command-cooldown: 600
 
+#属性设置,
+#sleep  精力
+#thirst 水分
+#energy 体力
+#weight 负重
+#共同项如下
+#enable 		是否启用
+#max 			属性最大值
+#sub			每秒减少值
+#add			每秒增加值
+#effect-data 	效果
+#对effect-data讲解
+#格式如下
+#effect-data:
+#  - "[对应属性百分比1*100]-[对应属性百分比2*100]:效果1;效果2;效果n"
+#  - "[对应属性百分比3*100]-[对应属性百分比4*100]:null"
+#效果可以是原版效果,也可以是另外添加的效果
+#效果格式如下:
+#效果名,持续时间,效果强度
+#效果名大小写敏感,支持原版效果名
+#冒号后面的null代表不产生效果
+#对应请在messages.yml中修改提示消息,参考默认配置进行配置
+#weight下的effect与effect-data的冒号后边格式一样
 status:
   sleep:
     enable: true
+    #在白天是否能睡觉
     sleep-in-day: true
     max: 100
     sub: 0.05
@@ -35,24 +72,38 @@ status:
     effect-data:
       - "10-0:SPEED,1,5,true;HEAL,1,5,true"
       - "80-100:SPEED,1,5,true;HEAL,1,5,true"
+      #设定生物群系下获取的水
+   # - "生物群系名:item文件夹下的文件名(不包括.yml)"
     water:
       - "BIOME:WATER1"
   energy:
     enable: true
     max: 100
     add: 2
+    #潜行消耗体力,0取消,下同
     sneaking: 1
+    #奔跑
     sprinting: 5
+    #跳跃
     jumping: 5
+    #游泳
     swimming: 3
     effect-data:
       - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+      #破坏方块时消耗的体力
+   # - "方块名(大写),工具名(tool-list中注册的工具),消耗体力值"
+   	#若工具名为AIR则代表非工具以外部分物品   
     break-block:
-      - "SAND,0,1"
+      - "SAND,AIR,1"
+      #工具列表
+    tool-list:
+      - "IRON_PICKAXE"
   weight:
     enable: true
     max: 100
     effect: "SPEED,1,5,true;HEAL,1,5,true"
+    #设定原版物品的重量
+    #  - "物品名(大写):重量"
     item: 
       - TORCH:0.1
   illness:
@@ -60,6 +111,7 @@ status:
   temperature: 
     enable: true
 
+#老规矩,改冒号后面的
 label:
   split: ":"
   labels:

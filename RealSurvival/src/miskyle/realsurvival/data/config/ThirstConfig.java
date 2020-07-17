@@ -20,26 +20,6 @@ public class ThirstConfig {
 	public ThirstConfig() {
 		biomeWater = new HashMap<String, String>();
 	}
-	
-	public ThirstConfig(boolean enable, double maxValue, double decreaseValue, 
-			HashMap<String, String> effectData,HashMap<String, String> biomeWater) {
-		super();
-		this.enable = enable;
-		this.maxValue = maxValue;
-		this.decreaseValue = decreaseValue;
-		this.biomeWater = biomeWater;
-		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
-		effectData.forEach((s1,s2)->{
-			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
-		});
-	}
 
 	public boolean isEnable() {
 		return enable;
@@ -73,13 +53,19 @@ public class ThirstConfig {
 		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
 		effectData.forEach((s1,s2)->{
 			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
+			if(s2.equalsIgnoreCase("null")) {
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), new ArrayList<EffectData>());			
+			}else {
+				String[] temp2 = s2.split(";");
+				ArrayList<EffectData> list = new ArrayList<>();
+				for(String s:temp2)
+					list.add(EffectData.loadFromString(s));
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
+			}
 		});
 	}
 	

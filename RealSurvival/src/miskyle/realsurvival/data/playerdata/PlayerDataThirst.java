@@ -57,4 +57,8 @@ public class PlayerDataThirst extends PlayerDataStatus{
 			super.value = max;
 		return new RSEntry<Double, Double>(oldValue,this.value);
 	}
+	
+	public double getProportionValue() {
+		return getValue()/getMaxValue();
+	}
 }

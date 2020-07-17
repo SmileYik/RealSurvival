@@ -2,6 +2,7 @@ package miskyle.realsurvival.data.config;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import miskyle.realsurvival.data.effect.EffectData;
 import miskyle.realsurvival.util.RSEntry;
@@ -15,36 +16,12 @@ public class EnergyConfig {
 	private double 	decreaseJumping;
 	private double 	decreaseSwimming;
 	
-	private HashMap<EnergyBreakBlockData,Double> 			actionDecrease;
-	private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>		 effectData;
+	private List<String> 																							toolList;
+	private HashMap<EnergyBreakBlockData,Double> 										actionDecrease;
+	private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>		effectData;
 	
 	public EnergyConfig() {
 		
-	}
-	
-	public EnergyConfig(boolean enable, double maxValue, double increaseValue, double decreaseSneaking,
-			double decreaseSprinting, double decreaseJumping, double decreaseSwimming,
-			HashMap<String, String> effectData, HashMap<EnergyBreakBlockData, Double> actionDecrease) {
-		super();
-		this.enable = enable;
-		this.maxValue = maxValue;
-		this.increaseValue = increaseValue;
-		this.decreaseSneaking = decreaseSneaking;
-		this.decreaseSprinting = decreaseSprinting;
-		this.decreaseJumping = decreaseJumping;
-		this.decreaseSwimming = decreaseSwimming;
-		this.actionDecrease = actionDecrease;
-		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
-		effectData.forEach((s1,s2)->{
-			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
-		});
 	}
 
 	public boolean isEnable() {
@@ -111,13 +88,19 @@ public class EnergyConfig {
 		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
 		effectData.forEach((s1,s2)->{
 			String[] temp = s1.split("-");
-			String[] temp2 = s2.split(";");
-			ArrayList<EffectData> list = new ArrayList<>();
-			for(String s:temp2)
-				list.add(EffectData.loadFromString(s));
-			this.effectData.put(
-					new RSEntry<Double, Double>(
-							Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
+			if(s2.equalsIgnoreCase("null")) {
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), new ArrayList<EffectData>());			
+			}else {
+				String[] temp2 = s2.split(";");
+				ArrayList<EffectData> list = new ArrayList<>();
+				for(String s:temp2)
+					list.add(EffectData.loadFromString(s));
+				this.effectData.put(
+						new RSEntry<Double, Double>(
+								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
+			}
 		});
 	}
 
@@ -128,7 +111,13 @@ public class EnergyConfig {
 	public void setActionDecrease(HashMap<EnergyBreakBlockData, Double> actionDecrease) {
 		this.actionDecrease = actionDecrease;
 	}
-	
-	
+
+	public List<String> getToolList() {
+		return toolList;
+	}
+
+	public void setToolList(List<String> toolList) {
+		this.toolList = toolList;
+	}
 	
 }

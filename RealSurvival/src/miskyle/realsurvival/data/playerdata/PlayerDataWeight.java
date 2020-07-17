@@ -43,4 +43,8 @@ public class PlayerDataWeight extends PlayerDataStatus{
 	public RSEntry<Double, Double> setValue(double value) {
 		return super.setValue(value);
 	}
+	
+	public double getProportionValue() {
+		return getValue()/getMaxValue();
+	}
 }

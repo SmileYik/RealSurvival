@@ -47,7 +47,8 @@ public class RSClassLoader extends ClassLoader{
 	private void loadClassPath(File path) {
 		if(path.isDirectory())
 			for(File file : path.listFiles()) {
-				if(!file.isDirectory() && path.getName().toLowerCase().contains(".class")) {
+				if(!file.isDirectory() 
+						&&file.getName().substring(file.getName().lastIndexOf(".")).equalsIgnoreCase(".class")) {
 					loadClass(file);
 				}else {
 					loadClassPath(file);

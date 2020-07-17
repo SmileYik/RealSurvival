@@ -5,11 +5,14 @@ import java.util.HashMap;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.data.config.EnergyBreakBlockData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 import miskyle.realsurvival.status.task.EnergyTask;
 
@@ -46,6 +49,20 @@ public class EnergyListener implements Listener{
 								-ConfigManager.getEnergyConfig().getDecreaseJumping(),pd.getEffect().getValue(StatusType.ENERGY)));
 			}
 			jumpCheck.remove(e.getPlayer().getName());
+		}
+	}
+	
+	@EventHandler
+	public void onbreakBlock(final BlockBreakEvent e) {
+		if(!PlayerManager.isActive(e.getPlayer().getName())) return;
+		PlayerData pd = PlayerManager.getPlayerData(e.getPlayer().getName());
+		ItemStack item = e.getPlayer().getInventory().getItemInMainHand();
+		EnergyBreakBlockData data = new EnergyBreakBlockData(
+				e.getBlock().getType().name(),
+				ConfigManager.getEnergyConfig().getToolList().contains(item.getType().name())?item.getType().name():"AIR");
+		Double value = ConfigManager.getEnergyConfig().getActionDecrease().get(data);
+		if(value!=null) {
+			pd.modifyWithEffect(StatusType.ENERGY, -value);
 		}
 	}
 	

@@ -24,7 +24,7 @@ import miskyle.realsurvival.listener.UseItemListener;
 import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
 import miskyle.realsurvival.status.listener.SleepListener;
-import miskyle.realsurvival.status.listener.ThirstListener;
+import miskyle.realsurvival.status.listener.ThirstListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer3;
@@ -86,7 +86,7 @@ public class ConfigManager {
 		if(thirstc.isEnable()) {
 			if(!new File(plugin.getDataFolder()+"/item/water/unknown.yml").exists())
 				WaterMakerVer.makeUnknownWater();
-			plugin.getServer().getPluginManager().registerEvents(new ThirstListener(), plugin);
+			plugin.getServer().getPluginManager().registerEvents(new ThirstListenerVer2(), plugin);
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
 		}
 		if(weightc.isEnable()) {
@@ -223,6 +223,7 @@ public class ConfigManager {
 		energyc.setDecreaseSprinting(c.getDouble("status.energy.sprinting"));
 		energyc.setDecreaseSwimming(c.getDouble("status.energy.swimming"));
 		energyc.setEffectData(getStatusEffectData("status.energy.effect-data"));
+		energyc.setToolList(c.getStringList("status.energy.tool-list"));
 		HashMap<EnergyBreakBlockData,Double> actionDecrease = 
 									new HashMap<EnergyBreakBlockData, Double>();
 		for(String line:c.getStringList("status.energy.break-block")) {

@@ -189,7 +189,11 @@ public class ItemManager {
 		}
 		String key = im.labels.get(status);
 		if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-			
+			if(status.equals("weight")) {
+				if(ConfigManager.getWeightConfig().getItemWeight().containsKey(item.getType().name())) {
+					return ConfigManager.getWeightConfig().getItemWeight().get(item.getType().name());
+				}
+			}
 			//TODO 返回原版物品对应数据
 			return 0;
 		}
@@ -208,6 +212,10 @@ public class ItemManager {
 			}
 		}
 		return 0;
+	}
+	
+	public static boolean isValidNBTItem(String name) {
+		return im.nbtItemData.containsKey(name.toLowerCase());
 	}
 	
 	private double random(double a,double b) {

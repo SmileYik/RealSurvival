@@ -25,40 +25,36 @@ public class EffectManager {
 		setupRSEffect();
 	}
 	
+	/**
+	 * 取读外来RSEffect
+	 */
 	public void setupRSEffect() {
 		effects = new HashMap<String, Object>();
+		//初始化RSEffect的effect方法
 		try {
 			methondEffect = RSEffect.class.getMethod("effect", Player.class,int.class,int.class);
 		} catch (NoSuchMethodException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		//获取目录下所有父类为RSEffect的子类
 		new RSClassLoader(MCPT.plugin.getDataFolder()+"/effect/")
 		.loadAllClass(RSEffect.class).forEach((k,v)->{
 			try {
 				Object effect = v.getConstructor(String.class).newInstance(k);
 				effects.put(k, effect);
 			} catch (InstantiationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IllegalArgumentException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (InvocationTargetException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (NoSuchMethodException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (SecurityException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -85,6 +81,7 @@ public class EffectManager {
 	}
 	
 	public static void effectPlayer(Player player,EffectData effect) {
-		effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel());
+		if(effect != null)
+			effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel());
 	}
 }

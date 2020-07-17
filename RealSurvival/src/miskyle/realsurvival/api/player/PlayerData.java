@@ -1,5 +1,7 @@
 package miskyle.realsurvival.api.player;
 
+import org.bukkit.plugin.Plugin;
+
 import miskyle.realsurvival.api.status.StatusType;
 
 public interface PlayerData {
@@ -41,5 +43,28 @@ public interface PlayerData {
 	 * @param duration \u6301\u7eed\u65f6\u95f4(\u5355\u4f4d: \u79d2)
 	 */
 	public void addEffect(StatusType type, String pluginName,double value,int duration);
+	/**
+	 * 增加玩家属性最大值(可为负值)<p>
+	 * 每个插件对每个属性最大值添加效果仅最后一次有效
+	 * @param type
+	 * @param plugin
+	 * @param value
+	 */
+	public void addStatusMaxValue(StatusType type,Plugin plugin,double value);
 	
+	/**
+	 * 检测插件添加的属性是否有效
+	 * @param type
+	 * @param plugin
+	 * @return 有效返回true
+	 */
+	public boolean isValidAddMaxValue(StatusType type,Plugin plugin);
+	
+	/**
+	 * 获取插件所添加的属性最大值
+	 * @param type
+	 * @param plugin
+	 * @return 对应属性最大值
+	 */
+	public double getAddMaxValue(StatusType type,Plugin plugin);
 }

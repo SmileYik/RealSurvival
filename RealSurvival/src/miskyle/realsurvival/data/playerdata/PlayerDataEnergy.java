@@ -45,6 +45,10 @@ public class PlayerDataEnergy extends PlayerDataStatus{
 		return new RSEntry<Double, Double>(oldValue,this.value);
 	}
 	
+	public double getProportionValue() {
+		return getValue()/getMaxValue();
+	}
+	
 	public double getMaxValue() {
 		return super.getExtraValueSum()+ConfigManager.getEnergyConfig().getMaxValue();
 	}

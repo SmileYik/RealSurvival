@@ -14,6 +14,9 @@ public class EffectData {
 		this.effecLevel = effecLevel;
 	}
 	public static EffectData loadFromString(String s) {
+		if(s.equalsIgnoreCase("null")) {
+			return null;
+		}
 		String[] temp = s.split(",");
 		return new EffectData(
 				temp[0], Integer.parseInt(temp[1]), 

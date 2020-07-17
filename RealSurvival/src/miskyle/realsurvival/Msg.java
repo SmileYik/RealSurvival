@@ -48,6 +48,7 @@ public class Msg {
 	}
 	
 	private String getMessages(String key){
+		if(!defualt.containsKey(key))return "";
 		String[] msgs = defualt.get(key);
 		return msgs[(int)(Math.random()*msgs.length)];
 	}

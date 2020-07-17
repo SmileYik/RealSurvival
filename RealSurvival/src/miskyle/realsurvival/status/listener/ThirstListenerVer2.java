@@ -1,5 +1,7 @@
 package miskyle.realsurvival.status.listener;
 
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -11,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 
-public class ThirstListener implements Listener{
+public class ThirstListenerVer2 implements Listener{
 	
 	@EventHandler
 	public void onPlayerGetWater(final PlayerInteractEvent e) {
@@ -21,7 +23,7 @@ public class ThirstListener implements Listener{
 				|| e.getMaterial() != Material.GLASS_BOTTLE)
 			return;
 		
-		Block block=e.getPlayer().getTargetBlock(null, 6); 
+		Block block=e.getPlayer().getTargetBlock((Set<Material>)null, 6); 
 		if(!(block.getType().name().contains("WATER"))) return;
 		e.setCancelled(true);
 		

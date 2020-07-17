@@ -6,17 +6,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.Plugin;
 
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.mysql.MySQLManager;
 
+import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 
 public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
+	private static LinkedList<String> cdStatusPlayer = new LinkedList<String>();
+	
 	private String playerName;
 	
 	private PlayerDataSleep 		sleep;
@@ -238,6 +244,23 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
 	public PlayerDataEffect getEffect() {
 		return effect;
 	}
+	
+	public String getStatusMessage(boolean cd) {
+		if(status == null || !(cdStatusPlayer.contains(playerName)&&cd)) {
+			status = Msg.getPlayerState1(playerName,"正常",
+					_2f(sleep.getProportionValue()*100),_2f(sleep.getMaxValue()),_2f(sleep.getValue()),
+					_2f(thirst.getProportionValue()*100),_2f(thirst.getMaxValue()),_2f(thirst.getValue()),
+					"Temperature",
+					_2f(energy.getProportionValue()*100),_2f(energy.getMaxValue()),_2f(energy.getValue()),
+					_2f(weight.getProportionValue()*100),_2f(weight.getMaxValue()),_2f(weight.getValue()));
+			if(!cdStatusPlayer.contains(playerName))
+				cdStatusPlayer.add(playerName);
+			Bukkit.getScheduler().runTaskLaterAsynchronously(MCPT.plugin, ()->{
+				cdStatusPlayer.remove(playerName);
+			}, ConfigManager.getStatusCmdCD());
+		}
+		return status;
+	}
 
 	@Override
 	public void modify(StatusType type, double value) {
@@ -344,5 +367,72 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
 	@Override
 	public void addEffect(StatusType type, String pluginName, double value, int duration) {
 		effect.addEffect(type, pluginName, value, duration);
+	}
+	
+	private String _2f(double d){
+		return String.format("%.2f", d);
+	}
+
+	@Override
+	public void addStatusMaxValue(StatusType type, Plugin plugin, double value) {
+		switch (type) {
+		case ENERGY:
+			energy.setExtraMaxValue(plugin.getName(), value);
+			break;
+		case SLEEP:
+			sleep.setExtraMaxValue(plugin.getName(), value);
+			break;
+		case THIRST:
+			thirst.setExtraMaxValue(plugin.getName(), value);
+			break;
+		case WEIGHT:
+			weight.setExtraMaxValue(plugin.getName(), value);
+			break;
+		default:
+			break;
+		}
+	}
+
+	@Override
+	public boolean isValidAddMaxValue(StatusType type, Plugin plugin) {
+		switch (type) {
+		case ENERGY:
+			energy.getExtraMaxValue().containsKey(plugin.getName());
+			break;
+		case SLEEP:
+			sleep.getExtraMaxValue().containsKey(plugin.getName());
+			break;
+		case THIRST:
+			thirst.getExtraMaxValue().containsKey(plugin.getName());
+			break;
+		case WEIGHT:
+			weight.getExtraMaxValue().containsKey(plugin.getName());
+			break;
+		default:
+			break;
+		}
+		return false;
+	}
+
+	@Override
+	public double getAddMaxValue(StatusType type, Plugin plugin) {
+		if(!isValidAddMaxValue(type, plugin))return 0;
+		switch (type) {
+		case ENERGY:
+			energy.getExtraMaxValue().get(plugin.getName());
+			break;
+		case SLEEP:
+			sleep.getExtraMaxValue().get(plugin.getName());
+			break;
+		case THIRST:
+			thirst.getExtraMaxValue().get(plugin.getName());
+			break;
+		case WEIGHT:
+			weight.getExtraMaxValue().get(plugin.getName());
+			break;
+		default:
+			break;
+		}
+		return 0;
 	}
 }

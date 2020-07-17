@@ -3,13 +3,14 @@ package miskyle.realsurvival;
 import java.io.File;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.api.RealSurvivalAPI;
 import miskyle.realsurvival.api.player.PlayerData;
-import miskyle.realsurvival.command.CommandItem;
+import miskyle.realsurvival.command.CommandManager;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.ItemManager;
@@ -22,17 +23,32 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI{
 		prepare();
 		PlayerManager.init();
 		new ItemManager();
+		new EffectManager();
 		new ConfigManager(this);
 		new Msg(this);
-		new EffectManager();
+		new CommandManager(this);
+		loadPlayer();
 		getLogger().info("RealSurvival is Ready");
-		
-		CommandItem cmdItem = new CommandItem();
-		cmdItem.initialization();
-		this.getCommand("rsi").setExecutor(cmdItem);
-		this.getCommand("rsi").setTabCompleter(cmdItem);
 	}
 	
+	@Override
+	public void onDisable() {
+		for(Player p : this.getServer().getOnlinePlayers()) {
+			PlayerManager.removePlayer(p.getName());
+		}
+	}
+	
+	private void loadPlayer() {
+		for(Player p : this.getServer().getOnlinePlayers()) {
+			PlayerManager.addPlayer(p);
+		}
+	}
+	
+	/**
+	 * 为插件运行做准备工作
+	 * 主要为创建目录和放置
+	 * 默认配置文件
+	 */
 	private void prepare() {
 		if(!getDataFolder().exists())
 			getDataFolder().mkdir();
@@ -54,7 +70,7 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI{
         try {
             version = Bukkit.getServer().getClass()
             		.getPackage().getName().replace(".",  ",").split(",")[3];
-        } catch (ArrayIndexOutOfBoundsException whatVersionAreYouUsingException) {
+        } catch (ArrayIndexOutOfBoundsException e) {
             return null;
         }
         return version;
