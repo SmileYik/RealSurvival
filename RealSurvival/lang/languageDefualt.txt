@@ -47,3 +47,6 @@ sleep-in-day.sleep-ver2=如果要起床,请随意走动
 status.freezing=属性冻结中...
 status.thirst.water.unknown-biome=水
 status.thirst.water.unknown-biome.des=喝这个来解渴吧.
+status.temperature.hot=热
+status.temperature.normal=寻常
+status.temperature.cold=冷

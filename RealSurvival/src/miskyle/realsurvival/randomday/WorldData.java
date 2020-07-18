@@ -37,13 +37,13 @@ public class WorldData {
 				seasonCycle+=i;
 		}
 		day%=seasonCycle;
-		day -= seasonDuration.get(Season.SPRING);
+		day -= getSeasonDuration(Season.SPRING);
 		if(day<=0) return Season.SPRING;
-		day -= seasonDuration.get(Season.SUMMER);
+		day -= getSeasonDuration(Season.SUMMER);
 		if(day<=0) return Season.SUMMER;
-		day -= seasonDuration.get(Season.AUTUMN);
+		day -= getSeasonDuration(Season.AUTUMN);
 		if(day<=0) return Season.AUTUMN;
-		day -= seasonDuration.get(Season.WINTER);
+		day -= getSeasonDuration(Season.WINTER);
 		if(day<=0) return Season.WINTER;
 		return Season.SPRING;
 	}
@@ -102,6 +102,10 @@ public class WorldData {
 	public void setRainTemperature(HashMap<Season, RSEntry<Double, Double>> rainTemperature) {
 		this.rainTemperature = rainTemperature;
 	}
-	
+	private int getSeasonDuration(Season season) {
+		if(seasonDuration.containsKey(season))
+			return seasonDuration.get(season);
+		return 0;
+	}
 	
 }

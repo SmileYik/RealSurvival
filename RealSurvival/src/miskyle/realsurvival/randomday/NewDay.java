@@ -36,7 +36,17 @@ public class NewDay {
 		return newDay.init();
 	}
 	
-	private NewDay init() {
+	public NewDay init() {
+		/*
+		 * 这里为什么是0.85*0.15呢? 这里采用的函数模型是
+		 * f(T) = Bsin(wT)+A
+		 * 了解了一下,在Minecraft中温度低于0.15时下雪,
+		 * 不妨令Minecraft中0.15的温度为0摄氏度
+		 * Minecraft基础温度最大值为2.0.
+		 * 不妨把温度为2.0时取得sin函数的最大值,
+		 * 那么四分之一周期为1.85. 根据w=2π/T(周期)
+		 * 四舍五入取得w=0.85.
+		 */
 		alpheTemperature = -baseTemperature*Math.sin(0.85*0.15);
 		alpheTemperature = Math.floor(alpheTemperature*10)/10;
 		baseTemperature = Math.floor(baseTemperature*10)/10;
@@ -135,4 +145,9 @@ public class NewDay {
 		return Math.abs(entry.getLeft()-entry.getRight())*Math.random()
 				+Math.min(entry.getRight(), entry.getLeft());
 	}
+
+	protected double getAlpheTemperature() {
+		return alpheTemperature;
+	}
+	
 }

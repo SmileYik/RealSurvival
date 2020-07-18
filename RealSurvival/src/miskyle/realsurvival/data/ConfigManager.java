@@ -14,9 +14,11 @@ import com.github.miskyle.mcpt.bstat.Metrics;
 import com.github.miskyle.mcpt.i18n.I18N;
 import com.github.miskyle.mcpt.mysql.MySQLManager;
 
+import miskyle.realsurvival.data.config.DiseaseConfig;
 import miskyle.realsurvival.data.config.EnergyBreakBlockData;
 import miskyle.realsurvival.data.config.EnergyConfig;
 import miskyle.realsurvival.data.config.SleepConfig;
+import miskyle.realsurvival.data.config.TemperatureConfig;
 import miskyle.realsurvival.data.config.ThirstConfig;
 import miskyle.realsurvival.data.config.WeightConfig;
 import miskyle.realsurvival.listener.JoinOrLeaveListener;
@@ -28,9 +30,12 @@ import miskyle.realsurvival.status.listener.ThirstListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer3;
+import miskyle.realsurvival.status.task.DiseaseTask;
 import miskyle.realsurvival.status.task.EffectTask;
 import miskyle.realsurvival.status.task.EnergyTask;
+import miskyle.realsurvival.status.task.SaveConfigTask;
 import miskyle.realsurvival.status.task.SleepTask;
+import miskyle.realsurvival.status.task.TemperatureTask;
 import miskyle.realsurvival.status.task.ThirstTask;
 import miskyle.realsurvival.status.task.WeightTask;
 import miskyle.realsurvival.util.watermaker.WaterMakerVer;
@@ -46,10 +51,12 @@ public class ConfigManager {
 	private boolean enableMySQL = false;
 	private int bukkitVersion;
 	
-	private SleepConfig  sleepc;
-	private ThirstConfig thirstc;
-	private EnergyConfig energyc;
-	private WeightConfig weightc;
+	private SleepConfig  				sleepc;
+	private ThirstConfig 				thirstc;
+	private EnergyConfig 			energyc;
+	private WeightConfig 			weightc;
+	private TemperatureConfig 	temperaturec;
+	private DiseaseConfig          disease;
 	
 	public ConfigManager(Plugin plugin) {
 		cm = this;
@@ -74,6 +81,7 @@ public class ConfigManager {
 	
 	private void registerTask() {
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
+		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SaveConfigTask(), 600L, 1200L);
 	}
 	
 	private void registerListener() {
@@ -112,6 +120,12 @@ public class ConfigManager {
 						plugin.getServer().getPluginManager().registerEvents(new SleepInDayListenerVer1(), plugin);
 				}
 			}
+		}
+		if(temperaturec.isEnable()) {
+		  plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new TemperatureTask(), 20L, 200L);
+		}
+		if(disease.isEnable()) {
+		  plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new DiseaseTask(), 20L, 20L);
 		}
 	}
 	
@@ -172,11 +186,14 @@ public class ConfigManager {
 								"Thirst DOUBLE,\r\n" + 
 								"Energy DOUBLE,\r\n" + 
 								"Weight DOUBLE,\r\n" + 
-								"ExtraSleepValue TEXT\r\n" + 
-								"ExtraThirstValue TEXT\r\n" + 
-								"ExtraEnergyValue TEXT\r\n" + 
-								"ExtraWeightValue TEXT\r\n" + 
-								"Effect TEXT\r\n" + 
+								"ExtraSleepValue TEXT,\r\n" + 
+								"ExtraThirstValue TEXT,\r\n" + 
+								"ExtraEnergyValue TEXT,\r\n" + 
+								"ExtraWeightValue TEXT,\r\n" + 
+								"Effect TEXT,\r\n" + 
+                                "TEffect TEXT,\r\n" + 
+                                "Disease TEXT,\r\n" + 
+                                "Temperature TEXT\r\n" + 
 								")default charset=utf8;").close();;
 					}
 				} catch (SQLException e) {
@@ -200,28 +217,28 @@ public class ConfigManager {
 		sleepc = new SleepConfig();
 		sleepc.setEnable(c.getBoolean("status.sleep.enable",true));
 		sleepc.setSleepInDay(c.getBoolean("status.sleep.sleep-in-day",true));
-		sleepc.setMaxValue(c.getDouble("status.sleep.max"));
-		sleepc.setIncreaseValue(c.getDouble("status.sleep.add"));
-		sleepc.setDecreaseValue(c.getDouble("status.sleep.sub"));
+		sleepc.setMaxValue(c.getDouble("status.sleep.max",100));
+		sleepc.setIncreaseValue(c.getDouble("status.sleep.add",0.5));
+		sleepc.setDecreaseValue(c.getDouble("status.sleep.sub",0.1));
 		sleepc.setEffectData(getStatusEffectData("status.sleep.effect-data"));
 		
 		//Thirst Config Load
 		thirstc = new ThirstConfig();
 		thirstc.setEnable(c.getBoolean("status.thirst.enable",true));
-		thirstc.setMaxValue(c.getDouble("status.thirst.max"));
-		thirstc.setDecreaseValue(c.getDouble("status.thirst.sub"));
+		thirstc.setMaxValue(c.getDouble("status.thirst.max",100));
+		thirstc.setDecreaseValue(c.getDouble("status.thirst.sub",0.05));
 		thirstc.setEffectData(getStatusEffectData("status.thirst.effect-data"));
 		thirstc.setWater(c.getStringList("status.thirst.water"));
 		
 		//Energy Config Load
 		energyc = new EnergyConfig();
-		energyc.setEnable(c.getBoolean("status.energy.enable"));
-		energyc.setMaxValue(c.getDouble("status.energy.max"));
-		energyc.setIncreaseValue(c.getDouble("status.energy.add"));
-		energyc.setDecreaseJumping(c.getDouble("status.energy.jumping"));
-		energyc.setDecreaseSneaking(c.getDouble("status.energy.sneaking"));
-		energyc.setDecreaseSprinting(c.getDouble("status.energy.sprinting"));
-		energyc.setDecreaseSwimming(c.getDouble("status.energy.swimming"));
+		energyc.setEnable(c.getBoolean("status.energy.enable",true));
+		energyc.setMaxValue(c.getDouble("status.energy.max",100));
+		energyc.setIncreaseValue(c.getDouble("status.energy.add",5));
+		energyc.setDecreaseJumping(c.getDouble("status.energy.jumping",1));
+		energyc.setDecreaseSneaking(c.getDouble("status.energy.sneaking",1));
+		energyc.setDecreaseSprinting(c.getDouble("status.energy.sprinting",1));
+		energyc.setDecreaseSwimming(c.getDouble("status.energy.swimming",1));
 		energyc.setEffectData(getStatusEffectData("status.energy.effect-data"));
 		energyc.setToolList(c.getStringList("status.energy.tool-list"));
 		HashMap<EnergyBreakBlockData,Double> actionDecrease = 
@@ -236,14 +253,28 @@ public class ConfigManager {
 		//Weight Config Load
 		weightc = new WeightConfig();
 		weightc.setEnable(c.getBoolean("status.weight.enable",true));
-		weightc.setMaxValue(c.getDouble("status.weight.max"));
-		weightc.setEffects(c.getString("status.weight.effect"));
+		weightc.setMaxValue(c.getDouble("status.weight.max",100));
+		weightc.setEffects(c.getString("status.weight.effect","null"));
 		HashMap<String, Double> itemWeight = new HashMap<String, Double>();
 		for(String line:c.getStringList("status.weight.item")) {
 			String[] temp = line.split(":");
 			itemWeight.put(temp[0], Double.parseDouble(temp[1]));
 		}
 		weightc.setItemWeight(itemWeight);
+		
+		//Temperature Config Load
+		temperaturec = new TemperatureConfig();
+		temperaturec.setEnable(c.getBoolean("status.temperature.enable",true));
+		temperaturec.setMax(c.getDouble("status.temperature.max",30));
+		temperaturec.setMin(c.getDouble("status.temperature.min",20));
+		temperaturec.setBlock(c.getStringList("status.temperature.block"));
+		temperaturec.setMaxEffect(c.getString("status.temperature.max-effect",null));
+		temperaturec.setMinEffect(c.getString("status.temperature.min-effect",null));
+		
+		//Disease Config Load
+		disease = new DiseaseConfig();
+		disease.setEnable(c.getBoolean("status.disease.enable",true));
+		disease.setDiseases(c.getStringList("status.disease.disease"));
 	}
 	
 	/**
@@ -278,6 +309,14 @@ public class ConfigManager {
 	
 	public static EnergyConfig getEnergyConfig() {
 		return cm.energyc;
+	}
+	
+	public static TemperatureConfig getTemperatureConfig() {
+		return cm.temperaturec;
+	}
+	
+	public static DiseaseConfig getDiseaseConfig() {
+	  return cm.disease;
 	}
 	
 	public static List<String> getEnableWorlds(){

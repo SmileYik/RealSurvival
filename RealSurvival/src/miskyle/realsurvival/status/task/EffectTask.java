@@ -15,6 +15,13 @@ public class EffectTask implements Runnable{
 								pd.getEffect().removeEffect(k, name);
 						});
 					});
+					//对温度操作
+					pd.getEffect().getTemperatureEffect().forEach((k,v)->{
+					  v.setRight(v.getRight()-1);
+					  if(v.getRight()<=0) {
+					    pd.getEffect().getTemperatureEffect().remove(k);
+					  }
+					});
 				});
 	}
 	

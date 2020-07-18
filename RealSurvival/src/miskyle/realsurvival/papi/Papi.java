@@ -23,18 +23,17 @@ public class Papi extends PlaceholderExpansion  {
 			return I18N.tr("status.freezing");
 		PlayerData pd = PlayerManager.getPlayerData(p.getName());
 		
-		if(arg.equalsIgnoreCase("sleep"))
-			return _2f(pd.getSleep().getValue()/pd.getSleep().getMaxValue()*100)+"%";
-		
-		if(arg.equalsIgnoreCase("thirst"))
-			return _2f(pd.getThirst().getValue()/pd.getThirst().getMaxValue()*100)+"%";
-		
-		
-		if(arg.equalsIgnoreCase("weight"))
-			return _2f(pd.getWeight().getValue()/pd.getWeight().getMaxValue()*100)+"%";
-		
-		if(arg.equalsIgnoreCase("energy"))
-			return _2f(pd.getEnergy().getValue()/pd.getEnergy().getMaxValue()*100)+"%";
+		if(arg.equalsIgnoreCase("sleep")) {
+		  return _2f(pd.getSleep().getValue()/pd.getSleep().getMaxValue()*100)+"%";		  
+		}else  if(arg.equalsIgnoreCase("thirst")) {
+		  return _2f(pd.getThirst().getValue()/pd.getThirst().getMaxValue()*100)+"%";		  
+		}else if(arg.equalsIgnoreCase("weight")) {
+		  return _2f(pd.getWeight().getValue()/pd.getWeight().getMaxValue()*100)+"%";		  
+		}else if(arg.equalsIgnoreCase("energy")) {
+		  return _2f(pd.getEnergy().getValue()/pd.getEnergy().getMaxValue()*100)+"%";		  
+		}else if(arg.equalsIgnoreCase("temperature")) {
+		  return I18N.tr("status.temperature."+pd.getTemperature().getValue().name().toLowerCase());
+		}
 		
 		return "";
 	}

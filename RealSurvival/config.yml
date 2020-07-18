@@ -90,9 +90,6 @@ status:
     swimming: 3
     effect-data:
       - "10-0:SPEED,1,5,true;HEAL,1,5,true"
-      #破坏方块时消耗的体力
-   # - "方块名(大写),工具名(tool-list中注册的工具),消耗体力值"
-   	#若工具名为AIR则代表非工具以外部分物品   
     break-block:
       - "SAND,AIR,1"
       #工具列表
@@ -102,14 +99,20 @@ status:
     enable: true
     max: 100
     effect: "SPEED,1,5,true;HEAL,1,5,true"
-    #设定原版物品的重量
-    #  - "物品名(大写):重量"
     item: 
       - TORCH:0.1
-  illness:
+  disease:
     enable: true
+    disease:
+      - "生病:SPEED,1,5,true;HEAL,1,5,true"
   temperature: 
     enable: true
+    max: 30
+    min: 20
+    max-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    min-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    block:
+      - "TORCH:1"
 
 #老规矩,改冒号后面的
 label:

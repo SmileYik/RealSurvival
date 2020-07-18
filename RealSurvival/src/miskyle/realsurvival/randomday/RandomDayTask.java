@@ -10,10 +10,18 @@ import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.config.RandomDayConfig;
 
 public class RandomDayTask implements Runnable{
-	private String name;
-	private WorldData worldData;
-	private NewDay today;
-	private NewDay tomorrow;
+	private String 			name;
+	private WorldData 	worldData;
+	private NewDay 		today;
+	private NewDay 		tomorrow;
+	
+	protected RandomDayTask(String worldName,WorldData worldData,NewDay today,NewDay tomorrow) {
+		this.name		 	= worldName;
+		this.worldData 	= worldData;
+		this.today 			= today;
+		this.tomorrow 	= tomorrow;
+	}
+	
 	@Override
 	public void run() {
 		World world = MCPT.plugin.getServer().getWorld(name);
@@ -101,5 +109,23 @@ public class RandomDayTask implements Runnable{
 	private static double random(double a,double b) {
 		return Math.abs(a-b)*Math.random()+Math.min(a, b);
 	}
+
+	protected String getName() {
+		return name;
+	}
+
+	protected WorldData getWorldData() {
+		return worldData;
+	}
+
+	protected NewDay getToday() {
+		return today;
+	}
+
+	protected NewDay getTomorrow() {
+		return tomorrow;
+	}
+	
+	
 	
 }
