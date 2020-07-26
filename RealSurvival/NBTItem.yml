@@ -8,4 +8,20 @@ hunger: -10/10
 hunger-max: true
 health: -10/10
 health-max: false
+temperature: -10/10
 weight: 1
+disease:
+  - "disease1:10"
+  - "disease2:12"
+enable-disease:
+  - "disease3,3/5,10/20"
+  - "disease4,3/5,10/20"
+wrong-disease:
+  - "disease3"
+  - "disease4"
+eat-wrong-drug:
+  - "effect1"
+  - "effect2"
+no-need-drug:
+  - "effect3"
+  - "effect4"

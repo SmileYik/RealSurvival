@@ -28,13 +28,30 @@ public class CommandManager {
 		
 		//加载与玩家有关的命令
 		RSCommand cmdPlayer = new RSCommand();
-		//检测服务器核心版本,并加载适应的指令方法
 		cmdPlayer.initialization(
 				PlayerCommands.class.getDeclaredMethods(), 
 				new PlayerCommands(),
 				"rs,realsurvival");
 		plugin.getCommand("RealSurvival").setExecutor(cmdPlayer);
 		plugin.getCommand("RealSurvival").setTabCompleter(cmdPlayer);
+		
+	    //加载与多方块结构编辑有关的指令
+        RSCommand cmdCube = new RSCommand();
+        cmdCube.initialization(
+                CubeArrayCommands.class.getDeclaredMethods(), 
+                new CubeArrayCommands(),
+                "rsc,rscube,realsurvivalc,realsurvivalcube");
+        plugin.getCommand("RealSurvivalCube").setExecutor(cmdCube);
+        plugin.getCommand("RealSurvivalCube").setTabCompleter(cmdCube);
+        
+        //加载与配方及工作台有关的指令
+        RSCommand cmdRecipe = new RSCommand();
+        cmdRecipe.initialization(
+                RecipeCommands.class.getDeclaredMethods(), 
+                new RecipeCommands(),
+                "rsr,rsrecipe,realsurvivalr,realsurvivalrecipe");
+        plugin.getCommand("RealSurvivalRecipe").setExecutor(cmdRecipe);
+        plugin.getCommand("RealSurvivalRecipe").setTabCompleter(cmdRecipe);
 	}
 	
 	public static boolean compareSubCommand(String[] args,String[] subCmd) {

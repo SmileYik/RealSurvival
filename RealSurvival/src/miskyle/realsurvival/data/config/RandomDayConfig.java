@@ -24,6 +24,7 @@ public class RandomDayConfig {
 	private HashMap<String, WorldData> worldDatas;
 	
 	public RandomDayConfig() {
+	  rdc = this;
 		configFile = new File(MCPT.plugin.getDataFolder()+"/randomday.yml");
 		if(!configFile.exists()) {
 			firstRun(configFile);
@@ -47,7 +48,7 @@ public class RandomDayConfig {
 				worldData.getRainFrequency().put(season, getRSEntryFromString(config.getString(key+".rain-frequency")));
 				worldData.getBaseTemperature().put(season, getRSEntryFromString(config.getString(key+".base-temperature")));
 				worldData.getDayTemperature().put(season, getRSEntryFromString(config.getString(key+".day-temperature")));
-				worldData.getNightTemperature().put(season, getRSEntryFromString(config.getString(key+"night-temperature")));
+				worldData.getNightTemperature().put(season, getRSEntryFromString(config.getString(key+".night-temperature")));
 				worldData.getRainTemperature().put(season, getRSEntryFromString(config.getString(key+".rain-temperature")));
 			}
 			worldDatas.put(world, worldData);
@@ -167,10 +168,10 @@ public class RandomDayConfig {
 			rdc.config.set(key+".humidity", "70/80");
 			rdc.config.set(key+".wind-speed", "0.6/0.8");
 			rdc.config.set(key+".wind-frequency","0.16/0.65" );
-			rdc.config.set(key+".rain-frequence","0.56/0.65" );
+			rdc.config.set(key+".rain-frequency","0.56/0.65" );
 			rdc.config.set(key+".base-temperature","45/65" );
-			rdc.config.set(key+".day-temperature", "0.02/0.06");
-			rdc.config.set(key+".night-temperature","0.02/0.06" );
+			rdc.config.set(key+".day-temperature", "0.00002/0.00006");
+			rdc.config.set(key+".night-temperature","0.00002/0.00006" );
 			rdc.config.set(key+".rain-temperature","3/6" );
 		}
 	}

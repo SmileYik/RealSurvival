@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import com.github.miskyle.mcpt.MCPT;
 
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.randomday.RandomDayManager;
 
 public class SaveConfigTask implements Runnable{
@@ -17,6 +18,7 @@ public class SaveConfigTask implements Runnable{
       }
     }
     RandomDayManager.save();
+    MachineManager.saveTimers();
   }
   
 }

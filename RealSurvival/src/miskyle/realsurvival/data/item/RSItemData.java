@@ -16,13 +16,14 @@ public class RSItemData {
 	private RSEntry<Double, Double> energy;
 	private RSEntry<Double, Double> hunger;
 	private RSEntry<Double, Double> health;
+	private RSEntry<Double, Double> temperature;
 	private boolean maxSleep = false;
 	private boolean maxThirst = false;
 	private boolean maxEnergy = false;
 	private boolean maxHunger = false;
 	private boolean maxHealth = false;
 	private double weight;
-	
+	private DrugData drugData;
 	
 	public RSItemData() {
 		
@@ -31,7 +32,8 @@ public class RSItemData {
 	public RSItemData(
 			RSEntry<Double, Double> sleep, RSEntry<Double, Double> thirst, 
 			RSEntry<Double, Double> energy,RSEntry<Double, Double> hunger, 
-			RSEntry<Double, Double> health, double weight) {
+			RSEntry<Double, Double> health,RSEntry<Double, Double> temperature, 
+			double weight,DrugData drugData) {
 		super();
 		this.sleep = sleep;
 		this.thirst = thirst;
@@ -39,10 +41,13 @@ public class RSItemData {
 		this.hunger = hunger;
 		this.health = health;
 		this.weight = weight;
+		this.temperature = temperature;
+		this.drugData = drugData;
 	}
 	
 	public RSItemData(String[] sleep,String[] thirst,
-			String[] energy,String[] hunger,String[] health,double weight) {
+			String[] energy,String[] hunger,String[] health,String[] temperature,
+			double weight,DrugData drug) {
 		
 		this.energy =new RSEntry<Double, Double>(
 				Double.parseDouble(energy[0]), Double.parseDouble(energy[1]));
@@ -54,8 +59,10 @@ public class RSItemData {
 				Double.parseDouble(hunger[0]), Double.parseDouble(hunger[1]));
 		this.health =new RSEntry<Double, Double>(
 				Double.parseDouble(health[0]), Double.parseDouble(health[1]));
+	    this.temperature=new RSEntry<Double, Double>(
+              Double.parseDouble(temperature[0]), Double.parseDouble(temperature[1]));
 		this.weight = weight;
-		
+		this.drugData = drug;
 	}
 	
 	public void addStatusValue(String status,double left,double right) {
@@ -358,6 +365,23 @@ public class RSItemData {
 				+ ", health=" + health + ", maxSleep=" + maxSleep + ", maxThirst=" + maxThirst + ", maxEnergy="
 				+ maxEnergy + ", maxHunger=" + maxHunger + ", maxHealth=" + maxHealth + ", weight=" + weight + "]";
 	}
+
+  public RSEntry<Double, Double> getTemperature() {
+    return temperature;
+  }
+
+  public void setTemperature(String[] str) {
+    this.temperature = new RSEntry<Double, Double>(
+        Double.parseDouble(str[0]),Double.parseDouble(str[1]));
+  }
+
+  public DrugData getDrugData() {
+    return drugData;
+  }
+
+  public void setDrugData(DrugData drugData) {
+    this.drugData = drugData;
+  }
 	
 	
 	

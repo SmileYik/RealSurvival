@@ -124,3 +124,8 @@ label:
     - "hunger:Hunger"
     - "energy:Energy"
     - "health:Health"
+    - "drug:Drug"
+    - "temperature:Temperature"
+        
+machine:
+  - "machineName,CubeName,workbenchType,Title"    

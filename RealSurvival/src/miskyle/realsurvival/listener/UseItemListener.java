@@ -5,10 +5,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.inventory.ItemStack;
 
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
@@ -71,6 +69,7 @@ public class UseItemListener implements Listener{
 	}
 	
 	private boolean eatItem(Player p,PlayerData pd,RSItemData itemData) {
+	  if(itemData == null) return false;
 		if(itemData.isTool())return false;
 		boolean flag = false;
 		if(itemData.isValidEnergy()) {
@@ -136,15 +135,5 @@ public class UseItemListener implements Listener{
 			p.setFoodLevel((int)v);
 		}
 		return flag;
-	}
-	
-	
-	@EventHandler
-	public void a(InventoryCloseEvent e) {
-		StringBuilder sb = new StringBuilder();
-		for(ItemStack is : e.getView().getTopInventory().getContents()) {
-			if(is!=null)sb.append(is.getType().name()+",");
-		}
-		System.out.println(sb.toString());
 	}
 }

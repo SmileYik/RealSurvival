@@ -11,6 +11,7 @@ import miskyle.realsurvival.data.PlayerManager;
 
 public class DiseaseTask implements Runnable{
 
+  private int time = 0;
   @Override
   public void run() {
     PlayerManager.getActivePlayers().forEachValue(
@@ -29,8 +30,14 @@ public class DiseaseTask implements Runnable{
                 });
               }
           });
+          if(time >= 60) {
+            pd.getDisease().updateShowDisease();
+          }
         });
-    
+    if(time >= 60) {
+      time = 0;
+    }
+    time++;
   }
   
 }

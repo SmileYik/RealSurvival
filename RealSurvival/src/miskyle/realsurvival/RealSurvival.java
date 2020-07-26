@@ -9,6 +9,7 @@ import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.randomday.RandomDayManager;
 
 import org.bukkit.Bukkit;
@@ -36,6 +37,8 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI {
     for (Player p : this.getServer().getOnlinePlayers()) {
       PlayerManager.removePlayer(p.getName());
     }
+    RandomDayManager.save();
+    MachineManager.saveTimers();
   }
 
   private void loadPlayer() {
@@ -63,12 +66,21 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI {
     if (!new File(getDataFolder() + "/playerdata/").exists()) {
       new File(getDataFolder() + "/playerdata/").mkdir();      
     }
+    if (!new File(getDataFolder() + "/CubeData/").exists()) {
+      new File(getDataFolder() + "/CubeData/").mkdir();      
+    }
+    if (!new File(getDataFolder() + "/recipe/crafttable/").exists()) {
+      new File(getDataFolder() + "/recipe/crafttable/").mkdirs();      
+    }
+    if (!new File(getDataFolder() + "/recipe/furnace/").exists()) {
+      new File(getDataFolder() + "/recipe/furnace/").mkdirs();      
+    }
     if (!new File(getDataFolder() + "/config.yml").exists()) {
       saveDefaultConfig();      
     }
     try {
       reloadConfig();
-    } catch (Exception ee) {
+    } catch (Exception e) {
       ;
     }
   }

@@ -23,6 +23,11 @@ import miskyle.realsurvival.data.config.ThirstConfig;
 import miskyle.realsurvival.data.config.WeightConfig;
 import miskyle.realsurvival.listener.JoinOrLeaveListener;
 import miskyle.realsurvival.listener.UseItemListener;
+import miskyle.realsurvival.machine.MachineManager;
+import miskyle.realsurvival.machine.MachineTask;
+import miskyle.realsurvival.machine.crafttable.CraftTableListener;
+import miskyle.realsurvival.machine.listener.ClickCubeListener;
+import miskyle.realsurvival.machine.raincollector.RainCollectorListener;
 import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
 import miskyle.realsurvival.status.listener.SleepListener;
@@ -73,6 +78,7 @@ public class ConfigManager {
 		
 		loadNormalConfig();
 		loadStatusConfig();
+	    MachineManager.init();
 		
 		registerStatus();
 		registerTask();
@@ -82,18 +88,23 @@ public class ConfigManager {
 	private void registerTask() {
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SaveConfigTask(), 600L, 1200L);
+		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new MachineTask(), 20L, 20L);
 	}
 	
 	private void registerListener() {
-		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
 		plugin.getServer().getPluginManager().registerEvents(new JoinOrLeaveListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new UseItemListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new RainCollectorListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new CraftTableListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new ClickCubeListener(), plugin);
 	}
 	
 	private void registerStatus() {
 		if(thirstc.isEnable()) {
 			if(!new File(plugin.getDataFolder()+"/item/water/unknown.yml").exists())
 				WaterMakerVer.makeUnknownWater();
+			if(!new File(plugin.getDataFolder()+"/item/water/rainwater.yml").exists())
+              WaterMakerVer.makeRainwater();
 			plugin.getServer().getPluginManager().registerEvents(new ThirstListenerVer2(), plugin);
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
 		}

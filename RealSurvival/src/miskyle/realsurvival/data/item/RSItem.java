@@ -69,7 +69,7 @@ public class RSItem {
 		return true;
 	}
 	
-	private ItemStack getSaveItem() {
+	public ItemStack getSaveItem() {
 		if(!item.hasItemMeta() ||
 				!item.getItemMeta().hasLore())
 			return item;

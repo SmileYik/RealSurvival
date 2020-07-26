@@ -110,6 +110,7 @@ public class PlayerDataEffect {
 	
 	public String getTemperatureSaveString() {
 	  StringBuilder sb = new StringBuilder();
+	  if(temperatureEffect.isEmpty())return ";";
 	  temperatureEffect.forEach((k,v)->{
 	    sb.append(k+","+v.getLeft().getLeft()+","+v.getLeft().getRight()+","+v.getRight()+";");
 	  });

@@ -7,7 +7,9 @@ import com.github.miskyle.mcpt.i18n.I18N;
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.data.playerdata.Disease;
 import miskyle.realsurvival.data.playerdata.PlayerData;
+import miskyle.realsurvival.randomday.RandomDayManager;
 
 public class Papi extends PlaceholderExpansion  {
 	private  Plugin rs;
@@ -22,7 +24,7 @@ public class Papi extends PlaceholderExpansion  {
 		if(!PlayerManager.isActive(p))
 			return I18N.tr("status.freezing");
 		PlayerData pd = PlayerManager.getPlayerData(p.getName());
-		
+		Disease disease = pd.getDisease().getShowDisease();
 		if(arg.equalsIgnoreCase("sleep")) {
 		  return _2f(pd.getSleep().getValue()/pd.getSleep().getMaxValue()*100)+"%";		  
 		}else  if(arg.equalsIgnoreCase("thirst")) {
@@ -33,7 +35,25 @@ public class Papi extends PlaceholderExpansion  {
 		  return _2f(pd.getEnergy().getValue()/pd.getEnergy().getMaxValue()*100)+"%";		  
 		}else if(arg.equalsIgnoreCase("temperature")) {
 		  return I18N.tr("status.temperature."+pd.getTemperature().getValue().name().toLowerCase());
-		}
+		}else if(arg.equalsIgnoreCase("disease")) {
+		  if(disease == null) {
+		    return I18N.tr("status.fine");
+		  }else {
+		    return disease.getDiseaseName();
+		  }
+		}else if(arg.equalsIgnoreCase("md")) {
+		  if(disease == null) {
+		    return I18N.tr("status.fine");
+		  }
+		  return I18N.tr("status.disease.drug-duration",disease.getDuration());
+		}else if(arg.equalsIgnoreCase("recovery")) {
+          if(disease == null) {
+            return I18N.tr("status.fine");
+          }
+		  return I18N.tr("status.disease.recovery",_2f(disease.getRecover()));
+        }else if(arg.equalsIgnoreCase("season")) {
+          return I18N.tr("season."+RandomDayManager.getWorldSeason(p.getWorld().getName()));
+        }
 		
 		return "";
 	}

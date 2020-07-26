@@ -248,7 +248,13 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
       data.set("extra-weight", getExtraValueList(weight));
       data.set("extra-energy", getExtraValueList(energy));
       data.set("effects", effect.toString());
-      data.set("disease", disease.getSaveString().split(";"));
+      String diseaseString = disease.getSaveString();
+      if(diseaseString == null 
+          || diseaseString.equalsIgnoreCase("null")) {
+        data.set("disease", new ArrayList<>());
+      }else {
+        data.set("disease", diseaseString.split(";"));        
+      }
       data.set("extra-temperature", temperature.getSaveString().split(";"));
       data.set("temperature-effect", effect.getTemperatureSaveString().split(";"));
       try {

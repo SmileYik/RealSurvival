@@ -1,6 +1,9 @@
 package test;
 
 public class Test {
+  static {
+    System.out.println("kick".hashCode());
+  }
 	@org.junit.Test
 	public void a() {
 		//34

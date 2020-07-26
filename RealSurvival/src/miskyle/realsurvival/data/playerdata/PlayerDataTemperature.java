@@ -6,8 +6,8 @@ import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.util.RSEntry;
 
 public class PlayerDataTemperature {
-  private TemperatureStatus value;
-  private HashMap<String, RSEntry<Double, Double>> tTolerance;
+  private TemperatureStatus value = TemperatureStatus.NORMAL;
+  private HashMap<String, RSEntry<Double, Double>> tTolerance = new HashMap<>();
   
   public void setValue(TemperatureStatus value) {
     this.value = value;
@@ -50,6 +50,7 @@ public class PlayerDataTemperature {
   
   public String getSaveString() {
     StringBuilder sb = new StringBuilder();
+    if(tTolerance.isEmpty())return ";";
     tTolerance.forEach((k,v)->{
       sb.append(k+","+v.getLeft()+","+v.getRight()+";");
     });

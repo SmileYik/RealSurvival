@@ -6,6 +6,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import miskyle.realsurvival.data.ConfigManager;
 
 public class PlayerDataDisease {
+  private int showDiseaseIndex = -1;
   private ConcurrentHashMap<String, Disease> diseases;
   
   public void addDisease(String name) {
@@ -36,7 +37,8 @@ public class PlayerDataDisease {
   
   public void setDisease(String str) {
     diseases = new ConcurrentHashMap<String, Disease>();
-    if(str == null)return;
+    if(str == null
+        ||str.equalsIgnoreCase("null"))return;
     for(String temp:str.split(";")) {
       Disease d = Disease.getFromString(temp);
       diseases.put(d.getDiseaseName(), d);
@@ -52,10 +54,34 @@ public class PlayerDataDisease {
   }
   
   public String getSaveString() {
+    if(diseases.isEmpty())return "null";
     StringBuilder sb = new StringBuilder();
     diseases.values().forEach(d->{
       sb.append(d.getDiseaseName()+","+d.getRecover()+","+d.getDrug()+","+d.getDuration()+";");
     });
     return sb.deleteCharAt(sb.length()-1).toString();
+  }
+  
+  public Disease getShowDisease() {
+    if(diseases.isEmpty()) {
+      return null;
+    }
+    if(showDiseaseIndex<0 
+        || showDiseaseIndex>=diseases.size()) {
+      updateShowDisease();
+    }
+    return diseases.values().toArray(new Disease[diseases.size()])[showDiseaseIndex];
+  }
+  
+  public void updateShowDisease() {
+    showDiseaseIndex = getRandomIndex();
+  }
+  
+  private int getRandomIndex() {
+    int index = (int)Math.floor(Math.random()*diseases.size()+0.5);
+    if(index >= diseases.size()) {
+      index = diseases.size()-1;
+    }
+    return index;
   }
 }
