@@ -190,6 +190,7 @@ public class BlockArrayCreator {
      
     @SuppressWarnings("deprecation")
     public static String getBlockKey(Block block) {
+      if(block.isEmpty())return "AIR";
       if(ConfigManager.getBukkitVersion() >= 13) {
         return block.getType().name();
       }else {

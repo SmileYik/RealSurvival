@@ -158,7 +158,11 @@ public class ClickCubeListener implements Listener {
     }
   }
 
-  private boolean compareBlock(Block block, String block2) {
-    return block2.equals(BlockArrayCreator.getBlockKey(block));
+  private boolean compareBlock(Block block, String cubeBlockKey) {
+    if(cubeBlockKey.equals("AIR")) {
+      return true;
+    }else {
+      return cubeBlockKey.equals(BlockArrayCreator.getBlockKey(block));      
+    }
   }
 }

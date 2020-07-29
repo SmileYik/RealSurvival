@@ -100,6 +100,13 @@ public class RSItemData {
 			else 
 				health.set(left+health.getLeft(), right+health.getRight());
 			break;
+		case "TEMPERATURE":
+		  if(temperature==null) {
+		    temperature = new RSEntry<Double, Double>(left,right);
+		  }else {
+		    temperature.set(left+temperature.getLeft(), right+temperature.getRight());
+		  }
+		  break;
 		default:
 			break;
 		}
@@ -194,6 +201,12 @@ public class RSItemData {
 			else 
 				health.set(left, right);
 			break;
+		case "TEMPERATURE":
+		  if(temperature==null) 
+		    temperature = new RSEntry<Double, Double>(left,right);
+        else 
+          temperature.set(left, right);
+        break;
 		default:
 			break;
 		}

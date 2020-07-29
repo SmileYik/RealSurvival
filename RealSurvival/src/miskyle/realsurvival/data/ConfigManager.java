@@ -205,7 +205,7 @@ public class ConfigManager {
                                 "TEffect TEXT,\r\n" + 
                                 "Disease TEXT,\r\n" + 
                                 "Temperature TEXT\r\n" + 
-								")default charset=utf8;").close();;
+								")default charset=utf8;").execute();
 					}
 				} catch (SQLException e) {
 					MySQLManager.disconnect();
@@ -232,6 +232,7 @@ public class ConfigManager {
 		sleepc.setIncreaseValue(c.getDouble("status.sleep.add",0.5));
 		sleepc.setDecreaseValue(c.getDouble("status.sleep.sub",0.1));
 		sleepc.setEffectData(getStatusEffectData("status.sleep.effect-data"));
+		sleepc.setSleepZero(c.getBoolean("status.sleep.sleep-zero",true));
 		
 		//Thirst Config Load
 		thirstc = new ThirstConfig();

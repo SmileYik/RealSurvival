@@ -32,8 +32,10 @@ public class RandomDayTask implements Runnable{
 		if(Math.random()<today.getRainFrequency()) {
 			randomRain(world, today.getHumidity()>=70);
 		}else {
-			world.setThunderDuration(0);
-			world.setWeatherDuration(0);
+		  MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, ()->{
+		    world.setThunderDuration(0);
+		    world.setWeatherDuration(0);		    
+		  });
 		}
 		if(Math.random()<today.getWindFrequency()) {
 			wind(name,today.getWindSpeed());
@@ -45,23 +47,27 @@ public class RandomDayTask implements Runnable{
 		v = v.normalize().multiply(windSpeed);
 		for(Player p : MCPT.plugin.getServer().getOnlinePlayers()) {
 			if(p.getWorld().getName().equalsIgnoreCase(world)
-					&&PlayerManager.isActive(p.getName()))
-				p.setVelocity(p.getVelocity().add(v));
+					&&PlayerManager.isActive(p.getName())
+					&&!PlayerManager.getPlayerData(p.getName()).getSleep().isSleep()) {
+			  p.setVelocity(p.getVelocity().add(v));
+			}
 		}
 	}
 	
 	public static void randomRain(World world,boolean thunder) {
+	  MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, ()->{
 		if (thunder) {
 			double d = Math.random();
-			if(d<0.25) 			rainWithThunder1(world);
-			else if(d<0.5)		rainWithThunder2(world);
-			else if(d<0.75)	rainWithThunder3(world);
-			else 					rainWithThunder4(world);
+			  if(d<0.25) 			rainWithThunder1(world);
+			  else if(d<0.5)		rainWithThunder2(world);
+			  else if(d<0.75)	rainWithThunder3(world);
+			  else 					rainWithThunder4(world);			  
 		}else {
 			int i = RandomDayConfig.getTick();
 			world.setWeatherDuration((int)random(i/2, i*2));
 			world.setThunderDuration(0);
 		}
+	  });
 	}
 	
 	public static void rainWithThunder1(World world) {

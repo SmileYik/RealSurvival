@@ -180,7 +180,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
       sb.append(s+":"+d);
       sb.append(";");
     });
-    return sb.substring(0, sb.length()-1);
+    return sb.length()>0?sb.substring(0, sb.length()-1):"";
   }
   
   public void save() {

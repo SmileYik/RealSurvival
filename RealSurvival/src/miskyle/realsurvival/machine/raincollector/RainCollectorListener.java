@@ -14,8 +14,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import com.github.miskyle.mcpt.i18n.I18N;
 
 import miskyle.realsurvival.Msg;
-import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.data.item.RSItem;
 import miskyle.realsurvival.machine.MachineManager;
 
 public class RainCollectorListener implements Listener{
@@ -37,8 +37,8 @@ public class RainCollectorListener implements Listener{
           if(e.hasItem() && e.getItem().getType() == Material.GLASS_BOTTLE) {
             if(collector.hasWater()) {
               collector.getWater();
-              e.getPlayer().getInventory().addItem(ConfigManager.getThirstConfig()
-                  .getWater("RAINWATER").getItem()).values().forEach(item->{
+              e.getItem().setAmount(e.getItem().getAmount()-1);
+              e.getPlayer().getInventory().addItem(RSItem.load("/water/rainwater").getItem()).values().forEach(item->{
                     block.getWorld().dropItem(e.getPlayer().getLocation(), item);
                   });
             }else {

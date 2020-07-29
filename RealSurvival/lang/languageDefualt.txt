@@ -98,8 +98,10 @@ machine.craft-table.crafting.not-yet=§e这个物品还在制作中...
 machine.craft-table.crafting.amount-left=§b剩余§b§l{0}§b个物品正在制造.
 machine.create-recipe.no-material=§b请在材料槽中放置材料!
 machine.create-recipe.no-product=§b请在产物槽中放置产物!
+machine.craft-table.ok-slot-name=§4§l正在制造中: §b§l{0}%
+machine.craft-table.ok-slot-name-2=§4§l制造进度: §b§l{0}%§4|§a§l已完成数量: §2{1}
+machine.craft-table.ok-slot-name-3=§b§l确定
 machine.craft-table.create-recipe-success=§a配方创建成功, 保存路径为: §a§l{0}
-
 
 
 

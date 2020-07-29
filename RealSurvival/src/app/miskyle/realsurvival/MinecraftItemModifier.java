@@ -66,8 +66,8 @@ public class MinecraftItemModifier {
     lblNewLabel.setBounds(14, 13, 72, 18);
     statusPanel.add(lblNewLabel);
     
-    JComboBox<String> statusComboBox = new JComboBox();
-    statusComboBox.setModel(new DefaultComboBoxModel(new String[] {"sleep", "thirst", "energy", "hunger", "health", "temperature", "weight"}));
+    JComboBox<String> statusComboBox = new JComboBox<>();
+    statusComboBox.setModel(new DefaultComboBoxModel<>(new String[] {"sleep", "thirst", "energy", "hunger", "health", "temperature", "weight"}));
     statusComboBox.setBounds(84, 10, 161, 24);
     statusPanel.add(statusComboBox);
     

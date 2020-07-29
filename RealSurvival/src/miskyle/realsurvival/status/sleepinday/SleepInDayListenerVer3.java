@@ -58,7 +58,7 @@ public class SleepInDayListenerVer3 implements Listener{
 		if(!ConfigManager.getSleepConfig().isSleepInDay()) return;
 		if(!PlayerManager.isActive(e.getPlayer().getName()))return;
 		if(e.getAction()!=Action.RIGHT_CLICK_BLOCK 
-				||e.getClickedBlock().getType().name().contains("BED")) return;
+				|| !e.getClickedBlock().getType().name().contains("BED")) return;
 		if(e.getPlayer().getWorld().getTime()>=13000)return;
 		//床太远了
 		if(e.getClickedBlock().getLocation().distanceSquared(e.getPlayer().getLocation())>3) {

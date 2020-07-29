@@ -30,7 +30,8 @@ public class SleepTask implements Runnable{
 					Player p = MCPT.plugin.getServer().getPlayer(pd.getPlayerName());
 					sendMessage(p, values);
 					attachEffect(p, pd.getSleep().getValue()*100/max);
-					if(pd.getSleep().getValue()<=0) {
+					if(pd.getSleep().getValue()<=0
+					    &&ConfigManager.getSleepConfig().getSleepZero()) {
 						MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, ()->{
 							SleepInDay.sleep(p, p.getLocation());							
 						});

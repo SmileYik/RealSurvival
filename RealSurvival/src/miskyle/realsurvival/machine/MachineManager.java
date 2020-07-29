@@ -101,7 +101,7 @@ public class MachineManager {
         return;
       }
       cubeMachine.put(temp[1], temp[0]);
-      machineCube.put(temp[1], temp[0]);
+      machineCube.put(temp[0], temp[1]);
       machineData.put(temp[0], 
           new RSEntry<RecipeType, String>(RecipeType.valueOf(temp[2]), temp[3]));
     });
@@ -234,7 +234,7 @@ public class MachineManager {
       String playerName = config.getString(k+".player-name");
       int x = config.getInt(k+".x");
       int y = config.getInt(k+".y");
-      int z = config.getInt(k+"z");
+      int z = config.getInt(k+".z");
       int time = config.getInt(k+".time");
       if(type == MachineType.RAIN_COLLECTOR) {
         RainCollectorTimer temp = new RainCollectorTimer(playerName, time, worldName, x, y, z);

@@ -218,6 +218,15 @@ public class ItemManager {
       String ss = Utils.removeColor(s);
       im.labels.forEach((k,v)->{
         if(ss.contains(v) && ss.contains(im.split)) {
+          if(k.equalsIgnoreCase("drug")) {
+            String drugName = ss.split(":")[1].replace(" ", "");
+            RSItemData drug = im.nbtItemData.get(drugName);
+            if(drug!=null) {
+              rsItem.setDrugData(drug.getDrugData());
+            }
+            return;
+          }
+          
           String temp = ss.replaceAll("[^0-9+-/%]", "");
           if(temp.contains("%")) {
             switch (k.toUpperCase()) {

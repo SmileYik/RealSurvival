@@ -10,6 +10,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.github.miskyle.mcpt.i18n.I18N;
+
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.MachineStatus;
@@ -45,22 +47,30 @@ public class CraftTable {
       }
     }
     
+    
     if(MachineManager.isActiveTimer(loc)) {
       CraftTableTimer timer = (CraftTableTimer)MachineManager.getTImer(loc);
       CraftTableRecipe recipe = timer.getRecipe();
       int index = 0;
-      for(ItemStack item : recipe.getMaterials().values()) {
-        inv.setItem(materials.get(index++), item);
+      for(char c:recipe.getMaterialShape().toCharArray()) {
+        if(c!=' ') {
+          inv.setItem(materials.get(index), recipe.getMaterials().get(c));
+        }
+        index ++;
       }
       index = 0;
       for(ItemStack item : recipe.getProducts()) {
-        inv.setItem(materials.get(index++), item);
+        inv.setItem(products.get(index++), item);
       }
       holder.setStatus(MachineStatus.CRAFTING);
       holder.setTimer(timer);
+      CraftTableOpenEvent.openEvent(holder, p.getName());
     }else {
       CraftTableTimer timer = new CraftTableTimer(p.getName(), loc);
       holder.setTimer(timer);
+      inv.setItem(49, GuiItemCreater.getItem(
+          Material.RED_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short) 14, 
+          I18N.tr("machine.craft-table.ok-slot-name-3")));
     }
     p.openInventory(inv);
   }
@@ -76,6 +86,9 @@ public class CraftTable {
             Material.BLACK_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short) 15, " "));
       }
     }
+    inv.setItem(49, GuiItemCreater.getItem(
+        Material.RED_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short) 14, 
+        I18N.tr("machine.craft-table.ok-slot-name-3")));
     p.openInventory(inv);
   }
 }

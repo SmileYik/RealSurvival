@@ -68,7 +68,7 @@ public class CraftTableListener implements Listener{
             RecipeUtils.startForgeRecipe(holder.getCraftTableName(), 
                 recipe.getLeft(), MachineType.CRAFT_TABLE,recipe.getRight(), 
                 e.getClickedInventory(), p, holder.getTimer());
-            p.closeInventory();
+            return;
           }else {
             return;
           }
@@ -91,6 +91,7 @@ public class CraftTableListener implements Listener{
   public void onCloseInv(final InventoryCloseEvent e) {
     if(e.getInventory().getHolder() instanceof CraftTableHolder) {
       CraftTableHolder holder = (CraftTableHolder) e.getInventory().getHolder();
+      CraftTableOpenEvent.cancelEvent(e.getPlayer().getName());
       if(holder.getStatus() == MachineStatus.NOTHING) {
         for(int i:CraftTable.materials) {
           ItemStack item = e.getInventory().getItem(i);

@@ -103,14 +103,15 @@ public class RecipeUtils {
         }else {
           item = item.clone();
         }
+        System.out.println(item);
         inv.setItem(slotIndex, null);
         if(item.getAmount()>amount*materialItem.getAmount()) {
           ItemStack returnItem = materialItem.clone();
           returnItem.setAmount(item.getAmount()-returnItem.getAmount()*amount);
           giveItemToPlayer(p, returnItem);
         }
-        index++;
       }
+      index++;
     }
     //注册工作台Timer
     if(timer.getType() == MachineType.CRAFT_TABLE) {
@@ -122,6 +123,7 @@ public class RecipeUtils {
       
     }
     MachineManager.addTimer(timer);
+    p.closeInventory();
   }
   
   public static boolean createRecipe(Recipe recipe, Player p, Inventory inv) {

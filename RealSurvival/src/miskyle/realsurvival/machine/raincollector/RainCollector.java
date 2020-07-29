@@ -32,7 +32,8 @@ public class RainCollector {
     for(int i:slots) {
       if(index<size) {
         inv.setItem(i,GuiItemCreater.getItem(
-            Material.LIGHT_BLUE_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short)3, " "));
+            Material.LIGHT_BLUE_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short)3, 
+            I18N.tr("status.thirst.water.rainwater")));
       }else {
         inv.setItem(i,GuiItemCreater.getItem(
             Material.GRAY_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short)7, " "));

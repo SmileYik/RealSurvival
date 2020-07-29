@@ -59,6 +59,8 @@ status:
     enable: true
     #在白天是否能睡觉
     sleep-in-day: true
+    #当属性值到0时是否强制睡觉(当sleep-in-day启用时生效
+    sleep-zero: true
     max: 100
     sub: 0.05
     add: 0.1
@@ -107,10 +109,15 @@ status:
       - "生病:SPEED,1,5,true;HEAL,1,5,true"
   temperature: 
     enable: true
+    #玩家默认最大容忍温度
     max: 30
+    #玩家默认最低容忍温度
     min: 20
+    #超过最大容忍温度时赋予的效果
     max-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    #低于最低容忍温度时赋予的效果
     min-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    #设定Minecraft原版物品的温度值(与基础温度值简单加合)
     block:
       - "TORCH:1"
 
@@ -126,6 +133,8 @@ label:
     - "health:Health"
     - "drug:Drug"
     - "temperature:Temperature"
-        
+
+#增加机器,格式如下
+# - "机器名称,多方块结构名称,机器类型(现在仅可选CRAFT_TABLE),机器GUI的标题"
 machine:
-  - "machineName,CubeName,workbenchType,Title"    
+  - "machineName,CubeName,CRAFT_TABLE,Title"    

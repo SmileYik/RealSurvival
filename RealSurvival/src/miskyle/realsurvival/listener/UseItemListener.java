@@ -10,10 +10,13 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
+import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
+import miskyle.realsurvival.data.item.DrugData;
 import miskyle.realsurvival.data.item.RSItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
+import miskyle.realsurvival.util.RSEntry;
 
 public class UseItemListener implements Listener{
 	// 以下是1.13右键有动画的物品列表
@@ -133,6 +136,37 @@ public class UseItemListener implements Listener{
 				v = 0;
 			}
 			p.setFoodLevel((int)v);
+		}
+		DrugData drug = itemData.getDrugData();
+		if(drug != null) {
+		  if(drug.isMakeDisease()) {
+		    flag = true;
+		    drug.getGetDisease().forEach((k,v)->{
+		      if(Math.random()*100<v) {
+		        pd.getDisease().addDisease(k);
+		      }
+		    });
+		  }
+		  if(drug.isValidDrug()) {
+		    flag = true;
+		    if(pd.getDisease().getDiseases().isEmpty()) {
+		      drug.getNoNeedDrug().forEach(effect->{
+		        EffectManager.effectPlayer(p, effect);		        
+		      });
+		    }else {
+		      pd.getDisease().getDiseases().forEachKey(
+		          pd.getDisease().getDiseases().mappingCount(), k->{
+		        if(drug.isValidAtDisease(k)) {
+		          RSEntry<Double,Integer> entry = drug.getMedicien(k);
+		          pd.getDisease().eatDurg(k, entry.getLeft(),entry.getRight());
+		        }else if(drug.getWrongDisease().contains(k)) {
+		          drug.getEatWrongDrug().forEach(effect->{
+	                EffectManager.effectPlayer(p, effect);              
+	              });
+		        }
+		      });
+		    }
+		  }
 		}
 		return flag;
 	}
