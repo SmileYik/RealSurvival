@@ -1,6 +1,5 @@
 package miskyle.realsurvival.listener;
 
-import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,12 +15,17 @@ import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.item.DrugData;
 import miskyle.realsurvival.data.item.RSItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
+import miskyle.realsurvival.listener.usehealthitem.UseHealthItem;
+import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer1;
+import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer2;
+import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer3;
 import miskyle.realsurvival.util.RSEntry;
 
 public class UseItemListener implements Listener{
 	// 以下是1.13右键有动画的物品列表
 	//POTION,MILK_BUCKET,APPLE,MUSHROOM_STEW,BREAD,PORKCHOP,COOKED_PORKCHOP,GOLDEN_APPLE,ENCHANTED_GOLDEN_APPLE,COD,SALMON,BEEF,DRIED_KELP,MELON_SLICE,COOKIE,POISONOUS_POTATO,COOKED_SALMON,COOKED_COD,PUFFERFISH,TROPICAL_FISH,BAKED_POTATO,POTATO,CARROT,SPIDER_EYE,ROTTEN_FLESH,COOKED_CHICKEN,CHICKEN,COOKED_BEEF,PUMPKIN_PIE,COOKED_RABBIT,RABBIT_STEW,MUTTON,COOKED_MUTTON,BEETROOT,BEETROOT_SOUP,GOLDEN_CARROT,RABBIT
 	private final String ITEM_LIST;
+	private static UseHealthItem useHealthItem;
 	public UseItemListener() {
 		if(ConfigManager.getBukkitVersion()>=13) {
 			ITEM_LIST =
@@ -44,6 +48,13 @@ public class UseItemListener implements Listener{
 					+ "COOKED_BEEF RAW_CHICKEN RAW_BEEF PUMPKIN_PIE COOKED_RABBIT "
 					+ "RABBIT_STEW MUTTON BEETROOT BEETROOT_SOUP MILK_BUCKET "
 					+ "POTION COOKED_CHICKEN";
+		}
+		if(ConfigManager.getBukkitVersion()>8) {
+		  useHealthItem = new UseHealthItemVer3();
+		}else if(ConfigManager.getBukkitVersion()>6) {
+		  useHealthItem = new UseHealthItemVer2();
+		}else {
+		  useHealthItem = new UseHealthItemVer1();
 		}
 	}
 	
@@ -107,20 +118,7 @@ public class UseItemListener implements Listener{
 		}
 		if(itemData.isValidHealth()) {
 			flag = true;
-			double v;
-			double max = p.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-			if(itemData.isMaxHealth()) {
-				v =p.getHealth()+max*itemData.getHealthValue()/100D;
-			}else {
-				v = p.getHealth()+itemData.getHealthValue();
-			}
-			if(v>max) {
-				v = max;
-			}else if(v<0) {
-				p.damage(max, p);
-				return true;
-			}
-			p.setHealth(v);
+			useHealthItem.useHealthItem(p, pd, itemData);
 		}
 		if(itemData.isValidHunger()) {
 			flag = true;

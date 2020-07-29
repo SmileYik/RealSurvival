@@ -11,6 +11,7 @@ import com.github.miskyle.mcpt.nms.title.NMSTitle;
 
 import miskyle.realsurvival.RealSurvival;
 import miskyle.realsurvival.data.playerdata.PlayerData;
+import miskyle.realsurvival.util.ActionNullBar;
 
 public class PlayerManager {
 	public static NMSTitle title;
@@ -26,6 +27,9 @@ public class PlayerManager {
 		title = NMSTitle.getTitle(version);
 		bar = NMSActionBar.getActionBar(version);
 		sleep = NMSSleep.getNMSSleep(version);
+		if(bar == null) {
+		  bar = new ActionNullBar();
+		}
 	}
 	
 	public static void addPlayer(Player p) {

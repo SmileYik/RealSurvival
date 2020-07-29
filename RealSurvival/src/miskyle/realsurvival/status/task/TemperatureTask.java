@@ -67,7 +67,7 @@ public class TemperatureTask implements Runnable{
 	      continue;
 	    }
 	    RSItemData data = ItemManager.loadItemData(item.clone());
-	    if(data.getTemperature() != null) {
+	    if(data!=null && data.getTemperature() != null) {
 	      entry.setLeft(entry.getLeft()+data.getTemperature().getLeft());
 	      entry.setRight(entry.getRight()+data.getTemperature().getRight());
 	    }

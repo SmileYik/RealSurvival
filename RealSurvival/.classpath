@@ -6,10 +6,6 @@
 	<classpathentry kind="lib" path="F:/workspace/libs/PlaceholderAPI-2.10.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="lib" path="F:/workspace/libs/MMCPT.jar"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.15.2.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="file:/F:/workspace/libs/servers/doc%201.13/"/>
-		</attributes>
-	</classpathentry>
+	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.15.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

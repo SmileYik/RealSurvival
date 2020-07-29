@@ -1,7 +1,5 @@
 package miskyle.realsurvival.status.listener;
 
-import java.util.Set;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -13,26 +11,34 @@ import org.bukkit.inventory.ItemStack;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 
-public class ThirstListenerVer1 implements Listener{
-	
-	@EventHandler
-	public void onPlayerGetWater(final PlayerInteractEvent e) {
-		if(!(e.getAction() == Action.RIGHT_CLICK_AIR 
-				|| e.getAction() == Action.RIGHT_CLICK_BLOCK)
-				|| !PlayerManager.isActive(e.getPlayer().getName())
-				|| e.getMaterial() != Material.GLASS_BOTTLE)
-			return;
-		
-		Block block=e.getPlayer().getTargetBlock((Set<Material>)null, 6); 
-		if(!(block.getType().name().contains("WATER"))) return;
-		e.setCancelled(true);
-		
-		e.getItem().setAmount(e.getItem().getAmount()-1);
-		String biome = block.getBiome().name().toUpperCase();
-		ItemStack item = 
-				ConfigManager.getThirstConfig().getWater(biome).getItem();
-		for(ItemStack is : e.getPlayer().getInventory().addItem(item).values())
-			e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), is);
-	}
-	
+/**
+ * 适配1.7.10
+ * @author MiSkYle
+ * @version 1.0.0
+ */
+public class ThirstListenerVer1 implements Listener {
+
+  @EventHandler
+  public void onPlayerGetWater(final PlayerInteractEvent e) {
+    if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
+        || !PlayerManager.isActive(e.getPlayer().getName()) || e.getMaterial() != Material.GLASS_BOTTLE)
+      return;
+
+    @SuppressWarnings("deprecation")
+    Block block = e.getPlayer().getTargetBlock(null, 6);
+    if (!(block.getType().name().contains("WATER")))
+      return;
+    e.setCancelled(true);
+    int amount = e.getItem().getAmount() - 1;
+    if(amount > 0) {
+      e.getItem().setAmount(amount);      
+    }else {
+      e.getPlayer().setItemInHand(null);
+    }
+    String biome = block.getBiome().name().toUpperCase();
+    ItemStack item = ConfigManager.getThirstConfig().getWater(biome).getItem();
+    for (ItemStack is : e.getPlayer().getInventory().addItem(item).values())
+      e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), is);
+  }
+
 }

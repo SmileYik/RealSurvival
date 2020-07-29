@@ -31,6 +31,7 @@ import miskyle.realsurvival.machine.raincollector.RainCollectorListener;
 import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
 import miskyle.realsurvival.status.listener.SleepListener;
+import miskyle.realsurvival.status.listener.ThirstListenerVer1;
 import miskyle.realsurvival.status.listener.ThirstListenerVer2;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer1;
 import miskyle.realsurvival.status.sleepinday.SleepInDayListenerVer2;
@@ -105,7 +106,11 @@ public class ConfigManager {
 				WaterMakerVer.makeUnknownWater();
 			if(!new File(plugin.getDataFolder()+"/item/water/rainwater.yml").exists())
               WaterMakerVer.makeRainwater();
-			plugin.getServer().getPluginManager().registerEvents(new ThirstListenerVer2(), plugin);
+			if(bukkitVersion>7) {
+			  plugin.getServer().getPluginManager().registerEvents(new ThirstListenerVer2(), plugin);			  
+			}else {
+			  plugin.getServer().getPluginManager().registerEvents(new ThirstListenerVer1(), plugin);        
+			}
 			plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new ThirstTask(), 20L, 20L);
 		}
 		if(weightc.isEnable()) {
@@ -152,7 +157,9 @@ public class ConfigManager {
 	 * 启用bStats统计数据
 	 */
 	private void setupbStats() {
-		new Metrics(plugin,1974);
+	  if(plugin.getConfig().getBoolean("enable-bStats")) {
+	    new Metrics(plugin,1974);	    
+	  }
 	}
 	
 	/**

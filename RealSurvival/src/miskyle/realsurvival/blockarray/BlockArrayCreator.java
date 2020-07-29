@@ -105,13 +105,13 @@ public class BlockArrayCreator {
     creators.get(playerName).mainBlockLoc = mainBlockLoc;
   }
   
-  public static boolean setItem(Player player) {
-    if(!creators.containsKey(player.getName())) return false;
-    BlockArrayCreator creator = creators.get(player.getName());
-    creator.item = player.getInventory().getItemInMainHand().clone();
-    creator.checkItem = true;
-    return true;
-  }
+//  public static boolean setItem(Player player) {
+//    if(!creators.containsKey(player.getName())) return false;
+//    BlockArrayCreator creator = creators.get(player.getName());
+//    creator.item = player.getInventory().getItemInMainHand().clone();
+//    creator.checkItem = true;
+//    return true;
+//  }
   
   public static boolean setReduceItem(String playerName, boolean bool) {
     if(!creators.containsKey(playerName)) return false;
