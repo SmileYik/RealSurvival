@@ -1,241 +1,140 @@
-  language: zh
-  
-  check-update: true
-  enable-bStats: true
-  
-  #Enable prefix in title
-  enable-prefix-in-title: false
-  #state command cooldown, unit trick(20 trick = 1 s)
-  state-cd: 600
-  #Enable worlds
-  worlds:
-    - world
-    - world_nether
-    - world_the_end
-  #Create a random data when a new player join server
-  create-random-data:
-    enable: false
-    min: 100
+#设定插件语言(目前只有zh)
+language: zh
+#是否让插件检查更新(假的)
+check-update: true
+#是否启用bStats统计数据
+enable-bStats: true
+
+#mysql有关设置
+#enable为是否启用
+#host mysql的主机(ip)
+#port mysql的端口
+#database 数据库名
+#username 用户名
+#password 密码
+mysql:
+  enable: false
+  host: localhost
+  port: 3306
+  database: database
+  username: root
+  password: 123456
+
+#启用RealSurvival的世界
+#将世界名(大小写敏感)按照相应格式添加
+enable-worlds:
+  - world
+  - world_nether
+  - world_the_end
+
+#普通玩家使用/realsurvival status获取状态时
+#获取的状态多久更新一次(单位,游戏刻)
+status-command-cooldown: 600
+
+#属性设置,
+#sleep  精力
+#thirst 水分
+#energy 体力
+#weight 负重
+#共同项如下
+#enable 		是否启用
+#max 			属性最大值
+#sub			每秒减少值
+#add			每秒增加值
+#effect-data 	效果
+#对effect-data讲解
+#格式如下
+#effect-data:
+#  - "[对应属性百分比1*100]-[对应属性百分比2*100]:效果1;效果2;效果n"
+#  - "[对应属性百分比3*100]-[对应属性百分比4*100]:null"
+#效果可以是原版效果,也可以是另外添加的效果
+#效果格式如下:
+#效果名,持续时间,效果强度
+#效果名大小写敏感,支持原版效果名
+#冒号后面的null代表不产生效果
+#对应请在messages.yml中修改提示消息,参考默认配置进行配置
+#weight下的effect与effect-data的冒号后边格式一样
+status:
+  sleep:
+    enable: true
+    #在白天是否能睡觉
+    sleep-in-day: true
+    #当属性值到0时是否强制睡觉(当sleep-in-day启用时生效
+    sleep-zero: true
     max: 100
-  #Set a player's state when the player was death.
-  #"sleep" is set the death player's sleep number of the max sleep's 20%
-  #"thirst" and "energy" as same as "sleep"
-  #If "illness"  was true ,It will remove the player's illness.
-  death:
-    enable: false
-    sleep: 20
-    thirst: 20
-    energy: 20
-    illness: true
-  
-  #"max" means Attribute limit.
-  #"enable" means enable the attribute or not.
-  # "sleep-during-the-day" means sleep during the day or not
-  # "min" and "mid" are percentage
-  # "mid" means Send message to player to remind player the attribute's state When player's attribute is mid% of original state 
-  # "min" means Send message to player to remind player the attribute's state and add buff When player's attribute is min% of original state 
-  # "sub" means Corresponding attribute reduces "sub" per second
-  # "add" means Corresponding attribute increases "add" per second
-  # "sneaking" means Corresponding attribute reduces "sneaking" per second when player is sneaking.
-  # "sprinting" means Corresponding attribute reduces "sprinting" per second when player is sneaking.
-  # "swimming" means Corresponding attribute reduces "swimming" per second when player is sneaking.
-  # "jumping" means When player jumping, Corresponding attribute will reduces "jumping"
-  state:
-    sleep:
-      enable: true
-      sleep-during-the-day: true
-      max: 100
-      mid: 0.3
-      min: 0.15
-      sub: 0.05
-      add: 5
-    thirst:
-      enable: true
-      max: 100
-      mid: 0.5
-      min: 0.2
-      sub: 0.03
-    energy:
-      enable: true
-      max: 100
-      min: 0.2
-      add: 2
-      sneaking: 1
-      sprinting: 5
-      jumping: 5
-      swimming: 3
-    fracture:
-      enable: true
-      #slight fracture
-      #"name" means the "slight fracture"'s name
-      #"name" must registered in "illness-effects"
-      #"high" means The player jumped from the "high" high place
-      #"chance" means How many chances of fracture, 100 means Absolutely fracture
-      slight:
-        name: Slight
-        high: 3
-        chance: 20
-      # as same as "slight"
-      severe:
-        name: Severe
-        high: 6
-        chance: 80
-      #When a player is hit by falling blocks and by the "damage" injury trigger fracture.
-      damage: 2
-      slight-chance: 10
-      severe-chance: 30
-    illness:
-      enable: true
-    weight:
-      enable: true
-      max: 100
-      #Add weight to the original item
-      #format:
-      #  - [Item Name]:[Weight]
-      #like: "  - TORCH:0.1"
-      item:
-        - TORCH:0.1
-    temperature:
-      enable: true
-      #"long","width","high" means Measure the temperature in the area of "a", width "b", and width "c" centered on the player
-      long: 5
-      width: 5
-      high: 5
-      #the original temperature * "heat-source-fix"
-      #Fix the furnace's heat.
-      heat-source-fix: 100.0
-      #Temperature dissipation rate
-      distance-effect: 0.25
-      #
-      extra-temperature-distance: 2.5
-      #Player will feel cold when temperature is "cold"
-      cold: 20
-      #Player will feel hot when temperature is "hot"
-      fever: 37
-      #Set temperature to the original item
-      #format:
-      #  - [Item Name]:[Temperature]
-      #like: "  - FIRE:0.3"
-      heat-source:
-        - FIRE:0.3
-        - TORCH:0.1
-        - FLOWING_LAVA:0.5
-        - STATIONARY_LAVA:0.5
-        - LAVA_BUCKET:0.5
-        - WATER:-0.3
-        - FLOWING_WATER:-0.3
-        - PACKED_ICE:-0.3
-        - ICE:-0.3
-        - FROSTED_ICE:-0.3
-        - SNOW_LAYER:-0.2
-        - SNOW:-0.5
-  
-  label:
-  # You can modify this text which you like
-    split: "=>"
-  # You can modify this text which you like
-  # But you can only modify the text which behind the ':'
-    labels:
-      - "Thirst:Thirst"
-      - "Sleep:Sleep"
-      - "Energy:Energy"
-      - "Weight:Weight"
-      - "Illness:IllnessName"
-      - "Treatable:Treatable"
-      - "DrugEffect:Drug Effect"
-      - "Temperature:Temperature"
-      - "IllnessProbability:Illness Probability"
-      - "MedicineDuration:Medicine Duration"
-      - "Hungr:Hungry"
-      - "Strainer:Strainer"
-      - "WorkbenchType:Workbench Type"
-      - "RecipeName:Recipe Name"
-      - "EffectName:Effect"
-        
-  #You'd better to watch my video to modify this
-  #workbenchs-type format:
-  #  - "[A Name Which You Like]:[WORKBENCH or FURNACE]"
-  #like '  - "CraftTable:WORKBENCH"' or '  - "CraftFurnace:FURNACE"'
-  #workbenchs format:
-  #[Name]:
-  #  title: [A Title which you like]
-  #  main-block: [Block's Name]
-  #  left-block: [Block's Name]
-  #  right-block: [Block's Name]
-  #  up-block: [Block's Name]
-  #  down-block: [Block's Name]
-  #  front-block: [Block's Name]
-  #  behind-block: [Block's Name]
-  
-  #The [Name] is [A Name Which You Like] in "workbenchs-type"
-  workbenchs:
-    workbenchs-type:
-      - "workbench:WORKBENCH"
-      - "furnace:FURNACE"
-    workbenchs:
-      workbench:
-        title: Workbench
-        main-block: WORKBENCH
-        left-block: BOOKSHELF
-        right-block: WORKBENCH
-        up-block: FURNACE
-      furnace:
-        title: Furnace
-        main-block: FURNACE
-        left-block: BOOKSHELF
-        right-block: WORKBENCH
-        up-block: WORKBENCH
-  
-  
-  strainer:
-    - "Seawater:10"
-    - "HotLakeWater:10"
-    - "HotWater:10"
-    - "IceLakeWater:10"
-    - "IceSeawater:10"
-    - "IceWater:10"
-    - "LakeWater:10"
-    - "Rainwater:10"
-    - "SwampWater:10"
-    
-  effect:
-    food-effects:
-      foods:
-        - "RAW_CHICKEN"
-      effects:
-        RAW_CHICKEN:
-          sleep: 5%
-          thirst: 5%
-          energy: 10
-          temperature: 0
-          has-illness: true
-          illnesses:
-            - "Cold:10%"
-            - "Fever:10%"
-    mob-effects:
-      - ZOMBIE:Cold,10%;Ill,20%;Slight,5%
-      - WITHER_SKELETON:Cold,20%
-      - CREEPER:Cold,10%
-      - SKELETON:Cold,20%
-      - SPIDER:Cold,10%
-      - SLIME:Cold,20%
-      - ZOMBIE_PIGMAN:Cold,10%
-      - CAVE_SPIDER:Cold,20%
-      - WITCH:Cold,10%
-      - ZOMBIE_VILLAGER:Cold,20%
-      - ENDERMAN:Cold,10%
-    # format:
-    #  - [Illness Name]:{[Potion Effect],[Duration],[Amplifier]};{[Potion Effect],[Duration],[Amplifier]};...;{...}
-    #like: '  - ThirstMin:WEAKNESS,130,3;WITHER,30,3'
-    illness-effects:
-      - ThirstMin:WEAKNESS,130,3;WITHER,30,3
-      - ThirstMax:
-      - EnergyMin:SLOW,130,1;WEAKNESS,130,3;SLEEP_L,60,-50%,10
-      - SleepMin:SLOW,130,1;WEAKNESS,130,3
-      - SleepMax:
-      - Weight:SLOW,300,3
-      - Fever:
-      - Cold:
-      - Ill:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
-      - Slight:SLOW,250,2;WEAKNESS,250,2;CONFUSION,130,3
-      - Severe:SLOW,130,1;WEAKNESS,130,3;CONFUSION,130,3
+    sub: 0.05
+    add: 0.1
+    effect-data:
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+      - "90-100:SPEED,1,5,true;HEAL,1,5,true"
+  thirst:
+    enable: true
+    max: 100
+    sub: 0.01
+    effect-data:
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+      - "80-100:SPEED,1,5,true;HEAL,1,5,true"
+      #设定生物群系下获取的水
+   # - "生物群系名:item文件夹下的文件名(不包括.yml)"
+    water:
+      - "BIOME:WATER1"
+  energy:
+    enable: true
+    max: 100
+    add: 2
+    #潜行消耗体力,0取消,下同
+    sneaking: 1
+    #奔跑
+    sprinting: 5
+    #跳跃
+    jumping: 5
+    #游泳
+    swimming: 3
+    effect-data:
+      - "10-0:SPEED,1,5,true;HEAL,1,5,true"
+    break-block:
+      - "SAND,AIR,1"
+      #工具列表
+    tool-list:
+      - "IRON_PICKAXE"
+  weight:
+    enable: true
+    max: 100
+    effect: "SPEED,1,5,true;HEAL,1,5,true"
+    item: 
+      - TORCH:0.1
+  disease:
+    enable: true
+    disease:
+      - "生病:SPEED,1,5,true;HEAL,1,5,true"
+  temperature: 
+    enable: true
+    #玩家默认最大容忍温度
+    max: 30
+    #玩家默认最低容忍温度
+    min: 20
+    #超过最大容忍温度时赋予的效果
+    max-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    #低于最低容忍温度时赋予的效果
+    min-effect: "SPEED,1,5,true;HEAL,1,5,true"
+    #设定Minecraft原版物品的温度值(与基础温度值简单加合)
+    block:
+      - "TORCH:1"
+
+#老规矩,改冒号后面的
+label:
+  split: ":"
+  labels:
+    - "sleep:Sleep"
+    - "thirst:Thirst"
+    - "weight:Weight"
+    - "hunger:Hunger"
+    - "energy:Energy"
+    - "health:Health"
+    - "drug:Drug"
+    - "temperature:Temperature"
+
+#增加机器,格式如下
+# - "机器名称,多方块结构名称,机器类型(现在仅可选CRAFT_TABLE),机器GUI的标题"
+machine:
+  - "machineName,CubeName,CRAFT_TABLE,Title"    

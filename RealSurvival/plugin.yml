@@ -1,17 +1,37 @@
 name: RealSurvival
-main: com.outlook.schooluniformsama.RealSurvival
-version: 0.3.8
+main: miskyle.realsurvival.RealSurvival
+version: 0.4.0
 description: Let Minecraft be more real
-author: School_Uniform
+author: miSkYle
+api-version: 1.13
 softdepend: [PlaceholderAPI,Chairs]
 commands:
-  rs:
-    description: get Realsurvival's help
+  RealSurvivalItem:
+    description: get RealsurvivalItem's help
     usage: /<command> help
+    aliases: [rsi,rsitem,realsurvivali]
   RealSurvival:
     description: get Realsurvival's help
     usage: /<command> help
+    aliases: [rs]
+  RealSurvivalCube:
+    description: get RealSurvivalCube's help
+    usage: /<command> help
+    aliases: [rsc,rscube,realsurvivalc]
+  RealSurvivalRecipe:
+    description: get RealSurvivalRecipe's help
+    usage: /<command> help
+    aliases: [rsr,rsrecipe,realsurvivalr]
 permissions: 
-  RealSurvival.Admin:
-    description: Use Admin Commands
+  RealSurvival.Admin.Item:
+    description: Use RealSurvivalItem Commands
+    default: op
+  RealSurvival.Recipe.CraftTableRecipeCreate:
+    description: Allow Create CraftTable Recipe
+    default: op
+  RealSurvival.Command.CubeArray:
+    description: Allow Create CubeArray
+    default: op
+  RealSurvival.Player.Admin:
+    description: Allow Use Player's Admin Commands
     default: op
