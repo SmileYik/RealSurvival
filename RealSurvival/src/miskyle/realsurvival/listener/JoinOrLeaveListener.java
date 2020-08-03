@@ -28,7 +28,7 @@ public class JoinOrLeaveListener implements Listener{
 	
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e) {
-	  PlayerManager.removePlayer(e.getEntity().getName());
+	  PlayerManager.playerDeath(e.getEntity());
 	}
 	
 	@EventHandler

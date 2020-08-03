@@ -14,22 +14,25 @@ import com.github.miskyle.mcpt.bstat.Metrics;
 import com.github.miskyle.mcpt.i18n.I18N;
 import com.github.miskyle.mcpt.mysql.MySQLManager;
 
-import miskyle.realsurvival.data.config.DiseaseConfig;
-import miskyle.realsurvival.data.config.EnergyBreakBlockData;
-import miskyle.realsurvival.data.config.EnergyConfig;
-import miskyle.realsurvival.data.config.SleepConfig;
-import miskyle.realsurvival.data.config.TemperatureConfig;
-import miskyle.realsurvival.data.config.ThirstConfig;
-import miskyle.realsurvival.data.config.WeightConfig;
+import miskyle.realsurvival.data.config.DeathConfig;
+import miskyle.realsurvival.data.config.status.DiseaseConfig;
+import miskyle.realsurvival.data.config.status.EnergyBreakBlockData;
+import miskyle.realsurvival.data.config.status.EnergyConfig;
+import miskyle.realsurvival.data.config.status.SleepConfig;
+import miskyle.realsurvival.data.config.status.TemperatureConfig;
+import miskyle.realsurvival.data.config.status.ThirstConfig;
+import miskyle.realsurvival.data.config.status.WeightConfig;
 import miskyle.realsurvival.listener.JoinOrLeaveListener;
 import miskyle.realsurvival.listener.UseItemListener;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.MachineTask;
 import miskyle.realsurvival.machine.crafttable.CraftTableListener;
+import miskyle.realsurvival.machine.furnace.FurnaceListener;
 import miskyle.realsurvival.machine.listener.ClickCubeListener;
 import miskyle.realsurvival.machine.raincollector.RainCollectorListener;
 import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
+import miskyle.realsurvival.status.listener.MobMakeDisease;
 import miskyle.realsurvival.status.listener.SleepListener;
 import miskyle.realsurvival.status.listener.ThirstListenerVer1;
 import miskyle.realsurvival.status.listener.ThirstListenerVer2;
@@ -57,6 +60,8 @@ public class ConfigManager {
 	private boolean enableMySQL = false;
 	private int bukkitVersion;
 	
+	private DeathConfig              deathc;
+	
 	private SleepConfig  				sleepc;
 	private ThirstConfig 				thirstc;
 	private EnergyConfig 			energyc;
@@ -78,6 +83,7 @@ public class ConfigManager {
 		setupPAPI();
 		
 		loadNormalConfig();
+		loadDeathConfig();
 		loadStatusConfig();
 	    MachineManager.init();
 		
@@ -88,7 +94,7 @@ public class ConfigManager {
 	
 	private void registerTask() {
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new EffectTask(), 20L, 20L);
-		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SaveConfigTask(), 600L, 1200L);
+		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new SaveConfigTask(), 600L, 12000L);
 		plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new MachineTask(), 20L, 20L);
 	}
 	
@@ -97,6 +103,7 @@ public class ConfigManager {
 		plugin.getServer().getPluginManager().registerEvents(new UseItemListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new RainCollectorListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new CraftTableListener(), plugin);
+		plugin.getServer().getPluginManager().registerEvents(new FurnaceListener(), plugin);
 		plugin.getServer().getPluginManager().registerEvents(new ClickCubeListener(), plugin);
 	}
 	
@@ -141,6 +148,9 @@ public class ConfigManager {
 		  plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new TemperatureTask(), 20L, 200L);
 		}
 		if(disease.isEnable()) {
+		  if(disease.isMob()) {
+		    plugin.getServer().getPluginManager().registerEvents(new MobMakeDisease(), plugin);
+		  }
 		  plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new DiseaseTask(), 20L, 20L);
 		}
 	}
@@ -180,6 +190,16 @@ public class ConfigManager {
 			plugin.getLogger().warning(I18N.tr("log.warning.enable-world-empty"));
 		
 		statusCmdCD = c.getInt("status-command-cooldown",600);
+	}
+	
+	private void loadDeathConfig() {
+	  deathc = new DeathConfig();
+	  deathc.setEnable(plugin.getConfig().getBoolean("on-death.enable"));
+	  deathc.setRemoveDisease(plugin.getConfig().getBoolean("on-death.remove-all-disease"));
+	  deathc.setHunger(plugin.getConfig().getDouble("on-death.hunger"));
+	  deathc.setEnergy(plugin.getConfig().getDouble("on-death.energy"));
+	  deathc.setSleep(plugin.getConfig().getDouble("on-death.sleep"));
+	  deathc.setThirst(plugin.getConfig().getDouble("on-death.thirst"));
 	}
 	
 	/**
@@ -294,6 +314,7 @@ public class ConfigManager {
 		disease = new DiseaseConfig();
 		disease.setEnable(c.getBoolean("status.disease.enable",true));
 		disease.setDiseases(c.getStringList("status.disease.disease"));
+		disease.setMob(c.getBoolean("status.disease.mob",true));
 	}
 	
 	/**
@@ -312,6 +333,10 @@ public class ConfigManager {
 	
 	public static int getStatusCmdCD() {
 		return cm.statusCmdCD;
+	}
+	
+	public static DeathConfig getDeathConfig() {
+	  return cm.deathc;
 	}
 	
 	public static SleepConfig getSleepConfig() {

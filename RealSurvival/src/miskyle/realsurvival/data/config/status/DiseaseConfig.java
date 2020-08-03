@@ -1,4 +1,4 @@
-package miskyle.realsurvival.data.config;
+package miskyle.realsurvival.data.config.status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,14 @@ import miskyle.realsurvival.data.effect.EffectData;
 
 public class DiseaseConfig {
 	private boolean enable;
-	private HashMap<String, ArrayList<EffectData>> diseases;
+	private boolean mob;
+	public boolean isMob() {
+    return mob;
+  }
+  public void setMob(boolean mob) {
+    this.mob = mob;
+  }
+  private HashMap<String, ArrayList<EffectData>> diseases;
 	public DiseaseConfig() {
 	  
 	}

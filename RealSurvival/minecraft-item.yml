@@ -1,34 +1,34 @@
 Item1:
- sleep:
+   sleep:
    value: -10/10
    max: true
- thirst:
+   thirst:
    value: -10/10
    max: false
- energy:
+   energy:
    value: -10/10
    max: false
- hunger: 
+   hunger: 
    value: -10/10
    max: false
- health:
+   health:
    value: -10/10
    max: true
- temperature: -10/10
- weight: 1
- disease:
-   get-disease:
-     - "disease:10"
-     - "disease2:10"
-   enable-disease:
-     - "disease3,3/5,10/20"
-     - "disease4,3/5,10/20"
-   wrong-disease:
-     - "disease5"
-     - "disease6"
-   eat-wrong-drug:
-     - "effect1"
-     - "effect2"
-   no-need-drug:
-     - "effect3"
-     - "effect4"
+   temperature: -10/10
+   weight: 1
+   disease:
+      get-disease:
+        - "disease:10"
+        - "disease2:10"
+      enable-disease:
+        - "disease3,3/5,10/20"
+        - "disease4,3/5,10/20"
+      wrong-disease:
+        - "disease5"
+        - "disease6"
+      eat-wrong-drug:
+        - "effect1"
+        - "effect2"
+      no-need-drug:
+        - "effect3"
+        - "effect4"

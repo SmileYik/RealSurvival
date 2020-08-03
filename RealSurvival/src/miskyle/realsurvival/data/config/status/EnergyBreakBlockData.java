@@ -1,4 +1,4 @@
-package miskyle.realsurvival.data.config;
+package miskyle.realsurvival.data.config.status;
 
 public class EnergyBreakBlockData {
 	private String BlockType;

@@ -12,9 +12,11 @@ import org.bukkit.inventory.ItemStack;
 
 import com.github.miskyle.mcpt.i18n.I18N;
 
+import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.MachineStatus;
+import miskyle.realsurvival.machine.MachineTimer;
 import miskyle.realsurvival.machine.util.GuiItemCreater;
 
 public class CraftTable {
@@ -49,6 +51,11 @@ public class CraftTable {
     
     
     if(MachineManager.isActiveTimer(loc)) {
+      MachineTimer mt = MachineManager.getTImer(loc);
+      if( !(mt instanceof CraftTableTimer)) {
+        p.sendMessage(Msg.getPrefix()+I18N.tr("machine.open-gui.error-1"));
+        return;
+      }
       CraftTableTimer timer = (CraftTableTimer)MachineManager.getTImer(loc);
       CraftTableRecipe recipe = timer.getRecipe();
       int index = 0;
@@ -65,7 +72,7 @@ public class CraftTable {
       holder.setStatus(MachineStatus.CRAFTING);
       holder.setTimer(timer);
       CraftTableOpenEvent.openEvent(holder, p.getName());
-    }else {
+    } else {
       CraftTableTimer timer = new CraftTableTimer(p.getName(), loc);
       holder.setTimer(timer);
       inv.setItem(49, GuiItemCreater.getItem(

@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
-import miskyle.realsurvival.data.config.EnergyBreakBlockData;
+import miskyle.realsurvival.data.config.status.EnergyBreakBlockData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 import miskyle.realsurvival.status.task.EnergyTask;
 

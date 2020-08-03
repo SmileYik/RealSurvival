@@ -31,6 +31,14 @@ enable-worlds:
 #获取的状态多久更新一次(单位,游戏刻)
 status-command-cooldown: 600
 
+on-death:
+  enable: false
+  remove-all-disease: true
+  sleep: 80
+  thirst: 80
+  energy: 80
+  hunger: 60
+
 #属性设置,
 #sleep  精力
 #thirst 水分
@@ -105,6 +113,7 @@ status:
       - TORCH:0.1
   disease:
     enable: true
+    mob: true
     disease:
       - "生病:SPEED,1,5,true;HEAL,1,5,true"
   temperature: 
@@ -133,6 +142,7 @@ label:
     - "health:Health"
     - "drug:Drug"
     - "temperature:Temperature"
+    - "disease-source: Disease Source"
 
 #增加机器,格式如下
 # - "机器名称,多方块结构名称,机器类型(现在仅可选CRAFT_TABLE),机器GUI的标题"

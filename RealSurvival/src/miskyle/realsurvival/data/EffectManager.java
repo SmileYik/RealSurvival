@@ -81,7 +81,8 @@ public class EffectManager {
 	}
 	
 	public static void effectPlayer(Player player,EffectData effect) {
-		if(effect != null)
-			effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel());
+		if(effect != null && Math.random()*100<effect.getChance()) {
+		  effectPlayer(player, effect.getName(), effect.getDuration(), effect.getEffecLevel());		  
+		}
 	}
 }

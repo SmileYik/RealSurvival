@@ -7,6 +7,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.github.miskyle.mcpt.MCPT;
 
+import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.util.RSEntry;
 
 public class RSItemData {
@@ -227,7 +228,11 @@ public class RSItemData {
 	 * @return
 	 */
 	public boolean isValidSleep() {
-		return sleep!=null && !(sleep.getLeft()==0 && sleep.getRight()==0) ;
+	  if (ConfigManager.getSleepConfig().isEnable()) {
+	    return sleep!=null && !(sleep.getLeft()==0 && sleep.getRight()==0) ;	    
+	  } else {
+	    return false;
+	  }
 	}
 	public void setSleep(RSEntry<Double, Double> sleep) {
 		this.sleep = sleep;
@@ -243,7 +248,11 @@ public class RSItemData {
 		return random(thirst.getLeft(),thirst.getRight());
 	}
 	public boolean isValidThirst() {
-		return thirst!=null && !(thirst.getLeft()==0 && thirst.getRight()==0) ;
+	  if(ConfigManager.getThirstConfig().isEnable()) {
+	    return thirst!=null && !(thirst.getLeft()==0 && thirst.getRight()==0) ;
+	  }else {
+	    return false;
+	  }
 	}
 	public void setThirst(RSEntry<Double, Double> thirst) {
 		this.thirst = thirst;
@@ -259,7 +268,11 @@ public class RSItemData {
 		return random(energy.getLeft(), energy.getRight());
 	}
 	public boolean isValidEnergy() {
-		return energy!=null && !(energy.getLeft()==0 && energy.getRight()==0) ;
+	  if(ConfigManager.getEnergyConfig().isEnable()) {
+	    return energy!=null && !(energy.getLeft()==0 && energy.getRight()==0) ;	    
+	  } else {
+	    return false;
+	  }
 	}
 	public void setEnergy(RSEntry<Double, Double> energy) {
 		this.energy = energy;
@@ -301,13 +314,17 @@ public class RSItemData {
 				Double.parseDouble(health[0]), Double.parseDouble(health[1]));
 	}
 	public double getWeight() {
-		return weight;
+	  if(ConfigManager.getWeightConfig().isEnable()) {
+	    return weight;	    
+	  } else {
+	    return 0;
+	  }
 	}
 	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 	public boolean isTool() {
-		return false;
+		return temperature != null;
 	}
 	public double getValue(String status) {
 		switch (status.toUpperCase()) {
@@ -371,16 +388,13 @@ public class RSItemData {
 	private double random(double a,double b) {
 		return Math.abs(a-b)*Math.random()+Math.min(a, b);
 	}
-
-	@Override
-	public String toString() {
-		return "RSItemData [sleep=" + sleep + ", thirst=" + thirst + ", energy=" + energy + ", hunger=" + hunger
-				+ ", health=" + health + ", maxSleep=" + maxSleep + ", maxThirst=" + maxThirst + ", maxEnergy="
-				+ maxEnergy + ", maxHunger=" + maxHunger + ", maxHealth=" + maxHealth + ", weight=" + weight + "]";
-	}
-
+	
   public RSEntry<Double, Double> getTemperature() {
-    return temperature;
+    if (ConfigManager.getTemperatureConfig().isEnable()) {
+      return temperature;      
+    } else {
+      return null;
+    }
   }
 
   public void setTemperature(String[] str) {
@@ -389,7 +403,11 @@ public class RSItemData {
   }
 
   public DrugData getDrugData() {
-    return drugData;
+    if(ConfigManager.getDiseaseConfig().isEnable()) {
+      return drugData;      
+    } else {
+      return null;
+    }
   }
 
   public void setDrugData(DrugData drugData) {

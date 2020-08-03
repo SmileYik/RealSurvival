@@ -20,6 +20,8 @@ public class FurnaceRecipe extends Recipe{
       HashMap<Character, ItemStack> materials, ArrayList<ItemStack> products,
       double maxTemperature,double minTemperature) {
     super(recipeName, machineName, materialShape, RecipeType.FURNACE, forgeTime, materials, products);
+    this.minTemperature = minTemperature;
+    this.maxTemperature = maxTemperature;
   }
 
   public static FurnaceRecipe loadRecipe(File file) {
@@ -77,4 +79,21 @@ public class FurnaceRecipe extends Recipe{
       e.printStackTrace();
     }
   }
+
+  public double getMaxTemperature() {
+    return maxTemperature;
+  }
+
+  public void setMaxTemperature(double maxTemperature) {
+    this.maxTemperature = maxTemperature;
+  }
+
+  public double getMinTemperature() {
+    return minTemperature;
+  }
+
+  public void setMinTemperature(double minTemperature) {
+    this.minTemperature = minTemperature;
+  }
+  
 }

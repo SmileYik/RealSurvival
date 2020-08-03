@@ -26,7 +26,7 @@ public class CraftTableOpenEvent implements Runnable{
     if(amount<1) {
       holder.getInventory().setItem(49, GuiItemCreater.getItem(
           Material.RED_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short) 14, 
-          I18N.tr("machine.craft-table.ok-slot-name",_2f(pass))));
+          I18N.tr("machine.craft-table.ok-slot-name",_2f(pass*100))));
     }else {
       holder.getInventory().setItem(49, GuiItemCreater.getItem(
           Material.GREEN_STAINED_GLASS_PANE, "STAINED_GLASS_PANE", (short) 5, 

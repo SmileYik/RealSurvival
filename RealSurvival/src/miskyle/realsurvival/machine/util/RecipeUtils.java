@@ -12,6 +12,7 @@ import com.github.miskyle.mcpt.i18n.I18N;
 
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
+import miskyle.realsurvival.data.recipe.FurnaceRecipe;
 import miskyle.realsurvival.data.recipe.Recipe;
 import miskyle.realsurvival.data.recipe.RecipeType;
 import miskyle.realsurvival.machine.MachineManager;
@@ -19,6 +20,8 @@ import miskyle.realsurvival.machine.MachineTimer;
 import miskyle.realsurvival.machine.MachineType;
 import miskyle.realsurvival.machine.crafttable.CraftTable;
 import miskyle.realsurvival.machine.crafttable.CraftTableTimer;
+import miskyle.realsurvival.machine.furnace.Furnace;
+import miskyle.realsurvival.machine.furnace.FurnaceTimer;
 import miskyle.realsurvival.util.RSEntry;
 
 public class RecipeUtils {
@@ -40,7 +43,9 @@ public class RecipeUtils {
     }
     if(type == MachineType.CRAFT_TABLE) {
       materialSlot = CraftTable.materials;
-    }else {
+    } else if (type == MachineType.FURNACE) {
+      materialSlot = Furnace.MATERIAL_SLOTS;
+    } else {
       materialSlot = null;
     }
     for(Recipe recipe : recipes) {
@@ -87,7 +92,9 @@ public class RecipeUtils {
     final List<Integer> materialSlot;
     if(type == MachineType.CRAFT_TABLE) {
       materialSlot = CraftTable.materials;
-    }else {
+    } else if (type == MachineType.FURNACE) {
+      materialSlot = Furnace.MATERIAL_SLOTS;
+    } else {
       materialSlot = null;
     }
     final Recipe recipe = MachineManager.getRecipe(type, recipeName);
@@ -103,7 +110,6 @@ public class RecipeUtils {
         }else {
           item = item.clone();
         }
-        System.out.println(item);
         inv.setItem(slotIndex, null);
         if(item.getAmount()>amount*materialItem.getAmount()) {
           ItemStack returnItem = materialItem.clone();
@@ -119,8 +125,11 @@ public class RecipeUtils {
       ctTimer.setTimes(amount);
       ctTimer.setRecipe((CraftTableRecipe) recipe);
       timer = (MachineTimer) ctTimer;
-    }else {
-      
+    } else if(timer.getType() == MachineType.FURNACE) {
+      FurnaceTimer fTimer = (FurnaceTimer) timer;
+      fTimer.setTimes(amount);
+      fTimer.setRecipe((FurnaceRecipe) recipe);
+      timer = (FurnaceTimer) timer;
     }
     MachineManager.addTimer(timer);
     p.closeInventory();
@@ -133,7 +142,10 @@ public class RecipeUtils {
     if(recipe.getType() == RecipeType.CRAFT_TABLE) {
       materialSlot = CraftTable.materials;
       productSlot = CraftTable.products;
-    }else {
+    } else if (recipe.getType() == RecipeType.FURNACE) {
+      materialSlot = Furnace.MATERIAL_SLOTS;
+      productSlot = Furnace.PRODUCT_SLOTS;
+    } else {
       materialSlot = CraftTable.materials;
       productSlot = CraftTable.products;
     }
@@ -189,6 +201,8 @@ public class RecipeUtils {
     recipe.setMaterialShape(shape.toString());
     if(recipe.getType() == RecipeType.CRAFT_TABLE) {
       ((CraftTableRecipe)recipe).save(recipe.getMachineName()+"/"+recipe.getRecipeName());
+    } else if (recipe.getType() == RecipeType.FURNACE) {
+      ((FurnaceRecipe)recipe).save(recipe.getMachineName()+"/"+recipe.getRecipeName());
     }
     
     p.sendMessage(Msg.getPrefix()+I18N.tr("machine.craft-table.create-recipe-success",

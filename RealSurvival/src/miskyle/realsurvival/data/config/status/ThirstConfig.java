@@ -1,4 +1,4 @@
-package miskyle.realsurvival.data.config;
+package miskyle.realsurvival.data.config.status;
 
 import java.util.ArrayList;
 import java.util.HashMap;

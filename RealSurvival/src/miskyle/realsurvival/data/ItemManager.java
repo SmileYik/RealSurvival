@@ -225,6 +225,8 @@ public class ItemManager {
               rsItem.setDrugData(drug.getDrugData());
             }
             return;
+          } else if (k.equalsIgnoreCase("disease-source")) {
+            return;
           }
           
           String temp = ss.replaceAll("[^0-9+-/%]", "");
@@ -259,6 +261,27 @@ public class ItemManager {
           }
         }
       });
+    });
+    return rsItem;
+  }
+  
+  public static RSItemData getDiseaseSource(ItemStack item) {
+    if(item==null)return null;
+    if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      return null;
+    }
+    RSItemData rsItem = new RSItemData();
+    item.getItemMeta().getLore().forEach(s->{
+      if(rsItem.getDrugData() != null) return;
+      String ss = Utils.removeColor(s);
+      String label = im.labels.get("disease-source");
+      if(ss.contains(label) && ss.contains(im.split)) {
+        String drugName = ss.split(":")[1].replace(" ", "");
+        RSItemData drug = im.nbtItemData.get(drugName);
+        if(drug!=null) {
+          rsItem.setDrugData(drug.getDrugData());
+        }
+      }
     });
     return rsItem;
   }

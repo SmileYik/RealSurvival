@@ -21,6 +21,7 @@ import miskyle.realsurvival.data.blockarray.CubeData;
 import miskyle.realsurvival.data.recipe.RecipeType;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.crafttable.CraftTable;
+import miskyle.realsurvival.machine.furnace.Furnace;
 import miskyle.realsurvival.util.RSEntry;
 
 public class ClickCubeListener implements Listener {
@@ -40,7 +41,7 @@ public class ClickCubeListener implements Listener {
     ItemStack item = null;
     int originItemAmount = 0;
     /*
-     * TODO 1.8.8 无双持
+     * 1.8.8 无双持
      */
     if (event.hasItem()) {
       item = event.getItem().clone();
@@ -86,7 +87,10 @@ public class ClickCubeListener implements Listener {
         if(machineData.getLeft() == RecipeType.CRAFT_TABLE) {
           CraftTable.openDefaultGUI(event.getPlayer(), block.getLocation(),
               machineName, machineData.getRight());
-        }else {
+        } else if (machineData.getLeft() == RecipeType.FURNACE){
+          Furnace.openDefaultGUI(event.getPlayer(), block.getLocation(), 
+              machineName, machineData.getRight());
+        } else {
           
         }
         return;

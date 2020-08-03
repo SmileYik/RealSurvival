@@ -80,6 +80,7 @@ public class RSCommand implements CommandExecutor, TabExecutor {
       Cmd cmd = method.getAnnotation(Cmd.class);
       if(args.length < cmd.args().length)continue;
       if(!CommandManager.compareSubCommand(args, cmd.subCmd())) continue;
+      if(!cmd.permission().isEmpty() && !sender.hasPermission(cmd.permission()))continue;
       if(!cmd.unlimitedLength() && args.length!=cmd.args().length)continue;
       if(cmd.needPlayer() && (sender instanceof Player)) {
         try {
@@ -126,6 +127,7 @@ public class RSCommand implements CommandExecutor, TabExecutor {
     sb.append("&b=============HELP=============\n");
     for(Method method : methods) {
       Cmd cmd = method.getAnnotation(Cmd.class);
+      if(!cmd.permission().isEmpty() && !sender.hasPermission(cmd.permission()))continue;
       boolean canSee = cmd.permission().isEmpty() || (sender.isOp() || sender.hasPermission(cmd.permission()));
       if(canSee) {
         sb.append("&9/"+top+" ");

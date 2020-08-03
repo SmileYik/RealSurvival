@@ -33,6 +33,11 @@ cmd.args.cube-array.compass=true|false
 cmd.args.ctr.create.recipe-name=配方名
 cmd.args.ctr.create.machine-name=机器名
 cmd.args.ctr.create.forge-time=制造时间(秒)
+cmd.args.fr.create.recipe-name=配方名
+cmd.args.fr.create.machine-name=机器名
+cmd.args.fr.create.forge-time=制造时间(秒)
+cmd.args.fr.create.min-temperature=最小温度
+cmd.args.fr.create.max-temperature=最大温度
 
 cmd.des.item.add-lore=增加一行lore
 cmd.des.item.add-lore-2=在指定序列中增加lore
@@ -55,10 +60,13 @@ cmd.des.cube-array.choose-block=选择中心方块
 cmd.des.cube-array.finish=完成多方块编辑
 cmd.des.cube-array.cancel=退出多方块编辑
 cmd.des.ctr.create=创建工作台配方
+cmd.des.fr.create=创建熔炉配方
+cmd.des.recipe.reload=重载机器有关的配置
+cmd.des.reload=重载插件
 
 cube-array.create.error.in-creator=§e你已经在编辑一个多方块结构了!
 cube-array.create.error.no-creator=§4你并没有正在进行多方块结构的创建!
-cube-array.create.error.no-main-block=§4你没有选择多方块结构的中心方块!
+cube-array.create.error.no-main-block=§4你没有选择多方块结构的中心方块! 请确保中心方块为中心的3x3x3空间内仅含目的方块和空气, 以避免其他方块的干扰.
 cube-array.create.error.no-item=§4你设定改多方块结构需要检查物品但你并未设定物品.
 cube-array.create.error.no-name=§4你没有给这个多方块结构取名.
 
@@ -91,6 +99,7 @@ status.temperature.cold=§3冷
 status.disease.drug-duration={0}秒
 status.disease.recovery={0}%
 
+machine.open-gui.error-1=§e§l请破坏该机器的主方块并稍等一会再尝试, 或使用另一台机器.
 machine.rain-collector.title=§7雨水收集器
 machine.rain-collector.no-water=§e这里面已经没有水了.
 
@@ -102,9 +111,9 @@ machine.craft-table.ok-slot-name=§4§l正在制造中: §b§l{0}%
 machine.craft-table.ok-slot-name-2=§4§l制造进度: §b§l{0}%§4|§a§l已完成数量: §2{1}
 machine.craft-table.ok-slot-name-3=§b§l确定
 machine.craft-table.create-recipe-success=§a配方创建成功, 保存路径为: §a§l{0}
-
-
-
+machine.furnace.temperature=§e温度: §e{0}℃
+machine.furnace.progress=§b§l制作进度: §b{0}%
+machine.furnace.ok-slot=§a已经制作§a§l{0}§a个
 
 
 

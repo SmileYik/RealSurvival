@@ -1,12 +1,14 @@
 package miskyle.realsurvival.command;
 
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 
+import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.i18n.I18N;
 
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.PlayerManager;
-import miskyle.realsurvival.status.task.TemperatureTask;
 
 public class PlayerCommands {
   @Cmd(subCmd = { "status" }, 
@@ -42,11 +44,15 @@ public class PlayerCommands {
     PlayerManager.activePlayer(p);
   }
   
-  @Cmd(subCmd = { "debugTemperature" }, 
+  @Cmd(subCmd = { "reload" }, 
       args = { "" }, 
-      des = "cmd.des.player.unfreeze",
-      permission = "RealSurvival.Player.Admin")
-  public void debugTemperature(Player p, String[] args) {
-    TemperatureTask.debug(p.getName());
-  }
+      des = "cmd.des.reload",
+      permission = "RealSurvival.Player.Admin",
+      needPlayer = false)
+  public void reload(CommandSender p,String args[]){
+    HandlerList.unregisterAll(MCPT.plugin);
+    MCPT.plugin.getServer().getScheduler().cancelTasks(MCPT.plugin);
+    MCPT.plugin.getServer().getPluginManager().disablePlugin(MCPT.plugin);
+    MCPT.plugin.getServer().getPluginManager().enablePlugin(MCPT.plugin);
+}
 }

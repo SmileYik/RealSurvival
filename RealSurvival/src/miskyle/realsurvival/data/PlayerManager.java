@@ -10,6 +10,7 @@ import com.github.miskyle.mcpt.nms.sleep.NMSSleep;
 import com.github.miskyle.mcpt.nms.title.NMSTitle;
 
 import miskyle.realsurvival.RealSurvival;
+import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 import miskyle.realsurvival.util.ActionNullBar;
 
@@ -50,6 +51,23 @@ public class PlayerManager {
 	public static void removePlayer(String playerName) {
 		if(playerDatas.containsKey(playerName)) 
 			playerDatas.remove(playerName).save();
+	}
+	
+	public static void playerDeath(Player p) {
+	  if(ConfigManager.getDeathConfig().isEnable() && isActive(p)) {
+	    PlayerData pd = getPlayerData(p.getName());
+	    if(ConfigManager.getDeathConfig().isRemoveDisease()) {
+	      pd.getDisease().getDiseases().clear();
+	    }
+	    pd.setStatus(StatusType.SLEEP, pd.getStatusMaxValue(StatusType.SLEEP)
+	        * ConfigManager.getDeathConfig().getSleep()/100);
+	    pd.setStatus(StatusType.THIRST, pd.getStatusMaxValue(StatusType.THIRST)
+	        * ConfigManager.getDeathConfig().getThirst()/100);
+	    pd.setStatus(StatusType.ENERGY, pd.getStatusMaxValue(StatusType.ENERGY)
+	        * ConfigManager.getDeathConfig().getEnergy()/100);
+	    p.setFoodLevel((int)(0.2*ConfigManager.getDeathConfig().getHunger()));
+	  }
+	  removePlayer(p.getName());
 	}
 	
 	public static void freezePlayer(String name) {

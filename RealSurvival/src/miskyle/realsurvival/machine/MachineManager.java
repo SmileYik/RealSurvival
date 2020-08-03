@@ -15,9 +15,11 @@ import com.github.miskyle.mcpt.MCPT;
 import miskyle.realsurvival.blockarray.BlockArrayCreator;
 import miskyle.realsurvival.data.blockarray.CubeData;
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
+import miskyle.realsurvival.data.recipe.FurnaceRecipe;
 import miskyle.realsurvival.data.recipe.Recipe;
 import miskyle.realsurvival.data.recipe.RecipeType;
 import miskyle.realsurvival.machine.crafttable.CraftTableTimer;
+import miskyle.realsurvival.machine.furnace.FurnaceTimer;
 import miskyle.realsurvival.machine.raincollector.RainCollectorTimer;
 import miskyle.realsurvival.util.RSEntry;
 
@@ -33,11 +35,14 @@ public class MachineManager {
   private static HashMap<String,ArrayList<Recipe>> craftTableRecipes;
   private static HashMap<String, Recipe> craftTableRecipesMap;
   
+  private static HashMap<String,ArrayList<Recipe>> furnaceRecipes;
+  private static HashMap<String, Recipe> furnaceRecipesMap;
   
   public static void init() {
     loadCubes();
     loadMachineData();
     loadCraftTableRecipe();
+    loadFurnaceRecipes();
     loadTimers();
   }
   
@@ -61,6 +66,30 @@ public class MachineManager {
         ArrayList<CubeData> data = new ArrayList<>();
         data.add(cube);
         cubesMainBlockCube.put(cube.getMid().getMain(), data);
+      }
+    }
+  }
+  
+  private static void loadFurnaceRecipes() {
+    furnaceRecipes = new HashMap<>();
+    furnaceRecipesMap = new HashMap<>();
+    loadFurnaceRecipes(new File(MCPT.plugin.getDataFolder()+"/recipe/furnace"));
+  }
+  
+  private static void loadFurnaceRecipes(File file) {
+    if(file.isDirectory()) {
+      for(File f : file.listFiles()) {
+        loadFurnaceRecipes(f);
+      }
+    }else {
+      FurnaceRecipe recipe = FurnaceRecipe.loadRecipe(file);
+      furnaceRecipesMap.put(recipe.getRecipeName(),(Recipe)recipe);
+      if(furnaceRecipes.containsKey(recipe.getMachineName())) {
+        furnaceRecipes.get(recipe.getMachineName()).add((Recipe)recipe);
+      }else {
+        ArrayList<Recipe> recipes = new ArrayList<Recipe>();
+        recipes.add((Recipe)recipe);
+        furnaceRecipes.put(recipe.getMachineName(), recipes);
       }
     }
   }
@@ -167,8 +196,10 @@ public class MachineManager {
   }
   
   public static ArrayList<Recipe> getRecipes(MachineType type,String machineName){
-    if(type == MachineType.CRAFT_TABLE) {
+    if (type == MachineType.CRAFT_TABLE) {
       return craftTableRecipes.get(machineName);
+    } else if (type == MachineType.FURNACE) {
+      return furnaceRecipes.get(machineName);
     }
     return null;
   }
@@ -176,6 +207,8 @@ public class MachineManager {
   public static Recipe getRecipe(MachineType type,String recipeName){
     if(type == MachineType.CRAFT_TABLE) {
       return craftTableRecipesMap.get(recipeName);
+    } else if (type == MachineType.FURNACE) {
+      return furnaceRecipesMap.get(recipeName);
     }
     return null;
   }
@@ -202,6 +235,7 @@ public class MachineManager {
   
   public static void saveTimers() {
     File file = new File(MCPT.plugin.getDataFolder(),"timer.yml");
+    file.delete();
     YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
     
     timers.forEach(timers.mappingCount(),(k,v)->{
@@ -216,6 +250,11 @@ public class MachineManager {
         CraftTableTimer timer = (CraftTableTimer)v;
         config.set(k+".times", timer.getTimes());
         config.set(k+".recipe-name", timer.getRecipe().getRecipeName());
+      } else if (v.getType() == MachineType.FURNACE) {
+        FurnaceTimer timer = (FurnaceTimer) v;
+        config.set(k+".times", timer.getTimes());
+        config.set(k+".recipe-name", timer.getRecipe().getRecipeName());
+        config.set(k+".extra-temperature", timer.getExtraTemperature());
       }
     });
     try {
@@ -244,6 +283,13 @@ public class MachineManager {
         int times = config.getInt(k+".times");
         CraftTableTimer temp = new CraftTableTimer(playerName, worldName, x, y, z, 
             (CraftTableRecipe)getRecipe(MachineType.CRAFT_TABLE, recipeName), time, times);
+        timers.put(k, temp);
+      } else if (type == MachineType.FURNACE) {
+        String recipeName = config.getString(k+".recipe-name");
+        int times = config.getInt(k+".times");
+        double extraTem = config.getDouble(k+".extra-temperature");
+        FurnaceTimer temp = new FurnaceTimer(playerName, worldName, x, y, z, 
+            (FurnaceRecipe)getRecipe(MachineType.FURNACE, recipeName), time, times,extraTem);
         timers.put(k, temp);
       }
     });

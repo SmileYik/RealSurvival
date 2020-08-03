@@ -4,10 +4,11 @@ public class EffectData {
 	private String name;
 	private int duration;
 	private int effecLevel;
+	private double chance;
 	public EffectData() {
 		
 	}
-	public EffectData(String name, int duration, int effecLevel) {
+	public EffectData(String name, int duration, int effecLevel, double chance) {
 		super();
 		this.name = name;
 		this.duration = duration;
@@ -18,9 +19,15 @@ public class EffectData {
 			return null;
 		}
 		String[] temp = s.split(",");
-		return new EffectData(
-				temp[0], Integer.parseInt(temp[1]), 
-				Integer.parseInt(temp[2]));
+		if (temp.length>3) {
+          return new EffectData(
+              temp[0], Integer.parseInt(temp[1]), 
+              Integer.parseInt(temp[2]),Double.parseDouble(temp[3]));         
+		} else {
+		  return new EffectData(
+		      temp[0], Integer.parseInt(temp[1]), 
+		      Integer.parseInt(temp[2]),100);		  
+		}
 	}
 	public String getName() {
 		return name;
@@ -40,4 +47,11 @@ public class EffectData {
 	public void setEffecLevel(int effecLevel) {
 		this.effecLevel = effecLevel;
 	}
+  public double getChance() {
+    return chance;
+  }
+  public void setChance(double chance) {
+    this.chance = chance;
+  }
+	
 }

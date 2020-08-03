@@ -2,9 +2,9 @@
   
 ## Translation RealSurvival | 翻译RealSurvival  
   
-**翻译RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/)**  
+**翻译RealSurvival: [Link](https://www.transifex.com/myself-50/realsurvival-1/translate/)**  
   
-**Translation RealSurvival: [Link](https://www.transifex.com/subr/realsurvival/dashboard/)**  
+**Translation RealSurvival: [Link](https://www.transifex.com/myself-50/realsurvival-1/translate/)**  
   
 **Thank you for your help!**  
   
@@ -15,7 +15,7 @@
   
 ## WIKI  
   
- * WIKI: [Link](https://github.com/SchoolUniform/RealSurvival/wiki)  
+ * WIKI: [Link](https://github.com/SmileYik/RealSurvival/wiki)  
   
 ## Downat | 捐助  
   
