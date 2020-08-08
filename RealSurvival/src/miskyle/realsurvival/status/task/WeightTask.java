@@ -20,6 +20,10 @@ public class WeightTask implements Runnable{
 		PlayerManager.getActivePlayers().forEachValue(
 				PlayerManager.getActivePlayers().mappingCount(), pd->{
 					Player p = MCPT.plugin.getServer().getPlayer(pd.getPlayerName());
+					if(!p.isOnline()) {
+					  PlayerManager.removePlayer(p.getName());
+					  return;
+					}
 					double weight = 0;
 					for(ItemStack item:p.getInventory().getContents()) {
 						weight += ItemManager.getStatusValueOnly("weight", item)

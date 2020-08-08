@@ -44,8 +44,9 @@ public interface PlayerData {
 	 */
 	public void addEffect(StatusType type, String pluginName,double value,int duration);
 	/**
-	 * 增加玩家属性最大值(可为负值)<p>
-	 * 每个插件对每个属性最大值添加效果仅最后一次有效
+     * \u589E\u52A0\u73A9\u5BB6\u5C5E\u6027\u6700\u5927\u503C(\u53EF\u4E3A\u8D1F\u503C)
+     * <p>
+     * \u6BCF\u4E2A\u63D2\u4EF6\u5BF9\u6BCF\u4E2A\u5C5E\u6027\u6700\u5927\u503C\u6DFB\u52A0\u6548\u679C\u4EC5\u6700\u540E\u4E00\u6B21\u6709\u6548
 	 * @param type
 	 * @param plugin
 	 * @param value
@@ -53,18 +54,18 @@ public interface PlayerData {
 	public void addStatusMaxValue(StatusType type,Plugin plugin,double value);
 	
 	/**
-	 * 检测插件添加的属性是否有效
+     * \u68C0\u6D4B\u63D2\u4EF6\u6DFB\u52A0\u7684\u5C5E\u6027\u662F\u5426\u6709\u6548
 	 * @param type
 	 * @param plugin
-	 * @return 有效返回true
+     * @return \u6709\u6548\u8FD4\u56DEtrue
 	 */
 	public boolean isValidAddMaxValue(StatusType type,Plugin plugin);
 	
 	/**
-	 * 获取插件所添加的属性最大值
+     * \u83B7\u53D6\u63D2\u4EF6\u6240\u6DFB\u52A0\u7684\u5C5E\u6027\u6700\u5927\u503C
 	 * @param type
 	 * @param plugin
-	 * @return 对应属性最大值
+     * @return \u5BF9\u5E94\u5C5E\u6027\u6700\u5927\u503C
 	 */
 	public double getAddMaxValue(StatusType type,Plugin plugin);
 }

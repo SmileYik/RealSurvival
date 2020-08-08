@@ -36,7 +36,11 @@ public class MobMakeDisease implements Listener{
       Projectile pro = (Projectile)e.getDamager();
       if(pro.getShooter() instanceof LivingEntity) {
         handItem = ConfigManager.getBukkitVersion()>8?((LivingEntity)pro.getShooter()).getEquipment().getItemInMainHand():((LivingEntity)pro.getShooter()).getEquipment().getItemInHand();
-        sb.append(((LivingEntity)pro.getShooter()).getCustomName());
+        if (ConfigManager.getBukkitVersion() <= 8) {
+          sb.append(((LivingEntity)pro.getShooter()).getName());          
+        } else {
+          sb.append(((LivingEntity)pro.getShooter()).getCustomName());
+        }
       }
     }
     

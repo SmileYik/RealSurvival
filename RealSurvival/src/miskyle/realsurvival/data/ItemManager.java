@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.nms.nbtitem.NBTItem;
@@ -25,6 +26,7 @@ public class ItemManager {
   
   private String split;
   private HashMap<String, String> labels;
+  private HashMap<String, String> labels2;
   
   private HashMap<String, RSItemData> nbtItemData;
   private HashMap<String, RSItemData> minecraftItemData;
@@ -34,9 +36,16 @@ public class ItemManager {
     nbtItem = NBTItem.getNBTItem(RealSurvival.getVersion());
     split = MCPT.plugin.getConfig().getString("label.split",":");
     labels = new HashMap<String, String>();
+    labels2 = new HashMap<>();
     for(String line : MCPT.plugin.getConfig().getStringList("label.labels")) {
       String[] temp = line.split(":");
-      labels.put(temp[0], temp[1]);
+      if (temp[0].equalsIgnoreCase("disease-source")) {
+        labels2.put(temp[0], temp[1]);
+      } else if (temp[0].equalsIgnoreCase("purifier")) {
+        labels2.put(temp[0], temp[1]);
+      } else {
+        labels.put(temp[0], temp[1]);        
+      }
     }
     
     loadNBTItem();
@@ -225,8 +234,6 @@ public class ItemManager {
               rsItem.setDrugData(drug.getDrugData());
             }
             return;
-          } else if (k.equalsIgnoreCase("disease-source")) {
-            return;
           }
           
           String temp = ss.replaceAll("[^0-9+-/%]", "");
@@ -271,10 +278,10 @@ public class ItemManager {
       return null;
     }
     RSItemData rsItem = new RSItemData();
+    String label = im.labels2.get("disease-source");
     item.getItemMeta().getLore().forEach(s->{
       if(rsItem.getDrugData() != null) return;
       String ss = Utils.removeColor(s);
-      String label = im.labels.get("disease-source");
       if(ss.contains(label) && ss.contains(im.split)) {
         String drugName = ss.split(":")[1].replace(" ", "");
         RSItemData drug = im.nbtItemData.get(drugName);
@@ -284,6 +291,45 @@ public class ItemManager {
       }
     });
     return rsItem;
+  }
+  
+  public static double getPurifierValue(ItemStack item) {
+    if(item==null)return 0;
+    if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      return 0;
+    }
+    String label = im.labels2.get("disease-source");
+    for (String line : item.getItemMeta().getLore()) {
+      String ss = Utils.removeColor(line);
+      if(ss.contains(label) && ss.contains(im.split)) {
+        return Double.parseDouble(ss.replaceAll("^[0-9.+]", ""));
+      }
+    }
+    return 0;
+  }
+  
+  public static void setPurifierValue(ItemStack item, double value) {
+    if(item==null)return;
+    if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      return;
+    }
+    String label = im.labels2.get("disease-source");
+    ItemMeta meta = item.getItemMeta();
+    List<String> lore = meta.getLore();
+    int index = 0;
+    for (String line : lore) {
+      String ss = Utils.removeColor(line);
+      if(ss.contains(label) && ss.contains(im.split)) {
+        String afterLine = line.replace(ss.replaceAll("^[0-9.+]", ""), _2f(value));
+        lore.set(index, afterLine);
+        break;
+      }
+      index++;
+    }
+    if(index < lore.size()) {
+      meta.setLore(lore);
+      item.setItemMeta(meta);
+    }
   }
   
   public static double getStatusValue(String status,ItemStack item) {
@@ -328,15 +374,9 @@ public class ItemManager {
         return im.nbtItemData.get(name).getValue(status);
     }
     String key = im.labels.get(status);
-    if(!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
-      if(status.equals("weight")) {
-        if(ConfigManager.getWeightConfig().getItemWeight().containsKey(item.getType().name())) {
-          return ConfigManager.getWeightConfig().getItemWeight().get(item.getType().name());
-        }
-      }else {
-        if(im.minecraftItemData.containsKey(item.getType().name())) {
-          return im.minecraftItemData.get(item.getType().name()).getValue(status);
-        }
+    if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      if (im.minecraftItemData.containsKey(item.getType().name())) {
+        return im.minecraftItemData.get(item.getType().name()).getValue(status);
       }
       return 0;
     }
@@ -373,14 +413,17 @@ public class ItemManager {
     return im.nbtItem;
   }
 
-  private static RSEntry<Double, Double> getRSEntryDouble(String str){
+  private static RSEntry<Double, Double> getRSEntryDouble(String str) {
     String[] temp = str.split("/");
-      return new RSEntry<Double, Double>(
-          Double.parseDouble(temp[0]),Double.parseDouble(temp[1]));
-    }
-    private static RSEntry<Integer, Integer> getRSEntryInt(String str){
-      String[] temp = str.split("/");
-      return new RSEntry<Integer, Integer>(
-          Integer.parseInt(temp[0]),Integer.parseInt(temp[1]));
-    }
+    return new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
+  }
+
+  private static RSEntry<Integer, Integer> getRSEntryInt(String str) {
+    String[] temp = str.split("/");
+    return new RSEntry<Integer, Integer>(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+  }
+
+  private static String _2f(double d) {
+    return String.format("%.2f", d);
+  }
 }

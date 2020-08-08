@@ -49,10 +49,10 @@ public class RandomDayManager {
     
     if(time>22550)temperature+=day.getDayTemperature()*(24000-time);
     else if(time<6000) temperature+=day.getDayTemperature()*(time-4550);
-    else temperature+=day.getNightTemperature()*(time-6000);
+    else temperature-=day.getNightTemperature()*(time-6000);
     
     if(loc.getWorld().hasStorm()) 
-      temperature+=day.getRainTemperature();
+      temperature-=day.getRainTemperature();
     
     return temperature;
   }

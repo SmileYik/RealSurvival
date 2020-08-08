@@ -1,7 +1,6 @@
 package miskyle.realsurvival.data.config.status;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import miskyle.realsurvival.data.effect.EffectData;
 
@@ -9,8 +8,6 @@ public class WeightConfig {
 	private boolean enable;
 	private double  maxValue;
 	private ArrayList<EffectData>  effects;
-	
-	private HashMap<String, Double> itemWeight;
 	
 	public WeightConfig() {
 		
@@ -41,14 +38,6 @@ public class WeightConfig {
 		if(effectString.equalsIgnoreCase("null"))return;
 		for(String s:effectString.split(";"))
 			effects.add(EffectData.loadFromString(s));
-	}
-
-	public HashMap<String, Double> getItemWeight() {
-		return itemWeight;
-	}
-
-	public void setItemWeight(HashMap<String, Double> itemWeight) {
-		this.itemWeight = itemWeight;
 	}
 	
 	

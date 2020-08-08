@@ -1,5 +1,6 @@
 package miskyle.realsurvival.randomday;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
@@ -48,10 +49,25 @@ public class RandomDayTask implements Runnable{
 		for(Player p : MCPT.plugin.getServer().getOnlinePlayers()) {
 			if(p.getWorld().getName().equalsIgnoreCase(world)
 					&&PlayerManager.isActive(p.getName())
-					&&!PlayerManager.getPlayerData(p.getName()).getSleep().isSleep()) {
+					&&!PlayerManager.getPlayerData(p.getName()).getSleep().isSleep()
+					&& canBeWind(p.getLocation(), 0)) {
 			  p.setVelocity(p.getVelocity().add(v));
 			}
 		}
+	}
+	
+	private static boolean canBeWind(Location loc, int times) {
+	  if (times == 10) {
+	    if (loc.getBlock().isEmpty()) {
+	      return true;
+	    } else {
+	      return false;
+	    }
+	  } else if (!loc.getBlock().isEmpty()) {
+	    return false;
+	  } else {
+	    return canBeWind(loc.add(0, 1, 0), times+1);
+	  }
 	}
 	
 	public static void randomRain(World world,boolean thunder) {

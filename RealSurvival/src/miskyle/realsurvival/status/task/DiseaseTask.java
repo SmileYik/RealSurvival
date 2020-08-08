@@ -17,6 +17,10 @@ public class DiseaseTask implements Runnable{
     PlayerManager.getActivePlayers().forEachValue(
         PlayerManager.getActivePlayers().mappingCount(), pd->{
           Player p = MCPT.plugin.getServer().getPlayer(pd.getPlayerName());
+          if(!p.isOnline()) {
+            PlayerManager.removePlayer(p.getName());
+            return;
+          }
           pd.getDisease().getDiseases().forEachValue(
               pd.getDisease().getDiseases().mappingCount(), disease->{
               if(disease.recover()) {

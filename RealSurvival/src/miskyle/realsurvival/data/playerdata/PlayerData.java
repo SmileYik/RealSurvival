@@ -213,7 +213,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
               +"Disease = '"+diseaseString+"',"
               +"Temperature = '"+extraTemperature+"'"
               +" WHERE Name = '"+playerName.toLowerCase()+"'";
-          MySQLManager.execute(sql);
+          MySQLManager.execute(sql).execute();
         }else {
           String sql = "INSERT INTO RealSurvival VALUES ('"
                 +playerName.toLowerCase()+"','"
@@ -229,7 +229,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
                 +temperatureEffectString+"','"
                 +diseaseString+"','"
                 +extraTemperature+"')";
-          MySQLManager.execute(sql);
+          MySQLManager.execute(sql).execute();
         }
       } catch (SQLException e) {
         e.printStackTrace();
@@ -302,7 +302,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData{
   }
   
   public String getStatusMessage(boolean cd) {
-    if(status == null || !(cdStatusPlayer.contains(playerName) || cd)) {
+    if(status == null || !cdStatusPlayer.contains(playerName) || cd) {
       status = Msg.getPlayerState1(playerName,"正常",
           _2f(sleep.getProportionValue()*100),_2f(sleep.getMaxValue()),_2f(sleep.getValue()),
           _2f(thirst.getProportionValue()*100),_2f(thirst.getMaxValue()),_2f(thirst.getValue()),

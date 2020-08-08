@@ -4,10 +4,9 @@ import org.bukkit.potion.PotionEffectType;
 
 public class Test {
   static {
-    System.out.println(1.6%1);
-    for(PotionEffectType type : PotionEffectType.values()) {
-      System.out.println(type);
-    }
+    String a = "XXX: 615.65XXZ";
+    System.out.println(a.replaceAll("[^0-9.+]", ""));
+    System.out.println(a.replace(a.replaceAll("[^0-9.+]", ""), "615"));
   }
 	@org.junit.Test
 	public void a() {

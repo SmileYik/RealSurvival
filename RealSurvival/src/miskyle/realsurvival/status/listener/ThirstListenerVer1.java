@@ -23,7 +23,10 @@ public class ThirstListenerVer1 implements Listener {
     if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
         || !PlayerManager.isActive(e.getPlayer().getName()) || e.getMaterial() != Material.GLASS_BOTTLE)
       return;
-
+    if(e.getItem().getAmount() > 1) {
+      return;
+    }
+    
     @SuppressWarnings("deprecation")
     Block block = e.getPlayer().getTargetBlock(null, 6);
     if (!(block.getType().name().contains("WATER")))

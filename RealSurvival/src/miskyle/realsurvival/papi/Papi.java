@@ -41,7 +41,7 @@ public class Papi extends PlaceholderExpansion  {
 		  }else {
 		    return disease.getDiseaseName();
 		  }
-		}else if(arg.equalsIgnoreCase("md")) {
+		}else if(arg.equalsIgnoreCase("drug-duration")) {
 		  if(disease == null) {
 		    return I18N.tr("status.fine");
 		  }

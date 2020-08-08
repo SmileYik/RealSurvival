@@ -51,7 +51,7 @@ public abstract class RSEffect {
   /**
    * \u5199\u65e5\u5fd7,\u7ea7\u522b: \u4fe1\u606f.
    * 
-   * @param message 信息
+   * @param message \u4FE1\u606F
    */
   public void info(String message) {
     MCPT.plugin.getLogger().info("RSEffect[" + pluginName + "] " + message);
@@ -60,7 +60,7 @@ public abstract class RSEffect {
   /**
    * \u5199\u65e5\u5fd7, \u7ea7\u522b: \u8b66\u544a.
    * 
-   * @param message 信息
+   * @param message \u4FE1\u606F
    */
   public void warning(String message) {
     MCPT.plugin.getLogger().warning("RSEffect[" + pluginName + "] " + message);

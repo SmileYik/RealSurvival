@@ -3,7 +3,9 @@ package miskyle.realsurvival.api;
 import miskyle.realsurvival.api.player.PlayerData;
 
 /**
- * a.
+ * \u7528\u6CD5\u5982\u4E0B:
+ * <p>
+ * RealSurvivalAPI rsApi = (RealSurvivalAPI) Bukkit.getPluginManager().getPlugin("RealSurvival");
  * 
  * @author MiSkYle
  *

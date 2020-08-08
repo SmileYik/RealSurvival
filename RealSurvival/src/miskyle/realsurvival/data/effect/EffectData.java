@@ -13,6 +13,7 @@ public class EffectData {
 		this.name = name;
 		this.duration = duration;
 		this.effecLevel = effecLevel;
+		this.chance = chance;
 	}
 	public static EffectData loadFromString(String s) {
 		if(s.equalsIgnoreCase("null")) {
