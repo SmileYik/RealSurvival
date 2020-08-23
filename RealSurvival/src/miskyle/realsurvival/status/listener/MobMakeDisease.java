@@ -16,12 +16,11 @@ import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.item.RSItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 
-public class MobMakeDisease implements Listener{
+public class MobMakeDisease implements Listener {
   @SuppressWarnings("deprecation")
   @EventHandler
   public void onMobHurtPlayer(final EntityDamageByEntityEvent e) {
-    if (ConfigManager.getDiseaseConfig().isMob()
-        || e.getEntity().getType() != EntityType.PLAYER
+    if (ConfigManager.getDiseaseConfig().isMob() || e.getEntity().getType() != EntityType.PLAYER
         || PlayerManager.isActive(e.getEntity().getName())) {
       return;
     }
@@ -29,31 +28,34 @@ public class MobMakeDisease implements Listener{
     PlayerData pd = PlayerManager.getPlayerData(p.getName());
     ItemStack handItem = null;
     StringBuilder sb = new StringBuilder();
-    if(e.getDamager() instanceof LivingEntity) {
-      handItem = ConfigManager.getBukkitVersion()>8?((LivingEntity)e.getDamager()).getEquipment().getItemInMainHand():((LivingEntity)e.getDamager()).getEquipment().getItemInHand();
+    if (e.getDamager() instanceof LivingEntity) {
+      handItem = ConfigManager.getBukkitVersion() > 8
+          ? ((LivingEntity) e.getDamager()).getEquipment().getItemInMainHand()
+          : ((LivingEntity) e.getDamager()).getEquipment().getItemInHand();
       sb.append(e.getDamager().getCustomName());
-    }else if(e.getDamager() instanceof Projectile) {
-      Projectile pro = (Projectile)e.getDamager();
-      if(pro.getShooter() instanceof LivingEntity) {
-        handItem = ConfigManager.getBukkitVersion()>8?((LivingEntity)pro.getShooter()).getEquipment().getItemInMainHand():((LivingEntity)pro.getShooter()).getEquipment().getItemInHand();
+    } else if (e.getDamager() instanceof Projectile) {
+      Projectile pro = (Projectile) e.getDamager();
+      if (pro.getShooter() instanceof LivingEntity) {
+        handItem = ConfigManager.getBukkitVersion() > 8
+            ? ((LivingEntity) pro.getShooter()).getEquipment().getItemInMainHand()
+            : ((LivingEntity) pro.getShooter()).getEquipment().getItemInHand();
         if (ConfigManager.getBukkitVersion() <= 8) {
-          sb.append(((LivingEntity)pro.getShooter()).getName());          
+          sb.append(((LivingEntity) pro.getShooter()).getName());
         } else {
-          sb.append(((LivingEntity)pro.getShooter()).getCustomName());
+          sb.append(((LivingEntity) pro.getShooter()).getCustomName());
         }
       }
     }
-    
+
     RSItemData data = ItemManager.getDiseaseSource(handItem);
-    if(data == null || data.getDrugData() == null
-        || !data.getDrugData().isMakeDisease()) {
+    if (data == null || data.getDrugData() == null || !data.getDrugData().isMakeDisease()) {
       return;
     }
-    if(data.getDrugData().isMakeDisease()) {
-      data.getDrugData().getGetDisease().forEach((k,v)->{
-        if(Math.random()*100<v) {
+    if (data.getDrugData().isMakeDisease()) {
+      data.getDrugData().getGetDisease().forEach((k, v) -> {
+        if (Math.random() * 100 < v) {
           pd.getDisease().addDisease(k);
-          PlayerManager.bar.sendActionBar(p, Msg.tr("messages.make-disease",sb.toString(),k));
+          PlayerManager.bar.sendActionBar(p, Msg.tr("messages.make-disease", sb.toString(), k));
         }
       });
     }

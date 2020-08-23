@@ -13,6 +13,7 @@ import miskyle.realsurvival.data.PlayerManager;
 
 /**
  * 适配1.7.10
+ * 
  * @author MiSkYle
  * @version 1.0.0
  */
@@ -23,19 +24,19 @@ public class ThirstListenerVer1 implements Listener {
     if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
         || !PlayerManager.isActive(e.getPlayer().getName()) || e.getMaterial() != Material.GLASS_BOTTLE)
       return;
-    if(e.getItem().getAmount() > 1) {
+    if (e.getItem().getAmount() > 1) {
       return;
     }
-    
+
     @SuppressWarnings("deprecation")
     Block block = e.getPlayer().getTargetBlock(null, 6);
     if (!(block.getType().name().contains("WATER")))
       return;
     e.setCancelled(true);
     int amount = e.getItem().getAmount() - 1;
-    if(amount > 0) {
-      e.getItem().setAmount(amount);      
-    }else {
+    if (amount > 0) {
+      e.getItem().setAmount(amount);
+    } else {
       e.getPlayer().setItemInHand(null);
     }
     String biome = block.getBiome().name().toUpperCase();

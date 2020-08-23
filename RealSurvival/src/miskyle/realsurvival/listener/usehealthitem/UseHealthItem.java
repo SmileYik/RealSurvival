@@ -6,6 +6,5 @@ import miskyle.realsurvival.data.item.RSItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 
 public interface UseHealthItem {
-  public void  useHealthItem(Player p,PlayerData pd,RSItemData itemData);
+  public void useHealthItem(Player p, PlayerData pd, RSItemData itemData);
 }
- 

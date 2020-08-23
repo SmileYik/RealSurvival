@@ -84,14 +84,12 @@ public class ClickCubeListener implements Listener {
         }, 20L);
         String machineName = MachineManager.getMachineNameByCubeName(cube.getName());
         RSEntry<RecipeType, String> machineData = MachineManager.getMachineData(machineName);
-        if(machineData.getLeft() == RecipeType.CRAFT_TABLE) {
-          CraftTable.openDefaultGUI(event.getPlayer(), block.getLocation(),
-              machineName, machineData.getRight());
-        } else if (machineData.getLeft() == RecipeType.FURNACE){
-          Furnace.openDefaultGUI(event.getPlayer(), block.getLocation(), 
-              machineName, machineData.getRight());
+        if (machineData.getLeft() == RecipeType.CRAFT_TABLE) {
+          CraftTable.openDefaultGUI(event.getPlayer(), block.getLocation(), machineName, machineData.getRight());
+        } else if (machineData.getLeft() == RecipeType.FURNACE) {
+          Furnace.openDefaultGUI(event.getPlayer(), block.getLocation(), machineName, machineData.getRight());
         } else {
-          
+
         }
         return;
       }
@@ -165,10 +163,10 @@ public class ClickCubeListener implements Listener {
   }
 
   private boolean compareBlock(Block block, String cubeBlockKey) {
-    if(cubeBlockKey.equals("AIR")) {
+    if (cubeBlockKey.equals("AIR")) {
       return true;
-    }else {
-      return cubeBlockKey.equals(BlockArrayCreator.getBlockKey(block));      
+    } else {
+      return cubeBlockKey.equals(BlockArrayCreator.getBlockKey(block));
     }
   }
 }

@@ -6,33 +6,33 @@ import miskyle.realsurvival.data.recipe.FurnaceRecipe;
 import miskyle.realsurvival.machine.MachineHolder;
 import miskyle.realsurvival.machine.MachineStatus;
 
-public class FurnaceHolder extends MachineHolder{
+public class FurnaceHolder extends MachineHolder {
   private String furnaceName;
   private MachineStatus status;
-  
+
   private FurnaceTimer timer;
   private FurnaceRecipe recipe;
-  
+
   public FurnaceHolder(String worldName, int x, int y, int z, String furnaceName, MachineStatus status) {
     super(worldName, x, y, z);
     this.furnaceName = furnaceName;
     this.status = status;
   }
-  
-  public FurnaceHolder(Location loc,String craftTableName,MachineStatus status) {
+
+  public FurnaceHolder(Location loc, String craftTableName, MachineStatus status) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;
     this.status = status;
   }
-  
-  public FurnaceHolder(Location loc,String craftTableName,FurnaceTimer timer) {
+
+  public FurnaceHolder(Location loc, String craftTableName, FurnaceTimer timer) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;
     this.status = MachineStatus.CRAFTING;
     this.timer = timer;
   }
-  
-  public FurnaceHolder(Location loc,String craftTableName,FurnaceRecipe recipe) {
+
+  public FurnaceHolder(Location loc, String craftTableName, FurnaceRecipe recipe) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;
     this.status = MachineStatus.CREATOR;
@@ -70,6 +70,5 @@ public class FurnaceHolder extends MachineHolder{
   public void setRecipe(FurnaceRecipe recipe) {
     this.recipe = recipe;
   }
-  
-  
+
 }

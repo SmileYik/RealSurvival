@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/Chairs.jar"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/PlaceholderAPI-2.10.3.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/MMCPT.jar"/>
-	<classpathentry kind="lib" path="F:/workspace/libs/servers/spigot-1.15.2.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="src" path="src" />
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.launching.JRE_CONTAINER" />
+	<classpathentry kind="lib"
+		path="F:/workspace/libs/Chairs.jar" />
+	<classpathentry kind="lib"
+		path="F:/workspace/libs/PlaceholderAPI-2.10.3.jar" />
+	<classpathentry kind="con"
+		path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4" />
+	<classpathentry kind="lib"
+		path="F:/workspace/libs/MMCPT.jar" />
+	<classpathentry kind="lib"
+		path="F:/workspace/libs/servers/spigot-1.15.2.jar" />
+	<classpathentry kind="output" path="bin" />
 </classpath>

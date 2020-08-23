@@ -18,9 +18,10 @@ public class Msg {
   private String playerState2 = "";
   private String prefix;
   private final HashMap<String, String[]> defualt;
-  
+
   /**
    * 初始化.
+   * 
    * @param plugin 插件
    */
   public Msg(RealSurvival plugin) {
@@ -34,14 +35,14 @@ public class Msg {
         List<String> msgs = config.getStringList(key);
         String[] msgsString = msgs.toArray(new String[msgs.size()]);
         for (String str : msgsString) {
-          playerState1 += str + "\n";          
+          playerState1 += str + "\n";
         }
         playerState1 = playerState1.substring(0, playerState1.length() - 2);
       } else if (key.equals("player-state-2")) {
         List<String> msgs = config.getStringList(key);
         String[] msgsString = msgs.toArray(new String[msgs.size()]);
         for (String str : msgsString) {
-          playerState2 += str + "\n";          
+          playerState2 += str + "\n";
         }
         playerState2 = playerState2.substring(0, playerState2.length() - 2);
       } else if (key.equals("prefix")) {
@@ -57,7 +58,7 @@ public class Msg {
 
   private String getMessages(String key) {
     if (!defualt.containsKey(key)) {
-      return "";      
+      return "";
     }
     String[] msgs = defualt.get(key);
     return msgs[(int) (Math.random() * msgs.length)];
@@ -94,9 +95,8 @@ public class Msg {
   private void checkMessagesYml(RealSurvival rs) {
     if (!new File(rs.getDataFolder() + File.separator + "messages.yml").exists()) {
       writerYml("messages_" + rs.getConfig().getString("language"));
-    } else if (YamlConfiguration.loadConfiguration(
-        new File(rs.getDataFolder() + File.separator + "messages.yml")) 
-        .getString("language", null) == null
+    } else if (YamlConfiguration.loadConfiguration(new File(
+        rs.getDataFolder() + File.separator + "messages.yml")).getString("language", null) == null
         || !YamlConfiguration.loadConfiguration(
             new File(rs.getDataFolder() + File.separator + "messages.yml"))
             .getString("language", null).equalsIgnoreCase(rs.getConfig().getString("language"))) {
@@ -113,7 +113,7 @@ public class Msg {
       int i;
       byte[] buffer = new byte[1024];
       while ((i = is.read(buffer)) != -1) {
-        os.write(buffer, 0, i);        
+        os.write(buffer, 0, i);
       }
       os.flush();
 
@@ -127,14 +127,14 @@ public class Msg {
           is.close();
         } catch (IOException e) {
           e.printStackTrace();
-        }        
+        }
       }
       if (os != null) {
         try {
           os.close();
         } catch (IOException e) {
           e.printStackTrace();
-        }        
+        }
       }
     }
 

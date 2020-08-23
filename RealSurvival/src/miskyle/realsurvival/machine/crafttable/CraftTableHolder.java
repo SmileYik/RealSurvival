@@ -6,33 +6,33 @@ import miskyle.realsurvival.data.recipe.CraftTableRecipe;
 import miskyle.realsurvival.machine.MachineHolder;
 import miskyle.realsurvival.machine.MachineStatus;
 
-public class CraftTableHolder extends MachineHolder{
+public class CraftTableHolder extends MachineHolder {
   private String craftTableName;
   private MachineStatus status;
-  
+
   private CraftTableRecipe recipe;
   private CraftTableTimer timer;
-  
-  public CraftTableHolder(String craftTableName,String worldName, int x, int y, int z,MachineStatus status) {
+
+  public CraftTableHolder(String craftTableName, String worldName, int x, int y, int z, MachineStatus status) {
     super(worldName, x, y, z);
     this.craftTableName = craftTableName;
     this.status = status;
   }
-  
-  public CraftTableHolder(Location loc,String craftTableName,MachineStatus status) {
+
+  public CraftTableHolder(Location loc, String craftTableName, MachineStatus status) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.craftTableName = craftTableName;
     this.status = status;
   }
-  
-  public CraftTableHolder(Location loc,String craftTableName,CraftTableTimer timer) {
+
+  public CraftTableHolder(Location loc, String craftTableName, CraftTableTimer timer) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.craftTableName = craftTableName;
     this.status = MachineStatus.CRAFTING;
     this.timer = timer;
   }
-  
-  public CraftTableHolder(Location loc,String craftTableName,CraftTableRecipe recipe) {
+
+  public CraftTableHolder(Location loc, String craftTableName, CraftTableRecipe recipe) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.craftTableName = craftTableName;
     this.status = MachineStatus.CREATOR;
@@ -70,6 +70,5 @@ public class CraftTableHolder extends MachineHolder{
   public void setTimer(CraftTableTimer timer) {
     this.timer = timer;
   }
-  
-  
+
 }

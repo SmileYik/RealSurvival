@@ -18,26 +18,24 @@ public class WaterMakerVer {
     ItemMeta im = item.getItemMeta();
     RSItemData data = new RSItemData();
     im.setDisplayName(I18N.tr("status.thirst.water.unknown-biome"));
-    im.setLore(Arrays.asList(
-        I18N.tr("status.thirst.water.unknown-biome.des").split(";")));
+    im.setLore(Arrays.asList(I18N.tr("status.thirst.water.unknown-biome.des").split(";")));
     item.setItemMeta(im);
     data.setStatusValue("THIRST", 10, 20);
     data.save("water/unknown");
     ItemStack is = ItemManager.getNBT().setNBT(item, "RSNBT", "water/unknown");
     new RSItem(is).save("water/unknown");
   }
-  
+
   public static void makeRainwater() {
     ItemStack item = new ItemStack(Material.POTION);
     ItemMeta im = item.getItemMeta();
     RSItemData data = new RSItemData();
     im.setDisplayName(I18N.tr("status.thirst.water.rainwater"));
-    im.setLore(Arrays.asList(
-            I18N.tr("status.thirst.water.rainwater.des").split(";")));
+    im.setLore(Arrays.asList(I18N.tr("status.thirst.water.rainwater.des").split(";")));
     item.setItemMeta(im);
     data.setStatusValue("THIRST", 10, 20);
     data.save("water/rainwater");
     ItemStack is = ItemManager.getNBT().setNBT(item, "RSNBT", "water/rainwater");
     new RSItem(is).save("water/rainwater");
-}
+  }
 }

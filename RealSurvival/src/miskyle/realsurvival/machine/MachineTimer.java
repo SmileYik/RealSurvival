@@ -8,12 +8,12 @@ public class MachineTimer {
   private String playerName;
   private MachineType type;
   private int time;
-  
+
   private String worldName;
   private int x;
   private int y;
   private int z;
-  
+
   public MachineTimer(String playerName, MachineType type, int time, String worldName, int x, int y, int z) {
     super();
     this.playerName = playerName;
@@ -25,7 +25,7 @@ public class MachineTimer {
     this.z = z;
   }
 
-  public MachineTimer(MachineType type,String playerName,Location loc) {
+  public MachineTimer(MachineType type, String playerName, Location loc) {
     this.playerName = playerName;
     this.type = type;
     this.worldName = loc.getWorld().getName();
@@ -33,13 +33,13 @@ public class MachineTimer {
     this.y = loc.getBlockY();
     this.z = loc.getBlockZ();
   }
-  
+
   public Location getLocation() {
-    return new Location(MCPT.plugin.getServer().getWorld(worldName),x,y,z);
+    return new Location(MCPT.plugin.getServer().getWorld(worldName), x, y, z);
   }
-  
+
   public int modifyTime(int time) {
-    this.time+=time;
+    this.time += time;
     return this.time;
   }
 
@@ -98,6 +98,5 @@ public class MachineTimer {
   public void setZ(int z) {
     this.z = z;
   }
-  
-  
+
 }

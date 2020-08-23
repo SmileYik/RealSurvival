@@ -15,110 +15,107 @@ import miskyle.realsurvival.machine.MachineType;
 import miskyle.realsurvival.machine.util.RecipeUtils;
 import miskyle.realsurvival.util.RSEntry;
 
-public class FurnaceListener implements Listener{
+public class FurnaceListener implements Listener {
   @EventHandler
   public void onCrafting(final InventoryClickEvent e) {
-    if(e.isCancelled()) {
+    if (e.isCancelled()) {
       return;
     }
-    if(!(e.getWhoClicked() instanceof Player)
-        || !(e.getInventory().getHolder() instanceof FurnaceHolder)
-        || e.getRawSlot()<0) {
+    if (!(e.getWhoClicked() instanceof Player) || !(e.getInventory().getHolder() instanceof FurnaceHolder)
+        || e.getRawSlot() < 0) {
       return;
     }
-    
-    Player p = (Player)e.getWhoClicked();
+
+    Player p = (Player) e.getWhoClicked();
     FurnaceHolder holder = (FurnaceHolder) e.getInventory().getHolder();
-    if(holder.getStatus() == MachineStatus.CRAFTING) {
-      if(e.getRawSlot() < 54) {
+    if (holder.getStatus() == MachineStatus.CRAFTING) {
+      if (e.getRawSlot() < 54) {
         e.setCancelled(true);
         p.updateInventory();
       }
-      if(e.getRawSlot() == 49) {
-        if(holder.getTimer().isValid()) {
+      if (e.getRawSlot() == 49) {
+        if (holder.getTimer().isValid()) {
           int times = holder.getTimer().takeIt();
-          holder.getTimer().getRecipe().getProducts().forEach(item->{
-            p.getInventory().addItem(item.clone()).values().forEach(item2->{
+          holder.getTimer().getRecipe().getProducts().forEach(item -> {
+            p.getInventory().addItem(item.clone()).values().forEach(item2 -> {
               p.getWorld().dropItem(p.getLocation(), item2);
             });
           });
-          if(times>0) {
-            p.sendMessage(Msg.getPrefix()+I18N.tr("machine.craft-table.crafting.amount-left",times));
+          if (times > 0) {
+            p.sendMessage(Msg.getPrefix() + I18N.tr("machine.craft-table.crafting.amount-left", times));
             return;
-          }else {
+          } else {
             p.closeInventory();
           }
-        }else {
-          p.sendMessage(Msg.getPrefix()+I18N.tr("machine.craft-table.crafting.not-yet"));
+        } else {
+          p.sendMessage(Msg.getPrefix() + I18N.tr("machine.craft-table.crafting.not-yet"));
           return;
         }
-      }else {
+      } else {
         return;
       }
-    }else if(holder.getStatus() == MachineStatus.NOTHING) {
-      if(e.getRawSlot() >= 54 || Furnace.MATERIAL_SLOTS.contains(e.getRawSlot())) {
+    } else if (holder.getStatus() == MachineStatus.NOTHING) {
+      if (e.getRawSlot() >= 54 || Furnace.MATERIAL_SLOTS.contains(e.getRawSlot())) {
         return;
-      }else if(e.getRawSlot()<=54) {
+      } else if (e.getRawSlot() <= 54) {
         e.setCancelled(true);
         p.updateInventory();
-        if(e.getRawSlot() == 49) {
-          RSEntry<String, Integer> recipe = RecipeUtils.cheekRecipe(
-              holder.getFurnaceName(), MachineType.FURNACE, e.getClickedInventory());
-          if(recipe != null) {
-            RecipeUtils.startForgeRecipe(holder.getFurnaceName(), 
-                recipe.getLeft(), MachineType.FURNACE,recipe.getRight(), 
-                e.getClickedInventory(), p, holder.getTimer());
+        if (e.getRawSlot() == 49) {
+          RSEntry<String, Integer> recipe = RecipeUtils.cheekRecipe(holder.getFurnaceName(), MachineType.FURNACE,
+              e.getClickedInventory());
+          if (recipe != null) {
+            RecipeUtils.startForgeRecipe(holder.getFurnaceName(), recipe.getLeft(), MachineType.FURNACE,
+                recipe.getRight(), e.getClickedInventory(), p, holder.getTimer());
             return;
-          }else {
+          } else {
             return;
           }
-        }else {
+        } else {
           return;
         }
       }
-    }else if(holder.getStatus() == MachineStatus.CREATOR) {
-      if(e.getRawSlot() == 49) {
-        //创建配方
-        if(RecipeUtils.createRecipe(holder.getRecipe(), p, e.getClickedInventory())) {
+    } else if (holder.getStatus() == MachineStatus.CREATOR) {
+      if (e.getRawSlot() == 49) {
+        // 创建配方
+        if (RecipeUtils.createRecipe(holder.getRecipe(), p, e.getClickedInventory())) {
           p.closeInventory();
           return;
         }
       }
     }
   }
-  
+
   @EventHandler
   public void onCloseInv(final InventoryCloseEvent e) {
-    if(e.getInventory().getHolder() instanceof FurnaceHolder) {
+    if (e.getInventory().getHolder() instanceof FurnaceHolder) {
       FurnaceHolder holder = (FurnaceHolder) e.getInventory().getHolder();
       FurnaceOpenEvent.cancelEvent(e.getPlayer().getName());
-      if(holder.getStatus() == MachineStatus.NOTHING) {
-        for(int i:Furnace.MATERIAL_SLOTS) {
+      if (holder.getStatus() == MachineStatus.NOTHING) {
+        for (int i : Furnace.MATERIAL_SLOTS) {
           ItemStack item = e.getInventory().getItem(i);
-          if(item!=null) {
-            giveItemToPlayer((Player)e.getPlayer(), item);
+          if (item != null) {
+            giveItemToPlayer((Player) e.getPlayer(), item);
           }
         }
-      }else if(holder.getStatus() == MachineStatus.CREATOR) {
-        for(int i:Furnace.MATERIAL_SLOTS) {
+      } else if (holder.getStatus() == MachineStatus.CREATOR) {
+        for (int i : Furnace.MATERIAL_SLOTS) {
           ItemStack item = e.getInventory().getItem(i);
-          if(item!=null) {
-            giveItemToPlayer((Player)e.getPlayer(), item);
+          if (item != null) {
+            giveItemToPlayer((Player) e.getPlayer(), item);
           }
         }
-        for(int i:Furnace.PRODUCT_SLOTS) {
+        for (int i : Furnace.PRODUCT_SLOTS) {
           ItemStack item = e.getInventory().getItem(i);
-          if(item!=null) {
-            giveItemToPlayer((Player)e.getPlayer(), item);
+          if (item != null) {
+            giveItemToPlayer((Player) e.getPlayer(), item);
           }
         }
       }
     }
   }
-  
-  
-  private void giveItemToPlayer(Player p,ItemStack item) {
-    p.getInventory().addItem(item).values().forEach(i->{
+
+  private void giveItemToPlayer(Player p, ItemStack item) {
+    p.getInventory().addItem(item).values().forEach(i -> {
       p.getWorld().dropItem(p.getLocation(), i);
     });
   }

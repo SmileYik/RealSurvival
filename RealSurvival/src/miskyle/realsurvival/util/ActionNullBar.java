@@ -4,7 +4,7 @@ import org.bukkit.entity.Player;
 
 import com.github.miskyle.mcpt.nms.actionbar.NMSActionBar;
 
-public class ActionNullBar implements NMSActionBar{
+public class ActionNullBar implements NMSActionBar {
 
   @Override
   public void sendActionBar(Player arg0, String arg1) {

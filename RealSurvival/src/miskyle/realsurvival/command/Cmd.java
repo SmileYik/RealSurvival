@@ -17,30 +17,35 @@ public @interface Cmd {
 
   /**
    * 记录指令的长度及参数要求.
+   * 
    * @return
    */
   String[] args() default {};
 
   /**
    * 记录指令需要的权限, 默认为无权限.
+   * 
    * @return
    */
   String permission() default "";
 
   /**
    * 指令的注释.
+   * 
    * @return
    */
   String des();
 
   /**
    * 是否需要玩家执行此指令,默认为true.
+   * 
    * @return
    */
   boolean needPlayer() default true;
 
   /**
    * 指令长度是否无限长,默认为false.
+   * 
    * @return
    */
   boolean unlimitedLength() default false;

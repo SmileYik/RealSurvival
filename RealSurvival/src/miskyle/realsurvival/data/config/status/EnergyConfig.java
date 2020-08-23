@@ -8,116 +8,114 @@ import miskyle.realsurvival.data.effect.EffectData;
 import miskyle.realsurvival.util.RSEntry;
 
 public class EnergyConfig {
-	private boolean enable;
-	private double 	maxValue;
-	private double 	increaseValue;
-	private double 	decreaseSneaking;
-	private double 	decreaseSprinting;
-	private double 	decreaseJumping;
-	private double 	decreaseSwimming;
-	
-	private List<String> 																							toolList;
-	private HashMap<EnergyBreakBlockData,Double> 										actionDecrease;
-	private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>		effectData;
-	
-	public EnergyConfig() {
-		
-	}
+  private boolean enable;
+  private double maxValue;
+  private double increaseValue;
+  private double decreaseSneaking;
+  private double decreaseSprinting;
+  private double decreaseJumping;
+  private double decreaseSwimming;
 
-	public boolean isEnable() {
-		return enable;
-	}
+  private List<String> toolList;
+  private HashMap<EnergyBreakBlockData, Double> actionDecrease;
+  private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> effectData;
 
-	public void setEnable(boolean enable) {
-		this.enable = enable;
-	}
+  public EnergyConfig() {
 
-	public double getMaxValue() {
-		return maxValue;
-	}
+  }
 
-	public void setMaxValue(double maxValue) {
-		this.maxValue = maxValue;
-	}
+  public boolean isEnable() {
+    return enable;
+  }
 
-	public double getIncreaseValue() {
-		return increaseValue;
-	}
+  public void setEnable(boolean enable) {
+    this.enable = enable;
+  }
 
-	public void setIncreaseValue(double increaseValue) {
-		this.increaseValue = increaseValue;
-	}
+  public double getMaxValue() {
+    return maxValue;
+  }
 
-	public double getDecreaseSneaking() {
-		return decreaseSneaking;
-	}
+  public void setMaxValue(double maxValue) {
+    this.maxValue = maxValue;
+  }
 
-	public void setDecreaseSneaking(double decreaseSneaking) {
-		this.decreaseSneaking = decreaseSneaking;
-	}
+  public double getIncreaseValue() {
+    return increaseValue;
+  }
 
-	public double getDecreaseSprinting() {
-		return decreaseSprinting;
-	}
+  public void setIncreaseValue(double increaseValue) {
+    this.increaseValue = increaseValue;
+  }
 
-	public void setDecreaseSprinting(double decreaseSprinting) {
-		this.decreaseSprinting = decreaseSprinting;
-	}
+  public double getDecreaseSneaking() {
+    return decreaseSneaking;
+  }
 
-	public double getDecreaseJumping() {
-		return decreaseJumping;
-	}
+  public void setDecreaseSneaking(double decreaseSneaking) {
+    this.decreaseSneaking = decreaseSneaking;
+  }
 
-	public void setDecreaseJumping(double decreaseJumping) {
-		this.decreaseJumping = decreaseJumping;
-	}
+  public double getDecreaseSprinting() {
+    return decreaseSprinting;
+  }
 
-	public double getDecreaseSwimming() {
-		return decreaseSwimming;
-	}
+  public void setDecreaseSprinting(double decreaseSprinting) {
+    this.decreaseSprinting = decreaseSprinting;
+  }
 
-	public void setDecreaseSwimming(double decreaseSwimming) {
-		this.decreaseSwimming = decreaseSwimming;
-	}
+  public double getDecreaseJumping() {
+    return decreaseJumping;
+  }
 
-	public HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
-		return effectData;
-	}
+  public void setDecreaseJumping(double decreaseJumping) {
+    this.decreaseJumping = decreaseJumping;
+  }
 
-	public void setEffectData(HashMap<String, String> effectData) {
-		this.effectData = new HashMap<RSEntry<Double,Double>, ArrayList<EffectData>>();
-		effectData.forEach((s1,s2)->{
-			String[] temp = s1.split("-");
-			if(s2.equalsIgnoreCase("null")) {
-				this.effectData.put(
-						new RSEntry<Double, Double>(
-								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), new ArrayList<EffectData>());			
-			}else {
-				String[] temp2 = s2.split(";");
-				ArrayList<EffectData> list = new ArrayList<>();
-				for(String s:temp2)
-					list.add(EffectData.loadFromString(s));
-				this.effectData.put(
-						new RSEntry<Double, Double>(
-								Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
-			}
-		});
-	}
+  public double getDecreaseSwimming() {
+    return decreaseSwimming;
+  }
 
-	public HashMap<EnergyBreakBlockData, Double> getActionDecrease() {
-		return actionDecrease;
-	}
+  public void setDecreaseSwimming(double decreaseSwimming) {
+    this.decreaseSwimming = decreaseSwimming;
+  }
 
-	public void setActionDecrease(HashMap<EnergyBreakBlockData, Double> actionDecrease) {
-		this.actionDecrease = actionDecrease;
-	}
+  public HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
+    return effectData;
+  }
 
-	public List<String> getToolList() {
-		return toolList;
-	}
+  public void setEffectData(HashMap<String, String> effectData) {
+    this.effectData = new HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>();
+    effectData.forEach((s1, s2) -> {
+      String[] temp = s1.split("-");
+      if (s2.equalsIgnoreCase("null")) {
+        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
+            new ArrayList<EffectData>());
+      } else {
+        String[] temp2 = s2.split(";");
+        ArrayList<EffectData> list = new ArrayList<>();
+        for (String s : temp2)
+          list.add(EffectData.loadFromString(s));
+        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
+            list);
+      }
+    });
+  }
 
-	public void setToolList(List<String> toolList) {
-		this.toolList = toolList;
-	}
-	
+  public HashMap<EnergyBreakBlockData, Double> getActionDecrease() {
+    return actionDecrease;
+  }
+
+  public void setActionDecrease(HashMap<EnergyBreakBlockData, Double> actionDecrease) {
+    this.actionDecrease = actionDecrease;
+  }
+
+  public List<String> getToolList() {
+    return toolList;
+  }
+
+  public void setToolList(List<String> toolList) {
+    this.toolList = toolList;
+  }
+
 }

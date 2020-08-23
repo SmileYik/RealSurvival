@@ -8,18 +8,17 @@ import org.bukkit.inventory.ItemStack;
 
 import com.github.miskyle.mcpt.MCPT;
 
-
 public class CubeData {
-  private BlockArrayData up,mid,down;
+  private BlockArrayData up, mid, down;
   private String name;
   private String command;
   private ItemStack item;
   private boolean checkCompass;
   private boolean checkItem;
   private boolean reduceItem;
-  
-  public static String PATH = MCPT.plugin.getDataFolder()+"/CubeData";
-  
+
+  public static String PATH = MCPT.plugin.getDataFolder() + "/CubeData";
+
   public CubeData(BlockArrayData up, BlockArrayData mid, BlockArrayData down, String name, String command,
       ItemStack item, boolean checkCompass, boolean checkItem, boolean reduceItem) {
     super();
@@ -33,61 +32,39 @@ public class CubeData {
     this.checkItem = checkItem;
     this.reduceItem = reduceItem;
   }
-  
+
   public static CubeData load(String name) {
-    File file = new File(PATH+"/"+name+".yml");
+    File file = new File(PATH + "/" + name + ".yml");
     return load(file);
   }
-  
+
   public static CubeData load(File file) {
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
-    BlockArrayData up,mid,down;
-    up = new BlockArrayData(data.getString("up.north"),
-        data.getString("up.north-west"),
-        data.getString("up.west"), 
-        data.getString("up.south-west"), 
-        data.getString("up.south"), 
-        data.getString("up.south-east"), 
-        data.getString("up.east"), 
-        data.getString("up.north-east"), 
-        data.getString("up.main"));
-    mid = new BlockArrayData(data.getString("mid.north"),
-        data.getString("mid.north-west"),
-        data.getString("mid.west"), 
-        data.getString("mid.south-west"), 
-        data.getString("mid.south"), 
-        data.getString("mid.south-east"), 
-        data.getString("mid.east"), 
-        data.getString("mid.north-east"), 
-        data.getString("mid.main"));
-    down = new BlockArrayData(data.getString("down.north"),
-        data.getString("down.north-west"),
-        data.getString("down.west"), 
-        data.getString("down.south-west"), 
-        data.getString("down.south"), 
-        data.getString("down.south-east"), 
-        data.getString("down.east"), 
-        data.getString("down.north-east"), 
+    BlockArrayData up, mid, down;
+    up = new BlockArrayData(data.getString("up.north"), data.getString("up.north-west"), data.getString("up.west"),
+        data.getString("up.south-west"), data.getString("up.south"), data.getString("up.south-east"),
+        data.getString("up.east"), data.getString("up.north-east"), data.getString("up.main"));
+    mid = new BlockArrayData(data.getString("mid.north"), data.getString("mid.north-west"), data.getString("mid.west"),
+        data.getString("mid.south-west"), data.getString("mid.south"), data.getString("mid.south-east"),
+        data.getString("mid.east"), data.getString("mid.north-east"), data.getString("mid.main"));
+    down = new BlockArrayData(data.getString("down.north"), data.getString("down.north-west"),
+        data.getString("down.west"), data.getString("down.south-west"), data.getString("down.south"),
+        data.getString("down.south-east"), data.getString("down.east"), data.getString("down.north-east"),
         data.getString("down.main"));
-    return new CubeData(up, mid, down, 
-        data.getString("name"), 
-        data.getString("command"), 
-        data.getItemStack("item"), 
-        data.getBoolean("check-compass"), 
-        data.getBoolean("check-item"), 
-        data.getBoolean("reduce-item"));
+    return new CubeData(up, mid, down, data.getString("name"), data.getString("command"), data.getItemStack("item"),
+        data.getBoolean("check-compass"), data.getBoolean("check-item"), data.getBoolean("reduce-item"));
   }
-  
+
   public void save() {
-    File file = new File(PATH+"/"+name+".yml");
+    File file = new File(PATH + "/" + name + ".yml");
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
     data.set("name", name);
     data.set("command", command);
     data.set("item", item);
-    data.set("check-item",checkItem);
+    data.set("check-item", checkItem);
     data.set("reduce-item", reduceItem);
     data.set("check-compass", checkCompass);
-    
+
     data.set("up.north", up.getNorth());
     data.set("up.north-west", up.getNorthWest());
     data.set("up.west", up.getWest());
@@ -97,7 +74,7 @@ public class CubeData {
     data.set("up.east", up.getEast());
     data.set("up.north-east", up.getNorthEast());
     data.set("up.main", up.getMain());
-    
+
     data.set("mid.north", mid.getNorth());
     data.set("mid.north-west", mid.getNorthWest());
     data.set("mid.west", mid.getWest());
@@ -107,7 +84,7 @@ public class CubeData {
     data.set("mid.east", mid.getEast());
     data.set("mid.north-east", mid.getNorthEast());
     data.set("mid.main", mid.getMain());
-    
+
     data.set("down.north", down.getNorth());
     data.set("down.north-west", down.getNorthWest());
     data.set("down.west", down.getWest());
@@ -117,14 +94,14 @@ public class CubeData {
     data.set("down.east", down.getEast());
     data.set("down.north-east", down.getNorthEast());
     data.set("down.main", down.getMain());
-    
+
     try {
       data.save(file);
     } catch (IOException e) {
-      
+
     }
   }
-  
+
   public static File getPath() {
     return new File(PATH);
   }
@@ -200,5 +177,5 @@ public class CubeData {
   public void setItem(ItemStack item) {
     this.item = item;
   }
-  
+
 }

@@ -72,8 +72,7 @@ public abstract class RSEffect {
    * @return
    */
   public String getConfigPath() {
-    return MCPT.plugin.getDataFolder() 
-        + File.separator + "effect" + File.separator + pluginName + ".yml";
+    return MCPT.plugin.getDataFolder() + File.separator + "effect" + File.separator + pluginName + ".yml";
   }
 
   /**

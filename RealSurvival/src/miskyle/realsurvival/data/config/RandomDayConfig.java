@@ -44,7 +44,7 @@ public class RandomDayConfig {
       for (Season season : Season.values()) {
         String key = world + "." + season.name();
         if (!config.contains(key + ".duration")) {
-          continue;          
+          continue;
         }
         worldData.getSeasonDuration().put(season, config.getInt(key + ".duration"));
         worldData.getHumidity().put(season, getRSEntryFromString(config.getString(key + ".humidity")));

@@ -2,7 +2,7 @@ package miskyle.realsurvival;
 
 import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
-import miskyle.realsurvival.api.RealSurvivalAPI;
+import miskyle.realsurvival.api.RealSurvivalApi;
 import miskyle.realsurvival.api.player.PlayerData;
 import miskyle.realsurvival.command.CommandManager;
 import miskyle.realsurvival.data.ConfigManager;
@@ -11,12 +11,11 @@ import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.randomday.RandomDayManager;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class RealSurvival extends JavaPlugin implements RealSurvivalAPI {
+public class RealSurvival extends JavaPlugin implements RealSurvivalApi {
   @Override
   public void onEnable() {
     MCPT.plugin = this;
@@ -52,31 +51,31 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI {
    */
   private void prepare() {
     if (!getDataFolder().exists()) {
-      getDataFolder().mkdir();      
+      getDataFolder().mkdir();
     }
     if (!new File(getDataFolder() + "/effect/").exists()) {
-      new File(getDataFolder() + "/effect/").mkdir();      
+      new File(getDataFolder() + "/effect/").mkdir();
     }
     if (!new File(getDataFolder() + "/nbtitem/").exists()) {
-      new File(getDataFolder() + "/nbtitem/").mkdir();      
+      new File(getDataFolder() + "/nbtitem/").mkdir();
     }
     if (!new File(getDataFolder() + "/item/water").exists()) {
-      new File(getDataFolder() + "/item/water").mkdirs();      
+      new File(getDataFolder() + "/item/water").mkdirs();
     }
     if (!new File(getDataFolder() + "/playerdata/").exists()) {
-      new File(getDataFolder() + "/playerdata/").mkdir();      
+      new File(getDataFolder() + "/playerdata/").mkdir();
     }
     if (!new File(getDataFolder() + "/CubeData/").exists()) {
-      new File(getDataFolder() + "/CubeData/").mkdir();      
+      new File(getDataFolder() + "/CubeData/").mkdir();
     }
     if (!new File(getDataFolder() + "/recipe/crafttable/").exists()) {
-      new File(getDataFolder() + "/recipe/crafttable/").mkdirs();      
+      new File(getDataFolder() + "/recipe/crafttable/").mkdirs();
     }
     if (!new File(getDataFolder() + "/recipe/furnace/").exists()) {
-      new File(getDataFolder() + "/recipe/furnace/").mkdirs();      
+      new File(getDataFolder() + "/recipe/furnace/").mkdirs();
     }
     if (!new File(getDataFolder() + "/config.yml").exists()) {
-      saveDefaultConfig();      
+      saveDefaultConfig();
     }
     try {
       reloadConfig();
@@ -87,6 +86,7 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalAPI {
 
   /**
    * 获取NMS的版本信息.
+   * 
    * @return
    */
   public static String getVersion() {

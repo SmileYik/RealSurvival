@@ -60,7 +60,8 @@ public class EnergyListener implements Listener {
     /*
      * TODO 1.8.8 无双持
      */
-    ItemStack item = ConfigManager.getBukkitVersion()>8?e.getPlayer().getInventory().getItemInMainHand():e.getPlayer().getItemInHand();
+    ItemStack item = ConfigManager.getBukkitVersion() > 8 ? e.getPlayer().getInventory().getItemInMainHand()
+        : e.getPlayer().getItemInHand();
     EnergyBreakBlockData data = new EnergyBreakBlockData(e.getBlock().getType().name(),
         ConfigManager.getEnergyConfig().getToolList().contains(item.getType().name()) ? item.getType().name() : "AIR");
     Double value = ConfigManager.getEnergyConfig().getActionDecrease().get(data);

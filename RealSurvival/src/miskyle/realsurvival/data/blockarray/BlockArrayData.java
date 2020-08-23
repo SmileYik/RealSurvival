@@ -1,7 +1,7 @@
 package miskyle.realsurvival.data.blockarray;
 
 public class BlockArrayData {
-  private String north,northWest,west,southWest,south,southEast,east,northEast,main;
+  private String north, northWest, west, southWest, south, southEast, east, northEast, main;
 
   public BlockArrayData(String north, String northWest, String west, String southWest, String south, String southEast,
       String east, String northEast, String main) {
@@ -87,5 +87,5 @@ public class BlockArrayData {
   public void setMain(String main) {
     this.main = main;
   }
-  
+
 }

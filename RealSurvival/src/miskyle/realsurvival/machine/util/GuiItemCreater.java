@@ -10,12 +10,12 @@ import miskyle.realsurvival.data.ConfigManager;
 
 public class GuiItemCreater {
   @SuppressWarnings("deprecation")
-  public static ItemStack getItem(Material type,String oldType,short damage,String name,List<String> lore) {
+  public static ItemStack getItem(String type, String oldType, short damage, String name, List<String> lore) {
     ItemStack item;
-    if(ConfigManager.getBukkitVersion()>=13) {
-      item = new ItemStack(type);
-    }else {
-      item = new ItemStack(Material.valueOf(oldType),1,damage);
+    if (ConfigManager.getBukkitVersion() >= 13) {
+      item = new ItemStack(Material.valueOf(type));
+    } else {
+      item = new ItemStack(Material.valueOf(oldType), 1, damage);
     }
     ItemMeta im = item.getItemMeta();
     im.setDisplayName(name);
@@ -23,9 +23,9 @@ public class GuiItemCreater {
     item.setItemMeta(im);
     return item.clone();
   }
-  
-  public static ItemStack getItem(Material type,String oldType,short damage,String name) {
-    return getItem(type, oldType, damage, name,null);
+
+  public static ItemStack getItem(String type, String oldType, short damage, String name) {
+    return getItem(type, oldType, damage, name, null);
   }
-  
+
 }

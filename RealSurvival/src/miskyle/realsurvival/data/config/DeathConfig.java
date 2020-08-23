@@ -7,9 +7,9 @@ public class DeathConfig {
   private double thirst;
   private double energy;
   private double hunger;
-  
+
   public DeathConfig() {
-    
+
   }
 
   public DeathConfig(boolean enable, boolean removeDisease, double sleep, double thirst, double energy, double hunger) {
@@ -69,6 +69,5 @@ public class DeathConfig {
   public void setHunger(double hunger) {
     this.hunger = hunger;
   }
-  
-  
+
 }
