@@ -19,24 +19,31 @@ import miskyle.realsurvival.machine.MachineTimer;
 import miskyle.realsurvival.machine.util.GuiItemCreater;
 
 public class CraftTable {
-  public static final List<Integer> materials = Arrays.asList(10, 11, 12, 13, 19, 20, 21, 22, 28, 29, 30, 31, 37, 38,
-      39, 40);
+  public static final List<Integer> materials = 
+      Arrays.asList(10, 11, 12, 13, 19, 20, 21, 22, 28, 29, 30, 31, 37, 38, 39, 40);
   public static final List<Integer> products = Arrays.asList(24, 25, 33, 34);
 
-//  public static Inventory createRecipeViewerGUI(WorkbenchRecipe recipe){
-//      if(recipe==null)return null;
-//      Inventory inv=Bukkit.createInventory(null, 54,I18N.tr("recipe1"));
-//      for(int i=0;i<54;i++)
-//          if(!(materials.contains(i)||products.contains(i)))
-//              inv.setItem(i, Items.createPItem((short)15, " "));
-//      ItemStack item =  Items.createPItem((short) 14, I18n.tr("recipe6"));
-//      ItemMeta im = item.getItemMeta();
-//      im.setLore(Arrays.asList(I18n.tr("recipe5",Util.RDP(recipe.getNeedTime(), 2))));
-//      item.setItemMeta(im);
-//      inv.setItem(49,item.clone());
-//      return recipe.setInv(inv);
-//  }
+  //  public static Inventory createRecipeViewerGUI(WorkbenchRecipe recipe){
+  //      if(recipe==null)return null;
+  //      Inventory inv=Bukkit.createInventory(null, 54,I18N.tr("recipe1"));
+  //      for(int i=0;i<54;i++)
+  //          if(!(materials.contains(i)||products.contains(i)))
+  //              inv.setItem(i, Items.createPItem((short)15, " "));
+  //      ItemStack item =  Items.createPItem((short) 14, I18n.tr("recipe6"));
+  //      ItemMeta im = item.getItemMeta();
+  //      im.setLore(Arrays.asList(I18n.tr("recipe5",Util.RDP(recipe.getNeedTime(), 2))));
+  //      item.setItemMeta(im);
+  //      inv.setItem(49,item.clone());
+  //      return recipe.setInv(inv);
+  //  }
 
+  /**
+   * 打开一个基础的工作台界面.
+   * @param p 需要打开工作台界面的玩家
+   * @param loc 工作台所在位置
+   * @param matchineName 工作台名字
+   * @param title 界面标题
+   */
   public static void openDefaultGUI(Player p, Location loc, String matchineName, String title) {
     Inventory inv;
     CraftTableHolder holder = new CraftTableHolder(loc, matchineName, MachineStatus.NOTHING);
@@ -44,7 +51,8 @@ public class CraftTable {
     holder.setInv(inv);
     for (int i = 0; i < 54; i++) {
       if (!(materials.contains(i) || products.contains(i))) {
-        inv.setItem(i, GuiItemCreater.getItem("BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE", (short) 15, " "));
+        inv.setItem(i, GuiItemCreater.getItem(
+            "BLACK_STAINED_GLASS_PANE", "STAINED_GLASS_PANE", (short) 15, " "));
       }
     }
 
@@ -54,7 +62,12 @@ public class CraftTable {
         p.sendMessage(Msg.getPrefix() + I18N.tr("machine.open-gui.error-1"));
         return;
       }
-      CraftTableTimer timer = (CraftTableTimer) MachineManager.getTImer(loc);
+      //TODO 防盗模块
+      //      if (!mt.getPlayerName().equalsIgnoreCase(p.getName())) {
+      //        p.sendMessage(Msg.getPrefix() + I18N.tr("machine.open-gui.not-yours"));
+      //        return;
+      //      }
+      CraftTableTimer timer = (CraftTableTimer) mt;
       CraftTableRecipe recipe = timer.getRecipe();
       int index = 0;
       for (char c : recipe.getMaterialShape().toCharArray()) {

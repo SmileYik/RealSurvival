@@ -26,6 +26,8 @@ import miskyle.realsurvival.util.RSEntry;
 public class MachineManager {
 
   private static ConcurrentHashMap<String, MachineTimer> timers;
+  private static ConcurrentHashMap<String, MachineAccess> accesses;
+  
   private static HashMap<String, CubeData> cubes;
   private static HashMap<String, ArrayList<CubeData>> cubesMainBlockCube;
   private static HashMap<String, String> cubeMachine;
@@ -38,12 +40,16 @@ public class MachineManager {
   private static HashMap<String, ArrayList<Recipe>> furnaceRecipes;
   private static HashMap<String, Recipe> furnaceRecipesMap;
 
+  /**
+   * 初始化机器管理器.
+   */
   public static void init() {
     loadCubes();
     loadMachineData();
     loadCraftTableRecipe();
     loadFurnaceRecipes();
     loadTimers();
+    loadMachineAccesses();
   }
 
   private static void loadCubes() {
@@ -131,7 +137,8 @@ public class MachineManager {
       }
       cubeMachine.put(temp[1], temp[0]);
       machineCube.put(temp[0], temp[1]);
-      machineData.put(temp[0], new RSEntry<RecipeType, String>(RecipeType.valueOf(temp[2]), temp[3]));
+      machineData.put(temp[0], 
+          new RSEntry<RecipeType, String>(RecipeType.valueOf(temp[2]), temp[3]));
     });
   }
 
@@ -163,6 +170,10 @@ public class MachineManager {
     return timers.get(key);
   }
 
+  /**
+   * 加入机器计时器.
+   * @param timer 机器计时器
+   */
   public static void addTimer(MachineTimer timer) {
     if (!timers.containsKey(getTimerKey(timer))) {
       timers.put(getTimerKey(timer), timer);
@@ -230,7 +241,32 @@ public class MachineManager {
   public static ArrayList<CubeData> getCubesByMainBlock(Block b) {
     return cubesMainBlockCube.getOrDefault(BlockArrayCreator.getBlockKey(b), new ArrayList<>());
   }
+  
+  /**
+   * 设定机器权限.
+   * @param loc 机器所在地址
+   * @param access 权限
+   */
+  public static void setMachineAccess(Location loc, MachineAccess access) {
+    String key = getTimerKey(loc);
+    if (accesses.containsKey(key)) {
+      accesses.replace(key, access);
+    } else {
+      accesses.put(key, access);
+    }
+  }
+  
+  public static MachineAccess getMachineAccess(Location loc) {
+    return accesses.get(getTimerKey(loc));
+  }
+  
+  public static void removeMachineAccess(Location loc) {
+    getMachineAccess(loc).toDefault();
+  }
 
+  /**
+   * 保存计时器.
+   */
   public static void saveTimers() {
     File file = new File(MCPT.plugin.getDataFolder(), "timer.yml");
     file.delete();
@@ -292,6 +328,37 @@ public class MachineManager {
         timers.put(k, temp);
       }
     });
+  }
+  
+  private static void loadMachineAccesses() {
+    accesses = new ConcurrentHashMap<>();
+    File file = new File(MCPT.plugin.getDataFolder(), "MachineAccess.yml");
+    YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+    config.getKeys(false).forEach(key -> {
+      accesses.put(key, new MachineAccess(
+          config.getString(key + ".owner", "null"), 
+          (short) config.getInt(key + ".mode"), 
+          config.getStringList(key + ".players")));
+    });
+  }
+  
+  /**
+   * 保存机器权限.
+   */
+  public static void saveMachineAccesses() {
+    File file = new File(MCPT.plugin.getDataFolder(), "MachineAccess.yml");
+    file.delete();
+    YamlConfiguration config = YamlConfiguration.loadConfiguration(file);
+    accesses.forEach(accesses.mappingCount(), (k, v) -> {
+      config.set(k + ".owner", v.getOwner());
+      config.set(k + ".mode", v.getMode());
+      config.set(k + ".players", v.getPlayers());
+    });
+    try {
+      config.save(file);
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
   }
 
 }

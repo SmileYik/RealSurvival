@@ -35,6 +35,10 @@ public class BlockArrayCreator {
 
   }
 
+  /**
+   * 创建多方块结构机器.
+   * @param player 玩家
+   */
   public static void creat(Player player) {
     BlockArrayCreator creator = creators.get(player.getName());
     if (creator == null) {
@@ -81,11 +85,16 @@ public class BlockArrayCreator {
         getBlockKey(block));
   }
 
+  /**
+   * 选择多方块结构的中心方块.
+   * @param p 玩家
+   */
   public static void chooesBlock(Player p) {
     if (!creators.containsKey(p.getName())) {
       p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.error.no-creator"));
     }
-    MCPT.plugin.getServer().getPluginManager().registerEvents(new BlockArrayCreatorListener(p.getName()), MCPT.plugin);
+    MCPT.plugin.getServer().getPluginManager()
+          .registerEvents(new BlockArrayCreatorListener(p.getName()), MCPT.plugin);
     p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.info.choose-block-start"));
   }
 
@@ -93,21 +102,25 @@ public class BlockArrayCreator {
     creators.get(playerName).mainBlockLoc = mainBlockLoc;
   }
 
-//  public static boolean setItem(Player player) {
-//    if(!creators.containsKey(player.getName())) return false;
-//    BlockArrayCreator creator = creators.get(player.getName());
-//    creator.item = player.getInventory().getItemInMainHand().clone();
-//    creator.checkItem = true;
-//    return true;
-//  }
-
+  /**
+   * 设置是否消耗物品(暂时无用).
+   * @param playerName 玩家名
+   * @param bool 消耗
+   * @return
+   */
   public static boolean setReduceItem(String playerName, boolean bool) {
-    if (!creators.containsKey(playerName))
-      return false;
+    if (!creators.containsKey(playerName)) {
+      return false;      
+    }
     creators.get(playerName).reduceItem = bool;
     return true;
   }
 
+  /**
+   * 是否检查多方块结构方位.
+   * @param p 玩家名
+   * @param bool 是否检查
+   */
   public static void setCheckCompass(Player p, boolean bool) {
     if (!creators.containsKey(p.getName())) {
       p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.error.no-creator"));
@@ -116,6 +129,11 @@ public class BlockArrayCreator {
     p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.info.check-compass", bool));
   }
 
+  /**
+   * 设置多方块结构名.
+   * @param p 玩家名
+   * @param name 多方块名
+   */
   public static void setName(Player p, String name) {
     if (!creators.containsKey(p.getName())) {
       p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.error.no-creator"));
@@ -125,9 +143,9 @@ public class BlockArrayCreator {
   }
 
   /**
-   * 开始多方块结构编辑
+   * 开始多方块结构编辑.
    * 
-   * @param p
+   * @param p 玩家
    */
   public static void start(Player p) {
     if (creators.containsKey(p.getName())) {
@@ -139,7 +157,7 @@ public class BlockArrayCreator {
   }
 
   /**
-   * 开始多方块结构编辑模式
+   * 开始多方块结构编辑模式.
    * 
    * @param p    玩家
    * @param name 多方块结构名
@@ -154,24 +172,35 @@ public class BlockArrayCreator {
   }
 
   /**
-   * 退出多方块结构编辑模式
+   * 退出多方块结构编辑模式.
    * 
-   * @param playerName
+   * @param p 玩家
    */
   public static void cancel(Player p) {
     creators.remove(p.getName());
     p.sendMessage(Msg.getPrefix() + I18N.tr("cube-array.create.info.cancel"));
   }
 
+  /**
+   * 移除物品.
+   * @param playerName 玩家名
+   * @return
+   */
   public static boolean removeItem(String playerName) {
-    if (!creators.containsKey(playerName))
-      return false;
+    if (!creators.containsKey(playerName)) {
+      return false;      
+    }
     BlockArrayCreator creator = creators.get(playerName);
     creator.item = null;
     creator.checkItem = false;
     return true;
   }
 
+  /**
+   * 返回方块对应key.
+   * @param block 目的方块
+   * @return 相对应Minecraft版本所对应方块key
+   */
   @SuppressWarnings("deprecation")
   public static String getBlockKey(Block block) {
     if (block.isEmpty()) {

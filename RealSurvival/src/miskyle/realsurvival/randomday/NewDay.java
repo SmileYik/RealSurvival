@@ -26,14 +26,22 @@ public class NewDay {
     newDay.setWorldName(worldName);
     newDay.setDay(day);
     newDay.setSeason(worldData.getSeason(day));
-    newDay.setHumidity(getRandomNumber(worldData.getHumidity().get(newDay.getSeason())));
-    newDay.setWindSpeed(getRandomNumber(worldData.getWindSpeed().get(newDay.getSeason())));
-    newDay.setWindFrequency(getRandomNumber(worldData.getWindFrequency().get(newDay.getSeason())));
-    newDay.setRainFrequency(getRandomNumber(worldData.getRainFrequency().get(newDay.getSeason())));
-    newDay.setBaseTemperature(getRandomNumber(worldData.getBaseTemperature().get(newDay.getSeason())));
-    newDay.setDayTemperature(getRandomNumber(worldData.getDayTemperature().get(newDay.getSeason())));
-    newDay.setNightTemperature(getRandomNumber(worldData.getNightTemperature().get(newDay.getSeason())));
-    newDay.setRainTemperature(getRandomNumber(worldData.getRainTemperature().get(newDay.getSeason())));
+    newDay.setHumidity(getRandomNumber(
+        worldData.getHumidity().get(newDay.getSeason())));
+    newDay.setWindSpeed(getRandomNumber(
+        worldData.getWindSpeed().get(newDay.getSeason())));
+    newDay.setWindFrequency(getRandomNumber(
+        worldData.getWindFrequency().get(newDay.getSeason())));
+    newDay.setRainFrequency(getRandomNumber(
+        worldData.getRainFrequency().get(newDay.getSeason())));
+    newDay.setBaseTemperature(getRandomNumber(
+        worldData.getBaseTemperature().get(newDay.getSeason())));
+    newDay.setDayTemperature(getRandomNumber(
+        worldData.getDayTemperature().get(newDay.getSeason())));
+    newDay.setNightTemperature(getRandomNumber(
+        worldData.getNightTemperature().get(newDay.getSeason())));
+    newDay.setRainTemperature(getRandomNumber(
+        worldData.getRainTemperature().get(newDay.getSeason())));
     return newDay.init();
   }
 
@@ -138,7 +146,8 @@ public class NewDay {
   }
 
   private static double getRandomNumber(RSEntry<Double, Double> entry) {
-    return Math.abs(entry.getLeft() - entry.getRight()) * Math.random() + Math.min(entry.getRight(), entry.getLeft());
+    return Math.abs(entry.getLeft() - entry.getRight()) * Math.random() 
+        + Math.min(entry.getRight(), entry.getLeft());
   }
 
   protected double getAlpheTemperature() {

@@ -19,6 +19,7 @@ public class SaveConfigTask implements Runnable {
     }
     RandomDayManager.save();
     MachineManager.saveTimers();
+    MachineManager.saveMachineAccesses();
   }
 
 }

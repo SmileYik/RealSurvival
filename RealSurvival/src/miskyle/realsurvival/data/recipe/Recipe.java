@@ -2,7 +2,6 @@ package miskyle.realsurvival.data.recipe;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.bukkit.inventory.ItemStack;
 
 public class Recipe {
@@ -16,8 +15,18 @@ public class Recipe {
   private HashMap<Character, ItemStack> materials;
   private ArrayList<ItemStack> products;
 
-  public Recipe(String recipeName, String machineName, String materialShape, RecipeType type, int forgeTime,
-      HashMap<Character, ItemStack> materials, ArrayList<ItemStack> products) {
+  /**
+   * 创建配方.
+   * @param recipeName 配方名
+   * @param machineName 机器名
+   * @param materialShape 材料顺序
+   * @param type 配方类型
+   * @param forgeTime 制作时间
+   * @param materials 材料
+   * @param products 产物
+   */
+  public Recipe(String recipeName, String machineName, String materialShape, RecipeType type,
+      int forgeTime, HashMap<Character, ItemStack> materials, ArrayList<ItemStack> products) {
     this.recipeName = recipeName;
     this.machineName = machineName;
     this.materialShape = materialShape;

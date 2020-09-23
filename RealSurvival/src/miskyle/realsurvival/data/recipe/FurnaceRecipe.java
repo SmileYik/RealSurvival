@@ -1,16 +1,13 @@
 package miskyle.realsurvival.data.recipe;
 
+import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
+import miskyle.realsurvival.data.item.RSItem;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
-
-import com.github.miskyle.mcpt.MCPT;
-
-import miskyle.realsurvival.data.item.RSItem;
 
 public class FurnaceRecipe extends Recipe {
   private double maxTemperature;

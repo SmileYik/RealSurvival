@@ -14,7 +14,8 @@ public class MachineTimer {
   private int y;
   private int z;
 
-  public MachineTimer(String playerName, MachineType type, int time, String worldName, int x, int y, int z) {
+  public MachineTimer(String playerName, 
+      MachineType type, int time, String worldName, int x, int y, int z) {
     super();
     this.playerName = playerName;
     this.type = type;

@@ -38,6 +38,7 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalApi {
     }
     RandomDayManager.save();
     MachineManager.saveTimers();
+    MachineManager.saveMachineAccesses();
   }
 
   private void loadPlayer() {

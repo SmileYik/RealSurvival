@@ -23,6 +23,9 @@ public class RandomDayConfig {
 
   private HashMap<String, WorldData> worldDatas;
 
+  /**
+   * 初始化RandomDay配置信息.
+   */
   public RandomDayConfig() {
     rdc = this;
     configFile = new File(MCPT.plugin.getDataFolder() + "/randomday.yml");
@@ -47,24 +50,38 @@ public class RandomDayConfig {
           continue;
         }
         worldData.getSeasonDuration().put(season, config.getInt(key + ".duration"));
-        worldData.getHumidity().put(season, getRSEntryFromString(config.getString(key + ".humidity")));
-        worldData.getWindSpeed().put(season, getRSEntryFromString(config.getString(key + ".wind-speed")));
-        worldData.getWindFrequency().put(season, getRSEntryFromString(config.getString(key + ".wind-frequency")));
-        worldData.getRainFrequency().put(season, getRSEntryFromString(config.getString(key + ".rain-frequency")));
-        worldData.getBaseTemperature().put(season, getRSEntryFromString(config.getString(key + ".base-temperature")));
-        worldData.getDayTemperature().put(season, getRSEntryFromString(config.getString(key + ".day-temperature")));
-        worldData.getNightTemperature().put(season, getRSEntryFromString(config.getString(key + ".night-temperature")));
-        worldData.getRainTemperature().put(season, getRSEntryFromString(config.getString(key + ".rain-temperature")));
+        worldData.getHumidity().put(season, 
+            getRsEntryFromString(config.getString(key + ".humidity")));
+        worldData.getWindSpeed().put(season, 
+            getRsEntryFromString(config.getString(key + ".wind-speed")));
+        worldData.getWindFrequency().put(season, 
+            getRsEntryFromString(config.getString(key + ".wind-frequency")));
+        worldData.getRainFrequency().put(season, 
+            getRsEntryFromString(config.getString(key + ".rain-frequency")));
+        worldData.getBaseTemperature().put(season, 
+            getRsEntryFromString(config.getString(key + ".base-temperature")));
+        worldData.getDayTemperature().put(season, 
+            getRsEntryFromString(config.getString(key + ".day-temperature")));
+        worldData.getNightTemperature().put(season, 
+            getRsEntryFromString(config.getString(key + ".night-temperature")));
+        worldData.getRainTemperature().put(season, 
+            getRsEntryFromString(config.getString(key + ".rain-temperature")));
       }
       worldDatas.put(world, worldData);
     }
   }
 
+  /**
+   * 获取目的世界今天的数据.
+   * @param worldName 目的世界名
+   * @return
+   */
   public static NewDay getTodayConfig(String worldName) {
     NewDay day = new NewDay();
     String key = worldName + ".day.today";
-    if (!rdc.config.contains(key + ".day"))
-      return NewDay.newDay(worldName, getWorldData(worldName), 1);
+    if (!rdc.config.contains(key + ".day")) {
+      return NewDay.newDay(worldName, getWorldData(worldName), 1);      
+    }
     day.setWorldName(worldName);
     day.setDay(rdc.config.getInt(key + ".day"));
     day.setSeason(Season.valueOf(rdc.config.getString(key + ".season")));
@@ -79,11 +96,17 @@ public class RandomDayConfig {
     return day.init();
   }
 
+  /**
+   * 获取目的世界明天的数据.
+   * @param worldName 目的世界名.
+   * @return
+   */
   public static NewDay getTomorrowConfig(String worldName) {
     NewDay day = new NewDay();
     String key = worldName + ".day.tomorrow";
-    if (!rdc.config.contains(key + ".day"))
+    if (!rdc.config.contains(key + ".day")) {      
       return NewDay.newDay(worldName, getWorldData(worldName), 1);
+    }
     day.setWorldName(worldName);
     day.setDay(rdc.config.getInt(key + ".day"));
     day.setSeason(Season.valueOf(rdc.config.getString(key + ".season")));
@@ -98,6 +121,10 @@ public class RandomDayConfig {
     return day.init();
   }
 
+  /**
+   * 保存某个世界今天的信息.
+   * @param day 某个世界今天的数据
+   */
   public static void saveToday(NewDay day) {
     String key = day.getWorldName() + ".day.today";
     rdc.config.set(key + ".day", day.getDay());
@@ -111,7 +138,11 @@ public class RandomDayConfig {
     rdc.config.set(key + ".night-temperature", day.getNightTemperature());
     rdc.config.set(key + ".rain-temperature", day.getRainTemperature());
   }
-
+  
+  /**
+   * 保存某个世界明天的信息.
+   * @param day 某个世界明天的数据
+   */
   public static void saveTomorrow(NewDay day) {
     String key = day.getWorldName() + ".day.tomorrow";
     rdc.config.set(key + ".day", day.getDay());
@@ -126,6 +157,9 @@ public class RandomDayConfig {
     rdc.config.set(key + ".rain-temperature", day.getRainTemperature());
   }
 
+  /**
+   * 保存所有配置.
+   */
   public static void saveAllConfig() {
     try {
       rdc.config.save(rdc.configFile);
@@ -150,6 +184,10 @@ public class RandomDayConfig {
     return rdc.worldDatas;
   }
 
+  /**
+   * 第一次运行时的必要操作.
+   * @param file 配置文件路径
+   */
   public void firstRun(File file) {
     config = YamlConfiguration.loadConfiguration(file);
     config.set("setting.tick", 600);
@@ -166,6 +204,10 @@ public class RandomDayConfig {
     }
   }
 
+  /**
+   * 生成新的世界配置.
+   * @param world 世界名
+   */
   public static void makeNewWorldData(String world) {
     for (Season season : Season.values()) {
       String key = world + "." + season.name();
@@ -181,7 +223,12 @@ public class RandomDayConfig {
     }
   }
 
-  private RSEntry<Double, Double> getRSEntryFromString(String str) {
+  /**
+   * 从字符串中获取RSEntity数据.
+   * @param str 字符串
+   * @return
+   */
+  private RSEntry<Double, Double> getRsEntryFromString(String str) {
     String[] temp = str.split("/");
     return new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
   }

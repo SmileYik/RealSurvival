@@ -102,7 +102,19 @@ status.temperature.cold=§3冷
 status.disease.drug-duration={0}秒
 status.disease.recovery={0}%
 
+machine.access.not-yours=§c§l这个机器不是你的, 你无法设定此机器权限.
+machine.access.no-author=§c§l这本成书没有写上作者, 你需要用作者为自己名字的成书来建立此机器权限.
+machine.access.no-page=§c§l这本成书的页数不足, 无法用它来建立此机器权限.
+machine.access.error-format=§c§l这本成书格式有误, 无法用它来建立此机器权限. §b§l提示: 第一页第一行请书写§c§l[R.S.M.A.B.L.]§b§l或§c§l[R.S.M.A.W.L.]§b§l, 其他行请每行写一个玩家的名字.
+machine.access.mode.0=白名单模式, 可使用玩家: 
+machine.access.mode.1=黑名单模式, 不可使用玩家:
+machine.access.owner=主人: {0}
+machine.access.no-permission=§c这个工作台是属于§b§l{0}§c的, 你没有权限使用它.
+machine.access.success=§b§l对该机器权限设定成功!
+
+machine.open-too-fast=§b手速好快呀, 喝杯茶休息一下吧.
 machine.open-gui.error-1=§e§l请破坏该机器的主方块并稍等一会再尝试, 或使用另一台机器.
+machine.open-gui.not-yours=§e§l这个机器貌似不是你的...
 machine.rain-collector.title=§7雨水收集器
 machine.rain-collector.no-water=§e这里面已经没有水了.
 

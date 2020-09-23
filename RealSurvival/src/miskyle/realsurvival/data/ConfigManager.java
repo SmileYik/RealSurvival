@@ -28,7 +28,7 @@ import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.MachineTask;
 import miskyle.realsurvival.machine.crafttable.CraftTableListener;
 import miskyle.realsurvival.machine.furnace.FurnaceListener;
-import miskyle.realsurvival.machine.listener.ClickCubeListener;
+import miskyle.realsurvival.machine.listener.CubeListener;
 import miskyle.realsurvival.machine.raincollector.RainCollectorListener;
 import miskyle.realsurvival.papi.Papi;
 import miskyle.realsurvival.status.listener.EnergyListener;
@@ -104,7 +104,7 @@ public class ConfigManager {
     plugin.getServer().getPluginManager().registerEvents(new RainCollectorListener(), plugin);
     plugin.getServer().getPluginManager().registerEvents(new CraftTableListener(), plugin);
     plugin.getServer().getPluginManager().registerEvents(new FurnaceListener(), plugin);
-    plugin.getServer().getPluginManager().registerEvents(new ClickCubeListener(), plugin);
+    plugin.getServer().getPluginManager().registerEvents(new CubeListener(), plugin);
   }
 
   private void registerStatus() {
