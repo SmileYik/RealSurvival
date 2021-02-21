@@ -1,15 +1,15 @@
 package miskyle.realsurvival.data.blockarray;
 
+import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
 import java.io.IOException;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import com.github.miskyle.mcpt.MCPT;
-
 public class CubeData {
-  private BlockArrayData up, mid, down;
+  private BlockArrayData up;
+  private BlockArrayData mid;
+  private BlockArrayData down;
   private String name;
   private String command;
   private ItemStack item;
@@ -19,8 +19,21 @@ public class CubeData {
 
   public static String PATH = MCPT.plugin.getDataFolder() + "/CubeData";
 
-  public CubeData(BlockArrayData up, BlockArrayData mid, BlockArrayData down, String name, String command,
-      ItemStack item, boolean checkCompass, boolean checkItem, boolean reduceItem) {
+  /**
+   * 初始化个多方块结构.
+
+   * @param up 上层方块排列
+   * @param mid 中层方块排列
+   * @param down 下层方块排列
+   * @param name 多方块结构名
+   * @param command 附带的指令
+   * @param item 使用的物品
+   * @param checkCompass 判断方位
+   * @param checkItem 判断物品
+   * @param reduceItem 消耗物品
+   */
+  public CubeData(BlockArrayData up, BlockArrayData mid, BlockArrayData down, String name, 
+      String command, ItemStack item, boolean checkCompass, boolean checkItem, boolean reduceItem) {
     super();
     this.up = up;
     this.mid = mid;
@@ -38,23 +51,59 @@ public class CubeData {
     return load(file);
   }
 
+  /**
+   * 从文件中读取多方块结构.
+
+   * @param file 指定文件
+   * @return 若有效则返回相对应多方块结构, 反之则返回null
+   */
   public static CubeData load(File file) {
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
-    BlockArrayData up, mid, down;
-    up = new BlockArrayData(data.getString("up.north"), data.getString("up.north-west"), data.getString("up.west"),
-        data.getString("up.south-west"), data.getString("up.south"), data.getString("up.south-east"),
-        data.getString("up.east"), data.getString("up.north-east"), data.getString("up.main"));
-    mid = new BlockArrayData(data.getString("mid.north"), data.getString("mid.north-west"), data.getString("mid.west"),
-        data.getString("mid.south-west"), data.getString("mid.south"), data.getString("mid.south-east"),
-        data.getString("mid.east"), data.getString("mid.north-east"), data.getString("mid.main"));
-    down = new BlockArrayData(data.getString("down.north"), data.getString("down.north-west"),
-        data.getString("down.west"), data.getString("down.south-west"), data.getString("down.south"),
-        data.getString("down.south-east"), data.getString("down.east"), data.getString("down.north-east"),
+    BlockArrayData up;
+    BlockArrayData mid;
+    BlockArrayData down;
+    up = new BlockArrayData(
+        data.getString("up.north"),
+        data.getString("up.north-west"), 
+        data.getString("up.west"),
+        data.getString("up.south-west"), 
+        data.getString("up.south"), 
+        data.getString("up.south-east"),
+        data.getString("up.east"), 
+        data.getString("up.north-east"), 
+        data.getString("up.main"));
+    mid = new BlockArrayData(
+        data.getString("mid.north"),
+        data.getString("mid.north-west"), 
+        data.getString("mid.west"),
+        data.getString("mid.south-west"), 
+        data.getString("mid.south"), 
+        data.getString("mid.south-east"),
+        data.getString("mid.east"),
+        data.getString("mid.north-east"), 
+        data.getString("mid.main"));
+    down = new BlockArrayData(
+        data.getString("down.north"), 
+        data.getString("down.north-west"),
+        data.getString("down.west"), 
+        data.getString("down.south-west"), 
+        data.getString("down.south"),
+        data.getString("down.south-east"), 
+        data.getString("down.east"),
+        data.getString("down.north-east"),
         data.getString("down.main"));
-    return new CubeData(up, mid, down, data.getString("name"), data.getString("command"), data.getItemStack("item"),
-        data.getBoolean("check-compass"), data.getBoolean("check-item"), data.getBoolean("reduce-item"));
+    return new CubeData(up, mid, down, 
+        data.getString("name"), 
+        data.getString("command"), 
+        data.getItemStack("item"),
+        data.getBoolean("check-compass"), 
+        data.getBoolean("check-item"), 
+        data.getBoolean("reduce-item"));
   }
 
+  /**
+   * 保存多方块结构.
+   */
   public void save() {
     File file = new File(PATH + "/" + name + ".yml");
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
@@ -98,7 +147,7 @@ public class CubeData {
     try {
       data.save(file);
     } catch (IOException e) {
-
+      e.printStackTrace();
     }
   }
 

@@ -1,5 +1,7 @@
 log.info.enable-world=在{0}世界中启用RealSurvival
 log.info.mysql=启用MySQL: {0}
+log.severe.mysql.not-valid=mysql数据库连接失败!
+log.severe.mysql.create-table=创建表失败!
 
 log.warning.missing-world=服务器中不存在名叫{0}的世界!
 log.warning.enable-world-empty=RealSurvival未在任何世界中启用!
@@ -131,10 +133,16 @@ machine.furnace.progress=§b§l制作进度: §b{0}%
 machine.furnace.ok-slot=§a已经制作§a§l{0}§a个
 
 
-
-
-
-
+machine.recipe-album.no-title=§f无题
+machine.recipe-album.no-author=§f匿名
+machine.recipe-album.title=§2§l配方阅读器
+machine.recipe-album.recipe-info=配方名: {0}\n机器名: {1}\n制作时间: {2}
+machine.recipe-album.recipe-info-f=最高温度: {0}\n最低温度: {1}
+machine.recipe-album.recipe-info-tip=鼠标右键点击此处查看机器三视图.
+machine.recipe-album.cube-title=§b方块结构浏览
+machine.recipe-album.cube.tip-name=底层\n中层\n下层
+machine.recipe-album.cube.tip=上方为北方\n强制检测方向: {0}
+machine.recipe-album.error=§c打开结构图失败!
 
 
 

@@ -1,12 +1,10 @@
 package miskyle.realsurvival.util;
 
 import org.bukkit.entity.Player;
-
 import com.github.miskyle.mcpt.i18n.I18N;
 import com.github.miskyle.mcpt.nms.actionbar.NMSActionBar;
 import com.github.miskyle.mcpt.nms.title.NMSTitle;
 import com.github.miskyle.mcpt.nms.title.TitleAction;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.RealSurvival;
 
@@ -27,6 +25,12 @@ public class MsgUtil {
     sendMessage(p, Msg.tr(key));
   }
 
+  /**
+   * 向玩家发送一条消息.
+
+   * @param p 玩家.
+   * @param msg 消息.
+   */
   public static void sendMessage(Player p, String msg) {
     if (msg == null) {
       return;

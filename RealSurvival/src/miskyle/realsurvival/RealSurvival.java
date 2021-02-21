@@ -2,7 +2,9 @@ package miskyle.realsurvival;
 
 import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
+import java.util.logging.Logger;
 import miskyle.realsurvival.api.RealSurvivalApi;
+import miskyle.realsurvival.api.Season;
 import miskyle.realsurvival.api.player.PlayerData;
 import miskyle.realsurvival.command.CommandManager;
 import miskyle.realsurvival.data.ConfigManager;
@@ -16,9 +18,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class RealSurvival extends JavaPlugin implements RealSurvivalApi {
+  private static Logger logger;
+  
+  
   @Override
   public void onEnable() {
     MCPT.plugin = this;
+    logger = getLogger();
     prepare();
     PlayerManager.init();
     new ItemManager();
@@ -84,10 +90,14 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalApi {
       ;
     }
   }
+  
+  public static Logger logger() {
+    return logger;
+  }
 
   /**
    * 获取NMS的版本信息.
-   * 
+
    * @return
    */
   public static String getVersion() {
@@ -109,5 +119,11 @@ public class RealSurvival extends JavaPlugin implements RealSurvivalApi {
   @Override
   public boolean isPlayerActive(String playerName) {
     return PlayerManager.isActive(playerName);
+  }
+  
+  @Override
+  public Season getSeason(String worldName) {
+    Season season = RandomDayManager.getWorldSeason(worldName);
+    return season == null ? Season.UNKNOW : season;
   }
 }

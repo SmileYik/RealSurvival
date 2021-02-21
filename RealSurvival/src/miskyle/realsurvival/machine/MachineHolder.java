@@ -6,16 +6,24 @@ import org.bukkit.inventory.InventoryHolder;
 public class MachineHolder implements InventoryHolder {
   private Inventory inv;
   private String worldName;
-  private int x;
-  private int y;
-  private int z;
+  private int locX;
+  private int locY;
+  private int locZ;
 
+  /**
+   * 初始化.
+
+   * @param worldName 世界名
+   * @param x 坐标x
+   * @param y 坐标y
+   * @param z 坐标z
+   */
   public MachineHolder(String worldName, int x, int y, int z) {
     super();
     this.worldName = worldName;
-    this.x = x;
-    this.y = y;
-    this.z = z;
+    this.locX = x;
+    this.locY = y;
+    this.locZ = z;
   }
 
   public String getWorldName() {
@@ -27,27 +35,27 @@ public class MachineHolder implements InventoryHolder {
   }
 
   public int getX() {
-    return x;
+    return locX;
   }
 
   public void setX(int x) {
-    this.x = x;
+    this.locX = x;
   }
 
   public int getY() {
-    return y;
+    return locY;
   }
 
   public void setY(int y) {
-    this.y = y;
+    this.locY = y;
   }
 
   public int getZ() {
-    return z;
+    return locZ;
   }
 
   public void setZ(int z) {
-    this.z = z;
+    this.locZ = z;
   }
 
   public Inventory getInv() {

@@ -3,17 +3,16 @@ package miskyle.realsurvival.data.config.status;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import miskyle.realsurvival.data.effect.EffectData;
-import miskyle.realsurvival.data.item.RSItem;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.data.item.RsItem;
+import miskyle.realsurvival.util.RsEntry;
 
 public class ThirstConfig {
   private boolean enable;
   private double maxValue;
   private double decreaseValue;
 
-  private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> effectData;
+  private HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> effectData;
   private HashMap<String, String> biomeWater;
 
   public ThirstConfig() {
@@ -44,35 +43,55 @@ public class ThirstConfig {
     this.decreaseValue = decreaseValue;
   }
 
-  public HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
+  public HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
     return effectData;
   }
 
+  /**
+   * 设置效果数据. 
+
+   * @param effectData 效果数据
+   */
   public void setEffectData(HashMap<String, String> effectData) {
-    this.effectData = new HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>();
+    this.effectData = new HashMap<RsEntry<Double, Double>, ArrayList<EffectData>>();
     effectData.forEach((s1, s2) -> {
       String[] temp = s1.split("-");
       if (s2.equalsIgnoreCase("null")) {
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
+        this.effectData.put(
+            new RsEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
             new ArrayList<EffectData>());
       } else {
         String[] temp2 = s2.split(";");
         ArrayList<EffectData> list = new ArrayList<>();
-        for (String s : temp2)
-          list.add(EffectData.loadFromString(s));
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
-            list);
+        for (String s : temp2) {
+          list.add(EffectData.loadFromString(s));          
+        }
+        this.effectData.put(
+            new RsEntry<Double, Double>(
+                Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
       }
     });
   }
 
-  public RSItem getWater(String biome) {
-    if (biomeWater.containsKey(biome))
-      return RSItem.load("/water/" + biomeWater.get(biome));
-    else
-      return RSItem.load("/water/unknown");
+  /**
+   * 根据生物群系获取水.
+
+   * @param biome 生物群系.
+   * @return
+   */
+  public RsItem getWater(String biome) {
+    if (biomeWater.containsKey(biome)) {
+      return RsItem.load("/water/" + biomeWater.get(biome));      
+    } else {
+      return RsItem.load("/water/unknown");      
+    }
   }
 
+  /**
+   * 设置水的数据.
+
+   * @param oriList 水的数据.
+   */
   public void setWater(List<String> oriList) {
     oriList.forEach(s -> {
       String[] temp = s.split(":");

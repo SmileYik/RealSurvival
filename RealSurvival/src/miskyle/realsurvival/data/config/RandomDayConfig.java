@@ -1,19 +1,16 @@
 package miskyle.realsurvival.data.config;
 
+import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-
-import org.bukkit.block.Biome;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.api.Season;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.randomday.NewDay;
 import miskyle.realsurvival.randomday.WorldData;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
+import org.bukkit.block.Biome;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class RandomDayConfig {
   private static RandomDayConfig rdc;
@@ -73,6 +70,7 @@ public class RandomDayConfig {
 
   /**
    * 获取目的世界今天的数据.
+
    * @param worldName 目的世界名
    * @return
    */
@@ -98,6 +96,7 @@ public class RandomDayConfig {
 
   /**
    * 获取目的世界明天的数据.
+
    * @param worldName 目的世界名.
    * @return
    */
@@ -123,12 +122,13 @@ public class RandomDayConfig {
 
   /**
    * 保存某个世界今天的信息.
+
    * @param day 某个世界今天的数据
    */
   public static void saveToday(NewDay day) {
     String key = day.getWorldName() + ".day.today";
     rdc.config.set(key + ".day", day.getDay());
-    rdc.config.set(key + "..season", day.getSeason().name());
+    rdc.config.set(key + ".season", day.getSeason().name());
     rdc.config.set(key + ".humidity", day.getHumidity());
     rdc.config.set(key + ".wind-speed", day.getWindSpeed());
     rdc.config.set(key + ".wind-frequency", day.getWindFrequency());
@@ -141,6 +141,7 @@ public class RandomDayConfig {
   
   /**
    * 保存某个世界明天的信息.
+
    * @param day 某个世界明天的数据
    */
   public static void saveTomorrow(NewDay day) {
@@ -186,6 +187,7 @@ public class RandomDayConfig {
 
   /**
    * 第一次运行时的必要操作.
+
    * @param file 配置文件路径
    */
   public void firstRun(File file) {
@@ -206,6 +208,7 @@ public class RandomDayConfig {
 
   /**
    * 生成新的世界配置.
+
    * @param world 世界名
    */
   public static void makeNewWorldData(String world) {
@@ -225,11 +228,12 @@ public class RandomDayConfig {
 
   /**
    * 从字符串中获取RSEntity数据.
+
    * @param str 字符串
    * @return
    */
-  private RSEntry<Double, Double> getRsEntryFromString(String str) {
+  private RsEntry<Double, Double> getRsEntryFromString(String str) {
     String[] temp = str.split("/");
-    return new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
+    return new RsEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
   }
 }

@@ -8,6 +8,7 @@ public class MachinePermission {
   
   /**
    * 检查玩家是否有相应权限使用该配方.
+
    * @param p 玩家
    * @param recipe 要使用的配方
    * @return 如果有权限则返回true
@@ -18,6 +19,7 @@ public class MachinePermission {
   
   /**
    * 检查玩家是否有相应权限使用该配方.
+
    * @param p 玩家
    * @param machineName 配方对应的机器名
    * @param recipeName 配方名

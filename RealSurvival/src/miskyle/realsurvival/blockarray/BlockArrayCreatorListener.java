@@ -3,9 +3,7 @@ package miskyle.realsurvival.blockarray;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.github.miskyle.mcpt.i18n.I18N;
-
 import miskyle.realsurvival.Msg;
 
 public class BlockArrayCreatorListener implements Listener {
@@ -18,6 +16,7 @@ public class BlockArrayCreatorListener implements Listener {
   /**
    * 选择一个方块.
    * 仅当玩家处于创建多方块结构模式时生效.
+
    * @param event 玩家交互事件
    */
   @EventHandler

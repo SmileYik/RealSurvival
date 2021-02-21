@@ -1,7 +1,6 @@
 package miskyle.realsurvival.data.config.status;
 
 import java.util.ArrayList;
-
 import miskyle.realsurvival.data.effect.EffectData;
 
 public class WeightConfig {
@@ -33,12 +32,19 @@ public class WeightConfig {
     return effects;
   }
 
+  /**
+   * 设置effect.
+
+   * @param effectString 储存效果的String数据.
+   */
   public void setEffects(String effectString) {
     effects = new ArrayList<EffectData>();
-    if (effectString.equalsIgnoreCase("null"))
-      return;
-    for (String s : effectString.split(";"))
-      effects.add(EffectData.loadFromString(s));
+    if (effectString.equalsIgnoreCase("null")) {
+      return;      
+    }
+    for (String s : effectString.split(";")) {
+      effects.add(EffectData.loadFromString(s));      
+    }
   }
 
 }

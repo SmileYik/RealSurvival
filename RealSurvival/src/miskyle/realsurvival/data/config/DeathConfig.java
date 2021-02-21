@@ -14,6 +14,7 @@ public class DeathConfig {
 
   /**
    * 玩家死亡时的恢复属性配置信息.
+
    * @param enable 是否启用
    * @param removeDisease 是否移除疾病
    * @param sleep 恢复sleep为最大值的百分之几

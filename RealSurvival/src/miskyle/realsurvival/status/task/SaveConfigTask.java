@@ -1,9 +1,7 @@
 package miskyle.realsurvival.status.task;
 
 import org.bukkit.entity.Player;
-
 import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.randomday.RandomDayManager;

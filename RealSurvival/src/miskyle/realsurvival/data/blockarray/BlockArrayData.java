@@ -1,10 +1,31 @@
 package miskyle.realsurvival.data.blockarray;
 
 public class BlockArrayData {
-  private String north, northWest, west, southWest, south, southEast, east, northEast, main;
+  private String north;
+  private String northWest;
+  private String west;
+  private String southWest;
+  private String south;
+  private String southEast;
+  private String east;
+  private String northEast;
+  private String main;
 
-  public BlockArrayData(String north, String northWest, String west, String southWest, String south, String southEast,
-      String east, String northEast, String main) {
+  /**
+   * 初始化方块数列.
+
+   * @param north 北方方块
+   * @param northWest 西北
+   * @param west 西方
+   * @param southWest 西南
+   * @param south 南
+   * @param southEast 东南
+   * @param east 东方
+   * @param northEast 东北
+   * @param main 主方块(中心方块)
+   */
+  public BlockArrayData(String north, String northWest, String west, String southWest, 
+      String south, String southEast, String east, String northEast, String main) {
     this.north = north;
     this.northWest = northWest;
     this.west = west;

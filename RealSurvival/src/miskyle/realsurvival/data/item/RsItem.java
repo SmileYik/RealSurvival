@@ -5,36 +5,36 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.data.ItemManager;
 
-public class RSItem {
+public class RsItem {
   private ItemStack item;
 
-  public RSItem(ItemStack item) {
+  public RsItem(ItemStack item) {
     this.item = item;
     this.item.setAmount(1);
   }
 
-  public static RSItem load(String fileName) {
+  public static RsItem load(String fileName) {
     return load(new File(MCPT.plugin.getDataFolder() + "/item/" + fileName.toLowerCase() + ".yml"));
   }
 
-  private static RSItem load(File file) {
-    if (file == null || !file.exists())
-      return null;
+  private static RsItem load(File file) {
+    if (file == null || !file.exists()) {
+      return null;      
+    }
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
     ItemStack item = data.getItemStack("item", null);
-    if (item == null)
-      return null;
-    if (!item.hasItemMeta() || !item.getItemMeta().hasLore())
-      return new RSItem(item);
+    if (item == null) {
+      return null;      
+    }
+    if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      return new RsItem(item);      
+    }
     List<String> lore = new ArrayList<String>();
     item.getItemMeta().getLore().forEach(line -> {
       for (Map.Entry<String, String> entry : ItemManager.getLabels().entrySet()) {
@@ -48,18 +48,26 @@ public class RSItem {
     ItemMeta im = item.getItemMeta();
     im.setLore(lore);
     item.setItemMeta(im);
-    return new RSItem(item);
+    return new RsItem(item);
   }
 
+  /**
+   * 保存物品数据.
+
+   * @param fileName 文件名.
+   * @return
+   */
   public boolean save(String fileName) {
-    if (fileName == null || fileName.isEmpty())
-      return false;
+    if (fileName == null || fileName.isEmpty()) {
+      return false;      
+    }
     return save(new File(MCPT.plugin.getDataFolder() + "/item/" + fileName.toLowerCase() + ".yml"));
   }
 
   private boolean save(File file) {
-    if (file == null || file.exists())
-      return false;
+    if (file == null || file.exists()) {
+      return false;      
+    }
     file.getParentFile().mkdirs();
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
     data.set("item", getSaveItem());
@@ -72,9 +80,15 @@ public class RSItem {
     return true;
   }
 
+  /**
+   * 获取保存到文件中的物品数据.
+
+   * @return
+   */
   public ItemStack getSaveItem() {
-    if (!item.hasItemMeta() || !item.getItemMeta().hasLore())
-      return item;
+    if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
+      return item;      
+    }
     List<String> lore = new ArrayList<String>();
     item.getItemMeta().getLore().forEach(line -> {
       for (Map.Entry<String, String> entry : ItemManager.getLabels().entrySet()) {

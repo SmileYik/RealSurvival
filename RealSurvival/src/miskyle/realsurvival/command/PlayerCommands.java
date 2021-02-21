@@ -3,15 +3,22 @@ package miskyle.realsurvival.command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.HandlerList;
-
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.i18n.I18N;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.PlayerManager;
 
 public class PlayerCommands {
-  @Cmd(subCmd = { "status" }, args = { "" }, des = "cmd.des.player.status")
+  /**
+   * 查看自身属性.
+
+   * @param p 玩家
+   * @param args 参数
+   */
+  @Cmd(
+      subCmd = { "status" }, 
+      args = { "" }, 
+      des = "cmd.des.player.status")
   public void getStatus(Player p, String[] args) {
     if (PlayerManager.isActive(p.getName())) {
       p.sendMessage(PlayerManager.getPlayerData(p.getName()).getStatusMessage(p.isOp()));
@@ -20,7 +27,17 @@ public class PlayerCommands {
     }
   }
 
-  @Cmd(subCmd = { "freeze" }, args = { "" }, des = "cmd.des.player.freeze", permission = "RealSurvival.Player.Admin")
+  /**
+   * 冻结自身属性.
+
+   * @param p 玩家
+   * @param args 参数
+   */
+  @Cmd(
+      subCmd = { "freeze" }, 
+      args = { "" }, 
+      des = "cmd.des.player.freeze", 
+      permission = "RealSurvival.Player.Admin")
   public void freeze(Player p, String[] args) {
     if (PlayerManager.isActive(p.getName())) {
       PlayerManager.freezePlayer(p.getName());
@@ -35,9 +52,19 @@ public class PlayerCommands {
     PlayerManager.activePlayer(p);
   }
 
-  @Cmd(subCmd = { "reload" }, args = {
-      "" }, des = "cmd.des.reload", permission = "RealSurvival.Player.Admin", needPlayer = false)
-  public void reload(CommandSender p, String args[]) {
+  /**
+   * 重载插件.
+
+   * @param p 发送指令者
+   * @param args 参数
+   */
+  @Cmd(
+      subCmd = { "reload" }, 
+      args = { "" }, 
+      des = "cmd.des.reload", 
+      permission = "RealSurvival.Player.Admin", 
+      needPlayer = false)
+  public void reload(CommandSender p, String[] args) {
     HandlerList.unregisterAll(MCPT.plugin);
     MCPT.plugin.getServer().getScheduler().cancelTasks(MCPT.plugin);
     MCPT.plugin.getServer().getPluginManager().disablePlugin(MCPT.plugin);

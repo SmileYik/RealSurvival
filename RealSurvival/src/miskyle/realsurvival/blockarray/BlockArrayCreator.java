@@ -1,17 +1,14 @@
 package miskyle.realsurvival.blockarray;
 
 import java.util.HashMap;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.i18n.I18N;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.blockarray.BlockArrayData;
@@ -37,6 +34,7 @@ public class BlockArrayCreator {
 
   /**
    * 创建多方块结构机器.
+
    * @param player 玩家
    */
   public static void creat(Player player) {
@@ -87,6 +85,7 @@ public class BlockArrayCreator {
 
   /**
    * 选择多方块结构的中心方块.
+
    * @param p 玩家
    */
   public static void chooesBlock(Player p) {
@@ -104,6 +103,7 @@ public class BlockArrayCreator {
 
   /**
    * 设置是否消耗物品(暂时无用).
+
    * @param playerName 玩家名
    * @param bool 消耗
    * @return
@@ -118,6 +118,7 @@ public class BlockArrayCreator {
 
   /**
    * 是否检查多方块结构方位.
+
    * @param p 玩家名
    * @param bool 是否检查
    */
@@ -131,6 +132,7 @@ public class BlockArrayCreator {
 
   /**
    * 设置多方块结构名.
+
    * @param p 玩家名
    * @param name 多方块名
    */
@@ -144,7 +146,7 @@ public class BlockArrayCreator {
 
   /**
    * 开始多方块结构编辑.
-   * 
+
    * @param p 玩家
    */
   public static void start(Player p) {
@@ -158,7 +160,7 @@ public class BlockArrayCreator {
 
   /**
    * 开始多方块结构编辑模式.
-   * 
+
    * @param p    玩家
    * @param name 多方块结构名
    */
@@ -173,7 +175,7 @@ public class BlockArrayCreator {
 
   /**
    * 退出多方块结构编辑模式.
-   * 
+
    * @param p 玩家
    */
   public static void cancel(Player p) {
@@ -183,6 +185,7 @@ public class BlockArrayCreator {
 
   /**
    * 移除物品.
+
    * @param playerName 玩家名
    * @return
    */
@@ -198,6 +201,7 @@ public class BlockArrayCreator {
 
   /**
    * 返回方块对应key.
+
    * @param block 目的方块
    * @return 相对应Minecraft版本所对应方块key
    */

@@ -1,7 +1,7 @@
 package miskyle.realsurvival.data.playerdata;
 
 import miskyle.realsurvival.data.ConfigManager;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class PlayerDataWeight extends PlayerDataStatus {
 
@@ -11,7 +11,7 @@ public class PlayerDataWeight extends PlayerDataStatus {
 
   /**
    * 取最大属性值的比例.
-   * 
+
    * @param p 比例值, 范围0~100
    * @return
    */
@@ -21,12 +21,12 @@ public class PlayerDataWeight extends PlayerDataStatus {
 
   /**
    * 修改属性值,若为加则数值为正/若为减则数值为负.
-   * 
+
    * @param value 值
    * @return 属性的原始值(左)及新值(右)
    */
   @Override
-  public RSEntry<Double, Double> modify(double value) {
+  public RsEntry<Double, Double> modify(double value) {
     double oldValue = this.value;
     this.value += value;
     double max = getMaxValue();
@@ -35,15 +35,15 @@ public class PlayerDataWeight extends PlayerDataStatus {
     } else if (super.value > max) {
       super.value = max;      
     }
-    return new RSEntry<Double, Double>(oldValue, this.value);
+    return new RsEntry<Double, Double>(oldValue, this.value);
   }
 
-  public RSEntry<Double, Double> setValue(double value, double effect) {
+  public RsEntry<Double, Double> setValue(double value, double effect) {
     return super.setValue(value * (effect + 1));
   }
 
   @Override
-  public RSEntry<Double, Double> setValue(double value) {
+  public RsEntry<Double, Double> setValue(double value) {
     return super.setValue(value);
   }
 

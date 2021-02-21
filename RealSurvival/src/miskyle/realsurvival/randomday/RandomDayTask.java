@@ -4,9 +4,7 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
-
 import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.config.RandomDayConfig;
 
@@ -43,12 +41,20 @@ public class RandomDayTask implements Runnable {
     }
   }
 
+  /**
+   * 刮风.
+
+   * @param world 要刮风的世界.
+   * @param windSpeed 风速.
+   */
   public static void wind(String world, double windSpeed) {
     Vector v = new Vector(random(-1, 1), random(-0.5, 0.25), random(-1, 1));
     v = v.normalize().multiply(windSpeed);
     for (Player p : MCPT.plugin.getServer().getOnlinePlayers()) {
-      if (p.getWorld().getName().equalsIgnoreCase(world) && PlayerManager.isActive(p.getName())
-          && !PlayerManager.getPlayerData(p.getName()).getSleep().isSleep() && canBeWind(p.getLocation(), 0)) {
+      if (p.getWorld().getName().equalsIgnoreCase(world) 
+          && PlayerManager.isActive(p.getName())
+          && !PlayerManager.getPlayerData(p.getName()).getSleep().isSleep() 
+          && canBeWind(p.getLocation(), 0)) {
         p.setVelocity(p.getVelocity().add(v));
       }
     }
@@ -68,18 +74,25 @@ public class RandomDayTask implements Runnable {
     }
   }
 
+  /**
+   * 随机下雨.
+
+   * @param world 要下雨的世界.
+   * @param thunder 是否要打雷.
+   */
   public static void randomRain(World world, boolean thunder) {
     MCPT.plugin.getServer().getScheduler().runTask(MCPT.plugin, () -> {
       if (thunder) {
         double d = Math.random();
-        if (d < 0.25)
-          rainWithThunder1(world);
-        else if (d < 0.5)
-          rainWithThunder2(world);
-        else if (d < 0.75)
-          rainWithThunder3(world);
-        else
-          rainWithThunder4(world);
+        if (d < 0.25) {
+          rainWithThunder1(world);          
+        } else if (d < 0.5) {
+          rainWithThunder2(world);          
+        } else if (d < 0.75) {
+          rainWithThunder3(world);          
+        } else {
+          rainWithThunder4(world);          
+        }
       } else {
         int i = RandomDayConfig.getTick();
         world.setWeatherDuration((int) random(i / 2, i * 2));
@@ -88,6 +101,11 @@ public class RandomDayTask implements Runnable {
     });
   }
 
+  /**
+   * 先打雷后下雨.
+
+   * @param world 要下雨的世界.
+   */
   public static void rainWithThunder1(World world) {
     // 先打雷后下雨
     world.setThundering(true);
@@ -98,6 +116,11 @@ public class RandomDayTask implements Runnable {
     }, (int) random(65, 156));
   }
 
+  /**
+   * 同时打雷下雨.
+
+   * @param world 要下雨的世界.
+   */
   public static void rainWithThunder2(World world) {
     // 同时打雷下雨
     int i = RandomDayConfig.getTick();
@@ -107,6 +130,11 @@ public class RandomDayTask implements Runnable {
     world.setWeatherDuration(i);
   }
 
+  /**
+   * 先下雨后打雷.
+
+   * @param world 要下雨的世界.
+   */
   public static void rainWithThunder3(World world) {
     // 先下雨后打雷
     int i = RandomDayConfig.getTick();
@@ -117,6 +145,11 @@ public class RandomDayTask implements Runnable {
     }, (int) random(0, i / 2));
   }
 
+  /**
+   * 完全随机打雷下雨.
+
+   * @param world 要下雨的世界.
+   */
   public static void rainWithThunder4(World world) {
     // 完全随机
     int i = RandomDayConfig.getTick();

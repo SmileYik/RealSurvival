@@ -1,17 +1,21 @@
 package app.miskyle.realsurvival;
 
 import java.awt.EventQueue;
-
+import java.io.StringReader;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import org.bukkit.Material;
-
+import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemStack;
 import miskyle.realsurvival.data.ConfigManager;
 import javax.swing.JPanel;
 import javax.swing.JCheckBox;
 import javax.swing.JTextField;
+import javax.swing.JTree;
+import javax.swing.JScrollPane;
+import javax.swing.JButton;
 
 public class MinecraftItemModifier {
 
@@ -23,6 +27,10 @@ public class MinecraftItemModifier {
    * Launch the application.
    */
   public static void main(String[] args) {
+    ItemStack item = new ItemStack(Material.APPLE);
+    YamlConfiguration config = YamlConfiguration.loadConfiguration(new StringReader(""));
+    config.set("item", item);
+    System.out.println(config.toString());
     EventQueue.invokeLater(new Runnable() {
       public void run() {
         try {
@@ -59,7 +67,7 @@ public class MinecraftItemModifier {
     frmRealsurvivalMinecraft.getContentPane().add(item);
 
     JPanel statusPanel = new JPanel();
-    statusPanel.setBounds(14, 64, 519, 81);
+    statusPanel.setBounds(14, 64, 519, 111);
     frmRealsurvivalMinecraft.getContentPane().add(statusPanel);
     statusPanel.setLayout(null);
 
@@ -94,5 +102,16 @@ public class MinecraftItemModifier {
     JLabel lblNewLabel_1_1 = new JLabel("Min-Value: ");
     lblNewLabel_1_1.setBounds(255, 44, 88, 18);
     statusPanel.add(lblNewLabel_1_1);
+    
+    JButton btnSetStatus = new JButton("确定");
+    btnSetStatus.setBounds(205, 78, 93, 23);
+    statusPanel.add(btnSetStatus);
+    
+    JScrollPane scrollPane = new JScrollPane();
+    scrollPane.setBounds(14, 434, 525, 282);
+    frmRealsurvivalMinecraft.getContentPane().add(scrollPane);
+    
+    JTree tree = new JTree();
+    scrollPane.setViewportView(tree);
   }
 }

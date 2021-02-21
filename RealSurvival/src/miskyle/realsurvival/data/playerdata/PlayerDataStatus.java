@@ -1,8 +1,7 @@
 package miskyle.realsurvival.data.playerdata;
 
 import java.util.HashMap;
-
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class PlayerDataStatus {
   protected double value;
@@ -18,49 +17,51 @@ public class PlayerDataStatus {
   }
 
   /**
-   * 修改属性值,若为加则数值为正/若为减则数值为负
-   * 
-   * @param value
-   * @param effect
+   * 修改属性值,若为加则数值为正/若为减则数值为负.
+
+   * @param value 值
+   * @param effect 效果
    * @return 属性的原始值(左)及新值(右)
    */
-  public RSEntry<Double, Double> modify(double value, double effect) {
+  public RsEntry<Double, Double> modify(double value, double effect) {
     double oldValue = this.value;
     this.value += value;
-    if (value < 0)
-      value = 0;
-    return new RSEntry<Double, Double>(oldValue, this.value);
+    if (value < 0) {
+      value = 0;      
+    }
+    return new RsEntry<Double, Double>(oldValue, this.value);
   }
 
   /**
-   * 修改属性值,若为加则数值为正/若为减则数值为负
-   * 
-   * @param value
+   * 修改属性值,若为加则数值为正/若为减则数值为负.
+
+   * @param value 值
    * @return 属性的原始值(左)及新值(右)
    */
-  public RSEntry<Double, Double> modify(double value) {
+  public RsEntry<Double, Double> modify(double value) {
     double oldValue = this.value;
     this.value += value;
-    if (value < 0)
-      value = 0;
-    return new RSEntry<Double, Double>(oldValue, this.value);
+    if (value < 0) {
+      value = 0;      
+    }
+    return new RsEntry<Double, Double>(oldValue, this.value);
   }
 
   /**
-   * 设置属性值为指定值
-   * 
-   * @param value
+   * 设置属性值为指定值.
+
+   * @param value 值
    * @return 属性的原始值(左)及新值(右)
    */
-  public RSEntry<Double, Double> setValue(double value) {
+  public RsEntry<Double, Double> setValue(double value) {
     double oldValue = this.value;
     this.value = value;
-    return new RSEntry<Double, Double>(oldValue, this.value);
+    return new RsEntry<Double, Double>(oldValue, this.value);
   }
 
   /**
-   * 获取其他插件所增加的额外属性值总和
-   * 
+   * 获取其他插件所增加的额外属性值总和.
+
    * @return
    */
   public double getExtraValueSum() {
@@ -72,8 +73,8 @@ public class PlayerDataStatus {
   }
 
   /**
-   * 设定某个插件所增加的额外属性最大值
-   * 
+   * 设定某个插件所增加的额外属性最大值.
+
    * @param pluginName 插件名称
    * @param value      属性数值
    */
@@ -86,8 +87,8 @@ public class PlayerDataStatus {
   }
 
   /**
-   * 获取当前属性数值
-   * 
+   * 获取当前属性数值.
+
    * @return
    */
   public double getValue() {
@@ -95,8 +96,8 @@ public class PlayerDataStatus {
   }
 
   /**
-   * 获取插件所给予的额外属性值列表
-   * 
+   * 获取插件所给予的额外属性值列表.
+
    * @return
    */
   public HashMap<String, Double> getExtraMaxValue() {

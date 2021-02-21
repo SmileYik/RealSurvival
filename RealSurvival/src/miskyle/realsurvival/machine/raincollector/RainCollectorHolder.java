@@ -1,7 +1,6 @@
 package miskyle.realsurvival.machine.raincollector;
 
 import org.bukkit.Location;
-
 import miskyle.realsurvival.machine.MachineHolder;
 
 public class RainCollectorHolder extends MachineHolder {

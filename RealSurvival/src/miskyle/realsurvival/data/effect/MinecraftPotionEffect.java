@@ -3,10 +3,10 @@ package miskyle.realsurvival.data.effect;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import miskyle.realsurvival.api.effect.RsEffect;
+import miskyle.realsurvival.api.status.StatusType;
 
-import miskyle.realsurvival.api.effect.RSEffect;
-
-public class MinecraftPotionEffect extends RSEffect {
+public class MinecraftPotionEffect extends RsEffect {
   private PotionEffectType effectType;
 
   public MinecraftPotionEffect(PotionEffectType type) {
@@ -20,7 +20,7 @@ public class MinecraftPotionEffect extends RSEffect {
   }
 
   @Override
-  public void effect(Player player, int amplifier, int duration) {
+  public void effect(Player player, StatusType type, int amplifier, int duration) {
     player.addPotionEffect(new PotionEffect(effectType, amplifier, duration));
   }
 

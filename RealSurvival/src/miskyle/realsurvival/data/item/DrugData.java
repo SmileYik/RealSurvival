@@ -3,16 +3,14 @@ package miskyle.realsurvival.data.item;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import miskyle.realsurvival.data.effect.EffectData;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class DrugData {
   private HashMap<String, Double> getDisease;
-  private HashMap<String, RSEntry<Double, Double>> drug;
-  private HashMap<String, RSEntry<Integer, Integer>> duration;
+  private HashMap<String, RsEntry<Double, Double>> drug;
+  private HashMap<String, RsEntry<Integer, Integer>> duration;
   private List<String> wrongDisease;
   private ArrayList<EffectData> eatWrongDrug;
   private ArrayList<EffectData> noNeedDrug;
@@ -20,6 +18,12 @@ public class DrugData {
   public DrugData() {
   }
 
+  /**
+   * 获取药物数据.
+
+   * @param config 包含药物数据的文件.
+   * @return
+   */
   public static DrugData getDrugData(YamlConfiguration config) {
     DrugData drug = new DrugData();
     if (config.contains("disease")) {
@@ -31,15 +35,15 @@ public class DrugData {
       drug.setGetDisease(getDisease);
     }
     if (config.contains("enable-disease")) {
-      HashMap<String, RSEntry<Double, Double>> drugd = new HashMap<>();
-      HashMap<String, RSEntry<Integer, Integer>> duration = new HashMap<>();
+      HashMap<String, RsEntry<Double, Double>> drugd = new HashMap<>();
+      HashMap<String, RsEntry<Integer, Integer>> duration = new HashMap<>();
       List<String> wrongDisease = null;
       ArrayList<EffectData> eatWrongDrug = new ArrayList<EffectData>();
       ArrayList<EffectData> noNeedDrug = new ArrayList<EffectData>();
       config.getStringList("enable-disease").forEach(line -> {
         String[] temp = line.split(",");
-        drugd.put(temp[0], getRSEntryDouble(temp[1]));
-        duration.put(temp[0], getRSEntryInt(temp[2]));
+        drugd.put(temp[0], getRsEntryDouble(temp[1]));
+        duration.put(temp[0], getRsEntryInt(temp[2]));
       });
       if (drugd.isEmpty()) {
         return drug;
@@ -72,31 +76,43 @@ public class DrugData {
     this.getDisease = getDisease;
   }
 
-  public HashMap<String, RSEntry<Double, Double>> getDrug() {
+  public HashMap<String, RsEntry<Double, Double>> getDrug() {
     return drug;
   }
 
-  public void setDrug(HashMap<String, RSEntry<Double, Double>> drug) {
+  public void setDrug(HashMap<String, RsEntry<Double, Double>> drug) {
     this.drug = drug;
   }
 
-  public HashMap<String, RSEntry<Integer, Integer>> getDuration() {
+  public HashMap<String, RsEntry<Integer, Integer>> getDuration() {
     return duration;
   }
 
-  public void setDuration(HashMap<String, RSEntry<Integer, Integer>> duration) {
+  public void setDuration(HashMap<String, RsEntry<Integer, Integer>> duration) {
     this.duration = duration;
   }
 
-  public RSEntry<Double, Integer> getMedicien(String disease) {
+  /**
+   * 获取药.
+
+   * @param disease 病.
+   * @return
+   */
+  public RsEntry<Double, Integer> getMedicien(String disease) {
     if (isValidAtDisease(disease)) {
-      return new RSEntry<Double, Integer>(
+      return new RsEntry<Double, Integer>(
           randomDouble(drug.get(disease)), randomInt(duration.get(disease)));
     } else {
-      return new RSEntry<Double, Integer>(0D, 0);
+      return new RsEntry<Double, Integer>(0D, 0);
     }
   }
 
+  /**
+   * 是否对指定病有效.
+
+   * @param disease 病.
+   * @return
+   */
   public boolean isValidAtDisease(String disease) {
     if (drug == null || duration == null) {
       return false;
@@ -111,6 +127,12 @@ public class DrugData {
     return wrongDisease;
   }
 
+  /**
+   * 获取吃错药后的效果.
+
+   * @param disease 病.
+   * @return
+   */
   public ArrayList<EffectData> getWrongDiseaseEffect(String disease) {
     if (wrongDisease != null && wrongDisease.contains(disease)) {
       return eatWrongDrug;
@@ -141,7 +163,7 @@ public class DrugData {
 
   /**
    * 是否致病.
-   * 
+
    * @return 致病返回true
    */
   public boolean isMakeDisease() {
@@ -149,8 +171,8 @@ public class DrugData {
   }
 
   /**
-   * 是否能治病
-   * 
+   * 是否能治病.
+
    * @return 治病返回true
    */
   public boolean isValidDrug() {
@@ -159,7 +181,7 @@ public class DrugData {
 
   /**
    * 使用此药时对其他病是否有影响.
-   * 
+
    * @return 有影响返回true
    */
   public boolean hasProblemWithOtherDisease() {
@@ -171,28 +193,29 @@ public class DrugData {
 
   /**
    * 当没病吃药时是否有影响.
-   * 
+
    * @return 有影响返回true
    */
   public boolean hasProbleWhenFine() {
     return noNeedDrug != null && !noNeedDrug.isEmpty();
   }
 
-  private static RSEntry<Double, Double> getRSEntryDouble(String str) {
+  private static RsEntry<Double, Double> getRsEntryDouble(String str) {
     String[] temp = str.split("/");
-    return new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
+    return new RsEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
   }
 
-  private static RSEntry<Integer, Integer> getRSEntryInt(String str) {
+  private static RsEntry<Integer, Integer> getRsEntryInt(String str) {
     String[] temp = str.split("/");
-    return new RSEntry<Integer, Integer>(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+    return new RsEntry<Integer, Integer>(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
   }
 
-  private double randomDouble(RSEntry<Double, Double> entry) {
-    return Math.random() * Math.abs(entry.getLeft() - entry.getRight()) + Math.min(entry.getLeft(), entry.getRight());
+  private double randomDouble(RsEntry<Double, Double> entry) {
+    return Math.random() * Math.abs(entry.getLeft() 
+        - entry.getRight()) + Math.min(entry.getLeft(), entry.getRight());
   }
 
-  private int randomInt(RSEntry<Integer, Integer> entry) {
+  private int randomInt(RsEntry<Integer, Integer> entry) {
     return (int) (Math.random() * Math.abs(entry.getLeft() - entry.getRight())
         + Math.min(entry.getLeft(), entry.getRight()));
   }

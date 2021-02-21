@@ -1,7 +1,6 @@
 package miskyle.realsurvival.machine.furnace;
 
 import org.bukkit.Location;
-
 import miskyle.realsurvival.data.recipe.FurnaceRecipe;
 import miskyle.realsurvival.machine.MachineHolder;
 import miskyle.realsurvival.machine.MachineStatus;
@@ -13,18 +12,43 @@ public class FurnaceHolder extends MachineHolder {
   private FurnaceTimer timer;
   private FurnaceRecipe recipe;
 
-  public FurnaceHolder(String worldName, int x, int y, int z, String furnaceName, MachineStatus status) {
+  /**
+   * 初始化.
+
+   * @param worldName 世界名
+   * @param x 坐标x
+   * @param y 坐标y
+   * @param z 坐标z
+   * @param furnaceName 熔炉类工作台(机器)名称
+   * @param status 机器状态.
+   */
+  public FurnaceHolder(String worldName,
+      int x, int y, int z, String furnaceName, MachineStatus status) {
     super(worldName, x, y, z);
     this.furnaceName = furnaceName;
     this.status = status;
   }
 
+  /**
+   * 初始化.
+
+   * @param loc 位置
+   * @param craftTableName 熔炉类工作台(机器)名称
+   * @param status 机器状态
+   */
   public FurnaceHolder(Location loc, String craftTableName, MachineStatus status) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;
     this.status = status;
   }
 
+  /**
+   * 初始化.
+
+   * @param loc 位置 
+   * @param craftTableName 熔炉类工作台(机器)名称
+   * @param timer 对应的timer.
+   */
   public FurnaceHolder(Location loc, String craftTableName, FurnaceTimer timer) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;
@@ -32,6 +56,13 @@ public class FurnaceHolder extends MachineHolder {
     this.timer = timer;
   }
 
+  /**
+   * 初始化.
+
+   * @param loc 位置 
+   * @param craftTableName 熔炉类工作台(机器)名称
+   * @param recipe 配方
+   */
   public FurnaceHolder(Location loc, String craftTableName, FurnaceRecipe recipe) {
     super(loc.getWorld().getName(), loc.getBlockX(), loc.getBlockY(), loc.getBlockZ());
     this.furnaceName = craftTableName;

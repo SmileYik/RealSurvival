@@ -1,7 +1,7 @@
 package miskyle.realsurvival.randomday;
 
 import miskyle.realsurvival.api.Season;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class NewDay {
   private String worldName;
@@ -21,6 +21,14 @@ public class NewDay {
 
   }
 
+  /**
+   * 创建新的一天.
+
+   * @param worldName 世界名
+   * @param worldData 世界数据
+   * @param day 天数.
+   * @return
+   */
   public static NewDay newDay(String worldName, WorldData worldData, int day) {
     NewDay newDay = new NewDay();
     newDay.setWorldName(worldName);
@@ -45,6 +53,11 @@ public class NewDay {
     return newDay.init();
   }
 
+  /**
+   * 初始化.
+
+   * @return
+   */
   public NewDay init() {
     /*
      * 这里为什么是0.85*0.15呢? 这里采用的函数模型是 f(T) = Bsin(wT)+A 了解了一下,在Minecraft中温度低于0.15时下雪,
@@ -145,7 +158,7 @@ public class NewDay {
     this.rainTemperature = rainTemperature;
   }
 
-  private static double getRandomNumber(RSEntry<Double, Double> entry) {
+  private static double getRandomNumber(RsEntry<Double, Double> entry) {
     return Math.abs(entry.getLeft() - entry.getRight()) * Math.random() 
         + Math.min(entry.getRight(), entry.getLeft());
   }

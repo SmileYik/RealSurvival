@@ -6,7 +6,7 @@ import miskyle.realsurvival.machine.MachinePermission;
 import miskyle.realsurvival.machine.MachineStatus;
 import miskyle.realsurvival.machine.MachineType;
 import miskyle.realsurvival.machine.util.RecipeUtils;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +18,7 @@ public class FurnaceListener implements Listener {
   
   /**
    * 处理玩家对Furnace配方界面的点击.
+
    * @param e 仓库被点击事件
    */
   @EventHandler
@@ -69,7 +70,7 @@ public class FurnaceListener implements Listener {
         e.setCancelled(true);
         p.updateInventory();
         if (e.getRawSlot() == 49) {
-          RSEntry<String, Integer> recipe = 
+          RsEntry<String, Integer> recipe = 
               RecipeUtils.cheekRecipe(holder.getFurnaceName(), MachineType.FURNACE,
               e.getClickedInventory());
           //判断配方是否存在, 若存在则判断玩家是否拥有相应权限制造该配方.
@@ -99,6 +100,7 @@ public class FurnaceListener implements Listener {
 
   /**
    * 当玩家关闭仓库时调用此事件.
+
    * @param e 仓库被关闭事件.
    */
   @EventHandler

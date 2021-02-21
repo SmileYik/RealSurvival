@@ -21,7 +21,7 @@ public class Msg {
 
   /**
    * 初始化.
-   * 
+
    * @param plugin 插件
    */
   public Msg(RealSurvival plugin) {

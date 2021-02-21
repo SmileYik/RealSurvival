@@ -8,6 +8,7 @@ public class Disease {
 
   /**
    * 恢复一个疾病.
+
    * @param diseaseName 疾病名
    * @param recover 恢复程度
    * @param drug 药物效果
@@ -23,6 +24,7 @@ public class Disease {
 
   /**
    * 创建一个未治愈疾病.
+
    * @param diseaseName 疾病名
    */
   public Disease(String diseaseName) {
@@ -34,6 +36,7 @@ public class Disease {
 
   /**
    * 从带有信息的字符串中取读疾病信息.
+
    * @param str 带有信息的字符串.
    * @return
    */
@@ -63,7 +66,7 @@ public class Disease {
 
   /**
    * 直接替换治愈情况.
-   * 
+
    * @param recover 替换值
    * @return 痊愈返回true
    */
@@ -78,7 +81,7 @@ public class Disease {
 
   /**
    * 修改治愈情况.
-   * 
+
    * @param recover 治愈程度
    * @return 痊愈返回true
    */
@@ -92,6 +95,7 @@ public class Disease {
 
   /**
    * 让疾病恢复.
+
    * @return 疾病痊愈返回true
    */
   public boolean recover() {

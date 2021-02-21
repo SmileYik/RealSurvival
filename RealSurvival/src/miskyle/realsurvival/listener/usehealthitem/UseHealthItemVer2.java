@@ -1,18 +1,20 @@
 package miskyle.realsurvival.listener.usehealthitem;
 
 import org.bukkit.entity.Player;
-
-import miskyle.realsurvival.data.item.RSItemData;
+import miskyle.realsurvival.data.item.RsItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 
 /**
  * 适配1.7.10-1.8.8
- * 
+
  * @author MiSkYle
  * @version 2.0.0
  */
 public class UseHealthItemVer2 implements UseHealthItem {
-  public void useHealthItem(Player p, PlayerData pd, RSItemData itemData) {
+  /**
+   * 使用恢复生命物品.
+   */
+  public void useHealthItem(Player p, PlayerData pd, RsItemData itemData) {
     double v;
     double max = p.getMaxHealth();
     if (itemData.isMaxHealth()) {

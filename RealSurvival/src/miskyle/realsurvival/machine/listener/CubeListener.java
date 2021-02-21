@@ -14,7 +14,7 @@ import miskyle.realsurvival.machine.MachineAccess;
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.crafttable.CraftTable;
 import miskyle.realsurvival.machine.furnace.Furnace;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -32,10 +32,14 @@ public class CubeListener implements Listener {
 
   /**
    * 处理玩家点击多方块结构.
+
    * @param event 玩家交互事件
    */
-  @EventHandler
+  @EventHandler(ignoreCancelled = true)
   public void onPlayerUse(final PlayerInteractEvent event) {
+    if (event.isCancelled()) {
+      return;
+    }
     if (!PlayerManager.isActive(event.getPlayer().getName()) 
         || !(event.hasBlock() && event.getAction() == Action.RIGHT_CLICK_BLOCK)) {
       return;
@@ -181,12 +185,14 @@ public class CubeListener implements Listener {
       }
 
       String machineName = MachineManager.getMachineNameByCubeName(cube.getName());
-      RSEntry<RecipeType, String> machineData = MachineManager.getMachineData(machineName);
+      RsEntry<RecipeType, String> machineData = MachineManager.getMachineData(machineName);
       if (machineData.getLeft() == RecipeType.CRAFT_TABLE) {
-        CraftTable.openDefaultGUI(
+        event.setCancelled(true);
+        CraftTable.openDefaultGui(
             event.getPlayer(), block.getLocation(), machineName, machineData.getRight());
       } else if (machineData.getLeft() == RecipeType.FURNACE) {
-        Furnace.openDefaultGUI(
+        event.setCancelled(true);
+        Furnace.openDefaultGui(
             event.getPlayer(), block.getLocation(), machineName, machineData.getRight());
       } else {
         //TODO 

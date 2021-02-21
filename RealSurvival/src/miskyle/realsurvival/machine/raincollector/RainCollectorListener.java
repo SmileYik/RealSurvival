@@ -10,35 +10,45 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-
 import com.github.miskyle.mcpt.i18n.I18N;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.PlayerManager;
-import miskyle.realsurvival.data.item.RSItem;
+import miskyle.realsurvival.data.item.RsItem;
 import miskyle.realsurvival.machine.MachineManager;
 
 public class RainCollectorListener implements Listener {
+  
+  /**
+   * 玩家与雨水收集器交互事件.
+
+   * @param e 玩家交互事件.
+   */
   @EventHandler(priority = EventPriority.HIGH)
   public void clickRainCollector(final PlayerInteractEvent e) {
+    if (e.isCancelled()) {
+      return;
+    }
     if (!PlayerManager.isActive(e.getPlayer()) || e.getAction() != Action.RIGHT_CLICK_BLOCK) {
       return;
     }
     Block block = e.getClickedBlock();
 
-    if (block.getType() == Material.CAULDRON && block.getRelative(BlockFace.UP).getType() == Material.HOPPER) {
+    if (block.getType() == Material.CAULDRON 
+        && block.getRelative(BlockFace.UP).getType() == Material.HOPPER) {
       e.setCancelled(true);
       if (MachineManager.isActiveTimer(block.getLocation())) {
         // 该位置已经存在一个机器
-        RainCollectorTimer collector = (RainCollectorTimer) MachineManager.getTImer(block.getLocation());
+        RainCollectorTimer collector = 
+            (RainCollectorTimer) MachineManager.getTimer(block.getLocation());
         // 判断是要取水还是要打开界面
         if (e.hasItem() && e.getItem().getType() == Material.GLASS_BOTTLE) {
           if (collector.hasWater()) {
             collector.getWater();
             e.getItem().setAmount(e.getItem().getAmount() - 1);
-            e.getPlayer().getInventory().addItem(RSItem.load("/water/rainwater").getItem()).values().forEach(item -> {
-              block.getWorld().dropItem(e.getPlayer().getLocation(), item);
-            });
+            e.getPlayer().getInventory().addItem(
+                RsItem.load("/water/rainwater").getItem()).values().forEach(item -> {
+                  block.getWorld().dropItem(e.getPlayer().getLocation(), item);
+                });
           } else {
             e.getPlayer().sendMessage(Msg.getPrefix() + I18N.tr("machine.rain-collector.no-water"));
           }
@@ -50,19 +60,26 @@ public class RainCollectorListener implements Listener {
         }
       } else {
         // 注册个机器并打开储水界面
-        MachineManager.addTimer(new RainCollectorTimer(e.getPlayer().getName(), block.getLocation()));
+        MachineManager.addTimer(
+            new RainCollectorTimer(e.getPlayer().getName(), block.getLocation()));
         RainCollector.open(e.getPlayer(), block.getLocation());
         return;
       }
     }
   }
 
+  /**
+   * 玩家点击雨水收集器的gui界面事件.
+
+   * @param e 玩家点击仓库事件.
+   */
   @EventHandler(priority = EventPriority.HIGH)
-  public void clickRainCollectorGUI(final InventoryClickEvent e) {
+  public void clickRainCollectorGui(final InventoryClickEvent e) {
     if (e.isCancelled()) {
       return;
     }
-    if (!(e.getWhoClicked() instanceof Player) || !(e.getInventory().getHolder() instanceof RainCollectorHolder)
+    if (!(e.getWhoClicked() instanceof Player) 
+        || !(e.getInventory().getHolder() instanceof RainCollectorHolder)
         || e.getRawSlot() < 0) {
       return;
     }

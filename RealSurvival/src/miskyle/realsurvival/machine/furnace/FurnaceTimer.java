@@ -1,7 +1,6 @@
 package miskyle.realsurvival.machine.furnace;
 
 import org.bukkit.Location;
-
 import miskyle.realsurvival.blockarray.BlockArrayCreator;
 import miskyle.realsurvival.data.recipe.FurnaceRecipe;
 import miskyle.realsurvival.machine.MachineManager;
@@ -24,14 +23,35 @@ public class FurnaceTimer extends MachineTimer {
     this.recipe = recipe;
   }
 
+  /**
+   * 初始化.
+
+   * @param playerName 玩家名
+   * @param loc 地点
+   * @param recipe 配方
+   * @param times 次数
+   */
   public FurnaceTimer(String playerName, Location loc, FurnaceRecipe recipe, int times) {
     super(MachineType.FURNACE, playerName, loc);
     this.recipe = recipe;
     this.times = times;
   }
 
-  public FurnaceTimer(String playerName, String worldName, int x, int y, int z, FurnaceRecipe recipe, int time,
-      int times, double extraTemperature) {
+  /**
+   * 初始化.
+
+   * @param playerName 玩家名
+   * @param worldName 世界名
+   * @param x 坐标x
+   * @param y 坐标y
+   * @param z 坐标z
+   * @param recipe 配方
+   * @param time 时间
+   * @param times 次数
+   * @param extraTemperature 额外温度数据.
+   */
+  public FurnaceTimer(String playerName, String worldName, int x, int y, int z, 
+      FurnaceRecipe recipe, int time, int times, double extraTemperature) {
     super(playerName, MachineType.FURNACE, time, worldName, x, y, z);
     this.recipe = recipe;
     this.times = times;
@@ -75,8 +95,8 @@ public class FurnaceTimer extends MachineTimer {
   }
 
   /**
-   * 拿取一个物品
-   * 
+   * 拿取一个物品.
+
    * @return 返回剩余可取出次数,0代表获取完毕
    */
   public int takeIt() {
@@ -88,6 +108,9 @@ public class FurnaceTimer extends MachineTimer {
     return times;
   }
 
+  /**
+   * 运行.
+   */
   public void running() {
     String nowBlock = BlockArrayCreator.getBlockKey(getLocation().getBlock());
     String aimBlock = MachineManager.getMachineCube(recipe.getMachineName()).getMid().getMain();
@@ -112,7 +135,8 @@ public class FurnaceTimer extends MachineTimer {
           waitTime = 0;
           modifyTime(1);
         }
-      } else if (temperature <= recipe.getMinTemperature() && temperature > recipe.getMaxTemperature()) {
+      } else if (temperature <= recipe.getMinTemperature() 
+          && temperature > recipe.getMaxTemperature()) {
         modifyTime(1);
       }
     }

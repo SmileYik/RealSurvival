@@ -9,15 +9,26 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
 
 public class WaterPurifierListener implements Listener {
+  
+  /**
+   * 玩家想净化水事件.
+
+   * @param e 玩家交互事件
+   */
   @EventHandler
   public void playerWantUsePurifier(final PlayerInteractEvent e) {
-    if (!PlayerManager.isActive(e.getPlayer().getName()) || e.getAction() != Action.RIGHT_CLICK_BLOCK || !e.hasItem()
-        || !e.getItem().getType().name().equals("GLASS_BOTTLE") || !(e.getClickedBlock().getState() instanceof Hopper)
+    if (e.isCancelled()) {
+      return;
+    }
+    if (!PlayerManager.isActive(e.getPlayer().getName()) 
+        || e.getAction() != Action.RIGHT_CLICK_BLOCK 
+        || !e.hasItem()
+        || !e.getItem().getType().name().equals("GLASS_BOTTLE") 
+        || !(e.getClickedBlock().getState() instanceof Hopper)
         || !(e.getClickedBlock().getRelative(BlockFace.UP).getState() instanceof Dropper)) {
       return;
     }
@@ -40,7 +51,8 @@ public class WaterPurifierListener implements Listener {
     }
 
     // 获取第一个有效需要过滤物品
-    Inventory inv = ((Dropper) e.getClickedBlock().getRelative(BlockFace.UP).getState()).getInventory();
+    Inventory inv = 
+        ((Dropper) e.getClickedBlock().getRelative(BlockFace.UP).getState()).getInventory();
 
   }
 }

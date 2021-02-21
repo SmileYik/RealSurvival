@@ -2,7 +2,6 @@ package miskyle.realsurvival.data.playerdata;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
-
 import miskyle.realsurvival.data.ConfigManager;
 
 public class PlayerDataDisease {
@@ -11,6 +10,7 @@ public class PlayerDataDisease {
 
   /**
    * 增加疾病.
+
    * @param name 疾病名
    */
   public void addDisease(String name) {
@@ -23,6 +23,7 @@ public class PlayerDataDisease {
 
   /**
    * 吃药.
+
    * @param name 对应疾病
    * @param drug 药效
    * @param duration 药物持续时间
@@ -51,6 +52,7 @@ public class PlayerDataDisease {
 
   /**
    * 从保存的带有疾病信息的字符串中获取信息.
+
    * @param str 带有疾病信息的字符串
    */
   public void setDisease(String str) {
@@ -66,6 +68,7 @@ public class PlayerDataDisease {
 
   /**
    * 从带有疾病信息的字符串组成的列表中获取信息.
+
    * @param list 带有疾病信息的字符串组成的列表
    */
   public void setDisease(List<String> list) {
@@ -78,6 +81,7 @@ public class PlayerDataDisease {
 
   /**
    * 获取带有疾病信息的字符串.
+
    * @return 如果无疾病则返回小写的"null"字符串.
    */
   public String getSaveString() {
@@ -95,6 +99,7 @@ public class PlayerDataDisease {
 
   /**
    * 提供PAPI变量显示的疾病信息.
+
    * @return 当无疾病时返回null
    */
   public Disease getShowDisease() {

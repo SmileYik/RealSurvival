@@ -1,10 +1,10 @@
 package miskyle.realsurvival.util;
 
-public class RSEntry<R, S> {
+public class RsEntry<R, S> {
   private R left;
   private S right;
 
-  public RSEntry(R left, S right) {
+  public RsEntry(R left, S right) {
     this.left = left;
     this.right = right;
   }
@@ -53,7 +53,7 @@ public class RSEntry<R, S> {
     } else if (getClass() != obj.getClass()) {
       return false;      
     }
-    RSEntry<?, ?> other = (RSEntry<?, ?>) obj;
+    RsEntry<?, ?> other = (RsEntry<?, ?>) obj;
     if (left == null) {
       if (other.left != null) {
         return false;        

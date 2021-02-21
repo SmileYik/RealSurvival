@@ -6,7 +6,7 @@ import miskyle.realsurvival.machine.MachinePermission;
 import miskyle.realsurvival.machine.MachineStatus;
 import miskyle.realsurvival.machine.MachineType;
 import miskyle.realsurvival.machine.util.RecipeUtils;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -18,6 +18,7 @@ public class CraftTableListener implements Listener {
   
   /**
    * 对有效的工作台界面点击进行处理.
+
    * @param e 仓库点击事件
    */
   @EventHandler
@@ -67,7 +68,7 @@ public class CraftTableListener implements Listener {
         e.setCancelled(true);
         p.updateInventory();
         if (e.getRawSlot() == 49) {
-          RSEntry<String, Integer> recipe = 
+          RsEntry<String, Integer> recipe = 
               RecipeUtils.cheekRecipe(holder.getCraftTableName(), MachineType.CRAFT_TABLE,
               e.getClickedInventory());
           //判断是否为有效配方, 若有效则进一步判断玩家是否有相应权限.
@@ -98,6 +99,7 @@ public class CraftTableListener implements Listener {
 
   /**
    * 当玩家关闭一个有效的工作台配方制作窗口时执行此指令.
+
    * @param e 仓库关闭事件
    */
   @EventHandler

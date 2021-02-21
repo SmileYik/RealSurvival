@@ -1,7 +1,6 @@
 package miskyle.realsurvival.machine.raincollector;
 
 import org.bukkit.Location;
-
 import miskyle.realsurvival.machine.MachineManager;
 import miskyle.realsurvival.machine.MachineTimer;
 import miskyle.realsurvival.machine.MachineType;
@@ -29,6 +28,9 @@ public class RainCollectorTimer extends MachineTimer {
     modifyTime(-WATER_TIME);
   }
 
+  /**
+   * 运行.
+   */
   public void running() {
     if (getLocation().getBlock().isEmpty()) {
       MachineManager.removeTimer(this);

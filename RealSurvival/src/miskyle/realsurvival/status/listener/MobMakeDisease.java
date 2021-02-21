@@ -8,16 +8,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
-import miskyle.realsurvival.data.item.RSItemData;
+import miskyle.realsurvival.data.item.RsItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
+import miskyle.realsurvival.util.ItemUtil;
 
 public class MobMakeDisease implements Listener {
-  @SuppressWarnings("deprecation")
+  
+  /**
+   * 怪物致病事件.
+
+   * @param e 实体对实体造成伤害.
+   */
   @EventHandler
   public void onMobHurtPlayer(final EntityDamageByEntityEvent e) {
     if (ConfigManager.getDiseaseConfig().isMob() || e.getEntity().getType() != EntityType.PLAYER
@@ -27,37 +32,48 @@ public class MobMakeDisease implements Listener {
     Player p = (Player) e.getEntity();
     PlayerData pd = PlayerManager.getPlayerData(p.getName());
     ItemStack handItem = null;
-    StringBuilder sb = new StringBuilder();
+    String mobName = null;
     if (e.getDamager() instanceof LivingEntity) {
-      handItem = ConfigManager.getBukkitVersion() > 8
-          ? ((LivingEntity) e.getDamager()).getEquipment().getItemInMainHand()
-          : ((LivingEntity) e.getDamager()).getEquipment().getItemInHand();
-      sb.append(e.getDamager().getCustomName());
+      handItem = ItemUtil.getItemInMainHand((LivingEntity) e.getDamager());
+      mobName = getMobName((LivingEntity) e.getDamager());
     } else if (e.getDamager() instanceof Projectile) {
       Projectile pro = (Projectile) e.getDamager();
       if (pro.getShooter() instanceof LivingEntity) {
-        handItem = ConfigManager.getBukkitVersion() > 8
-            ? ((LivingEntity) pro.getShooter()).getEquipment().getItemInMainHand()
-            : ((LivingEntity) pro.getShooter()).getEquipment().getItemInHand();
-        if (ConfigManager.getBukkitVersion() <= 8) {
-          sb.append(((LivingEntity) pro.getShooter()).getName());
-        } else {
-          sb.append(((LivingEntity) pro.getShooter()).getCustomName());
-        }
+        handItem = ItemUtil.getItemInMainHand((LivingEntity) pro.getShooter());
+        mobName = getMobName((LivingEntity) pro.getShooter());
       }
     }
 
-    RSItemData data = ItemManager.getDiseaseSource(handItem);
+    RsItemData data = ItemManager.getDiseaseSource(handItem);
     if (data == null || data.getDrugData() == null || !data.getDrugData().isMakeDisease()) {
+      //TODO 名字判断
       return;
     }
+    String mob = mobName;
     if (data.getDrugData().isMakeDisease()) {
       data.getDrugData().getGetDisease().forEach((k, v) -> {
         if (Math.random() * 100 < v) {
           pd.getDisease().addDisease(k);
-          PlayerManager.bar.sendActionBar(p, Msg.tr("messages.make-disease", sb.toString(), k));
+          PlayerManager.bar.sendActionBar(p, Msg.tr("messages.make-disease", mob, k));
         }
       });
+    }
+  }
+  
+  /**
+   * 获取指定实体的名字.
+
+   * @param entity 实体
+   * @return 如果该实体有自定义名字则会返回该自定义名字, 否则返回种类名字.
+   */
+  public static String getMobName(LivingEntity entity) {
+    if (entity == null) {
+      return null;
+    }
+    if (ConfigManager.getBukkitVersion() <= 8) {
+      return entity.getType().name();
+    } else {
+      return entity.getCustomName() != null ? entity.getCustomName() : entity.getType().name();
     }
   }
 }

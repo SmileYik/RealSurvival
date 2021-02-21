@@ -1,17 +1,11 @@
 package miskyle.realsurvival.machine;
 
+import com.github.miskyle.mcpt.MCPT;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
-
-import org.bukkit.Location;
-import org.bukkit.block.Block;
-import org.bukkit.configuration.file.YamlConfiguration;
-
-import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.blockarray.BlockArrayCreator;
 import miskyle.realsurvival.data.blockarray.CubeData;
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
@@ -21,18 +15,63 @@ import miskyle.realsurvival.data.recipe.RecipeType;
 import miskyle.realsurvival.machine.crafttable.CraftTableTimer;
 import miskyle.realsurvival.machine.furnace.FurnaceTimer;
 import miskyle.realsurvival.machine.raincollector.RainCollectorTimer;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
+import org.bukkit.Location;
+import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 public class MachineManager {
-
+  
+  /**
+   * 存放工作台计时器.
+   * 
+   * <p>key: 工作台位置
+   * 
+   * <p>value: 机器计时器
+   */
   private static ConcurrentHashMap<String, MachineTimer> timers;
+  /**
+   * 存放工作台访问权限.
+   * 
+   * <p>key: 工作台位置
+   * 
+   * <p>value: 机器访问权限数据.
+   */
   private static ConcurrentHashMap<String, MachineAccess> accesses;
   
+  /**
+   * 以多方块结构名称存放多方块结构数据.
+   * 
+   * <p>key: 多方块结构名称
+   * 
+   * <p>value: 多方块结构数据
+   */
   private static HashMap<String, CubeData> cubes;
+  /**
+   * 以中心方块来分类存放多方块结构数据.
+   * 
+   * <p>key: 多方块结构中心方块对应名称
+   * 
+   * <p>value: 多方块结构数据列表
+   */
   private static HashMap<String, ArrayList<CubeData>> cubesMainBlockCube;
+  /**
+   * 以多方块结构名分类存放机器名.
+   * 
+   * <p>key: 多方块结构名
+   * 
+   * <p>value: 机器名
+   */
   private static HashMap<String, String> cubeMachine;
+  /**
+   * 以机器名分类存放多方块结构名.
+   * 
+   * <p>key: 机器名
+   * 
+   * <p>value: 多方块结构名
+   */
   private static HashMap<String, String> machineCube;
-  private static HashMap<String, RSEntry<RecipeType, String>> machineData;
+  private static HashMap<String, RsEntry<RecipeType, String>> machineData;
 
   private static HashMap<String, ArrayList<Recipe>> craftTableRecipes;
   private static HashMap<String, Recipe> craftTableRecipesMap;
@@ -138,15 +177,15 @@ public class MachineManager {
       cubeMachine.put(temp[1], temp[0]);
       machineCube.put(temp[0], temp[1]);
       machineData.put(temp[0], 
-          new RSEntry<RecipeType, String>(RecipeType.valueOf(temp[2]), temp[3]));
+          new RsEntry<RecipeType, String>(RecipeType.valueOf(temp[2]), temp[3]));
     });
   }
 
-  public static RSEntry<RecipeType, String> getMachineData(String machineName) {
+  public static RsEntry<RecipeType, String> getMachineData(String machineName) {
     return machineData.get(machineName);
   }
 
-  public static RSEntry<RecipeType, String> getMachineDataByCubeName(String cubeName) {
+  public static RsEntry<RecipeType, String> getMachineDataByCubeName(String cubeName) {
     return getMachineData(cubeMachine.get(cubeName));
   }
 
@@ -162,16 +201,18 @@ public class MachineManager {
     return timers.containsKey(key);
   }
 
-  public static MachineTimer getTImer(Location loc) {
+
+  public static MachineTimer getTimer(Location loc) {
     return timers.get(getTimerKey(loc));
   }
 
-  public static MachineTimer getTImer(String key) {
+  public static MachineTimer getTimer(String key) {
     return timers.get(key);
   }
 
   /**
    * 加入机器计时器.
+
    * @param timer 机器计时器
    */
   public static void addTimer(MachineTimer timer) {
@@ -204,6 +245,13 @@ public class MachineManager {
     return loc.getWorld().getName() + loc.getBlockX() + loc.getBlockY() + loc.getBlockZ();
   }
 
+  /**
+   * 获取某种类型的机器的所有配方.
+
+   * @param type 机器类型
+   * @param machineName 机器名
+   * @return
+   */
   public static ArrayList<Recipe> getRecipes(MachineType type, String machineName) {
     if (type == MachineType.CRAFT_TABLE) {
       return craftTableRecipes.get(machineName);
@@ -213,6 +261,13 @@ public class MachineManager {
     return null;
   }
 
+  /**
+   * 获取配方.
+
+   * @param type 机器类型
+   * @param recipeName 配方名
+   * @return
+   */
   public static Recipe getRecipe(MachineType type, String recipeName) {
     if (type == MachineType.CRAFT_TABLE) {
       return craftTableRecipesMap.get(recipeName);
@@ -226,24 +281,49 @@ public class MachineManager {
     return timers;
   }
 
+  /**
+   * 获取多方块结构数据.
+
+   * @param cubeName 多方块结构名
+   * @return 多方块结构数据
+   */
   public static CubeData getCubeData(String cubeName) {
     return cubes.get(cubeName);
   }
 
+  /**
+   * 获取指定机器的多方块结构名.
+
+   * @param machineName 机器名
+   * @return 多方块结构名
+   */
   public static String getMachineCubeName(String machineName) {
     return machineCube.get(machineName);
   }
 
+  /**
+   * 获取指定机器的多方块结构数据.
+
+   * @param machineName 机器名
+   * @return 多方块结构数据
+   */
   public static CubeData getMachineCube(String machineName) {
     return getCubeData(machineCube.get(machineName));
   }
 
+  /**
+   * 以多方块结构的中心方块获取多方块结构.
+
+   * @param b 中心方块
+   * @return 符合条件的多方块结构列表.
+   */
   public static ArrayList<CubeData> getCubesByMainBlock(Block b) {
     return cubesMainBlockCube.getOrDefault(BlockArrayCreator.getBlockKey(b), new ArrayList<>());
   }
   
   /**
    * 设定机器权限.
+
    * @param loc 机器所在地址
    * @param access 权限
    */

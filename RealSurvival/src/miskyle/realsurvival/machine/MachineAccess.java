@@ -22,6 +22,7 @@ public class MachineAccess {
   
   /**
    * 读取一个机器访问权限.
+
    * @param owner 机器创造者
    * @param mode 权限模式
    * @param players 玩家列表
@@ -63,6 +64,7 @@ public class MachineAccess {
   
   /**
    * 加入一个玩家名.
+
    * @param playerName 玩家名
    */
   public void addPlayer(String playerName) {
@@ -74,6 +76,7 @@ public class MachineAccess {
   
   /**
    * 检查玩家是否有权限访问某一机器.
+
    * @param playerName 玩家名
    * @return 若可访问则返回true
    */

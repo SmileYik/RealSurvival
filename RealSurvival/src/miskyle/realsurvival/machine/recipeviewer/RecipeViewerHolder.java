@@ -1,19 +1,8 @@
 package miskyle.realsurvival.machine.recipeviewer;
 
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
-
-public class RecipeViewerHolder implements InventoryHolder {
-  private Inventory inventory;
-  
+public class RecipeViewerHolder extends RecipeAlbumHolder {
   @Override
-  public Inventory getInventory() {
-    // TODO Auto-generated method stub
-    return inventory;
+  public boolean isMenu() {
+    return false;
   }
-  
-  public void setInventory(Inventory inventory) {
-    this.inventory = inventory;
-  }
-  
 }

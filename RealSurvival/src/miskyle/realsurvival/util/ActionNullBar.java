@@ -1,7 +1,6 @@
 package miskyle.realsurvival.util;
 
 import org.bukkit.entity.Player;
-
 import com.github.miskyle.mcpt.nms.actionbar.NMSActionBar;
 
 public class ActionNullBar implements NMSActionBar {

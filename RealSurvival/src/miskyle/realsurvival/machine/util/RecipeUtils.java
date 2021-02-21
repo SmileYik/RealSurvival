@@ -3,13 +3,10 @@ package miskyle.realsurvival.machine.util;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import com.github.miskyle.mcpt.i18n.I18N;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.data.recipe.CraftTableRecipe;
 import miskyle.realsurvival.data.recipe.FurnaceRecipe;
@@ -22,20 +19,21 @@ import miskyle.realsurvival.machine.crafttable.CraftTable;
 import miskyle.realsurvival.machine.crafttable.CraftTableTimer;
 import miskyle.realsurvival.machine.furnace.Furnace;
 import miskyle.realsurvival.machine.furnace.FurnaceTimer;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class RecipeUtils {
   public static final char[] SHAPE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".toCharArray();
 
   /**
-   * 比较仓库是否符合配方中摆放标准
-   * 
+   * 比较仓库是否符合配方中摆放标准.
+
    * @param machineName 机器名
    * @param type        机器类型
    * @param inv         需要比较的仓库
    * @return 返回配方名及最多可做的数量
    */
-  public static RSEntry<String, Integer> cheekRecipe(String machineName, MachineType type, Inventory inv) {
+  public static RsEntry<String, Integer> cheekRecipe(
+      String machineName, MachineType type, Inventory inv) {
     final List<Integer> materialSlot;
     ArrayList<Recipe> recipes = MachineManager.getRecipes(type, machineName);
 
@@ -82,13 +80,25 @@ public class RecipeUtils {
         }
       }
       if (find) {
-        return new RSEntry<String, Integer>(recipe.getRecipeName(), amount);
+        return new RsEntry<String, Integer>(recipe.getRecipeName(), amount);
       }
     }
     return null;
   }
 
-  public static void startForgeRecipe(String machineName, String recipeName, MachineType type, int amount,
+  /**
+   * 开始制作物品.
+
+   * @param machineName 机器名称.
+   * @param recipeName 配方名称.
+   * @param type 机器类型.
+   * @param amount 数量
+   * @param inv 合成仓库.
+   * @param p 玩家.
+   * @param timer 保存合成信息的Timer.
+   */
+  public static void startForgeRecipe(
+      String machineName, String recipeName, MachineType type, int amount,
       Inventory inv, Player p, MachineTimer timer) {
     final List<Integer> materialSlot;
     if (type == MachineType.CRAFT_TABLE) {
@@ -127,15 +137,23 @@ public class RecipeUtils {
       ctTimer.setRecipe((CraftTableRecipe) recipe);
       timer = (MachineTimer) ctTimer;
     } else if (timer.getType() == MachineType.FURNACE) {
-      FurnaceTimer fTimer = (FurnaceTimer) timer;
-      fTimer.setTimes(amount);
-      fTimer.setRecipe((FurnaceRecipe) recipe);
+      FurnaceTimer fuTimer = (FurnaceTimer) timer;
+      fuTimer.setTimes(amount);
+      fuTimer.setRecipe((FurnaceRecipe) recipe);
       timer = (FurnaceTimer) timer;
     }
     MachineManager.addTimer(timer);
     p.closeInventory();
   }
 
+  /**
+   * 创建配方.
+
+   * @param recipe 配方
+   * @param p 玩家
+   * @param inv 仓库
+   * @return
+   */
   public static boolean createRecipe(Recipe recipe, Player p, Inventory inv) {
     final List<Integer> materialSlot;
     final List<Integer> productSlot;

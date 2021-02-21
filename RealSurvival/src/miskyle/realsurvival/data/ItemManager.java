@@ -5,19 +5,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.nms.nbtitem.NBTItem;
-
 import miskyle.realsurvival.RealSurvival;
 import miskyle.realsurvival.data.effect.EffectData;
 import miskyle.realsurvival.data.item.DrugData;
-import miskyle.realsurvival.data.item.RSItemData;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.data.item.RsItemData;
+import miskyle.realsurvival.util.RsEntry;
 import miskyle.realsurvival.util.Utils;
 
 public class ItemManager {
@@ -28,9 +25,12 @@ public class ItemManager {
   private HashMap<String, String> labels;
   private HashMap<String, String> labels2;
 
-  private HashMap<String, RSItemData> nbtItemData;
-  private HashMap<String, RSItemData> minecraftItemData;
+  private HashMap<String, RsItemData> nbtItemData;
+  private HashMap<String, RsItemData> minecraftItemData;
 
+  /**
+   * 初始化.
+   */
   public ItemManager() {
     im = this;
     nbtItem = NBTItem.getNBTItem(RealSurvival.getVersion());
@@ -53,7 +53,7 @@ public class ItemManager {
   }
 
   private void loadMinecraftItem() {
-    minecraftItemData = new HashMap<String, RSItemData>();
+    minecraftItemData = new HashMap<String, RsItemData>();
     File file = new File(MCPT.plugin.getDataFolder(), "minecraft-item.yml");
     if (!file.exists()) {
       try {
@@ -66,7 +66,7 @@ public class ItemManager {
     }
     YamlConfiguration c = YamlConfiguration.loadConfiguration(file);
     c.getKeys(false).forEach(key -> {
-      RSItemData item = new RSItemData();
+      RsItemData item = new RsItemData();
       DrugData drug = new DrugData();
       if (c.contains(key + ".sleep.value")) {
         item.setSleep(c.getString(key + ".sleep.value").split("/"));
@@ -103,15 +103,15 @@ public class ItemManager {
         drug.setGetDisease(getDisease);
       }
       if (c.contains(key + ".disease.enable-disease")) {
-        HashMap<String, RSEntry<Double, Double>> drugd = new HashMap<>();
-        HashMap<String, RSEntry<Integer, Integer>> duration = new HashMap<>();
+        HashMap<String, RsEntry<Double, Double>> drugd = new HashMap<>();
+        HashMap<String, RsEntry<Integer, Integer>> duration = new HashMap<>();
         List<String> wrongDisease = null;
         ArrayList<EffectData> eatWrongDrug = new ArrayList<EffectData>();
         ArrayList<EffectData> noNeedDrug = new ArrayList<EffectData>();
         c.getStringList(key + ".disease.enable-disease").forEach(line -> {
           String[] temp = line.split(",");
-          drugd.put(temp[0], getRSEntryDouble(temp[1]));
-          duration.put(temp[0], getRSEntryInt(temp[2]));
+          drugd.put(temp[0], getRsEntryDouble(temp[1]));
+          duration.put(temp[0], getRsEntryInt(temp[2]));
         });
 
         if (c.contains(key + ".disease.eat-wrong-drug") 
@@ -138,7 +138,7 @@ public class ItemManager {
   }
 
   private void loadNbtItem() {
-    nbtItemData = new HashMap<String, RSItemData>();
+    nbtItemData = new HashMap<String, RsItemData>();
     searchNbtItem(new File(MCPT.plugin.getDataFolder() + "/nbtitem/"),
         new File(MCPT.plugin.getDataFolder() + "/nbtitem/").getAbsolutePath());
   }
@@ -154,28 +154,29 @@ public class ItemManager {
           name = name.substring(1);
         }
 
-        nbtItemData.put(name, loadItemDataFromFIle(f));
+        nbtItemData.put(name, loadItemDataFromFile(f));
       }
     }
   }
 
   /**
    * 从文件中获取物品信息.
-   * 
+
    * @param fileName 文件名 大小写不敏感
    * @return
    */
-  public static RSItemData loadItemData(String fileName) {
-    return loadItemDataFromFIle(
+  public static RsItemData loadItemData(String fileName) {
+    return loadItemDataFromFile(
         new File(MCPT.plugin.getDataFolder() + "/nbtitem/" + fileName.toLowerCase() + ".yml"));
   }
   
   /**
    * 从ItemStack中读取物品数据.
+
    * @param item 目的物品
    * @return
    */
-  public static RSItemData loadItemData(ItemStack item) {
+  public static RsItemData loadItemData(ItemStack item) {
     if (item == null) {
       return null;      
     }
@@ -193,14 +194,14 @@ public class ItemManager {
       return null;
     }
 
-    RSItemData rsItem = new RSItemData();
+    RsItemData rsItem = new RsItemData();
     item.getItemMeta().getLore().forEach(s -> {
       String ss = Utils.removeColor(s);
       im.labels.forEach((k, v) -> {
         if (ss.contains(v) && ss.contains(im.split)) {
           if (k.equalsIgnoreCase("drug")) {
             String drugName = ss.split(":")[1].replace(" ", "");
-            RSItemData drug = im.nbtItemData.get(drugName);
+            RsItemData drug = im.nbtItemData.get(drugName);
             if (drug != null) {
               rsItem.setDrugData(drug.getDrugData());
             }
@@ -246,16 +247,16 @@ public class ItemManager {
 
   /**
    * 从文件中获取物品信息.
-   * 
+
    * @param file 文件名(大小写不敏感
    * @return
    */
-  public static RSItemData loadItemDataFromFIle(File file) {
+  public static RsItemData loadItemDataFromFile(File file) {
     if (!file.exists()) {
       return null;
     }
     YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
-    RSItemData item = new RSItemData();
+    RsItemData item = new RsItemData();
     if (data.contains("sleep")) {
       item.setSleep(data.getString("sleep").split("/"));
       item.setMaxSleep(data.getBoolean("sleep-max", false));
@@ -289,17 +290,18 @@ public class ItemManager {
 
   /**
    * 获取物品是否能够致病.
+
    * @param item 目的物品
    * @return
    */
-  public static RSItemData getDiseaseSource(ItemStack item) {
+  public static RsItemData getDiseaseSource(ItemStack item) {
     if (item == null) {
       return null;      
     }
     if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
       return null;
     }
-    RSItemData rsItem = new RSItemData();
+    RsItemData rsItem = new RsItemData();
     String label = im.labels2.get("disease-source");
     item.getItemMeta().getLore().forEach(s -> {
       if (rsItem.getDrugData() != null) {
@@ -308,7 +310,7 @@ public class ItemManager {
       String ss = Utils.removeColor(s);
       if (ss.contains(label) && ss.contains(im.split)) {
         String drugName = ss.split(":")[1].replace(" ", "");
-        RSItemData drug = im.nbtItemData.get(drugName);
+        RsItemData drug = im.nbtItemData.get(drugName);
         if (drug != null) {
           rsItem.setDrugData(drug.getDrugData());
         }
@@ -319,6 +321,7 @@ public class ItemManager {
 
   /**
    * 获取目的物品滤网的耐久度.
+
    * @param item 目的物品
    * @return 若为无效滤网返回0, 反之返回相对应耐久.
    */
@@ -341,12 +344,14 @@ public class ItemManager {
 
   /**
    * 设定滤网的耐久度.
+
    * @param item 物品
    * @param value 耐久度
    */
   public static void setPurifierValue(ItemStack item, double value) {
-    if (item == null)
-      return;
+    if (item == null) {
+      return;      
+    }
     if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
       return;
     }
@@ -357,7 +362,7 @@ public class ItemManager {
     for (String line : lore) {
       String ss = Utils.removeColor(line);
       if (ss.contains(label) && ss.contains(im.split)) {
-        String afterLine = line.replace(ss.replaceAll("^[0-9.+]", ""), _2f(value));
+        String afterLine = line.replace(ss.replaceAll("^[0-9.+]", ""), formatF(value));
         lore.set(index, afterLine);
         break;
       }
@@ -369,14 +374,23 @@ public class ItemManager {
     }
   }
 
+  /**
+   * 获取某一个属性的数据.
+
+   * @param status 属性
+   * @param item 物品
+   * @return
+   */
   public static double getStatusValue(String status, ItemStack item) {
-    if (item == null)
-      return 0;
+    if (item == null) {
+      return 0;      
+    }
     String name = im.nbtItem.getString(item, "RSNBT");
     if (name != null) {
       name = name.toLowerCase();
-      if (im.nbtItemData.containsKey(name))
-        return im.nbtItemData.get(name).getValue(status);
+      if (im.nbtItemData.containsKey(name)) {
+        return im.nbtItemData.get(name).getValue(status);        
+      }
     }
     double value = 0;
     String key = im.labels.get(status);
@@ -403,14 +417,23 @@ public class ItemManager {
     return value;
   }
 
+  /**
+   * 只获取单个数值一次.
+
+   * @param status 属性值
+   * @param item 物品
+   * @return
+   */
   public static double getStatusValueOnly(String status, ItemStack item) {
-    if (item == null)
-      return 0;
+    if (item == null) {
+      return 0;      
+    }
     String name = im.nbtItem.getString(item, "RSNBT");
     if (name != null) {
       name = name.toLowerCase();
-      if (im.nbtItemData.containsKey(name))
-        return im.nbtItemData.get(name).getValue(status);
+      if (im.nbtItemData.containsKey(name)) {
+        return im.nbtItemData.get(name).getValue(status);        
+      }
     }
     String key = im.labels.get(status);
     if (!item.hasItemMeta() || !item.getItemMeta().hasLore()) {
@@ -436,7 +459,7 @@ public class ItemManager {
     return 0;
   }
 
-  public static boolean isValidNBTItem(String name) {
+  public static boolean isValidNbtItem(String name) {
     return im.nbtItemData.containsKey(name.toLowerCase());
   }
 
@@ -448,21 +471,21 @@ public class ItemManager {
     return im.labels;
   }
 
-  public static NBTItem getNBT() {
+  public static NBTItem getNbt() {
     return im.nbtItem;
   }
 
-  private static RSEntry<Double, Double> getRSEntryDouble(String str) {
+  private static RsEntry<Double, Double> getRsEntryDouble(String str) {
     String[] temp = str.split("/");
-    return new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
+    return new RsEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1]));
   }
 
-  private static RSEntry<Integer, Integer> getRSEntryInt(String str) {
+  private static RsEntry<Integer, Integer> getRsEntryInt(String str) {
     String[] temp = str.split("/");
-    return new RSEntry<Integer, Integer>(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
+    return new RsEntry<Integer, Integer>(Integer.parseInt(temp[0]), Integer.parseInt(temp[1]));
   }
 
-  private static String _2f(double d) {
+  private static String formatF(double d) {
     return String.format("%.2f", d);
   }
 }

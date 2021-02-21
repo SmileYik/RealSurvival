@@ -2,24 +2,19 @@ package miskyle.realsurvival.data.playerdata;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
-
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.i18n.I18N;
-import com.github.miskyle.mcpt.mysql.MySQLManager;
-
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
+import miskyle.realsurvival.data.MySqlManager;
 
 public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   private static LinkedList<String> cdStatusPlayer = new LinkedList<String>();
@@ -36,7 +31,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
 
   private String status;
 
-  public PlayerData(String playerName, PlayerDataSleep sleep, 
+  private PlayerData(String playerName, PlayerDataSleep sleep, 
       PlayerDataThirst thirst, PlayerDataEnergy energy, PlayerDataWeight weight, 
       PlayerDataEffect effect, PlayerDataTemperature temperature, PlayerDataDisease disease) {
     this.playerName = playerName;
@@ -48,115 +43,90 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
     this.temperature = temperature;
     this.disease = disease;
   }
+  
+  /**
+   * 获取玩家数据.
 
+   * @param name 玩家名.
+   * @return 若玩家数据存在则返回相应数据, 不存在则返回新的玩家数据.
+   */
   public static PlayerData getPlayerData(String name) {
-    PlayerDataSleep sleep = new PlayerDataSleep();
-    PlayerDataThirst thirst = new PlayerDataThirst();
-    PlayerDataEnergy energy = new PlayerDataEnergy();
-    PlayerDataWeight weight = new PlayerDataWeight();
-    PlayerDataEffect effect = new PlayerDataEffect();
-    PlayerDataDisease disease = new PlayerDataDisease();
-    List<String> extraSleepValue = null;
-    List<String> extraThirstValue = null;
-    List<String> extraEnergyValue = null;
-    List<String> extraWeightValue = null;
-    List<String> temperatureEffect = null;
-    List<String> extraTemperature = null;
-    if (ConfigManager.isEnableMySql() && MySQLManager.connect()) {
-      // Use MySQL
-      try {
-        ResultSet rs = MySQLManager.execute(
-            "SELECT * FROM RealSurvival WHERE Name='" + name.toLowerCase() + "'")
-            .executeQuery();
-        if (rs.next()) {
-          // Load Player Data From MySQL
-          sleep.setValue(rs.getDouble("Sleep"));
-          thirst.setValue(rs.getDouble("Thirst"));
-          energy.setValue(rs.getDouble("Energy"));
-          weight.setValue(rs.getDouble("Weight"));
-          effect.setEffect(rs.getString("Effect"));
-          disease.setDisease(rs.getString("Disease"));
-
-          extraSleepValue = Arrays.asList(rs.getString("ExtraSleepValue").split(";"));
-          extraThirstValue = Arrays.asList(rs.getString("ExtraThirstValue").split(";"));
-          extraEnergyValue = Arrays.asList(rs.getString("ExtraEnergyValue").split(";"));
-          extraWeightValue = Arrays.asList(rs.getString("ExtraWeightValue").split(";"));
-          temperatureEffect = Arrays.asList(rs.getString("TEffect").split(";"));
-          extraTemperature = Arrays.asList(rs.getString("Temperature").split(";"));
-        } else {
-          // Create New Player Data
-          sleep.setValue(ConfigManager.getSleepConfig().getMaxValue());
-          thirst.setValue(ConfigManager.getThirstConfig().getMaxValue());
-          energy.setValue(ConfigManager.getEnergyConfig().getMaxValue());
-          weight.setValue(0);
-          disease.setDisease(new ArrayList<>());
-          extraSleepValue = new ArrayList<String>();
-          extraThirstValue = new ArrayList<String>();
-          extraEnergyValue = new ArrayList<String>();
-          extraWeightValue = new ArrayList<String>();
-          temperatureEffect = new ArrayList<String>();
-          extraTemperature = new ArrayList<String>();
-        }
-        rs.close();
-        MySQLManager.disconnect();
-      } catch (SQLException e) {
-        e.printStackTrace();
-        MySQLManager.disconnect();
-        return null;
+    if (ConfigManager.isEnableMySql()) {
+      String data = MySqlManager.getPlayerData(name);
+      if (data == null) {
+        return createNewPlayerData(name);
       }
+      return getPlayerData(name, YamlConfiguration.loadConfiguration(new StringReader(data)));
     } else {
       File file = new File(
           MCPT.plugin.getDataFolder() + "/playerdata/" + name.toLowerCase() + ".yml");
-      YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
       if (file.exists()) {
-        // Load Player Data From File
-        sleep.setValue(data.getDouble("sleep"));
-        thirst.setValue(data.getDouble("thirst"));
-        energy.setValue(data.getDouble("energy"));
-        weight.setValue(data.getDouble("weight"));
-        effect.setEffect(data.getString("effect", null));
-        disease.setDisease(data.getStringList("disease"));
-
-        extraSleepValue = data.getStringList("extra-sleep");
-        extraThirstValue = data.getStringList("extra-thirst");
-        extraEnergyValue = data.getStringList("extra-energy");
-        extraWeightValue = data.getStringList("extra-weight");
-        extraTemperature = data.getStringList("extra-temperature");
-        temperatureEffect = data.getStringList("temperature-effect");
-      } else {
-        // Create New Player Data
-        sleep.setValue(ConfigManager.getSleepConfig().getMaxValue());
-        thirst.setValue(ConfigManager.getThirstConfig().getMaxValue());
-        energy.setValue(ConfigManager.getEnergyConfig().getMaxValue());
-        weight.setValue(0);
-        disease.setDisease(new ArrayList<>());
-        extraSleepValue = new ArrayList<String>();
-        extraThirstValue = new ArrayList<String>();
-        extraEnergyValue = new ArrayList<String>();
-        extraWeightValue = new ArrayList<String>();
-        temperatureEffect = new ArrayList<String>();
-        extraTemperature = new ArrayList<String>();
+        return getPlayerData(name, YamlConfiguration.loadConfiguration(file));
       }
+      return createNewPlayerData(name);
     }
+  }
+  
+  /**
+   * 获取玩家数据.
 
-    initExtraValue(weight, extraWeightValue);
-    initExtraValue(energy, extraEnergyValue);
-    initExtraValue(thirst, extraThirstValue);
-    initExtraValue(sleep, extraSleepValue);
+   * @param name 玩家名字
+   * @param data 数据.
+   * @return
+   */
+  public static PlayerData getPlayerData(String name, YamlConfiguration data) {
+    PlayerDataSleep sleep = new PlayerDataSleep();
+    sleep.setValue(data.getDouble("sleep"));
+    PlayerDataThirst thirst = new PlayerDataThirst();
+    thirst.setValue(data.getDouble("thirst"));
+    PlayerDataEnergy energy = new PlayerDataEnergy();
+    energy.setValue(data.getDouble("energy"));
+    PlayerDataWeight weight = new PlayerDataWeight();
+    weight.setValue(data.getDouble("weight"));
+    PlayerDataEffect effect = new PlayerDataEffect();
+    effect.setEffect(data.getString("effect", null));
+    PlayerDataDisease disease = new PlayerDataDisease();
+    disease.setDisease(data.getStringList("disease"));
+    
+    initExtraValue(weight, data.getStringList("extra-weight"));
+    initExtraValue(energy, data.getStringList("extra-energy"));
+    initExtraValue(thirst, data.getStringList("extra-thirst"));
+    initExtraValue(sleep, data.getStringList("extra-sleep"));
 
     PlayerDataTemperature temperature = new PlayerDataTemperature();
-    extraTemperature.forEach(s -> {
+    data.getStringList("extra-temperature").forEach(s -> {
       String[] temp = s.split(",");
       temperature.addTemperatureTolerance(
           temp[0], Double.parseDouble(temp[1]), Double.parseDouble(temp[2]));
     });
 
-    temperatureEffect.forEach(s -> {
+    data.getStringList("temperature-effect").forEach(s -> {
       String[] temp = s.split(",");
       effect.addEffect(temp[0], 
           Double.parseDouble(temp[1]), Double.parseDouble(temp[2]), Integer.parseInt(temp[3]));
     });
+    return new PlayerData(name, sleep, thirst, energy, weight, effect, temperature, disease);
+  }
+  
+  /**
+   * 创建一个新的玩家数据.
 
+   * @param name 玩家名
+   * @return 玩家数据
+   */
+  public static PlayerData createNewPlayerData(String name) {
+    PlayerDataSleep sleep = new PlayerDataSleep();
+    sleep.setValue(ConfigManager.getSleepConfig().getMaxValue());
+    PlayerDataThirst thirst = new PlayerDataThirst();
+    thirst.setValue(ConfigManager.getThirstConfig().getMaxValue());
+    PlayerDataEnergy energy = new PlayerDataEnergy();
+    energy.setValue(ConfigManager.getEnergyConfig().getMaxValue());
+    PlayerDataWeight weight = new PlayerDataWeight();
+    weight.setValue(0);
+    PlayerDataDisease disease = new PlayerDataDisease();
+    disease.setDisease(new ArrayList<>());
+    PlayerDataEffect effect = new PlayerDataEffect();
+    PlayerDataTemperature temperature = new PlayerDataTemperature();
     return new PlayerData(name, sleep, thirst, energy, weight, effect, temperature, disease);
   }
 
@@ -177,102 +147,56 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
     return temp;
   }
 
-  private static String getExtraValueString(PlayerDataStatus status) {
-    StringBuilder sb = new StringBuilder();
-    status.getExtraMaxValue().forEach((s, d) -> {
-      sb.append(s + ":" + d);
-      sb.append(";");
-    });
-    return sb.length() > 0 ? sb.substring(0, sb.length() - 1) : "";
-  }
-
   /*
    * ***********************
    *            2020.8.22               *
    *      修复 MySQL语句          *
    * ***********************
+   * 
    */
   /**
    * 保存玩家数据.
    */
   public void save() {
-    if (ConfigManager.isEnableMySql() && MySQLManager.connect()) {
-      ResultSet rs;
-      String extraSleepString = getExtraValueString(sleep);
-      String extraThirstString = getExtraValueString(thirst);
-      String extraEnergyString = getExtraValueString(energy);
-      String extraWeightString = getExtraValueString(weight);
-      String effectString = effect.toString();
-      String diseaseString = disease.getSaveString();
-      String extraTemperature = temperature.getSaveString();
-      String temperatureEffectString = effect.getTemperatureSaveString();
-      try {
-        rs = MySQLManager.execute(
-            "SELECT * FROM RealSurvival WHERE Name='" + playerName.toLowerCase() + "'")
-            .executeQuery();
-        if (rs.next()) {
-          String sql = "UPDATE RealSurvival SET " 
-              + "Sleep = '" + sleep.getValue() + "'," 
-              + "Thirst = '" + thirst.getValue() + "'," 
-              + "Energy = '" + energy.getValue() + "'," 
-              + "Weight = '" + weight.getValue() + "'," 
-              + "ExtraSleepValue = '" + extraSleepString + "'," 
-              + "ExtraThirstValue = '" + extraThirstString + "'," 
-              + "ExtraEnergyValue = '" + extraEnergyString + "'," 
-              + "ExtraWeightValue = '" + extraWeightString + "'," 
-              + "Effect = '" + effectString + "'," 
-              + "TEffect = '" + temperatureEffectString + "'," 
-              + "Disease = '" + diseaseString + "'," 
-              + "Temperature = '" + extraTemperature + "'" 
-              + " WHERE Name = '" + playerName.toLowerCase() + "'";
-          MySQLManager.execute(sql).execute();
-        } else {
-          String sql = "INSERT INTO RealSurvival VALUES ('" 
-              + playerName.toLowerCase() + "','" 
-              + sleep.getValue() + "','" 
-              + thirst.getValue() + "','" 
-              + energy.getValue() + "','" 
-              + weight.getValue() + "','"
-              + extraSleepString + "','" 
-              + extraThirstString + "','" 
-              + extraEnergyString + "','" 
-              + extraWeightString + "','" 
-              + effectString + "','" 
-              + temperatureEffectString + "','" 
-              + diseaseString + "','"
-              + extraTemperature + "')";
-          MySQLManager.execute(sql).execute();
-        }
-      } catch (SQLException e) {
-        e.printStackTrace();
-      }
+    if (ConfigManager.isEnableMySql()) {
+      MySqlManager.updateItem(playerName, getSaveData().saveToString());
     } else {
-      File file = new File(
-          MCPT.plugin.getDataFolder() + "/playerdata/" + playerName.toLowerCase() + ".yml");
-      YamlConfiguration data = YamlConfiguration.loadConfiguration(file);
-      data.set("sleep", sleep.getValue());
-      data.set("thirst", thirst.getValue());
-      data.set("weight", weight.getValue());
-      data.set("energy", energy.getValue());
-      data.set("extra-sleep", getExtraValueList(sleep));
-      data.set("extra-thirst", getExtraValueList(thirst));
-      data.set("extra-weight", getExtraValueList(weight));
-      data.set("extra-energy", getExtraValueList(energy));
-      data.set("effects", effect.toString());
-      String diseaseString = disease.getSaveString();
-      if (diseaseString == null || diseaseString.equalsIgnoreCase("null")) {
-        data.set("disease", new ArrayList<>());
-      } else {
-        data.set("disease", diseaseString.split(";"));
-      }
-      data.set("extra-temperature", temperature.getSaveString().split(";"));
-      data.set("temperature-effect", effect.getTemperatureSaveString().split(";"));
       try {
-        data.save(file);
+        getSaveData().save(
+            new File(
+                MCPT.plugin.getDataFolder() + "/playerdata/" + playerName.toLowerCase() + ".yml"));
       } catch (IOException e) {
         e.printStackTrace();
       }
     }
+  }
+  
+  /**
+   * 获取玩家的保存数据.
+
+   * @return
+   */
+  public YamlConfiguration getSaveData() {
+    YamlConfiguration data = 
+        YamlConfiguration.loadConfiguration(new StringReader(""));
+    data.set("sleep", sleep.getValue());
+    data.set("thirst", thirst.getValue());
+    data.set("weight", weight.getValue());
+    data.set("energy", energy.getValue());
+    data.set("extra-sleep", getExtraValueList(sleep));
+    data.set("extra-thirst", getExtraValueList(thirst));
+    data.set("extra-weight", getExtraValueList(weight));
+    data.set("extra-energy", getExtraValueList(energy));
+    data.set("effects", effect.toString());
+    String diseaseString = disease.getSaveString();
+    if (diseaseString == null || diseaseString.equalsIgnoreCase("null")) {
+      data.set("disease", new ArrayList<>());
+    } else {
+      data.set("disease", diseaseString.split(";"));
+    }
+    data.set("extra-temperature", temperature.getSaveString().split(";"));
+    data.set("temperature-effect", effect.getTemperatureSaveString().split(";"));
+    return data;
   }
 
   public String getPlayerName() {
@@ -314,6 +238,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   /**
    * 获取玩家状态.
    * 对应/rs status指令
+
    * @param cd 是否需要cd
    * @return
    */
@@ -358,7 +283,7 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
       }
       Bukkit.getScheduler().runTaskLaterAsynchronously(MCPT.plugin, () -> {
         cdStatusPlayer.remove(playerName);
-      }, ConfigManager.getStatusCmdCD());
+      }, ConfigManager.getStatusCmdCd());
     }
     return status;
   }
@@ -468,6 +393,11 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   @Override
   public void addEffect(StatusType type, String pluginName, double value, int duration) {
     effect.addEffect(type, pluginName, value, duration);
+  }
+  
+  @Override
+  public void addTemperatureEffect(String pluginName, double up, double down, int duration) {
+    effect.addEffect(pluginName, up, down, duration);
   }
 
   private String format(double d) {

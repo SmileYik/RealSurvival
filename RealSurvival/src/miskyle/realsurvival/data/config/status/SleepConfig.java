@@ -2,9 +2,8 @@ package miskyle.realsurvival.data.config.status;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import miskyle.realsurvival.data.effect.EffectData;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class SleepConfig {
   private boolean enable;
@@ -14,7 +13,7 @@ public class SleepConfig {
   private double increaseValue;
   private boolean sleepZero;
 
-  private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> effectData;
+  private HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> effectData;
 
   public SleepConfig() {
 
@@ -60,24 +59,32 @@ public class SleepConfig {
     this.increaseValue = increaseValue;
   }
 
-  public HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
+  public HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
     return effectData;
   }
 
+  /**
+   * 设定sleep属性所遭受的效果(buff).
+
+   * @param effectData 储存数据的字符串.
+   */
   public void setEffectData(HashMap<String, String> effectData) {
-    this.effectData = new HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>();
+    this.effectData = new HashMap<RsEntry<Double, Double>, ArrayList<EffectData>>();
     effectData.forEach((s1, s2) -> {
       String[] temp = s1.split("-");
       if (s2.equalsIgnoreCase("null")) {
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
+        this.effectData.put(
+            new RsEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
             new ArrayList<EffectData>());
       } else {
         String[] temp2 = s2.split(";");
         ArrayList<EffectData> list = new ArrayList<>();
-        for (String s : temp2)
-          list.add(EffectData.loadFromString(s));
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
-            list);
+        for (String s : temp2) {
+          list.add(EffectData.loadFromString(s));          
+        }
+        this.effectData.put(
+            new RsEntry<Double, Double>(
+                Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
       }
     });
   }

@@ -17,6 +17,7 @@ public class Recipe {
 
   /**
    * 创建配方.
+
    * @param recipeName 配方名
    * @param machineName 机器名
    * @param materialShape 材料顺序

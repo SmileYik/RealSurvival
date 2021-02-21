@@ -6,13 +6,14 @@ import miskyle.realsurvival.data.EffectManager;
 import miskyle.realsurvival.data.ItemManager;
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.item.DrugData;
-import miskyle.realsurvival.data.item.RSItemData;
+import miskyle.realsurvival.data.item.RsItemData;
 import miskyle.realsurvival.data.playerdata.PlayerData;
 import miskyle.realsurvival.listener.usehealthitem.UseHealthItem;
 import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer1;
 import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer2;
 import miskyle.realsurvival.listener.usehealthitem.UseHealthItemVer3;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.machine.recipeviewer.RecipeAlbum;
+import miskyle.realsurvival.util.RsEntry;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -57,28 +58,41 @@ public class UseItemListener implements Listener {
 
   /**
    * 玩家使用物品事件, 主要对应非消耗品物品.
+
    * @param e 玩家使用物品事件
    */
-  @EventHandler
-  public void playerEatItem(PlayerInteractEvent e) {
+  @EventHandler(ignoreCancelled = true)
+  public void playerUseItem(PlayerInteractEvent e) {
+    if (e.isCancelled()) {
+      return;
+    }
     if (!PlayerManager.isActive(e.getPlayer())
         || !e.hasItem()
         || !(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
         || itemList.contains(e.getItem().getType().name())) {
       return;      
     }
+    //判断物品是否能够被消耗掉.
     if (eatItem(e.getPlayer(), PlayerManager.getPlayerData(e.getPlayer().getName()),
         ItemManager.loadItemData(e.getItem()))) {
       e.setCancelled(true);
       e.getItem().setAmount(e.getItem().getAmount() - 1);
+      return;
+    }
+    
+    if (RecipeAlbum.isAlbum(e.getItem())) {
+      e.setCancelled(true);
+      RecipeAlbum.openInv(e.getPlayer(), e.getItem());
+      return;
     }
   }
 
   /**
    * 玩家使用物品事件, 主要对应消耗品物品.
+
    * @param e 玩家使用消耗品物品事件
    */
-  @EventHandler
+  @EventHandler(ignoreCancelled = true)
   public void playerEatItem(PlayerItemConsumeEvent e) {
     if (!PlayerManager.isActive(e.getPlayer()) || e.getItem() == null) {
       return;      
@@ -87,7 +101,7 @@ public class UseItemListener implements Listener {
         e.getPlayer().getName()), ItemManager.loadItemData(e.getItem()));
   }
 
-  private boolean eatItem(Player p, PlayerData pd, RSItemData itemData) {
+  private boolean eatItem(Player p, PlayerData pd, RsItemData itemData) {
     if (itemData == null || itemData.isTool()) {
       return false;      
     }
@@ -151,17 +165,17 @@ public class UseItemListener implements Listener {
         flag = true;
         if (pd.getDisease().getDiseases().isEmpty()) {
           drug.getNoNeedDrug().forEach(effect -> {
-            EffectManager.effectPlayer(p, effect);
+            EffectManager.effectPlayer(p, effect, StatusType.DISEASE);
           });
         } else {
           pd.getDisease().getDiseases().forEachKey(
               pd.getDisease().getDiseases().mappingCount(), k -> {
                 if (drug.isValidAtDisease(k)) {
-                  RSEntry<Double, Integer> entry = drug.getMedicien(k);
+                  RsEntry<Double, Integer> entry = drug.getMedicien(k);
                   pd.getDisease().eatDurg(k, entry.getLeft(), entry.getRight());
                 } else if (drug.getWrongDisease().contains(k)) {
                   drug.getEatWrongDrug().forEach(effect -> {
-                    EffectManager.effectPlayer(p, effect);
+                    EffectManager.effectPlayer(p, effect, StatusType.DISEASE);
                   });
                 }
               });

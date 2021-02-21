@@ -3,9 +3,8 @@ package miskyle.realsurvival.data.config.status;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import miskyle.realsurvival.data.effect.EffectData;
-import miskyle.realsurvival.util.RSEntry;
+import miskyle.realsurvival.util.RsEntry;
 
 public class EnergyConfig {
   private boolean enable;
@@ -18,7 +17,7 @@ public class EnergyConfig {
 
   private List<String> toolList;
   private HashMap<EnergyBreakBlockData, Double> actionDecrease;
-  private HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> effectData;
+  private HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> effectData;
 
   public EnergyConfig() {
 
@@ -80,24 +79,31 @@ public class EnergyConfig {
     this.decreaseSwimming = decreaseSwimming;
   }
 
-  public HashMap<RSEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
+  public HashMap<RsEntry<Double, Double>, ArrayList<EffectData>> getEffectData() {
     return effectData;
   }
 
+  /**
+   * 设置该属性额外效果.
+
+   * @param effectData 额外效果数据.
+   */
   public void setEffectData(HashMap<String, String> effectData) {
-    this.effectData = new HashMap<RSEntry<Double, Double>, ArrayList<EffectData>>();
+    this.effectData = new HashMap<RsEntry<Double, Double>, ArrayList<EffectData>>();
     effectData.forEach((s1, s2) -> {
       String[] temp = s1.split("-");
       if (s2.equalsIgnoreCase("null")) {
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
+        this.effectData.put(new RsEntry<Double, Double>(
+            Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
             new ArrayList<EffectData>());
       } else {
         String[] temp2 = s2.split(";");
         ArrayList<EffectData> list = new ArrayList<>();
-        for (String s : temp2)
-          list.add(EffectData.loadFromString(s));
-        this.effectData.put(new RSEntry<Double, Double>(Double.parseDouble(temp[0]), Double.parseDouble(temp[1])),
-            list);
+        for (String s : temp2) {
+          list.add(EffectData.loadFromString(s));          
+        }
+        this.effectData.put(new RsEntry<Double, Double>(
+            Double.parseDouble(temp[0]), Double.parseDouble(temp[1])), list);
       }
     });
   }

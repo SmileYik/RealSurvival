@@ -3,7 +3,6 @@ package miskyle.realsurvival.data.config.status;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import miskyle.realsurvival.data.effect.EffectData;
 
 public class DiseaseConfig {
@@ -39,19 +38,12 @@ public class DiseaseConfig {
   public void setDiseases(HashMap<String, ArrayList<EffectData>> diseases) {
     this.diseases = diseases;
   }
+  
+  /**
+   * 设定病.
 
-  public boolean isContainsDisease(String name) {
-    return diseases.containsKey(name);
-  }
-
-  public ArrayList<EffectData> getDiseaseEffect(String diseaseName) {
-    if (diseases.containsKey(diseaseName)) {
-      return diseases.get(diseaseName);
-    } else {
-      return new ArrayList<EffectData>();
-    }
-  }
-
+   * @param list 病列表数据.
+   */
   public void setDiseases(List<String> list) {
     diseases = new HashMap<String, ArrayList<EffectData>>();
     list.forEach(line -> {
@@ -66,5 +58,23 @@ public class DiseaseConfig {
         }
       }
     });
+  }
+
+  public boolean isContainsDisease(String name) {
+    return diseases.containsKey(name);
+  }
+
+  /**
+   * 获取病效果数据.
+
+   * @param diseaseName 病名
+   * @return
+   */
+  public ArrayList<EffectData> getDiseaseEffect(String diseaseName) {
+    if (diseases.containsKey(diseaseName)) {
+      return diseases.get(diseaseName);
+    } else {
+      return new ArrayList<EffectData>();
+    }
   }
 }

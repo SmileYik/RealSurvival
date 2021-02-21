@@ -8,9 +8,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-
 import com.github.miskyle.mcpt.MCPT;
-
 import miskyle.realsurvival.data.PlayerManager;
 
 public class JoinOrLeaveListener implements Listener {
@@ -33,6 +31,7 @@ public class JoinOrLeaveListener implements Listener {
    */
   /**
    * 当玩家传送时, 确定是否启用插件.
+
    * @param e 玩家传送事件
    */
   @EventHandler
