@@ -26,7 +26,8 @@ import miskyle.realsurvival.machine.furnace.FurnaceListener;
 import miskyle.realsurvival.machine.listener.CubeListener;
 import miskyle.realsurvival.machine.raincollector.RainCollectorListener;
 import miskyle.realsurvival.machine.recipeviewer.RecipeViewerListener;
-import miskyle.realsurvival.papi.Papi;
+import miskyle.realsurvival.papi.PlaceholderModeI;
+import miskyle.realsurvival.papi.PlaceholderModeIi;
 import miskyle.realsurvival.status.listener.EnergyListener;
 import miskyle.realsurvival.status.listener.MobMakeDisease;
 import miskyle.realsurvival.status.listener.SleepListener;
@@ -178,8 +179,24 @@ public class ConfigManager {
 
   private void setupPapi() {
     if (Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-      if (new Papi(plugin).register()) {
-        plugin.getLogger().info("Successful loading PlaceholderAPI !");
+      switch (config.getInt("placeholder.mode")) {
+        case 1:
+          if (new PlaceholderModeI(plugin).register()) {
+            plugin.getLogger().info("Successful Enable PlaceholderAPI !");
+          }
+          break;
+        case 2:
+          if (new PlaceholderModeIi(
+              plugin, 
+              config.getString("placeholder.mode2-setting.char1").charAt(0),
+              config.getString("placeholder.mode2-setting.char2").charAt(0),
+              config.getInt("placeholder.mode2-setting.length")).register()) {
+            plugin.getLogger().info("Successful Enable PlaceholderAPI !");
+          }
+          break;
+        default:
+          plugin.getLogger().warning("Disable PlaceholderAPI!");
+          break;
       }
     }
   }
@@ -343,6 +360,9 @@ public class ConfigManager {
     disease.setEnable(config.getBoolean("status.disease.enable", true));
     disease.setDiseases(config.getStringList("status.disease.disease"));
     disease.setMob(config.getBoolean("status.disease.mob", true));
+    if (disease.isMob()) {
+      disease.setMobDisease(config.getStringList("status.disease.mob-disease"));
+    }
   }
 
   /**

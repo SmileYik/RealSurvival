@@ -56,7 +56,7 @@ public class RecipeAlbum {
     RecipeAlbumHolder holder = new RecipeAlbumHolder();
     Inventory inv = Bukkit.createInventory(holder, STD_INV.getSize(), title + " - " + author);
     for (int i = 0; i < STD_INV.getSize(); i++) {
-      inv.setItem(i, STD_INV.getItem(i).clone());
+      inv.setItem(i, STD_INV.getItem(i) == null ? null : STD_INV.getItem(i).clone());
     }
     holder.setInventory(inv);
     holder.setMenu(true);
@@ -64,15 +64,31 @@ public class RecipeAlbum {
     if (meta.getPageCount() == 3) {
       String[] machineType = meta.getPage(2).replace("§0", "").split("\n");
       String[] recipeName = meta.getPage(3).replace("§0", "").split("\n");
-      for (int i = 0; i < SLOTS.size(); ++i) {
+      int times = Math.min(machineType.length, SLOTS.size());
+      for (int i = 0; i < times; ++i) {
         if (machineType[i] != null) {
           recipes[i] = MachineManager.getRecipe(MachineType.valueOf(machineType[i]), recipeName[i]);
           inv.setItem(SLOTS.get(i), recipes[i].getProducts().get(0).clone());
         }
       }
+      
+      //开始检测是否为有效的配方集.
+      boolean flag = true;
+      for (Recipe recipe : recipes) {
+        if (recipe != null) {
+          flag = false;
+          break;
+        }
+      }
+      if (flag) {
+        return null;
+      }
+      //检测完毕, 若recipes里所有配方数据都为null则打开失败.
+      
+      holder.setViewers(recipes);
+      return inv;
     }
-
-    return inv;
+    return null;
   }
   
   /**
@@ -90,7 +106,7 @@ public class RecipeAlbum {
   }
   
   /**
-   * 判断物品是否存放着配方集数据.
+   * 简单判断物品是否存放着配方集数据.
 
    * @param item 目的物品.
    * @return true 则代表存放着有效配方集数据, 反之则不存在.
@@ -109,7 +125,8 @@ public class RecipeAlbum {
     if (text.isEmpty() || !text.equalsIgnoreCase("[RS.ALBUM]")) {
       return false;
     }
-    return true;
+    return meta.getPageCount() == 3 
+        && meta.getPage(2).split("\n").length == meta.getPage(3).split("\n").length;
   }
   
   /**
@@ -120,11 +137,13 @@ public class RecipeAlbum {
    * @param holder 配方集holder.
    */
   public static void openRecipeViewer(Player p, Recipe recipe, RecipeAlbumHolder holder) {
+    if (recipe == null)  {
+      return;
+    }
     if (holder == null) {
       holder = new RecipeViewerHolder();
-    } else {
-      holder.setMenu(false);
     }
+    holder.setMenu(false);
     holder.setNow(recipe);
     Inventory inv = Bukkit.createInventory(holder, 9 * 6, I18N.tr("machine.recipe-album.title"));
     if (recipe.getType() == RecipeType.CRAFT_TABLE) {
@@ -202,6 +221,8 @@ public class RecipeAlbum {
     if (holder == null) {
       holder = new RecipeViewerHolder();
     } else {
+      holder.setMenu(true);
+      p.closeInventory();
       holder.setMenu(false);
     }
     CubeData cube = MachineManager.getMachineCube(machineName);
@@ -247,10 +268,11 @@ public class RecipeAlbum {
         "machine.recipe-album.cube.tip", cube.isCheckCompass()).split("\n")) {
       lores.add(line);
     }
-    ItemStack item = inv.getItem(10);
+    ItemStack item = GuiItemCreater.getItem("WRITTEN_BOOK", "WRITTEN_BOOK", (short) 0, "");
     ItemMeta meta = item.getItemMeta();
     meta.setLore(lores);
     item.setItemMeta(meta);
+    inv.setItem(10, item);
     p.openInventory(inv);
   }
   

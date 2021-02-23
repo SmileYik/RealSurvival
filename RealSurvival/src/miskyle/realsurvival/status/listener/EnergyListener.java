@@ -9,6 +9,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.util.Vector;
 import miskyle.realsurvival.api.status.StatusType;
 import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
@@ -49,8 +50,9 @@ public class EnergyListener implements Listener {
         && isJump(e.getPlayer().getName(), e.getFrom(), e.getTo())) {
       if (pd.getEnergy().getValue() < ConfigManager.getEnergyConfig().getDecreaseJumping()
           || pd.getWeight().getValue() > pd.getWeight().getMaxValue()) {
-        e.setCancelled(true);
-        e.getPlayer().teleport(jumpCheck.remove(e.getPlayer().getName()));
+        jumpCheck.remove(e.getPlayer().getName());
+        e.getPlayer().setVelocity(new Vector());
+        return;
       } else {
         EnergyTask.sendMessage(e.getPlayer(), pd.getEnergy()
             .modify(-ConfigManager.getEnergyConfig().getDecreaseJumping(), 

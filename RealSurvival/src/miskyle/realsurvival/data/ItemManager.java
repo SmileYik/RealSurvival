@@ -230,6 +230,7 @@ public class ItemManager {
                 break;
             }
           }
+          temp = ss.replaceAll("[^0-9+-/]", "");
           if (temp.contains("/")) {
             // 范围类型
             String[] temp2 = temp.split("/");
@@ -376,6 +377,7 @@ public class ItemManager {
 
   /**
    * 获取某一个属性的数据.
+   * 不获取百分数.
 
    * @param status 属性
    * @param item 物品

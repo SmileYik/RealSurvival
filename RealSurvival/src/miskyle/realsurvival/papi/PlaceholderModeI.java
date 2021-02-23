@@ -9,10 +9,10 @@ import miskyle.realsurvival.randomday.RandomDayManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-public class Papi extends PlaceholderExpansion {
+public class PlaceholderModeI extends PlaceholderExpansion {
   private Plugin rs;
 
-  public Papi(Plugin plugin) {
+  public PlaceholderModeI(Plugin plugin) {
     rs = plugin;
   }
 

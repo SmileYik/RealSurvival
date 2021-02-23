@@ -38,6 +38,11 @@ public class ThirstListenerVer1 implements Listener {
     if (e.getItem().getAmount() > 1) {
       return;
     }
+    
+    if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+      e.setCancelled(true);
+      return;
+    }
 
     Block block = e.getPlayer().getTargetBlock(null, 6);
     if (!(block.getType().name().contains("WATER"))) {

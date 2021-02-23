@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import com.github.miskyle.mcpt.MCPT;
 import miskyle.realsurvival.data.recipe.Recipe;
 
 public class RecipeViewerListener implements Listener {
@@ -17,10 +18,6 @@ public class RecipeViewerListener implements Listener {
    */
   @EventHandler
   public void onPlayerClick(InventoryClickEvent event) {
-    if (event.isCancelled()) {
-      return;
-    }
-    
     if (event.getClickedInventory() == null 
         || event.getClickedInventory().getHolder() == null
         || !(event.getClickedInventory().getHolder() instanceof RecipeAlbumHolder)) {
@@ -29,14 +26,15 @@ public class RecipeViewerListener implements Listener {
     event.setCancelled(true);
     
     RecipeAlbumHolder holder = (RecipeAlbumHolder) event.getClickedInventory().getHolder();
-    if (holder.isMenu()) {
+    if (holder.isMenu() && RecipeAlbum.SLOTS.contains(event.getRawSlot())) {
+      //菜单选择.
       Player p = (Player) event.getWhoClicked();
       if (RecipeAlbum.SLOTS.contains(event.getRawSlot())) {
         Recipe recipe = holder.getViewers()[RecipeAlbum.SLOTS.indexOf(event.getRawSlot())];
         RecipeAlbum.openRecipeViewer(p, recipe, holder);
         return;
       }
-    } else {
+    } else if (!holder.isMenu()) {
       if (event.getClick() == ClickType.RIGHT && holder.getNow() != null) {
         RecipeAlbum.openMachineBuildHelper(
             (Player) event.getWhoClicked(), holder.getNow().getMachineName(), holder);
@@ -60,9 +58,11 @@ public class RecipeViewerListener implements Listener {
       return;
     }
     RecipeAlbumHolder holder = (RecipeAlbumHolder) event.getInventory().getHolder();
-    if (!holder.isMenu()) {
+    if (!holder.isMenu() && holder.getInventory().hashCode() != event.getInventory().hashCode()) {
       holder.setMenu(true);
-      event.getPlayer().openInventory(holder.getInventory());
+      MCPT.plugin.getServer().getScheduler().runTaskLater(MCPT.plugin, () -> {
+        event.getPlayer().openInventory(holder.getInventory());        
+      }, 1L);
     }
   }
 

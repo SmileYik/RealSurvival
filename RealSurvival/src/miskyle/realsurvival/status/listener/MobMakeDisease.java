@@ -44,12 +44,22 @@ public class MobMakeDisease implements Listener {
       }
     }
 
+    final String mob = mobName;
     RsItemData data = ItemManager.getDiseaseSource(handItem);
     if (data == null || data.getDrugData() == null || !data.getDrugData().isMakeDisease()) {
-      //TODO 名字判断
+      if (mobName != null && !mobName.isEmpty()) {
+        //以名字判断是否给病.
+        ConfigManager.getDiseaseConfig().getMobDiseases(mobName).forEach(disease -> {
+          if (disease.isMakeDisease()) {
+            pd.getDisease().addDisease(disease.getName());
+            PlayerManager.bar.sendActionBar(p, 
+                Msg.tr("messages.make-disease", mob, disease.getName()));
+          }
+        });
+      }
       return;
     }
-    String mob = mobName;
+    // 致病环节.
     if (data.getDrugData().isMakeDisease()) {
       data.getDrugData().getGetDisease().forEach((k, v) -> {
         if (Math.random() * 100 < v) {

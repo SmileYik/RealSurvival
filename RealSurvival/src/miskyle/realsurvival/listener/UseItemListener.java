@@ -61,11 +61,8 @@ public class UseItemListener implements Listener {
 
    * @param e 玩家使用物品事件
    */
-  @EventHandler(ignoreCancelled = true)
+  @EventHandler()
   public void playerUseItem(PlayerInteractEvent e) {
-    if (e.isCancelled()) {
-      return;
-    }
     if (!PlayerManager.isActive(e.getPlayer())
         || !e.hasItem()
         || !(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)
@@ -80,6 +77,7 @@ public class UseItemListener implements Listener {
       return;
     }
     
+    // 判断是否为配方集
     if (RecipeAlbum.isAlbum(e.getItem())) {
       e.setCancelled(true);
       RecipeAlbum.openInv(e.getPlayer(), e.getItem());
@@ -92,7 +90,7 @@ public class UseItemListener implements Listener {
 
    * @param e 玩家使用消耗品物品事件
    */
-  @EventHandler(ignoreCancelled = true)
+  @EventHandler()
   public void playerEatItem(PlayerItemConsumeEvent e) {
     if (!PlayerManager.isActive(e.getPlayer()) || e.getItem() == null) {
       return;      

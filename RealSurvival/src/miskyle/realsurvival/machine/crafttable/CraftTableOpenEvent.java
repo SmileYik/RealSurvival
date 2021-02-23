@@ -4,14 +4,13 @@ import java.util.HashMap;
 import org.bukkit.Bukkit;
 import com.github.miskyle.mcpt.MCPT;
 import com.github.miskyle.mcpt.i18n.I18N;
-import com.sun.istack.internal.NotNull;
 import miskyle.realsurvival.machine.util.GuiItemCreater;
 
 public class CraftTableOpenEvent implements Runnable {
   private static HashMap<String, Integer> taskId = new HashMap<String, Integer>();
   private final CraftTableHolder holder;
 
-  private CraftTableOpenEvent(@NotNull CraftTableHolder holder) {
+  private CraftTableOpenEvent(CraftTableHolder holder) {
     this.holder = holder;
   }
 
@@ -43,7 +42,7 @@ public class CraftTableOpenEvent implements Runnable {
    * @param holder holder
    * @param playerName 玩家名.
    */
-  public static void openEvent(@NotNull CraftTableHolder holder, String playerName) {
+  public static void openEvent(CraftTableHolder holder, String playerName) {
     CraftTableOpenEvent ctoe = new CraftTableOpenEvent(holder);
     int taskId = 
         Bukkit.getScheduler().runTaskTimerAsynchronously(MCPT.plugin, ctoe, 0, 20L).getTaskId();

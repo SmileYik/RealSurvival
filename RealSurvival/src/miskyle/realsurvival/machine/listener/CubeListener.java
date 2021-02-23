@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import miskyle.realsurvival.Msg;
 import miskyle.realsurvival.blockarray.BlockArrayCreator;
+import miskyle.realsurvival.data.ConfigManager;
 import miskyle.realsurvival.data.PlayerManager;
 import miskyle.realsurvival.data.blockarray.BlockArrayData;
 import miskyle.realsurvival.data.blockarray.CubeData;
@@ -151,29 +152,40 @@ public class CubeListener implements Listener {
                 Msg.getPrefix() + I18N.tr("machine.access.no-permission", access.getOwner()));
             return;
           }
-          ItemStack book = new ItemStack(Material.valueOf("WRITTEN_BOOK"));
-          BookMeta meta = (BookMeta) book.getItemMeta();
-          String page = I18N.tr("machine.access.owner", access.getOwner()) + "\n" 
-              + I18N.tr("machine.access.mode." + access.getMode()) + "\n";
-          
-          int line = 2;
-          int pageCount = 1;
-          for (String name : access.getPlayers()) {
-            page += name + "\n";
-            if (++line >= 10) {
+          //1.14.4(含) 才能openBook方法, 低版本仅发送可用名单.
+          if (ConfigManager.getBukkitVersion() >= 14) {
+            ItemStack book = new ItemStack(Material.valueOf("WRITTEN_BOOK"));
+            BookMeta meta = (BookMeta) book.getItemMeta();
+            String page = I18N.tr("machine.access.owner", access.getOwner()) + "\n" 
+                + I18N.tr("machine.access.mode." + access.getMode()) + "\n";
+            
+            int line = 2;
+            int pageCount = 1;
+            for (String name : access.getPlayers()) {
+              page += name + "\n";
+              if (++line >= 10) {
+                meta.addPage(page);
+                line = 0;
+                pageCount++;
+                page = "";
+              }
+            }
+            if (pageCount == 1 
+                || (pageCount > 1 && line > 0)) {
               meta.addPage(page);
-              line = 0;
-              pageCount++;
+            }
+            meta.setAuthor(access.getOwner());
+            meta.setTitle(access.getOwner());
+            book.setItemMeta(meta);
+            event.getPlayer().openBook(book);
+          } else {
+            //低版本发送名单.
+            event.getPlayer().sendMessage(I18N.tr("machine.access.owner", access.getOwner()));
+            event.getPlayer().sendMessage(I18N.tr("machine.access.mode." + access.getMode()));
+            for (String name : access.getPlayers()) {
+              event.getPlayer().sendMessage(name);
             }
           }
-          if (pageCount == 1 
-              || (pageCount > 1 && line > 0)) {
-            meta.addPage(page);
-          }
-          meta.setAuthor(access.getOwner());
-          meta.setTitle(access.getOwner());
-          book.setItemMeta(meta);
-          event.getPlayer().openBook(book);
           return;
         }
       }

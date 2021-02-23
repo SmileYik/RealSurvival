@@ -35,7 +35,12 @@ public class ThirstListenerVer2 implements Listener {
         || e.getMaterial() != Material.GLASS_BOTTLE) {
       return;      
     }
-
+    
+    if (e.getAction() == Action.RIGHT_CLICK_AIR) {
+      e.setCancelled(true);
+      return;
+    }
+    
     Block block = e.getPlayer().getTargetBlock((Set<Material>) null, 6);
     if (!(block.getType().name().contains("WATER"))) {
       return;      

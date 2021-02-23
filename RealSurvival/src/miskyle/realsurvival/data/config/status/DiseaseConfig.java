@@ -6,8 +6,31 @@ import java.util.List;
 import miskyle.realsurvival.data.effect.EffectData;
 
 public class DiseaseConfig {
+  public class MobDisease {
+    private String name;
+    private float chance;
+    
+    public MobDisease(String name, float chance) {
+      this.chance = chance;
+      this.name = name;
+    }
+    
+    public boolean isMakeDisease() {
+      return Math.random() < chance;
+    }
+    
+    public String makeDisease() {
+      return Math.random() < chance ? name : null;
+    }
+    
+    public String getName() {
+      return name;
+    }
+  }
+  
   private boolean enable;
   private boolean mob;
+  private HashMap<String, ArrayList<MobDisease>> mobDisease;
 
   public boolean isMob() {
     return mob;
@@ -76,5 +99,32 @@ public class DiseaseConfig {
     } else {
       return new ArrayList<EffectData>();
     }
+  }
+  
+  /**
+   * 设置对应怪物名字致病数据.
+
+   * @param list 配置文件里的列表
+   */
+  public void setMobDisease(List<String> list) {
+    mobDisease = new HashMap<>();
+    for (String line : list) {
+      String[] temp = line.split(":");
+      ArrayList<MobDisease> diseases;
+      if (mobDisease.containsKey(temp[0])) {
+        diseases = mobDisease.get(temp[0]);
+      } else {
+        diseases = new ArrayList<>();
+        mobDisease.put(temp[0], diseases);
+      }
+      for (String d : temp[1].split(";")) {
+        String[] temp2 = d.split(",");
+        diseases.add(new MobDisease(temp2[0], Float.parseFloat(temp2[1])));
+      }
+    }
+  }
+  
+  public ArrayList<MobDisease> getMobDiseases(String mobName) {
+    return mobDisease.getOrDefault(mobName, new ArrayList<>());
   }
 }

@@ -7,18 +7,17 @@ enable-bStats: true
 
 #mysql有关设置
 #enable为是否启用
-#host mysql的主机(ip)
-#port mysql的端口
-#database 数据库名
 #username 用户名
 #password 密码
+#table-name 表名
 mysql:
   enable: false
-  host: localhost
-  port: 3306
-  database: database
+  #"jdbc:mysql://<数据库ip>:<数据库端口>/<数据库名>"
+  url: "jdbc:mysql://127.0.0.1:3306/test"
   username: root
   password: 123456
+  #表名
+  table-name: realsurvival_playerdata
 
 #启用RealSurvival的世界
 #将世界名(大小写敏感)按照相应格式添加
@@ -31,8 +30,23 @@ enable-worlds:
 #获取的状态多久更新一次(单位,游戏刻)
 status-command-cooldown: 600
 
+#给papi变量值设置.
+placeholder:
+  #数值显示模式,
+  #1为显示百分数
+  #2为文字类型显示
+  mode: 1
+  mode2-setting:
+    char1: 'O'
+    char2: 'X'
+    length: 10
+
+#玩家死亡时重置状态
+#恢复到最大值的百分数
 on-death:
+  #是否启用
   enable: false
+  #移除所有疾病
   remove-all-disease: true
   sleep: 80
   thirst: 80
@@ -114,6 +128,12 @@ status:
   disease:
     enable: true
     mob: true
+    #设定怪物名字所对应的怪物致病概率
+    #格式如下:
+    #怪物名字:病名1,几率1;病名2,几率2;...;病名n,几率n
+    #需要注意, 几率为0~1之间的小数
+    mob-disease:
+      - "ZOMBIE:生病,0.9;"
     disease:
       - "生病:SPEED,1,5,65;HEAL,1,5,65"
   temperature: 
@@ -148,5 +168,6 @@ label:
 
 #增加机器,格式如下
 # - "机器名称,多方块结构名称,机器类型(现在仅可选CRAFT_TABLE与FURNACE),机器GUI的标题"
+#需要注意, 给配方取名时, 配方名不能相同, 无论机器名称 多方块名称 机器类型不同, 都不能让配方名相同.
 machine:
   - "machineName,CubeName,CRAFT_TABLE,Title"    

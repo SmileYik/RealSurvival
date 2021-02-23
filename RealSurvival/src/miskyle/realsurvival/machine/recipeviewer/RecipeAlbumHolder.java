@@ -44,5 +44,4 @@ public class RecipeAlbumHolder implements InventoryHolder {
     this.now = now;
   }
   
-  
 }
