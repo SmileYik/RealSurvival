@@ -332,17 +332,13 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   public double getStatusValue(StatusType type) {
     switch (type) {
       case ENERGY:
-        energy.getValue();
-        break;
+        return energy.getValue();
       case SLEEP:
-        sleep.getValue();
-        break;
+        return sleep.getValue();
       case THIRST:
-        thirst.getValue();
-        break;
+        return thirst.getValue();
       case WEIGHT:
-        weight.getValue();
-        break;
+        return weight.getValue();
       default:
         break;
     }
@@ -353,17 +349,13 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   public double getStatusMaxValue(StatusType type) {
     switch (type) {
       case ENERGY:
-        energy.getMaxValue();
-        break;
+        return energy.getMaxValue();
       case SLEEP:
-        sleep.getMaxValue();
-        break;
+        return sleep.getMaxValue();
       case THIRST:
-        thirst.getMaxValue();
-        break;
+        return thirst.getMaxValue();
       case WEIGHT:
-        weight.getMaxValue();
-        break;
+        return weight.getMaxValue();
       default:
         break;
     }
@@ -428,17 +420,13 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
   public boolean isValidAddMaxValue(StatusType type, Plugin plugin) {
     switch (type) {
       case ENERGY:
-        energy.getExtraMaxValue().containsKey(plugin.getName());
-        break;
+        return energy.getExtraMaxValue().containsKey(plugin.getName());
       case SLEEP:
-        sleep.getExtraMaxValue().containsKey(plugin.getName());
-        break;
+        return sleep.getExtraMaxValue().containsKey(plugin.getName());
       case THIRST:
-        thirst.getExtraMaxValue().containsKey(plugin.getName());
-        break;
+        return thirst.getExtraMaxValue().containsKey(plugin.getName());
       case WEIGHT:
-        weight.getExtraMaxValue().containsKey(plugin.getName());
-        break;
+        return weight.getExtraMaxValue().containsKey(plugin.getName());
       default:
         break;
     }
@@ -452,17 +440,13 @@ public class PlayerData implements miskyle.realsurvival.api.player.PlayerData {
     }
     switch (type) {
       case ENERGY:
-        energy.getExtraMaxValue().get(plugin.getName());
-        break;
+        return energy.getExtraMaxValue().get(plugin.getName());
       case SLEEP:
-        sleep.getExtraMaxValue().get(plugin.getName());
-        break;
+        return sleep.getExtraMaxValue().get(plugin.getName());
       case THIRST:
-        thirst.getExtraMaxValue().get(plugin.getName());
-        break;
+        return thirst.getExtraMaxValue().get(plugin.getName());
       case WEIGHT:
-        weight.getExtraMaxValue().get(plugin.getName());
-        break;
+        return weight.getExtraMaxValue().get(plugin.getName());
       default:
         break;
     }

@@ -259,44 +259,6 @@ public class ConfigManager {
       }
     }
     plugin.getLogger().info(I18N.tr("log.info.mysql", enableMySql));
-    
-    
-    //    if (config.getBoolean("mysql.enable")) {
-    //      enableMySql = true;
-    //      MySQLManager.setupMySQl(
-    //          config.getString("mysql.host"), config.getInt("mysql.port"), 
-    //    config.getString("mysql.database"),
-    //          config.getString("mysql.username"), config.getString("mysql.password"));
-    //      if (MySQLManager.connect()) {
-    //        try {
-    //          if (!MySQLManager.execute("show tables like 'realsurvival'").executeQuery().next()){
-    //            // Create Table
-    //            MySQLManager.execute("create table RealSurvival(\r\n" 
-    //                + "Name VARCHAR(50),\r\n" 
-    //                + "Sleep DOUBLE,\r\n"
-    //                + "Thirst DOUBLE,\r\n" 
-    //                + "Energy DOUBLE,\r\n" 
-    //                + "Weight DOUBLE,\r\n"
-    //                + "ExtraSleepValue TEXT,\r\n"
-    //                + "ExtraThirstValue TEXT,\r\n" 
-    //                + "ExtraEnergyValue TEXT,\r\n" 
-    //                + "ExtraWeightValue TEXT,\r\n"
-    //                + "Effect TEXT,\r\n" 
-    //                + "TEffect TEXT,\r\n" 
-    //                + "Disease TEXT,\r\n" 
-    //                + "Temperature TEXT\r\n"
-    //                + ")default charset=utf8;").execute();
-    //          }
-    //        } catch (SQLException e) {
-    //          MySQLManager.disconnect();
-    //          e.printStackTrace();
-    //        }
-    //        MySQLManager.disconnect();
-    //      } else {
-    //        enableMySql = false;
-    //      }
-    //    }
-    //    plugin.getLogger().info(I18N.tr("log.info.mysql", enableMySql));
   }
 
   /**

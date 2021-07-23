@@ -61,7 +61,6 @@ public class ItemManager {
       } catch (IOException e) {
         e.printStackTrace();
       }
-      MCPT.plugin.getLogger().info("");
       return;
     }
     YamlConfiguration c = YamlConfiguration.loadConfiguration(file);

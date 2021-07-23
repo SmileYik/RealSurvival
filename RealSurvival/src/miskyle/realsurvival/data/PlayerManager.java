@@ -28,7 +28,11 @@ public class PlayerManager {
     String version = RealSurvival.getVersion();
     title = NMSTitle.getTitle(version);
     bar = NMSActionBar.getActionBar(version);
-    sleep = NMSSleep.getNMSSleep(version);
+    try {
+      sleep = NMSSleep.getNMSSleep(version);      
+    } catch (Exception e) {
+      sleep = null;
+    }
     if (bar == null) {
       bar = new ActionNullBar();
     }
@@ -78,13 +82,13 @@ public class PlayerManager {
         pd.getDisease().getDiseases().clear();
       }
       pd.setStatus(StatusType.SLEEP,
-          pd.getStatusMaxValue(StatusType.SLEEP) * ConfigManager.getDeathConfig().getSleep() / 100);
+          pd.getStatusMaxValue(StatusType.SLEEP) * ConfigManager.getDeathConfig().getSleep() / 100D);
       pd.setStatus(StatusType.THIRST,
           pd.getStatusMaxValue(StatusType.THIRST) 
-          * ConfigManager.getDeathConfig().getThirst() / 100);
+          * ConfigManager.getDeathConfig().getThirst() / 100D);
       pd.setStatus(StatusType.ENERGY,
           pd.getStatusMaxValue(StatusType.ENERGY) 
-          * ConfigManager.getDeathConfig().getEnergy() / 100);
+          * ConfigManager.getDeathConfig().getEnergy() / 100D);
       p.setFoodLevel((int) (0.2 * ConfigManager.getDeathConfig().getHunger()));
     }
     removePlayer(p.getName());
