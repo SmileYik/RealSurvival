@@ -7,7 +7,6 @@ public final class RealSurvivalCore extends JavaPlugin {
   @Override
   public void onEnable() {
     // Plugin startup logic
-
   }
 
   @Override

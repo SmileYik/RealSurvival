@@ -20,6 +20,7 @@ repositories {
 dependencies {
     implementation 'tk.smileyik:lua-in-minecraft-bukkit:1.6'
     compileOnly 'com.destroystokyo.paper:paper-api:1.13.2-R0.1-SNAPSHOT'
+    compileOnly project(':RealSurvival-NMS')
 }
 
 def targetJavaVersion = 8
