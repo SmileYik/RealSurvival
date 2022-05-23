@@ -1,0 +1,8 @@
+name: RealSurvival
+version: '${version}'
+main: tk.smileyik.realsurvival.core.RealSurvivalCore
+api-version: 1.13
+prefix: RealSurvival
+depend: [ LuaInMinecraftBukkit ]
+softdepend: [ PlaceholderAPI ]
+authors: [ SmileYik ]
