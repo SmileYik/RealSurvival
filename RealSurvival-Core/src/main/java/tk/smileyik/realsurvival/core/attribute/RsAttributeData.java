@@ -1,4 +1,6 @@
 package tk.smileyik.realsurvival.core.attribute;
 
-public interface RsAttributeData {
+import java.io.Serializable;
+
+public interface RsAttributeData extends Serializable {
 }
